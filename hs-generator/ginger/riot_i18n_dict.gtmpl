@@ -1,0 +1,28 @@
+    \ i18n.dictionary({
+    \  "de": {
+{%- for translation in translations %}
+    \    "{{'MsgGlobal' ~ translation.keyCap }}": "{{translation.de}}",
+{%- endfor %}
+{%- for model in models %}
+{%- for field in model.fields %}
+{%- if field.labelDe %}
+    \    "{{'Msg' ~ model.nameCap ~ field.nameCap }}": "{{field.labelDe}}",
+{%- endif %}
+{%- endfor %}
+{%- endfor %}
+    \  },
+    \  "en-US": {
+{%- for translation in translations %}
+    \    "{{'MsgGlobal' ~ translation.keyCap }}": "{{translation.en}}",
+{%- endfor %}
+{%- for model in models %}
+{%- for field in model.fields %}
+{%- if field.labelEn %}
+    \    "{{'Msg' ~ model.nameCap ~ field.nameCap }}": "{{field.labelEn}}",
+{%- endif %}
+{%- endfor %}
+{%- endfor %}
+    \   }
+    \ })
+
+{{- '' -}}
