@@ -747,7 +747,7 @@ context =
         , bModelEditFormEntityLoader = Nothing
         , bModelDeleteFormEntityLoader = Nothing
         , bModelAddFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
-        , bModelEditFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
+        , bModelEditFormDataJsonUrl = Just "HiverecR $ LocationDetailPageDataJsonR locationId"
         , bModelDeleteFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
         , bModelAddFormHasDefaultModel = False
         , bModelEditPostLoadsModel = False
@@ -805,6 +805,93 @@ context =
 
 
 
+      , BModel
+        { bModelName = "hive"
+        , bModelLabel = "Hive"
+        , bModelIsJson = True
+        , bModelDbUniquenesses = []
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl =
+            Just "HiverecR $ LocationDetailPageDataJsonR locationId"
+        , bModelEditFormDataJsonUrl =
+            Just
+              "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
+        , bModelDeleteFormDataJsonUrl =
+            Just
+              "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
+        , bModelAddFormHasDefaultModel = False
+        , bModelEditPostLoadsModel = True
+        , bModelDeletePostLoadsModel = True
+        , bModelAddFormTitleMsg = Just "MsgGlobalAddHive"
+        , bModelEditFormTitleMsg = Just "MsgGlobalEditHive"
+        , bModelDeleteFormTitleMsg = Just "MsgGlobalDeleteHive"
+        , bModelParentHsType = Just "Location"
+        , bModelFormRouteHsType = "HiverecR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "locationId"
+              , bFieldLabelDe = Nothing
+              , bFieldLabelEn = Nothing
+              , bFieldHsType = "LocationId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "name"
+              , bFieldLabelDe = Just "Name"
+              , bFieldLabelEn = Just "Name"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            ]
+        }
 
 
 
@@ -834,5 +921,11 @@ context =
     , BTranslation { bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location" }
     , BTranslation { bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location" }
     , BTranslation { bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Sammdaten", bTranslationEn = "Location Master Data" }
+
+    , BTranslation { bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive" }
+    , BTranslation { bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives" }
+    , BTranslation { bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive" }
+    , BTranslation { bTranslationKey = "deleteHive", bTranslationDe = "Bienenstock löschen", bTranslationEn = "Delete hive" }
+    , BTranslation { bTranslationKey = "editHive", bTranslationDe = "Bienenstock bearbeiten", bTranslationEn = "Edit hive" }
     ]
   }

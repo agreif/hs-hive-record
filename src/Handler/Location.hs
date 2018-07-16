@@ -112,12 +112,15 @@ getLocationDetailPageDataJsonR locationId = do
   mainNavItems <- mainNavData user MainNavLocation
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
+  jDataHives <- locationDetailHiveJDatas locationId
   let pages =
         defaultDataPages
         { jDataPageLocationDetail =
             Just $ JDataPageLocationDetail
             { jDataPageLocationDetailLocationEnt = Entity locationId location
             , jDataPageLocationDetailLocationEditFormUrl = urlRenderer $ HiverecR $ EditLocationFormR locationId
+            , jDataPageCustomerDetailHives = jDataHives
+            , jDataPageCustomerDetailHiveAddFormUrl = urlRenderer $ HiverecR $ AddHiveFormR locationId
             }
         }
   msgHome <- localizedMsg MsgGlobalHome
@@ -153,6 +156,25 @@ getLocationDetailPageDataJsonR locationId = do
     , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
     , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
+
+locationDetailHiveJDatas :: LocationId -> Handler [JDataHive]
+locationDetailHiveJDatas locationId = do
+  urlRenderer <- getUrlRender
+  hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveName]
+  return $ map
+    (\(noteEnt@(Entity noteId _)) ->
+       JDataHive
+       { jDataHiveEnt = noteEnt
+       , jDataHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR noteId
+       , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR noteId
+       })
+    hiveEnts
+
+
+
+
+
+
 
 -------------------------------------------------------
 -- add location
@@ -293,8 +315,8 @@ postEditLocationR locationId = do
                                               , LocationVersion ==. vEditLocationVersion vEditLocation
                                               ] persistFields
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $ VFormSubmitInvalid

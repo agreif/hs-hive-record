@@ -47,3 +47,11 @@
 
   locationDetail/#LocationId LocationDetailR GET
   locationDetailPageDataJsonR/#LocationId LocationDetailPageDataJsonR GET
+
+  addHiveForm/#LocationId AddHiveFormR GET
+  addHive/#LocationId AddHiveR POST
+  editHiveForm/#HiveId EditHiveFormR GET
+  editHive/#HiveId EditHiveR POST
+  deleteHiveForm/#HiveId DeleteHiveFormR GET
+  deleteHive/#HiveId DeleteHiveR POST
+

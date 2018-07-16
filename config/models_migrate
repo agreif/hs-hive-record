@@ -76,4 +76,25 @@ LocationHistory
     updatedAt UTCTime
     updatedBy Text
 
+Hive json
+    locationId LocationId
+    name Text
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+HiveHistory
+    Id sql=vid
+    id Int MigrationOnly
+    locationId Int
+    name Text
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
 -- gen models - end

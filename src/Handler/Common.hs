@@ -236,13 +236,28 @@ instance ToJSON JDataLocation where
 data JDataPageLocationDetail = JDataPageLocationDetail
   { jDataPageLocationDetailLocationEnt :: Entity Location
   , jDataPageLocationDetailLocationEditFormUrl :: Text
+  , jDataPageCustomerDetailHives :: [JDataHive]
+  , jDataPageCustomerDetailHiveAddFormUrl :: Text
   }
 instance ToJSON JDataPageLocationDetail where
   toJSON o = object
     [ "locationEnt" .= jDataPageLocationDetailLocationEnt o
     , "locationEditFormUrl" .= jDataPageLocationDetailLocationEditFormUrl o
+    , "hives" .= jDataPageCustomerDetailHives o
+    , "hiveAddFormUrl" .= jDataPageCustomerDetailHiveAddFormUrl o
     ]
 
+data JDataHive = JDataHive
+  { jDataHiveEnt :: Entity Hive
+  , jDataHiveEditFormUrl :: Text
+  , jDataHiveDeleteFormUrl :: Text
+  }
+instance ToJSON JDataHive where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataHiveEnt o)
+    , "editFormUrl" .= jDataHiveEditFormUrl o
+    , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
+    ]
 
 
 
@@ -569,6 +584,11 @@ data MsgGlobal =
   | MsgGlobalEditLocation
   | MsgGlobalDeleteLocation
   | MsgGlobalLocationMasterData
+  | MsgGlobalHive
+  | MsgGlobalHives
+  | MsgGlobalAddHive
+  | MsgGlobalDeleteHive
+  | MsgGlobalEditHive
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -600,6 +620,11 @@ renderGlobalGerman MsgGlobalAddLocation = "Standort hinzufügen"
 renderGlobalGerman MsgGlobalEditLocation = "Standort bearbeiten"
 renderGlobalGerman MsgGlobalDeleteLocation = "Standort löschen"
 renderGlobalGerman MsgGlobalLocationMasterData = "Standort-Sammdaten"
+renderGlobalGerman MsgGlobalHive = "Bienenstock"
+renderGlobalGerman MsgGlobalHives = "Bienenstöcke"
+renderGlobalGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
+renderGlobalGerman MsgGlobalDeleteHive = "Bienenstock löschen"
+renderGlobalGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -624,6 +649,11 @@ renderGlobalEnglish MsgGlobalAddLocation = "Add location"
 renderGlobalEnglish MsgGlobalEditLocation = "Edit location"
 renderGlobalEnglish MsgGlobalDeleteLocation = "Delete location"
 renderGlobalEnglish MsgGlobalLocationMasterData = "Location Master Data"
+renderGlobalEnglish MsgGlobalHive = "Hive"
+renderGlobalEnglish MsgGlobalHives = "Hives"
+renderGlobalEnglish MsgGlobalAddHive = "Add hive"
+renderGlobalEnglish MsgGlobalDeleteHive = "Delete hive"
+renderGlobalEnglish MsgGlobalEditHive = "Edit hive"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -648,6 +678,11 @@ data Translation = Translation
   , msgGlobalEditLocation :: Maybe Text
   , msgGlobalDeleteLocation :: Maybe Text
   , msgGlobalLocationMasterData :: Maybe Text
+  , msgGlobalHive :: Maybe Text
+  , msgGlobalHives :: Maybe Text
+  , msgGlobalAddHive :: Maybe Text
+  , msgGlobalDeleteHive :: Maybe Text
+  , msgGlobalEditHive :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -660,6 +695,8 @@ data Translation = Translation
   , msgConfigBoolValue :: Maybe Text
   , msgTestmailEmail :: Maybe Text
   , msgLocationName :: Maybe Text
+  , msgHiveLocationId :: Maybe Text
+  , msgHiveName :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -688,6 +725,11 @@ translationDe = Translation
   , msgGlobalEditLocation = Just "Standort bearbeiten"
   , msgGlobalDeleteLocation = Just "Standort löschen"
   , msgGlobalLocationMasterData = Just "Standort-Sammdaten"
+  , msgGlobalHive = Just "Bienenstock"
+  , msgGlobalHives = Just "Bienenstöcke"
+  , msgGlobalAddHive = Just "Bienenstock hinzufügen"
+  , msgGlobalDeleteHive = Just "Bienenstock löschen"
+  , msgGlobalEditHive = Just "Bienenstock bearbeiten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -700,6 +742,8 @@ translationDe = Translation
   , msgConfigBoolValue = Just "Boolean-Wert"
   , msgTestmailEmail = Just "Email"
   , msgLocationName = Just "Name"
+  , msgHiveLocationId = Nothing
+  , msgHiveName = Just "Name"
   }
 
 translationEn :: Translation
@@ -726,6 +770,11 @@ translationEn = Translation
   , msgGlobalEditLocation = Just "Edit location"
   , msgGlobalDeleteLocation = Just "Delete location"
   , msgGlobalLocationMasterData = Just "Location Master Data"
+  , msgGlobalHive = Just "Hive"
+  , msgGlobalHives = Just "Hives"
+  , msgGlobalAddHive = Just "Add hive"
+  , msgGlobalDeleteHive = Just "Delete hive"
+  , msgGlobalEditHive = Just "Edit hive"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -738,6 +787,8 @@ translationEn = Translation
   , msgConfigBoolValue = Just "Boolean-Value"
   , msgTestmailEmail = Just "Email"
   , msgLocationName = Just "Name"
+  , msgHiveLocationId = Nothing
+  , msgHiveName = Just "Name"
   }
 
 -- gen i18n global - end
