@@ -697,6 +697,7 @@ data Translation = Translation
   , msgLocationName :: Maybe Text
   , msgHiveLocationId :: Maybe Text
   , msgHiveName :: Maybe Text
+  , msgHiveDescription :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -744,6 +745,7 @@ translationDe = Translation
   , msgLocationName = Just "Name"
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
+  , msgHiveDescription = Just "Beschreibung"
   }
 
 translationEn :: Translation
@@ -789,6 +791,7 @@ translationEn = Translation
   , msgLocationName = Just "Name"
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
+  , msgHiveDescription = Just "Description"
   }
 
 -- gen i18n global - end

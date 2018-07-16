@@ -22,6 +22,7 @@ import Database.Persist.Sql (updateWhereCount)
 -- gen data add - start
 data VAddHive = VAddHive
   { vAddHiveName :: Text
+  , vAddHiveDescription :: Maybe Textarea
   }
 -- gen data add - end
 -- gen get add form - start
@@ -49,6 +50,7 @@ postAddHiveR locationId = do
             {
             hiveLocationId = locationId
             , hiveName = vAddHiveName vAddHive
+            , hiveDescription = vAddHiveDescription vAddHive
             , hiveVersion = 1
             , hiveCreatedAt = curTime
             , hiveCreatedBy = userIdent authUser
@@ -68,7 +70,10 @@ vAddHiveForm maybeHive extra = do
   (nameResult, nameView) <- mreq textField
     nameFs
     (hiveName <$> maybeHive)
-  let vAddHiveResult = VAddHive <$> nameResult
+  (descriptionResult, descriptionView) <- mopt textareaField
+    descriptionFs
+    (hiveDescription <$> maybeHive)
+  let vAddHiveResult = VAddHive <$> nameResult <*> descriptionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
@@ -76,6 +81,12 @@ vAddHiveForm maybeHive extra = do
       <div .uk-form-controls>
         ^{fvInput nameView}
         $maybe err <- fvErrors nameView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
+      <div .uk-form-controls>
+        ^{fvInput descriptionView}
+        $maybe err <- fvErrors descriptionView
           &nbsp;#{err}
     |]
   return (vAddHiveResult, formWidget)
@@ -88,9 +99,18 @@ vAddHiveForm maybeHive extra = do
       , fsName = Just "name"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
+    descriptionFs :: FieldSettings App
+    descriptionFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddHiveDescription
+      , fsTooltip = Nothing
+      , fsId = Just "description"
+      , fsName = Just "description"
+      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      }
 
 data MsgAddHive =
   MsgAddHiveName
+  | MsgAddHiveDescription
 
 instance RenderMessage App MsgAddHive where
   renderMessage _ []        = renderAddHiveGerman
@@ -101,15 +121,18 @@ instance RenderMessage App MsgAddHive where
 
 renderAddHiveGerman :: MsgAddHive -> Text
 renderAddHiveGerman MsgAddHiveName = "Name"
+renderAddHiveGerman MsgAddHiveDescription = "Beschreibung"
 
 
 renderAddHiveEnglish :: MsgAddHive -> Text
 renderAddHiveEnglish MsgAddHiveName = "Name"
+renderAddHiveEnglish MsgAddHiveDescription = "Description"
 
 -- gen add form - end
 -- gen data edit - start
 data VEditHive = VEditHive
   { vEditHiveName :: Text
+  , vEditHiveDescription :: Maybe Textarea
   , vEditHiveVersion :: Int
   }
 -- gen data edit - end
@@ -138,6 +161,7 @@ postEditHiveR hiveId = do
       hive <- runDB $ get404 hiveId
       let persistFields = [
             HiveName =. vEditHiveName vEditHive
+            , HiveDescription =. vEditHiveDescription vEditHive
             , HiveVersion =. vEditHiveVersion vEditHive + 1
             , HiveUpdatedAt =. curTime
             , HiveUpdatedBy =. userIdent authUser
@@ -160,10 +184,13 @@ vEditHiveForm maybeHive extra = do
   (nameResult, nameView) <- mreq textField
     nameFs
     (hiveName <$> maybeHive)
+  (descriptionResult, descriptionView) <- mopt textareaField
+    descriptionFs
+    (hiveDescription <$> maybeHive)
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (hiveVersion <$> maybeHive)
-  let vEditHiveResult = VEditHive <$> nameResult <*> versionResult
+  let vEditHiveResult = VEditHive <$> nameResult <*> descriptionResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
@@ -172,6 +199,12 @@ vEditHiveForm maybeHive extra = do
       <div .uk-form-controls>
         ^{fvInput nameView}
         $maybe err <- fvErrors nameView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
+      <div .uk-form-controls>
+        ^{fvInput descriptionView}
+        $maybe err <- fvErrors descriptionView
           &nbsp;#{err}
     |]
   return (vEditHiveResult, formWidget)
@@ -184,6 +217,14 @@ vEditHiveForm maybeHive extra = do
       , fsName = Just "name"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
+    descriptionFs :: FieldSettings App
+    descriptionFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditHiveDescription
+      , fsTooltip = Nothing
+      , fsId = Just "description"
+      , fsName = Just "description"
+      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      }
     versionFs :: FieldSettings App
     versionFs = FieldSettings
       { fsLabel = ""
@@ -195,6 +236,7 @@ vEditHiveForm maybeHive extra = do
 
 data MsgEditHive =
   MsgEditHiveName
+  | MsgEditHiveDescription
 
 instance RenderMessage App MsgEditHive where
   renderMessage _ []        = renderEditHiveGerman
@@ -205,10 +247,12 @@ instance RenderMessage App MsgEditHive where
 
 renderEditHiveGerman :: MsgEditHive -> Text
 renderEditHiveGerman MsgEditHiveName = "Name"
+renderEditHiveGerman MsgEditHiveDescription = "Beschreibung"
 
 
 renderEditHiveEnglish :: MsgEditHive -> Text
 renderEditHiveEnglish MsgEditHiveName = "Name"
+renderEditHiveEnglish MsgEditHiveDescription = "Description"
 
 -- gen edit form - end
 -- gen get delete form - start

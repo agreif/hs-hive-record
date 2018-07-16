@@ -79,6 +79,7 @@ LocationHistory
 Hive json
     locationId LocationId
     name Text
+    description Textarea Maybe
     version Int
     createdAt UTCTime
     createdBy Text
@@ -91,6 +92,7 @@ HiveHistory
     id Int MigrationOnly
     locationId Int
     name Text
+    description Textarea Maybe
     version Int
     createdAt UTCTime
     createdBy Text

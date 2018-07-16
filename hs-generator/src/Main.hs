@@ -890,6 +890,52 @@ context =
                   , bFieldEditViewDefault = Nothing
                   }
               }
+            , BField
+              { bFieldName = "description"
+              , bFieldLabelDe = Just "Beschreibung"
+              , bFieldLabelEn = Just "Description"
+              , bFieldHsType = "Textarea"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = True
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textareaField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = False
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-textarea uk-form-small"
+                        }
+                      , BFieldAttr
+                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = False
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-textarea uk-form-small"
+                        }
+                      , BFieldAttr
+                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
             ]
         }
 
