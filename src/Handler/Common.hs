@@ -150,12 +150,14 @@ data JDataPages = JDataPages
   { jDataPageHome :: Maybe JDataPageHome
   , jDataPageAdmin :: Maybe JDataPageAdmin
   , jDataPageLocationList :: Maybe JDataPageLocationList
+  , jDataPageLocationDetail :: Maybe JDataPageLocationDetail
   }
 instance ToJSON JDataPages where
   toJSON o = object
     [ "home" .= jDataPageHome o
     , "admin" .= jDataPageAdmin o
     , "locationList" .= jDataPageLocationList o
+    , "locationDetail" .= jDataPageLocationDetail o
     ]
 
 defaultDataPages :: JDataPages
@@ -163,6 +165,7 @@ defaultDataPages = JDataPages
   { jDataPageHome = Nothing
   , jDataPageAdmin = Nothing
   , jDataPageLocationList = Nothing
+  , jDataPageLocationDetail = Nothing
   }
 
 
@@ -210,6 +213,7 @@ instance ToJSON JDataConfig where
     ]
 
 
+
 data JDataPageLocationList = JDataPageLocationList
   { jDataPageLocationListLocations :: [JDataLocation]
   }
@@ -229,8 +233,15 @@ instance ToJSON JDataLocation where
     , "deleteFormUrl" .= jDataLocationDeleteFormUrl o
     ]
 
-
-
+data JDataPageLocationDetail = JDataPageLocationDetail
+  { jDataPageLocationDetailLocationEnt :: Entity Location
+  , jDataPageLocationDetailLocationEditFormUrl :: Text
+  }
+instance ToJSON JDataPageLocationDetail where
+  toJSON o = object
+    [ "locationEnt" .= jDataPageLocationDetailLocationEnt o
+    , "locationEditFormUrl" .= jDataPageLocationDetailLocationEditFormUrl o
+    ]
 
 
 
@@ -552,10 +563,12 @@ data MsgGlobal =
   | MsgGlobalTestMail
   | MsgGlobalSendTestMail
   | MsgGlobalCancel
+  | MsgGlobalLocation
   | MsgGlobalLocations
   | MsgGlobalAddLocation
   | MsgGlobalEditLocation
   | MsgGlobalDeleteLocation
+  | MsgGlobalLocationMasterData
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -581,10 +594,12 @@ renderGlobalGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderGlobalGerman MsgGlobalTestMail = "Test-Mail"
 renderGlobalGerman MsgGlobalSendTestMail = "Test-Mail senden..."
 renderGlobalGerman MsgGlobalCancel = "Abbrechen"
+renderGlobalGerman MsgGlobalLocation = "Standort"
 renderGlobalGerman MsgGlobalLocations = "Standorte"
 renderGlobalGerman MsgGlobalAddLocation = "Standort hinzufügen"
 renderGlobalGerman MsgGlobalEditLocation = "Standort bearbeiten"
 renderGlobalGerman MsgGlobalDeleteLocation = "Standort löschen"
+renderGlobalGerman MsgGlobalLocationMasterData = "Standort-Sammdaten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -603,10 +618,12 @@ renderGlobalEnglish MsgGlobalEditConfig = "Edit config"
 renderGlobalEnglish MsgGlobalTestMail = "Test-Mail"
 renderGlobalEnglish MsgGlobalSendTestMail = "Send Test-Mail..."
 renderGlobalEnglish MsgGlobalCancel = "Cancel"
+renderGlobalEnglish MsgGlobalLocation = "Location"
 renderGlobalEnglish MsgGlobalLocations = "Locations"
 renderGlobalEnglish MsgGlobalAddLocation = "Add location"
 renderGlobalEnglish MsgGlobalEditLocation = "Edit location"
 renderGlobalEnglish MsgGlobalDeleteLocation = "Delete location"
+renderGlobalEnglish MsgGlobalLocationMasterData = "Location Master Data"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -625,10 +642,12 @@ data Translation = Translation
   , msgGlobalTestMail :: Maybe Text
   , msgGlobalSendTestMail :: Maybe Text
   , msgGlobalCancel :: Maybe Text
+  , msgGlobalLocation :: Maybe Text
   , msgGlobalLocations :: Maybe Text
   , msgGlobalAddLocation :: Maybe Text
   , msgGlobalEditLocation :: Maybe Text
   , msgGlobalDeleteLocation :: Maybe Text
+  , msgGlobalLocationMasterData :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -663,10 +682,12 @@ translationDe = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Test-Mail senden..."
   , msgGlobalCancel = Just "Abbrechen"
+  , msgGlobalLocation = Just "Standort"
   , msgGlobalLocations = Just "Standorte"
   , msgGlobalAddLocation = Just "Standort hinzufügen"
   , msgGlobalEditLocation = Just "Standort bearbeiten"
   , msgGlobalDeleteLocation = Just "Standort löschen"
+  , msgGlobalLocationMasterData = Just "Standort-Sammdaten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -699,10 +720,12 @@ translationEn = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Send Test-Mail..."
   , msgGlobalCancel = Just "Cancel"
+  , msgGlobalLocation = Just "Location"
   , msgGlobalLocations = Just "Locations"
   , msgGlobalAddLocation = Just "Add location"
   , msgGlobalEditLocation = Just "Edit location"
   , msgGlobalDeleteLocation = Just "Delete location"
+  , msgGlobalLocationMasterData = Just "Location Master Data"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"

@@ -80,8 +80,7 @@ locationListJDatas = do
   let jLocationList = map (\locationEnt@(Entity locationId _) ->
                            JDataLocation
                            { jDataLocationEnt = locationEnt
-                           , jDataLocationDetailPageUrl = urlRenderer $ HiverecR $ HiverecHomeR
-                           -- , jDataLocationDetailPageUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+                           , jDataLocationDetailPageUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
                            , jDataLocationDeleteFormUrl = urlRenderer $ HiverecR $ DeleteLocationFormR locationId
                            }
                         ) locationTuples
@@ -91,7 +90,72 @@ loadLocationList :: YesodDB App [Entity Location]
 loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 
 -------------------------------------------------------
--- add customer
+-- location detail page
+-------------------------------------------------------
+
+getLocationDetailR :: LocationId -> Handler Html
+getLocationDetailR locationId = defaultLayout $ do
+  toWidget [whamlet|
+                   <body-tag>
+                   <script>
+                     \ riot.compile(function() {
+                     \   bodyTag = riot.mount('body-tag')[0]
+                     \   bodyTag.refreshData("@{HiverecR $ LocationDetailPageDataJsonR locationId}")
+                     \ })
+                   |]
+
+getLocationDetailPageDataJsonR :: LocationId -> Handler Value
+getLocationDetailPageDataJsonR locationId = do
+  Entity _ user <- requireAuth
+  req <- getRequest
+  appName <- runDB $ configAppName
+  mainNavItems <- mainNavData user MainNavLocation
+  location <- runDB $ get404 locationId
+  urlRenderer <- getUrlRender
+  let pages =
+        defaultDataPages
+        { jDataPageLocationDetail =
+            Just $ JDataPageLocationDetail
+            { jDataPageLocationDetailLocationEnt = Entity locationId location
+            , jDataPageLocationDetailLocationEditFormUrl = urlRenderer $ HiverecR $ EditLocationFormR locationId
+            }
+        }
+  msgHome <- localizedMsg MsgGlobalHome
+  msgLocations <- localizedMsg MsgGlobalLocations
+  msgLocation <- localizedMsg MsgGlobalLocation
+  currentLanguage <- getLanguage
+  translation <- getTranslation
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+  returnJson JData
+    { jDataAppName = appName
+    , jDataUserIdent = userIdent user
+    , jDataMainNavItems = mainNavItems
+    , jDataSubNavItems = []
+    , jDataPages = pages
+    , jDataHistoryState = Just JDataHistoryState
+      { jDataHistoryStateUrl = urlRenderer $ HiverecR $ LocationDetailR locationId
+      , jDataHistoryStateTitle = msgLocation
+      }
+    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
+    , jDataCsrfToken = reqToken req
+    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgHome
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgLocations
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = locationName location
+                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
+                             ]
+    , jDataCurrentLanguage = currentLanguage
+    , jDataTranslation = translation
+    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
+    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
+    }
+
+-------------------------------------------------------
+-- add location
 -------------------------------------------------------
 
 -- gen data add - start
@@ -186,7 +250,7 @@ renderAddLocationEnglish MsgAddLocationName = "Name"
 -- gen add form - end
 
 -------------------------------------------------------
--- edit customer
+-- edit location
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -297,7 +361,7 @@ renderEditLocationEnglish MsgEditLocationName = "Name"
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete customer
+-- delete location
 -------------------------------------------------------
 
 -- gen get delete form - start

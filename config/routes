@@ -44,3 +44,6 @@
   editLocation/#LocationId EditLocationR POST
   deleteLocationForm/#LocationId DeleteLocationFormR GET
   deleteLocation/#LocationId DeleteLocationR POST
+
+  locationDetail/#LocationId LocationDetailR GET
+  locationDetailPageDataJsonR/#LocationId LocationDetailPageDataJsonR GET

@@ -4,6 +4,7 @@
     <home-page-tag>
     <admin-page-tag>
     <location-list-page-tag>
+    <location-detail-page-tag>
   <script>
     \ tag = this
     \ tag.data = null
@@ -292,7 +293,7 @@
 
 <location-list-page-tag>
   <div if="{parent.data.pages.locationList}">
-    <h1>Location List
+    <h1>{parent.data.translation.msgGlobalLocations}
     <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
       <thead>
         <tr>
@@ -321,5 +322,34 @@
     \ }
     \ deleteLocation(event) {
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+
+<location-detail-page-tag>
+  <div if="{parent.data.pages.locationDetail}">
+    <h1>{parent.data.translation.msgGlobalLocation}: {parent.data.pages.locationDetail.locationEnt.name}
+    <ul uk-tab>
+      <li>
+        <a href="#">
+          {parent.data.translation.msgGlobalLocationMasterData}
+    <ul class="uk-switcher uk-margin">
+      <li>
+        <!-- master data -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgLocationName}
+              <th .uk-align-right>
+          <tbody>
+            <tr>
+              <td .uk-table-link>
+                <a onclick="{editLocation}" .uk-link-reset>{parent.data.pages.locationDetail.locationEnt.name}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{editLocation}">
+                  <span uk-icon="icon: pencil">
+  <script>
+    \ editLocation(event) {
+    \   parent.tag.showModalForm(parent.tag.data.pages.locationDetail.locationEditFormUrl)
     \   event.currentTarget.blur()
     \ }
