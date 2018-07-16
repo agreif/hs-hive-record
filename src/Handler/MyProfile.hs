@@ -40,8 +40,8 @@ postEditMyprofileR = do
         user' <- runDB $ get404 userId
         sendPasswordResetMail user' passwd
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ MyprojectR HomePageDataJsonR }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ MyprojectR HomePageDataJsonR }
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $ VFormSubmitInvalid
@@ -61,7 +61,7 @@ getEditMyprofileFormR = do
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditMyProfile}
-      <form #modal-form .uk-form-horizontal method=post action=@{MyprojectR $ EditMyprofileR}>
+      <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ EditMyprofileR}>
         <div #modal-form-widget>
           ^{formWidget}
       |]

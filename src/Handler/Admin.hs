@@ -60,15 +60,15 @@ getAdminPageDataJsonR = do
     , jDataCsrfToken = reqToken req
     , jDataBreadcrumbItems = [ JDataBreadcrumbItem
                                { jDataBreadcrumbItemLabel = msgHome
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ MyprojectR HomePageDataJsonR }
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
                              , JDataBreadcrumbItem
                                { jDataBreadcrumbItemLabel = msgAdmin
                                , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
                              ]
     , jDataCurrentLanguage = currentLanguage
     , jDataTranslation = translation
-    , jDataLanguageDeUrl = urlRenderer $ MyprojectR $ LanguageDeR currentPageDataJsonUrl
-    , jDataLanguageEnUrl = urlRenderer $ MyprojectR $ LanguageEnR currentPageDataJsonUrl
+    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
+    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
 userListJDataEnts :: Handler [JDataUser]

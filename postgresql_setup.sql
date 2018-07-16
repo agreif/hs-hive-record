@@ -48,4 +48,27 @@ $function$;
 create trigger audit_config after insert or update on public.config for each row execute procedure public.process_audit_config();
 
 
+
+
+drop function public.process_audit_location() cascade;
+create or replace function public.process_audit_location()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('location_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into location_history
+                       (id, name, version, created_at, created_by, updated_at, updated_by)
+                       values
+                       (new.id, new.name, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                return new;
+            end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_location after insert or update on public.location for each row execute procedure public.process_audit_location();
+
 -- gen triggers - end

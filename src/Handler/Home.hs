@@ -14,16 +14,16 @@ import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
 getHomeR :: Handler Html
-getHomeR = redirect $ MyprojectR MyprojectHomeR
+getHomeR = redirect $ HiverecR HiverecHomeR
 
-getMyprojectHomeR :: Handler Html
-getMyprojectHomeR = defaultLayout $ do
+getHiverecHomeR :: Handler Html
+getHiverecHomeR = defaultLayout $ do
   toWidget [whamlet|
                    <body-tag>
                    <script>
                      \ riot.compile(function() {
                      \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{MyprojectR $ HomePageDataJsonR}")
+                     \   bodyTag.refreshData("@{HiverecR $ HomePageDataJsonR}")
                      \ })
                    |]
 
@@ -40,7 +40,7 @@ getHomePageDataJsonR = do
   msgHome <- localizedMsg MsgGlobalHome
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ MyprojectR HomePageDataJsonR
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR
   returnJson JData
     { jDataAppName = appName
     , jDataUserIdent = userIdent user
@@ -48,7 +48,7 @@ getHomePageDataJsonR = do
     , jDataSubNavItems = []
     , jDataPages = pages
     , jDataHistoryState = Just JDataHistoryState
-      { jDataHistoryStateUrl = urlRenderer $ MyprojectR MyprojectHomeR
+      { jDataHistoryStateUrl = urlRenderer $ HiverecR HiverecHomeR
       , jDataHistoryStateTitle = msgHome
       }
     , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
@@ -60,8 +60,8 @@ getHomePageDataJsonR = do
       ]
     , jDataCurrentLanguage = currentLanguage
     , jDataTranslation = translation
-    , jDataLanguageDeUrl = urlRenderer $ MyprojectR $ LanguageDeR currentPageDataJsonUrl
-    , jDataLanguageEnUrl = urlRenderer $ MyprojectR $ LanguageEnR currentPageDataJsonUrl
+    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
+    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
 getRiotTagsR :: Handler Html

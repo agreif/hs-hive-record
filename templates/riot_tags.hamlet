@@ -3,6 +3,7 @@
     <nav-tag>
     <home-page-tag>
     <admin-page-tag>
+    <location-list-page-tag>
   <script>
     \ tag = this
     \ tag.data = null
@@ -170,8 +171,8 @@
     \   parent.tag.refreshData(event.item.dataUrl, true, false)
     \ }
     \ editMyProfile(event) {
-    \   dataJsonUrl = window.history.state ? window.history.state.dataJsonUrl : "@{MyprojectR HomePageDataJsonR}"
-    \   parent.tag.showModalForm("@{MyprojectR EditMyprofileFormR}", dataJsonUrl)
+    \   dataJsonUrl = window.history.state ? window.history.state.dataJsonUrl : "@{HiverecR HomePageDataJsonR}"
+    \   parent.tag.showModalForm("@{HiverecR EditMyprofileFormR}", dataJsonUrl)
     \ }
     \ changeLanguageDe(event) {
     \   parent.tag.postRequest(parent.tag.data.languageDeUrl)
@@ -287,4 +288,38 @@
     \ }
     \ sendTestMail(event) {
     \   parent.tag.showModalForm("@{AdminR AddTestmailFormR}")
+    \ }
+
+<location-list-page-tag>
+  <div if="{parent.data.pages.locationList}">
+    <h1>Location List
+    <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+      <thead>
+        <tr>
+          <th>
+            {parent.data.translation.msgLocationName}
+          <th .uk-align-right>
+            <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddLocation}" uk-tooltip onclick="{addLocation}">
+              <span uk-icon="icon: plus">
+      <tbody>
+        <tr each="{parent.data.pages.locationList.locations}">
+          <td .uk-table-link>
+            <a onclick="{detailLocation}" .uk-link-reset>{entity.name}
+          <td .uk-width-small>
+            <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{deleteLocation}">
+              <span uk-icon="icon: trash">
+            <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{detailLocation}">
+              <span uk-icon="icon: file-edit">
+  <script>
+    \ addLocation(event) {
+    \   parent.tag.showModalForm("@{HiverecR AddLocationFormR}")
+    \   event.currentTarget.blur()
+    \ }
+    \ detailLocation(event) {
+    \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteLocation(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
     \ }

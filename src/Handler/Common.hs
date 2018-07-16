@@ -149,17 +149,20 @@ instance ToJSON User where
 data JDataPages = JDataPages
   { jDataPageHome :: Maybe JDataPageHome
   , jDataPageAdmin :: Maybe JDataPageAdmin
+  , jDataPageLocationList :: Maybe JDataPageLocationList
   }
 instance ToJSON JDataPages where
   toJSON o = object
     [ "home" .= jDataPageHome o
     , "admin" .= jDataPageAdmin o
+    , "locationList" .= jDataPageLocationList o
     ]
 
 defaultDataPages :: JDataPages
 defaultDataPages = JDataPages
   { jDataPageHome = Nothing
   , jDataPageAdmin = Nothing
+  , jDataPageLocationList = Nothing
   }
 
 
@@ -206,6 +209,37 @@ instance ToJSON JDataConfig where
     , "editFormUrl" .= jDataConfigEditFormUrl o
     ]
 
+
+data JDataPageLocationList = JDataPageLocationList
+  { jDataPageLocationListLocations :: [JDataLocation]
+  }
+instance ToJSON JDataPageLocationList where
+  toJSON o = object
+    [ "locations" .= jDataPageLocationListLocations o
+    ]
+data JDataLocation = JDataLocation
+  { jDataLocationEnt :: Entity Location
+  , jDataLocationDetailPageUrl :: Text
+  , jDataLocationDeleteFormUrl :: Text
+  }
+instance ToJSON JDataLocation where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataLocationEnt o)
+    , "detailPageUrl" .= jDataLocationDetailPageUrl o
+    , "deleteFormUrl" .= jDataLocationDeleteFormUrl o
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
 --------------------------------------------------------------------------------
 -- navigation helpers
 --------------------------------------------------------------------------------
@@ -213,6 +247,7 @@ instance ToJSON JDataConfig where
 data MainNav
   = MainNavHome
   | MainNavAdmin
+  | MainNavLocation
   deriving (Eq)
 
 mainNavData :: User -> MainNav -> Handler [JDataNavItem]
@@ -220,11 +255,12 @@ mainNavData user mainNav = do
   urlRenderer <- getUrlRender
   msgHome <- localizedMsg MsgGlobalHome
   msgAdmin <- localizedMsg MsgGlobalAdmin
+  msgLocations <- localizedMsg MsgGlobalLocations
   return $
     [ JDataNavItem
       { jDataNavItemLabel = msgHome
       , jDataNavItemIsActive = mainNav == MainNavHome
-      , jDataNavItemPageDataUrl = urlRenderer $ MyprojectR HomePageDataJsonR
+      , jDataNavItemPageDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
       , jDataNavItemBadge = Nothing
       }
     ]
@@ -237,7 +273,14 @@ mainNavData user mainNav = do
                 , jDataNavItemBadge = Nothing
                 } ]
       False -> []
-
+    ++
+    [ JDataNavItem
+      { jDataNavItemLabel = msgLocations
+      , jDataNavItemIsActive = mainNav == MainNavLocation
+      , jDataNavItemPageDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+      , jDataNavItemBadge = Nothing
+      }
+    ]
 --------------------------------------------------------------------------------
 -- generic helpers
 --------------------------------------------------------------------------------
@@ -509,6 +552,10 @@ data MsgGlobal =
   | MsgGlobalTestMail
   | MsgGlobalSendTestMail
   | MsgGlobalCancel
+  | MsgGlobalLocations
+  | MsgGlobalAddLocation
+  | MsgGlobalEditLocation
+  | MsgGlobalDeleteLocation
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -534,6 +581,10 @@ renderGlobalGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderGlobalGerman MsgGlobalTestMail = "Test-Mail"
 renderGlobalGerman MsgGlobalSendTestMail = "Test-Mail senden..."
 renderGlobalGerman MsgGlobalCancel = "Abbrechen"
+renderGlobalGerman MsgGlobalLocations = "Standorte"
+renderGlobalGerman MsgGlobalAddLocation = "Standort hinzufügen"
+renderGlobalGerman MsgGlobalEditLocation = "Standort bearbeiten"
+renderGlobalGerman MsgGlobalDeleteLocation = "Standort löschen"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -552,6 +603,10 @@ renderGlobalEnglish MsgGlobalEditConfig = "Edit config"
 renderGlobalEnglish MsgGlobalTestMail = "Test-Mail"
 renderGlobalEnglish MsgGlobalSendTestMail = "Send Test-Mail..."
 renderGlobalEnglish MsgGlobalCancel = "Cancel"
+renderGlobalEnglish MsgGlobalLocations = "Locations"
+renderGlobalEnglish MsgGlobalAddLocation = "Add location"
+renderGlobalEnglish MsgGlobalEditLocation = "Edit location"
+renderGlobalEnglish MsgGlobalDeleteLocation = "Delete location"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -570,6 +625,10 @@ data Translation = Translation
   , msgGlobalTestMail :: Maybe Text
   , msgGlobalSendTestMail :: Maybe Text
   , msgGlobalCancel :: Maybe Text
+  , msgGlobalLocations :: Maybe Text
+  , msgGlobalAddLocation :: Maybe Text
+  , msgGlobalEditLocation :: Maybe Text
+  , msgGlobalDeleteLocation :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -581,6 +640,7 @@ data Translation = Translation
   , msgConfigDoubleValue :: Maybe Text
   , msgConfigBoolValue :: Maybe Text
   , msgTestmailEmail :: Maybe Text
+  , msgLocationName :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -603,6 +663,10 @@ translationDe = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Test-Mail senden..."
   , msgGlobalCancel = Just "Abbrechen"
+  , msgGlobalLocations = Just "Standorte"
+  , msgGlobalAddLocation = Just "Standort hinzufügen"
+  , msgGlobalEditLocation = Just "Standort bearbeiten"
+  , msgGlobalDeleteLocation = Just "Standort löschen"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -614,6 +678,7 @@ translationDe = Translation
   , msgConfigDoubleValue = Just "Double-Wert"
   , msgConfigBoolValue = Just "Boolean-Wert"
   , msgTestmailEmail = Just "Email"
+  , msgLocationName = Just "Name"
   }
 
 translationEn :: Translation
@@ -634,6 +699,10 @@ translationEn = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Send Test-Mail..."
   , msgGlobalCancel = Just "Cancel"
+  , msgGlobalLocations = Just "Locations"
+  , msgGlobalAddLocation = Just "Add location"
+  , msgGlobalEditLocation = Just "Edit location"
+  , msgGlobalDeleteLocation = Just "Delete location"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -645,6 +714,7 @@ translationEn = Translation
   , msgConfigDoubleValue = Just "Double-Value"
   , msgConfigBoolValue = Just "Boolean-Value"
   , msgTestmailEmail = Just "Email"
+  , msgLocationName = Just "Name"
   }
 
 -- gen i18n global - end

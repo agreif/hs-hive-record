@@ -7,7 +7,7 @@
 / HomeR GET
 /initdb/#Text InitDbR GET
 
-/myproject/admin AdminR:
+/hiverec/admin AdminR:
   home AdminHomeR GET
   adminPageDataJson AdminPageDataJsonR GET
 
@@ -24,8 +24,8 @@
   sendTestMailForm AddTestmailFormR GET
   sendTestMail AddTestmailR POST
 
-/myproject MyprojectR:
-  home MyprojectHomeR GET
+/hiverec HiverecR:
+  home HiverecHomeR GET
   riotTags RiotTagsR GET
 
   homePageDataJson HomePageDataJsonR GET
@@ -35,3 +35,12 @@
 
   editMyProfileForm EditMyprofileFormR GET
   editMyProfile EditMyprofileR POST
+
+  locationList LocationListR GET
+  locationListPageDataJsonR LocationListPageDataJsonR GET
+  addLocationForm AddLocationFormR GET
+  addLocation AddLocationR POST
+  editLocationForm/#LocationId EditLocationFormR GET
+  editLocation/#LocationId EditLocationR POST
+  deleteLocationForm/#LocationId DeleteLocationFormR GET
+  deleteLocation/#LocationId DeleteLocationR POST

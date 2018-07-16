@@ -733,6 +733,82 @@ context =
               }
             ]
         }
+
+
+
+      , BModel
+        { bModelName = "location"
+        , bModelLabel = "Location"
+        , bModelIsJson = True
+        , bModelDbUniquenesses = ["UniqueName name"]
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
+        , bModelEditFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
+        , bModelDeleteFormDataJsonUrl = Just "HiverecR LocationListPageDataJsonR"
+        , bModelAddFormHasDefaultModel = False
+        , bModelEditPostLoadsModel = False
+        , bModelDeletePostLoadsModel = False
+        , bModelAddFormTitleMsg = Just "MsgGlobalAddLocation"
+        , bModelEditFormTitleMsg = Just "MsgGlobalEditLocation"
+        , bModelDeleteFormTitleMsg = Just "MsgGlobalDeleteLocation"
+        , bModelParentHsType = Nothing
+        , bModelFormRouteHsType = "HiverecR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "name"
+              , bFieldLabelDe = Just "Name"
+              , bFieldLabelEn = Just "Name"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            ]
+        }
+
+
+
+
+
+
+
       ]
   , bContextTranslations =
     [ BTranslation { bTranslationKey = "home", bTranslationDe = "Home", bTranslationEn = "Home" }
@@ -751,5 +827,10 @@ context =
     , BTranslation { bTranslationKey = "testMail", bTranslationDe = "Test-Mail", bTranslationEn = "Test-Mail" }
     , BTranslation { bTranslationKey = "sendTestMail", bTranslationDe = "Test-Mail senden...", bTranslationEn = "Send Test-Mail..." }
     , BTranslation { bTranslationKey = "cancel", bTranslationDe = "Abbrechen", bTranslationEn = "Cancel" }
+
+    , BTranslation { bTranslationKey = "locations", bTranslationDe = "Standorte", bTranslationEn = "Locations" }
+    , BTranslation { bTranslationKey = "addLocation", bTranslationDe = "Standort hinzufügen", bTranslationEn = "Add location" }
+    , BTranslation { bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location" }
+    , BTranslation { bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location" }
     ]
   }

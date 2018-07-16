@@ -56,4 +56,24 @@ ConfigHistory
     updatedBy Text
 
 
+Location json
+    name Text
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+    UniqueName name
+
+
+LocationHistory
+    Id sql=vid
+    id Int MigrationOnly
+    name Text
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
 -- gen models - end
