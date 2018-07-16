@@ -16,7 +16,7 @@ import Database.Persist.Sql (updateWhereCount)
 -- import qualified Data.CaseInsensitive as CI
 
 -------------------------------------------------------
--- add customernote
+-- add hive
 -------------------------------------------------------
 
 -- gen data add - start
@@ -25,6 +25,7 @@ data VAddHive = VAddHive
   , vAddHiveDescription :: Maybe Textarea
   }
 -- gen data add - end
+
 -- gen get add form - start
 getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
@@ -37,6 +38,7 @@ getAddHiveFormR locationId = do
           ^{formWidget}
       |]
 -- gen get add form - end
+
 -- gen post add form - start
 postAddHiveR :: LocationId -> Handler Value
 postAddHiveR locationId = do
@@ -64,6 +66,7 @@ postAddHiveR locationId = do
       returnJson $ VFormSubmitInvalid
         { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 -- gen post add form - end
+
 -- gen add form - start
 vAddHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VAddHive, Widget)
 vAddHiveForm maybeHive extra = do
@@ -129,6 +132,11 @@ renderAddHiveEnglish MsgAddHiveName = "Name"
 renderAddHiveEnglish MsgAddHiveDescription = "Description"
 
 -- gen add form - end
+
+-------------------------------------------------------
+-- edit hive
+-------------------------------------------------------
+
 -- gen data edit - start
 data VEditHive = VEditHive
   { vEditHiveName :: Text
@@ -136,6 +144,7 @@ data VEditHive = VEditHive
   , vEditHiveVersion :: Int
   }
 -- gen data edit - end
+
 -- gen get edit form - start
 getEditHiveFormR :: HiveId -> Handler Html
 getEditHiveFormR hiveId = do
@@ -149,6 +158,7 @@ getEditHiveFormR hiveId = do
           ^{formWidget}
       |]
 -- gen get edit form - end
+
 -- gen post edit form - start
 postEditHiveR :: HiveId -> Handler Value
 postEditHiveR hiveId = do
@@ -178,6 +188,7 @@ postEditHiveR hiveId = do
         { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 
 -- gen post edit form - end
+
 -- gen edit form - start
 vEditHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VEditHive, Widget)
 vEditHiveForm maybeHive extra = do
@@ -255,6 +266,11 @@ renderEditHiveEnglish MsgEditHiveName = "Name"
 renderEditHiveEnglish MsgEditHiveDescription = "Description"
 
 -- gen edit form - end
+
+-------------------------------------------------------
+-- delete hive
+-------------------------------------------------------
+
 -- gen get delete form - start
 getDeleteHiveFormR :: HiveId -> Handler Html
 getDeleteHiveFormR hiveId = do
@@ -267,6 +283,7 @@ getDeleteHiveFormR hiveId = do
           ^{formWidget}
       |]
 -- gen get delete form - end
+
 -- gen post delete form - start
 postDeleteHiveR :: HiveId -> Handler Value
 postDeleteHiveR hiveId = do
@@ -275,6 +292,7 @@ postDeleteHiveR hiveId = do
   urlRenderer <- getUrlRender
   returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive }
 -- gen post delete form - end
+
 -- gen delete form - start
 vDeleteHiveForm :: Html -> MForm Handler (FormResult (), Widget)
 vDeleteHiveForm extra = do
