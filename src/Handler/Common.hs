@@ -606,17 +606,18 @@ data MsgGlobal =
   | MsgGlobalTestMail
   | MsgGlobalSendTestMail
   | MsgGlobalCancel
-  | MsgGlobalMasterData
   | MsgGlobalLocation
   | MsgGlobalLocations
   | MsgGlobalAddLocation
   | MsgGlobalEditLocation
   | MsgGlobalDeleteLocation
+  | MsgGlobalLocationMasterData
   | MsgGlobalHive
   | MsgGlobalHives
   | MsgGlobalAddHive
   | MsgGlobalDeleteHive
   | MsgGlobalEditHive
+  | MsgGlobalHiveMasterData
   | MsgGlobalInspection
   | MsgGlobalInspections
   | MsgGlobalAddInspection
@@ -647,17 +648,18 @@ renderGlobalGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderGlobalGerman MsgGlobalTestMail = "Test-Mail"
 renderGlobalGerman MsgGlobalSendTestMail = "Test-Mail senden..."
 renderGlobalGerman MsgGlobalCancel = "Abbrechen"
-renderGlobalGerman MsgGlobalMasterData = "Stammdaten"
 renderGlobalGerman MsgGlobalLocation = "Standort"
 renderGlobalGerman MsgGlobalLocations = "Standorte"
 renderGlobalGerman MsgGlobalAddLocation = "Standort hinzufügen"
 renderGlobalGerman MsgGlobalEditLocation = "Standort bearbeiten"
 renderGlobalGerman MsgGlobalDeleteLocation = "Standort löschen"
+renderGlobalGerman MsgGlobalLocationMasterData = "Standort-Daten"
 renderGlobalGerman MsgGlobalHive = "Bienenstock"
 renderGlobalGerman MsgGlobalHives = "Bienenstöcke"
 renderGlobalGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
 renderGlobalGerman MsgGlobalDeleteHive = "Bienenstock löschen"
 renderGlobalGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
+renderGlobalGerman MsgGlobalHiveMasterData = "Stock-Daten"
 renderGlobalGerman MsgGlobalInspection = "Durchsicht"
 renderGlobalGerman MsgGlobalInspections = "Durchsichten"
 renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
@@ -681,17 +683,18 @@ renderGlobalEnglish MsgGlobalEditConfig = "Edit config"
 renderGlobalEnglish MsgGlobalTestMail = "Test-Mail"
 renderGlobalEnglish MsgGlobalSendTestMail = "Send Test-Mail..."
 renderGlobalEnglish MsgGlobalCancel = "Cancel"
-renderGlobalEnglish MsgGlobalMasterData = "Master Data"
 renderGlobalEnglish MsgGlobalLocation = "Location"
 renderGlobalEnglish MsgGlobalLocations = "Locations"
 renderGlobalEnglish MsgGlobalAddLocation = "Add location"
 renderGlobalEnglish MsgGlobalEditLocation = "Edit location"
 renderGlobalEnglish MsgGlobalDeleteLocation = "Delete location"
+renderGlobalEnglish MsgGlobalLocationMasterData = "Location data"
 renderGlobalEnglish MsgGlobalHive = "Hive"
 renderGlobalEnglish MsgGlobalHives = "Hives"
 renderGlobalEnglish MsgGlobalAddHive = "Add hive"
 renderGlobalEnglish MsgGlobalDeleteHive = "Delete hive"
 renderGlobalEnglish MsgGlobalEditHive = "Edit hive"
+renderGlobalEnglish MsgGlobalHiveMasterData = "Hive data"
 renderGlobalEnglish MsgGlobalInspection = "Inspection"
 renderGlobalEnglish MsgGlobalInspections = "Inspections"
 renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
@@ -715,17 +718,18 @@ data Translation = Translation
   , msgGlobalTestMail :: Maybe Text
   , msgGlobalSendTestMail :: Maybe Text
   , msgGlobalCancel :: Maybe Text
-  , msgGlobalMasterData :: Maybe Text
   , msgGlobalLocation :: Maybe Text
   , msgGlobalLocations :: Maybe Text
   , msgGlobalAddLocation :: Maybe Text
   , msgGlobalEditLocation :: Maybe Text
   , msgGlobalDeleteLocation :: Maybe Text
+  , msgGlobalLocationMasterData :: Maybe Text
   , msgGlobalHive :: Maybe Text
   , msgGlobalHives :: Maybe Text
   , msgGlobalAddHive :: Maybe Text
   , msgGlobalDeleteHive :: Maybe Text
   , msgGlobalEditHive :: Maybe Text
+  , msgGlobalHiveMasterData :: Maybe Text
   , msgGlobalInspection :: Maybe Text
   , msgGlobalInspections :: Maybe Text
   , msgGlobalAddInspection :: Maybe Text
@@ -771,17 +775,18 @@ translationDe = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Test-Mail senden..."
   , msgGlobalCancel = Just "Abbrechen"
-  , msgGlobalMasterData = Just "Stammdaten"
   , msgGlobalLocation = Just "Standort"
   , msgGlobalLocations = Just "Standorte"
   , msgGlobalAddLocation = Just "Standort hinzufügen"
   , msgGlobalEditLocation = Just "Standort bearbeiten"
   , msgGlobalDeleteLocation = Just "Standort löschen"
+  , msgGlobalLocationMasterData = Just "Standort-Daten"
   , msgGlobalHive = Just "Bienenstock"
   , msgGlobalHives = Just "Bienenstöcke"
   , msgGlobalAddHive = Just "Bienenstock hinzufügen"
   , msgGlobalDeleteHive = Just "Bienenstock löschen"
   , msgGlobalEditHive = Just "Bienenstock bearbeiten"
+  , msgGlobalHiveMasterData = Just "Stock-Daten"
   , msgGlobalInspection = Just "Durchsicht"
   , msgGlobalInspections = Just "Durchsichten"
   , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
@@ -825,17 +830,18 @@ translationEn = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Send Test-Mail..."
   , msgGlobalCancel = Just "Cancel"
-  , msgGlobalMasterData = Just "Master Data"
   , msgGlobalLocation = Just "Location"
   , msgGlobalLocations = Just "Locations"
   , msgGlobalAddLocation = Just "Add location"
   , msgGlobalEditLocation = Just "Edit location"
   , msgGlobalDeleteLocation = Just "Delete location"
+  , msgGlobalLocationMasterData = Just "Location data"
   , msgGlobalHive = Just "Hive"
   , msgGlobalHives = Just "Hives"
   , msgGlobalAddHive = Just "Add hive"
   , msgGlobalDeleteHive = Just "Delete hive"
   , msgGlobalEditHive = Just "Edit hive"
+  , msgGlobalHiveMasterData = Just "Hive data"
   , msgGlobalInspection = Just "Inspection"
   , msgGlobalInspections = Just "Inspections"
   , msgGlobalAddInspection = Just "Add inspection"

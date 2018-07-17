@@ -1084,19 +1084,20 @@ context =
     , BTranslation { bTranslationKey = "sendTestMail", bTranslationDe = "Test-Mail senden...", bTranslationEn = "Send Test-Mail..." }
     , BTranslation { bTranslationKey = "cancel", bTranslationDe = "Abbrechen", bTranslationEn = "Cancel" }
 
-    , BTranslation { bTranslationKey = "masterData", bTranslationDe = "Stammdaten", bTranslationEn = "Master Data" }
 
     , BTranslation { bTranslationKey = "location", bTranslationDe = "Standort", bTranslationEn = "Location" }
     , BTranslation { bTranslationKey = "locations", bTranslationDe = "Standorte", bTranslationEn = "Locations" }
     , BTranslation { bTranslationKey = "addLocation", bTranslationDe = "Standort hinzufügen", bTranslationEn = "Add location" }
     , BTranslation { bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location" }
     , BTranslation { bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location" }
+    , BTranslation { bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Daten", bTranslationEn = "Location data" }
 
     , BTranslation { bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive" }
     , BTranslation { bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives" }
     , BTranslation { bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive" }
     , BTranslation { bTranslationKey = "deleteHive", bTranslationDe = "Bienenstock löschen", bTranslationEn = "Delete hive" }
     , BTranslation { bTranslationKey = "editHive", bTranslationDe = "Bienenstock bearbeiten", bTranslationEn = "Edit hive" }
+    , BTranslation { bTranslationKey = "hiveMasterData", bTranslationDe = "Stock-Daten", bTranslationEn = "Hive data" }
 
     , BTranslation { bTranslationKey = "inspection", bTranslationDe = "Durchsicht", bTranslationEn = "Inspection" }
     , BTranslation { bTranslationKey = "inspections", bTranslationDe = "Durchsichten", bTranslationEn = "Inspections" }
