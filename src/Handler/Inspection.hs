@@ -21,12 +21,11 @@ import Database.Persist.Sql (updateWhereCount)
 defaultNoteText :: Text
 defaultNoteText  = intercalate "\n"
   [ "Wabengassen besetzt:"
-  , "Volksstärke: sehr stark / stark / normal / schwach"
+  , "Sanftmut: sehr sanft / sanft / nervös / bösartig"
+  , "Wabensitz: fest / ruhig / laufend / flüchtig"
   , "Königin:"
   , "Königinen-Zellen:"
   , "Brut: Stifte / offene Brut / verdeckelte Brut"
-  , "Sanftmut: sehr sanft / sanft / nervös / bösartig"
-  , "Wabensitz: fest / ruhig / laufend / flüchtig"
   , "Schwarmtrieb: fehlt / leicht lenkbar / schlecht lenkbar / sehr stark"
   , "Putztrieb: sehr gut / gut / gering / fehlt"
   , "Winterfestigkeit: gut / mittel / gering / fehlt"
@@ -41,7 +40,7 @@ defaultNoteText  = intercalate "\n"
   , "Wetter:"
   , "Varroamaßnahmen:"
   , "Milbenfall:"
-  , "Bemerkungen:"
+  , "Sonstiges:"
   ]
 
 
