@@ -94,4 +94,27 @@ $function$;
 
 create trigger audit_hive after insert or update on public.hive for each row execute procedure public.process_audit_hive();
 
+
+
+drop function public.process_audit_inspection() cascade;
+create or replace function public.process_audit_inspection()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('inspection_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into inspection_history
+                       (id, hive_id, date, notes, version, created_at, created_by, updated_at, updated_by)
+                       values
+                       (new.id, new.hive_id, new.date, new.notes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                return new;
+            end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_inspection after insert or update on public.inspection for each row execute procedure public.process_audit_inspection();
+
 -- gen triggers - end

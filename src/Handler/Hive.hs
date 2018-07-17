@@ -15,11 +15,6 @@ import Database.Persist.Sql (updateWhereCount)
 import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
-
-
-
-
-
 -------------------------------------------------------
 -- hive detail page
 -------------------------------------------------------
@@ -45,12 +40,15 @@ getHiveDetailPageDataJsonR hiveId = do
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
+  jDataInspections <- hiveDetailInspectionJDatas hiveId
   let pages =
         defaultDataPages
         { jDataPageHiveDetail =
             Just $ JDataPageHiveDetail
             { jDataPageHiveDetailHiveEnt = Entity hiveId hive
             , jDataPageHiveDetailHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR hiveId
+            , jDataPageHiveDetailInspections = jDataInspections
+            , jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId
             }
         }
   msgHome <- localizedMsg MsgGlobalHome
@@ -90,6 +88,18 @@ getHiveDetailPageDataJsonR hiveId = do
     , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
+hiveDetailInspectionJDatas :: HiveId -> Handler [JDataInspection]
+hiveDetailInspectionJDatas hiveId = do
+  urlRenderer <- getUrlRender
+  inspectionEnts <- runDB $ selectList [InspectionHiveId ==. hiveId] [Desc InspectionDate]
+  return $ map
+    (\(inspectionEnt@(Entity inspectionId _)) ->
+       JDataInspection
+       { jDataInspectionEnt = inspectionEnt
+       , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
+       , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
+       })
+    inspectionEnts
 
 
 

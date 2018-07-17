@@ -162,11 +162,11 @@ locationDetailHiveJDatas locationId = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveName]
   return $ map
-    (\(noteEnt@(Entity noteId _)) ->
+    (\(hiveEnt@(Entity hiveId _)) ->
        JDataHive
-       { jDataHiveEnt = noteEnt
-       , jDataHiveDetailPageUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR noteId
-       , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR noteId
+       { jDataHiveEnt = hiveEnt
+       , jDataHiveDetailPageUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+       , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
        })
     hiveEnts
 

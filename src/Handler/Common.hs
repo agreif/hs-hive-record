@@ -266,13 +266,28 @@ instance ToJSON JDataHive where
 data JDataPageHiveDetail = JDataPageHiveDetail
   { jDataPageHiveDetailHiveEnt :: Entity Hive
   , jDataPageHiveDetailHiveEditFormUrl :: Text
+  , jDataPageHiveDetailInspections :: [JDataInspection]
+  , jDataPageHiveDetailInspectionAddFormUrl :: Text
   }
 instance ToJSON JDataPageHiveDetail where
   toJSON o = object
     [ "hiveEnt" .= jDataPageHiveDetailHiveEnt o
     , "hiveEditFormUrl" .= jDataPageHiveDetailHiveEditFormUrl o
+    , "inspections" .= jDataPageHiveDetailInspections o
+    , "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o
     ]
 
+data JDataInspection = JDataInspection
+  { jDataInspectionEnt :: Entity Inspection
+  , jDataInspectionEditFormUrl :: Text
+  , jDataInspectionDeleteFormUrl :: Text
+  }
+instance ToJSON JDataInspection where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataInspectionEnt o)
+    , "editFormUrl" .= jDataInspectionEditFormUrl o
+    , "deleteFormUrl" .= jDataInspectionDeleteFormUrl o
+    ]
 
 
 
@@ -602,6 +617,11 @@ data MsgGlobal =
   | MsgGlobalAddHive
   | MsgGlobalDeleteHive
   | MsgGlobalEditHive
+  | MsgGlobalInspection
+  | MsgGlobalInspections
+  | MsgGlobalAddInspection
+  | MsgGlobalDeleteInspection
+  | MsgGlobalEditInspection
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -638,6 +658,11 @@ renderGlobalGerman MsgGlobalHives = "Bienenstöcke"
 renderGlobalGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
 renderGlobalGerman MsgGlobalDeleteHive = "Bienenstock löschen"
 renderGlobalGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
+renderGlobalGerman MsgGlobalInspection = "Durchsicht"
+renderGlobalGerman MsgGlobalInspections = "Durchsichten"
+renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
+renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
+renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -667,6 +692,11 @@ renderGlobalEnglish MsgGlobalHives = "Hives"
 renderGlobalEnglish MsgGlobalAddHive = "Add hive"
 renderGlobalEnglish MsgGlobalDeleteHive = "Delete hive"
 renderGlobalEnglish MsgGlobalEditHive = "Edit hive"
+renderGlobalEnglish MsgGlobalInspection = "Inspection"
+renderGlobalEnglish MsgGlobalInspections = "Inspections"
+renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
+renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
+renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -696,6 +726,11 @@ data Translation = Translation
   , msgGlobalAddHive :: Maybe Text
   , msgGlobalDeleteHive :: Maybe Text
   , msgGlobalEditHive :: Maybe Text
+  , msgGlobalInspection :: Maybe Text
+  , msgGlobalInspections :: Maybe Text
+  , msgGlobalAddInspection :: Maybe Text
+  , msgGlobalDeleteInspection :: Maybe Text
+  , msgGlobalEditInspection :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -711,6 +746,9 @@ data Translation = Translation
   , msgHiveLocationId :: Maybe Text
   , msgHiveName :: Maybe Text
   , msgHiveDescription :: Maybe Text
+  , msgInspectionHiveId :: Maybe Text
+  , msgInspectionDate :: Maybe Text
+  , msgInspectionNotes :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -744,6 +782,11 @@ translationDe = Translation
   , msgGlobalAddHive = Just "Bienenstock hinzufügen"
   , msgGlobalDeleteHive = Just "Bienenstock löschen"
   , msgGlobalEditHive = Just "Bienenstock bearbeiten"
+  , msgGlobalInspection = Just "Durchsicht"
+  , msgGlobalInspections = Just "Durchsichten"
+  , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
+  , msgGlobalDeleteInspection = Just "Durchsicht löschen"
+  , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -759,6 +802,9 @@ translationDe = Translation
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
   , msgHiveDescription = Just "Beschreibung"
+  , msgInspectionHiveId = Nothing
+  , msgInspectionDate = Just "Datum"
+  , msgInspectionNotes = Just "Notizen"
   }
 
 translationEn :: Translation
@@ -790,6 +836,11 @@ translationEn = Translation
   , msgGlobalAddHive = Just "Add hive"
   , msgGlobalDeleteHive = Just "Delete hive"
   , msgGlobalEditHive = Just "Edit hive"
+  , msgGlobalInspection = Just "Inspection"
+  , msgGlobalInspections = Just "Inspections"
+  , msgGlobalAddInspection = Just "Add inspection"
+  , msgGlobalDeleteInspection = Just "Delete inspection"
+  , msgGlobalEditInspection = Just "Edit inspection"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -805,6 +856,9 @@ translationEn = Translation
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
   , msgHiveDescription = Just "Description"
+  , msgInspectionHiveId = Nothing
+  , msgInspectionDate = Just "Date"
+  , msgInspectionNotes = Just "Notes"
   }
 
 -- gen i18n global - end

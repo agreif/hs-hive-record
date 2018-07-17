@@ -366,7 +366,7 @@
             <tr each="{parent.data.pages.locationDetail.hives}">
               <td .uk-table-link>
                 <a onclick="{detailHive}" .uk-link-reset>
-                  <span .textarea-wrap class="{uk-text-danger:isActive}">
+                  <span .textarea-wrap>
                     {entity.name}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteHive}" uk-tooltip onclick="{deleteHive}">
@@ -398,6 +398,9 @@
       <li>
         <a href="#">
           {parent.data.translation.msgGlobalMasterData}
+      <li .uk-active>
+        <a href="#">
+          {parent.data.translation.msgGlobalInspections}
     <ul class="uk-switcher uk-margin">
       <li>
         <!-- master data -->
@@ -421,8 +424,47 @@
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">
+      <li>
+        <!-- inspection list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgInspectionDate}
+              <th>
+                {parent.data.translation.msgInspectionNotes}
+              <th .uk-align-right>
+                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{parent.data.pages.hiveDetail.inspections}">
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {formatDateStr(entity.date, parent.parent.data.currentLanguage)}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {entity.notes}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteInspection}" uk-tooltip onclick="{deleteInspection}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{editInspection}">
+                  <span uk-icon="icon: pencil">
   <script>
     \ editHive(event) {
     \   parent.tag.showModalForm(parent.tag.data.pages.hiveDetail.hiveEditFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ addInspection(event) {
+    \   parent.tag.showModalForm(parent.tag.data.pages.hiveDetail.inspectionAddFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ editInspection(event) {
+    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteInspection(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }

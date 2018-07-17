@@ -11,7 +11,7 @@ User
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
-    UniqueUser ident
+    UniqueUserIdent ident
 
 
 UserHistory
@@ -38,7 +38,7 @@ Config json
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
-    UniqueCode code
+    UniqueConfigCode code
 
 
 ConfigHistory
@@ -63,7 +63,7 @@ Location json
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
-    UniqueName name
+    UniqueLocationName name
 
 
 LocationHistory
@@ -93,6 +93,30 @@ HiveHistory
     locationId Int
     name Text
     description Textarea Maybe
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+Inspection json
+    hiveId HiveId
+    date Day
+    notes Textarea
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+    UniqueInspectionDate date
+
+
+InspectionHistory
+    Id sql=vid
+    id Int MigrationOnly
+    hiveId Int
+    date Day
+    notes Textarea
     version Int
     createdAt UTCTime
     createdBy Text

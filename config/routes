@@ -57,3 +57,10 @@
 
   hiveDetail/#HiveId HiveDetailR GET
   hiveDetailPageDataJsonR/#HiveId HiveDetailPageDataJsonR GET
+
+  addInspectionForm/#HiveId AddInspectionFormR GET
+  addInspection/#HiveId AddInspectionR POST
+  editInspectionForm/#InspectionId EditInspectionFormR GET
+  editInspection/#InspectionId EditInspectionR POST
+  deleteInspectionForm/#InspectionId DeleteInspectionFormR GET
+  deleteInspection/#InspectionId DeleteInspectionR POST

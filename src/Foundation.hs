@@ -191,14 +191,14 @@ instance YesodAuth App where
     -- authenticate :: (MonadHandler m, HandlerSite m ~ App)
     --              => Creds App -> m (AuthenticationResult App)
     authenticate creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
+        x <- getBy $ UniqueUserIdent $ credsIdent creds
         case x of
             Just (Entity uid _) -> return $ Authenticated uid
             Nothing -> return $ UserError InvalidLogin
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins :: App -> [AuthPlugin App]
-    authPlugins _ = [authHashDBWithForm myLoginForm (Just . UniqueUser)]
+    authPlugins _ = [authHashDBWithForm myLoginForm (Just . UniqueUserIdent)]
 
     -- authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
     --     -- Enable authDummy login if enabled.

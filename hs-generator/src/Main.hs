@@ -290,7 +290,7 @@ context =
         { bModelName = "user"
         , bModelLabel = "User"
         , bModelIsJson = False
-        , bModelDbUniquenesses = ["UniqueUser ident"]
+        , bModelDbUniquenesses = ["UniqueUserIdent ident"]
         , bModelDbHasHistoryTable = True
         , bModelHsDerivings = []
         , bModelAddFormEntityLoader = Nothing
@@ -476,7 +476,7 @@ context =
         { bModelName = "config"
         , bModelLabel = "Config"
         , bModelIsJson = True
-        , bModelDbUniquenesses = ["UniqueCode code"]
+        , bModelDbUniquenesses = ["UniqueConfigCode code"]
         , bModelDbHasHistoryTable = True
         , bModelHsDerivings = []
         , bModelAddFormEntityLoader = Nothing
@@ -740,7 +740,7 @@ context =
         { bModelName = "location"
         , bModelLabel = "Location"
         , bModelIsJson = True
-        , bModelDbUniquenesses = ["UniqueName name"]
+        , bModelDbUniquenesses = ["UniqueLocationName name"]
         , bModelDbHasHistoryTable = True
         , bModelHsDerivings = []
         , bModelAddFormEntityLoader = Nothing
@@ -815,14 +815,9 @@ context =
         , bModelAddFormEntityLoader = Nothing
         , bModelEditFormEntityLoader = Nothing
         , bModelDeleteFormEntityLoader = Nothing
-        , bModelAddFormDataJsonUrl =
-            Just "HiverecR $ LocationDetailPageDataJsonR locationId"
-        , bModelEditFormDataJsonUrl =
-            Just
-              "HiverecR $ HiveDetailPageDataJsonR hiveId"
-        , bModelDeleteFormDataJsonUrl =
-            Just
-              "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
+        , bModelAddFormDataJsonUrl = Just "HiverecR $ LocationDetailPageDataJsonR locationId"
+        , bModelEditFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR hiveId"
+        , bModelDeleteFormDataJsonUrl = Just "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
         , bModelAddFormHasDefaultModel = False
         , bModelEditPostLoadsModel = False
         , bModelDeletePostLoadsModel = True
@@ -941,6 +936,134 @@ context =
 
 
 
+      , BModel
+        { bModelName = "inspection"
+        , bModelLabel = "Inspection"
+        , bModelIsJson = True
+        , bModelDbUniquenesses = ["UniqueInspectionDate date"]
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelEditFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelDeleteFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelAddFormHasDefaultModel = True
+        , bModelEditPostLoadsModel = True
+        , bModelDeletePostLoadsModel = True
+        , bModelAddFormTitleMsg = Just "MsgGlobalAddInspection"
+        , bModelEditFormTitleMsg = Just "MsgGlobalEditInspection"
+        , bModelDeleteFormTitleMsg = Just "MsgGlobalDeleteInspection"
+        , bModelParentHsType = Just "Hive"
+        , bModelFormRouteHsType = "HiverecR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "hiveId"
+              , bFieldLabelDe = Nothing
+              , bFieldLabelEn = Nothing
+              , bFieldHsType = "HiveId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "date"
+              , bFieldLabelDe = Just "Datum"
+              , bFieldLabelEn = Just "Date"
+              , bFieldHsType = "Day"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "dayField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs = []
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs = []
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "notes"
+              , bFieldLabelDe = Just "Notizen"
+              , bFieldLabelEn = Just "Notes"
+              , bFieldHsType = "Textarea"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textareaField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-textarea uk-form-small"
+                        }
+                      , BFieldAttr
+                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-textarea uk-form-small"
+                        }
+                      , BFieldAttr
+                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            ]
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
       ]
   , bContextTranslations =
@@ -974,5 +1097,11 @@ context =
     , BTranslation { bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive" }
     , BTranslation { bTranslationKey = "deleteHive", bTranslationDe = "Bienenstock löschen", bTranslationEn = "Delete hive" }
     , BTranslation { bTranslationKey = "editHive", bTranslationDe = "Bienenstock bearbeiten", bTranslationEn = "Edit hive" }
+
+    , BTranslation { bTranslationKey = "inspection", bTranslationDe = "Durchsicht", bTranslationEn = "Inspection" }
+    , BTranslation { bTranslationKey = "inspections", bTranslationDe = "Durchsichten", bTranslationEn = "Inspections" }
+    , BTranslation { bTranslationKey = "addInspection", bTranslationDe = "Durchsicht hinzufügen", bTranslationEn = "Add inspection" }
+    , BTranslation { bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection" }
+    , BTranslation { bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection" }
     ]
   }
