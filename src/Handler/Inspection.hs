@@ -17,6 +17,36 @@ import Database.Persist.Sql (updateWhereCount)
 -- add inspection
 -------------------------------------------------------
 
+
+defaultNoteText :: Text
+defaultNoteText  = intercalate "\n"
+  [ "Wabengassen besetzt:"
+  , "Volksstärke: sehr stark / stark / normal / schwach"
+  , "Königin:"
+  , "Königinen-Zellen:"
+  , "Brut: Stifte / offene Brut / verdeckelte Brut"
+  , "Sanftmut: sehr sanft / sanft / nervös / bösartig"
+  , "Wabensitz: fest / ruhig / laufend / flüchtig"
+  , "Schwarmtrieb: fehlt / leicht lenkbar / schlecht lenkbar / sehr stark"
+  , "Putztrieb: sehr gut / gut / gering / fehlt"
+  , "Winterfestigkeit: gut / mittel / gering / fehlt"
+  , "Frühjahrsentwicklung: sehr schnell / schnell / normal / langsam"
+  , "Waben +/-:"
+  , "Honigwaben entnommen:"
+  , "Mittelwände gegeben:"
+  , "Anzahl Brutwaben:"
+  , "Anzahl Pollenwaben:"
+  , "Anzahl Honigwaben:"
+  , "Fütterung:"
+  , "Wetter:"
+  , "Varroamaßnahmen:"
+  , "Milbenfall:"
+  , "Bemerkungen:"
+  ]
+
+
+
+
 defaultAddInspection :: HiveId -> Handler Inspection
 defaultAddInspection hiveId = do
   now <- liftIO getCurrentTime
@@ -24,7 +54,7 @@ defaultAddInspection hiveId = do
   return $ Inspection
     { inspectionHiveId = hiveId
     , inspectionDate = today
-    , inspectionNotes = Textarea ""
+    , inspectionNotes = Textarea defaultNoteText
     , inspectionVersion = 1
     , inspectionCreatedAt = now
     , inspectionCreatedBy = dbSystemUser
@@ -122,7 +152,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small uk-width-5-6"), ("rows","27") ]
       }
 
 data MsgAddInspection =
@@ -248,7 +278,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small uk-width-5-6"), ("rows","27") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings

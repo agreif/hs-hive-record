@@ -1026,10 +1026,10 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small"
+                            "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
-                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                        { bFieldAttrKey = "rows", bFieldAttrValue = "27" }
                       ]
                   , bFieldAddViewDefault = Nothing
                   }
@@ -1042,10 +1042,10 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small"
+                            "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
-                        {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
+                        { bFieldAttrKey = "rows", bFieldAttrValue = "27" }
                       ]
                   , bFieldEditViewDefault = Nothing
                   }
