@@ -165,7 +165,7 @@ locationDetailHiveJDatas locationId = do
     (\(noteEnt@(Entity noteId _)) ->
        JDataHive
        { jDataHiveEnt = noteEnt
-       , jDataHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR noteId
+       , jDataHiveDetailPageUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR noteId
        , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR noteId
        })
     hiveEnts

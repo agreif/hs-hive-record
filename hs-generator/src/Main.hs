@@ -819,12 +819,12 @@ context =
             Just "HiverecR $ LocationDetailPageDataJsonR locationId"
         , bModelEditFormDataJsonUrl =
             Just
-              "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
+              "HiverecR $ HiveDetailPageDataJsonR hiveId"
         , bModelDeleteFormDataJsonUrl =
             Just
               "HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive"
         , bModelAddFormHasDefaultModel = False
-        , bModelEditPostLoadsModel = True
+        , bModelEditPostLoadsModel = False
         , bModelDeletePostLoadsModel = True
         , bModelAddFormTitleMsg = Just "MsgGlobalAddHive"
         , bModelEditFormTitleMsg = Just "MsgGlobalEditHive"
@@ -961,12 +961,13 @@ context =
     , BTranslation { bTranslationKey = "sendTestMail", bTranslationDe = "Test-Mail senden...", bTranslationEn = "Send Test-Mail..." }
     , BTranslation { bTranslationKey = "cancel", bTranslationDe = "Abbrechen", bTranslationEn = "Cancel" }
 
+    , BTranslation { bTranslationKey = "masterData", bTranslationDe = "Stammdaten", bTranslationEn = "Master Data" }
+
     , BTranslation { bTranslationKey = "location", bTranslationDe = "Standort", bTranslationEn = "Location" }
     , BTranslation { bTranslationKey = "locations", bTranslationDe = "Standorte", bTranslationEn = "Locations" }
     , BTranslation { bTranslationKey = "addLocation", bTranslationDe = "Standort hinzufügen", bTranslationEn = "Add location" }
     , BTranslation { bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location" }
     , BTranslation { bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location" }
-    , BTranslation { bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Sammdaten", bTranslationEn = "Location Master Data" }
 
     , BTranslation { bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive" }
     , BTranslation { bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives" }

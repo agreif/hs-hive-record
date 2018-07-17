@@ -55,3 +55,5 @@
   deleteHiveForm/#HiveId DeleteHiveFormR GET
   deleteHive/#HiveId DeleteHiveR POST
 
+  hiveDetail/#HiveId HiveDetailR GET
+  hiveDetailPageDataJsonR/#HiveId HiveDetailPageDataJsonR GET

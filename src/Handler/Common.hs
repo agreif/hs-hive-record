@@ -151,6 +151,7 @@ data JDataPages = JDataPages
   , jDataPageAdmin :: Maybe JDataPageAdmin
   , jDataPageLocationList :: Maybe JDataPageLocationList
   , jDataPageLocationDetail :: Maybe JDataPageLocationDetail
+  , jDataPageHiveDetail :: Maybe JDataPageHiveDetail
   }
 instance ToJSON JDataPages where
   toJSON o = object
@@ -158,6 +159,7 @@ instance ToJSON JDataPages where
     , "admin" .= jDataPageAdmin o
     , "locationList" .= jDataPageLocationList o
     , "locationDetail" .= jDataPageLocationDetail o
+    , "hiveDetail" .= jDataPageHiveDetail o
     ]
 
 defaultDataPages :: JDataPages
@@ -166,6 +168,7 @@ defaultDataPages = JDataPages
   , jDataPageAdmin = Nothing
   , jDataPageLocationList = Nothing
   , jDataPageLocationDetail = Nothing
+  , jDataPageHiveDetail = Nothing
   }
 
 
@@ -249,16 +252,26 @@ instance ToJSON JDataPageLocationDetail where
 
 data JDataHive = JDataHive
   { jDataHiveEnt :: Entity Hive
-  , jDataHiveEditFormUrl :: Text
+  , jDataHiveDetailPageUrl :: Text
   , jDataHiveDeleteFormUrl :: Text
   }
 instance ToJSON JDataHive where
   toJSON o = object
     [ "entity" .= entityIdToJSON (jDataHiveEnt o)
-    , "editFormUrl" .= jDataHiveEditFormUrl o
+    , "detailPageUrl" .= jDataHiveDetailPageUrl o
     , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
     ]
 
+
+data JDataPageHiveDetail = JDataPageHiveDetail
+  { jDataPageHiveDetailHiveEnt :: Entity Hive
+  , jDataPageHiveDetailHiveEditFormUrl :: Text
+  }
+instance ToJSON JDataPageHiveDetail where
+  toJSON o = object
+    [ "hiveEnt" .= jDataPageHiveDetailHiveEnt o
+    , "hiveEditFormUrl" .= jDataPageHiveDetailHiveEditFormUrl o
+    ]
 
 
 
@@ -578,12 +591,12 @@ data MsgGlobal =
   | MsgGlobalTestMail
   | MsgGlobalSendTestMail
   | MsgGlobalCancel
+  | MsgGlobalMasterData
   | MsgGlobalLocation
   | MsgGlobalLocations
   | MsgGlobalAddLocation
   | MsgGlobalEditLocation
   | MsgGlobalDeleteLocation
-  | MsgGlobalLocationMasterData
   | MsgGlobalHive
   | MsgGlobalHives
   | MsgGlobalAddHive
@@ -614,12 +627,12 @@ renderGlobalGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderGlobalGerman MsgGlobalTestMail = "Test-Mail"
 renderGlobalGerman MsgGlobalSendTestMail = "Test-Mail senden..."
 renderGlobalGerman MsgGlobalCancel = "Abbrechen"
+renderGlobalGerman MsgGlobalMasterData = "Stammdaten"
 renderGlobalGerman MsgGlobalLocation = "Standort"
 renderGlobalGerman MsgGlobalLocations = "Standorte"
 renderGlobalGerman MsgGlobalAddLocation = "Standort hinzufügen"
 renderGlobalGerman MsgGlobalEditLocation = "Standort bearbeiten"
 renderGlobalGerman MsgGlobalDeleteLocation = "Standort löschen"
-renderGlobalGerman MsgGlobalLocationMasterData = "Standort-Sammdaten"
 renderGlobalGerman MsgGlobalHive = "Bienenstock"
 renderGlobalGerman MsgGlobalHives = "Bienenstöcke"
 renderGlobalGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
@@ -643,12 +656,12 @@ renderGlobalEnglish MsgGlobalEditConfig = "Edit config"
 renderGlobalEnglish MsgGlobalTestMail = "Test-Mail"
 renderGlobalEnglish MsgGlobalSendTestMail = "Send Test-Mail..."
 renderGlobalEnglish MsgGlobalCancel = "Cancel"
+renderGlobalEnglish MsgGlobalMasterData = "Master Data"
 renderGlobalEnglish MsgGlobalLocation = "Location"
 renderGlobalEnglish MsgGlobalLocations = "Locations"
 renderGlobalEnglish MsgGlobalAddLocation = "Add location"
 renderGlobalEnglish MsgGlobalEditLocation = "Edit location"
 renderGlobalEnglish MsgGlobalDeleteLocation = "Delete location"
-renderGlobalEnglish MsgGlobalLocationMasterData = "Location Master Data"
 renderGlobalEnglish MsgGlobalHive = "Hive"
 renderGlobalEnglish MsgGlobalHives = "Hives"
 renderGlobalEnglish MsgGlobalAddHive = "Add hive"
@@ -672,12 +685,12 @@ data Translation = Translation
   , msgGlobalTestMail :: Maybe Text
   , msgGlobalSendTestMail :: Maybe Text
   , msgGlobalCancel :: Maybe Text
+  , msgGlobalMasterData :: Maybe Text
   , msgGlobalLocation :: Maybe Text
   , msgGlobalLocations :: Maybe Text
   , msgGlobalAddLocation :: Maybe Text
   , msgGlobalEditLocation :: Maybe Text
   , msgGlobalDeleteLocation :: Maybe Text
-  , msgGlobalLocationMasterData :: Maybe Text
   , msgGlobalHive :: Maybe Text
   , msgGlobalHives :: Maybe Text
   , msgGlobalAddHive :: Maybe Text
@@ -720,12 +733,12 @@ translationDe = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Test-Mail senden..."
   , msgGlobalCancel = Just "Abbrechen"
+  , msgGlobalMasterData = Just "Stammdaten"
   , msgGlobalLocation = Just "Standort"
   , msgGlobalLocations = Just "Standorte"
   , msgGlobalAddLocation = Just "Standort hinzufügen"
   , msgGlobalEditLocation = Just "Standort bearbeiten"
   , msgGlobalDeleteLocation = Just "Standort löschen"
-  , msgGlobalLocationMasterData = Just "Standort-Sammdaten"
   , msgGlobalHive = Just "Bienenstock"
   , msgGlobalHives = Just "Bienenstöcke"
   , msgGlobalAddHive = Just "Bienenstock hinzufügen"
@@ -766,12 +779,12 @@ translationEn = Translation
   , msgGlobalTestMail = Just "Test-Mail"
   , msgGlobalSendTestMail = Just "Send Test-Mail..."
   , msgGlobalCancel = Just "Cancel"
+  , msgGlobalMasterData = Just "Master Data"
   , msgGlobalLocation = Just "Location"
   , msgGlobalLocations = Just "Locations"
   , msgGlobalAddLocation = Just "Add location"
   , msgGlobalEditLocation = Just "Edit location"
   , msgGlobalDeleteLocation = Just "Delete location"
-  , msgGlobalLocationMasterData = Just "Location Master Data"
   , msgGlobalHive = Just "Hive"
   , msgGlobalHives = Just "Hives"
   , msgGlobalAddHive = Just "Add hive"

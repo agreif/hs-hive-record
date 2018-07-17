@@ -5,6 +5,7 @@
     <admin-page-tag>
     <location-list-page-tag>
     <location-detail-page-tag>
+    <hive-detail-page-tag>
   <script>
     \ tag = this
     \ tag.data = null
@@ -309,7 +310,7 @@
           <td .uk-width-small>
             <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{deleteLocation}">
               <span uk-icon="icon: trash">
-            <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{detailLocation}">
+            <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDetailLocation}" uk-tooltip onclick="{detailLocation}">
               <span uk-icon="icon: file-edit">
   <script>
     \ addLocation(event) {
@@ -331,7 +332,7 @@
     <ul uk-tab>
       <li>
         <a href="#">
-          {parent.data.translation.msgGlobalLocationMasterData}
+          {parent.data.translation.msgGlobalMasterData}
       <li .uk-active>
         <a href="#">
           {parent.data.translation.msgGlobalHives}
@@ -364,14 +365,14 @@
           <tbody>
             <tr each="{parent.data.pages.locationDetail.hives}">
               <td .uk-table-link>
-                <a onclick="{editHive}" .uk-link-reset>
+                <a onclick="{detailHive}" .uk-link-reset>
                   <span .textarea-wrap class="{uk-text-danger:isActive}">
                     {entity.name}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteHive}" uk-tooltip onclick="{deleteHive}">
                   <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
-                  <span uk-icon="icon: pencil">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDetailHive}" uk-tooltip onclick="{detailHive}">
+                  <span uk-icon="icon: file-edit">
   <script>
     \ editLocation(event) {
     \   parent.tag.showModalForm(parent.tag.data.pages.locationDetail.locationEditFormUrl)
@@ -381,11 +382,47 @@
     \   parent.tag.showModalForm(parent.tag.data.pages.locationDetail.hiveAddFormUrl)
     \   event.currentTarget.blur()
     \ }
-    \ editHive(event) {
-    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \ detailHive(event) {
+    \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteHive(event) {
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+
+<hive-detail-page-tag>
+  <div if="{parent.data.pages.hiveDetail}">
+    <h1>{parent.data.translation.msgGlobalHive}: {parent.data.pages.hiveDetail.hiveEnt.name}
+    <ul uk-tab>
+      <li>
+        <a href="#">
+          {parent.data.translation.msgGlobalMasterData}
+    <ul class="uk-switcher uk-margin">
+      <li>
+        <!-- master data -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgHiveName}
+              <th>
+                {parent.data.translation.msgHiveDescription}
+              <th .uk-align-right>
+          <tbody>
+            <tr>
+              <td .uk-table-link>
+                <a onclick="{editHive}" .uk-link-reset>
+                  {parent.data.pages.hiveDetail.hiveEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editHive}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {parent.data.pages.hiveDetail.hiveEnt.description}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
+                  <span uk-icon="icon: pencil">
+  <script>
+    \ editHive(event) {
+    \   parent.tag.showModalForm(parent.tag.data.pages.hiveDetail.hiveEditFormUrl)
     \   event.currentTarget.blur()
     \ }

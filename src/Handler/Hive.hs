@@ -12,8 +12,89 @@ import Import
 --import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
--- import qualified Data.Text.Encoding as TE
--- import qualified Data.CaseInsensitive as CI
+import qualified Data.Text.Encoding as TE
+import qualified Data.CaseInsensitive as CI
+
+
+
+
+
+
+-------------------------------------------------------
+-- hive detail page
+-------------------------------------------------------
+
+getHiveDetailR :: HiveId -> Handler Html
+getHiveDetailR hiveId = defaultLayout $ do
+  toWidget [whamlet|
+                   <body-tag>
+                   <script>
+                     \ riot.compile(function() {
+                     \   bodyTag = riot.mount('body-tag')[0]
+                     \   bodyTag.refreshData("@{HiverecR $ HiveDetailPageDataJsonR hiveId}")
+                     \ })
+                   |]
+
+getHiveDetailPageDataJsonR :: HiveId -> Handler Value
+getHiveDetailPageDataJsonR hiveId = do
+  Entity _ user <- requireAuth
+  req <- getRequest
+  appName <- runDB $ configAppName
+  mainNavItems <- mainNavData user MainNavLocation
+  hive <- runDB $ get404 hiveId
+  let locationId = hiveLocationId hive
+  location <- runDB $ get404 locationId
+  urlRenderer <- getUrlRender
+  let pages =
+        defaultDataPages
+        { jDataPageHiveDetail =
+            Just $ JDataPageHiveDetail
+            { jDataPageHiveDetailHiveEnt = Entity hiveId hive
+            , jDataPageHiveDetailHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR hiveId
+            }
+        }
+  msgHome <- localizedMsg MsgGlobalHome
+  msgLocations <- localizedMsg MsgGlobalLocations
+  msgHive <- localizedMsg MsgGlobalHive
+  currentLanguage <- getLanguage
+  translation <- getTranslation
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+  returnJson JData
+    { jDataAppName = appName
+    , jDataUserIdent = userIdent user
+    , jDataMainNavItems = mainNavItems
+    , jDataSubNavItems = []
+    , jDataPages = pages
+    , jDataHistoryState = Just JDataHistoryState
+      { jDataHistoryStateUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId
+      , jDataHistoryStateTitle = msgHive
+      }
+    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
+    , jDataCsrfToken = reqToken req
+    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgHome
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgLocations
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = locationName location
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = hiveName hive
+                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
+                             ]
+    , jDataCurrentLanguage = currentLanguage
+    , jDataTranslation = translation
+    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
+    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
+    }
+
+
+
+
+
+
 
 -------------------------------------------------------
 -- add hive
@@ -168,7 +249,6 @@ postEditHiveR hiveId = do
       curTime <- liftIO getCurrentTime
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      hive <- runDB $ get404 hiveId
       let persistFields = [
             HiveName =. vEditHiveName vEditHive
             , HiveDescription =. vEditHiveDescription vEditHive
@@ -180,8 +260,8 @@ postEditHiveR hiveId = do
                                               , HiveVersion ==. vEditHiveVersion vEditHive
                                               ] persistFields
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive }
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $ VFormSubmitInvalid
