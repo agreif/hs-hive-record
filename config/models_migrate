@@ -165,4 +165,25 @@ RunningTypeHistory
     updatedAt UTCTime
     updatedBy Text
 
+SwarmingType json
+    name Text
+    sortIndex Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+SwarmingTypeHistory
+    Id sql=vid
+    id Int MigrationOnly
+    name Text
+    sortIndex Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
 -- gen models - end

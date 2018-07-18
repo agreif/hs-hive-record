@@ -35,6 +35,7 @@ getAdminPageDataJsonR = do
   jDataConfigs <- configListJDataEnts
   jDataTemperTypes <- temperTypeListJDataEnts
   jDataRunningTypes <- runningTypeListJDataEnts
+  jDataSwarmingTypes <- swarmingTypeListJDataEnts
   let pages =
         defaultDataPages
         { jDataPageAdmin =
@@ -43,6 +44,7 @@ getAdminPageDataJsonR = do
             , jDataPageAdminConfigs = jDataConfigs
             , jDataPageAdminTemperTypes = jDataTemperTypes
             , jDataPageAdminRunningTypes = jDataRunningTypes
+            , jDataPageAdminSwarmingTypes = jDataSwarmingTypes
             }
         }
   msgHome <- localizedMsg MsgGlobalHome
@@ -152,4 +154,24 @@ loadRunningTypeListTuples = do
   tuples <- E.select $ E.from $ \(runningType) -> do
     E.orderBy [E.asc (runningType E.^. RunningTypeSortIndex)]
     return (runningType)
+  return tuples
+
+swarmingTypeListJDataEnts :: Handler [JDataSwarmingType]
+swarmingTypeListJDataEnts = do
+  urlRenderer <- getUrlRender
+  swarmingTypeTuples <- runDB loadSwarmingTypeListTuples
+  let jSwarmingTypeList = map (\(swarmingTypeEnt@(Entity swarmingTypeId _)) ->
+                                 JDataSwarmingType
+                                { jDataSwarmingTypeEnt = swarmingTypeEnt
+                                , jDataSwarmingTypeEditFormUrl = urlRenderer $ AdminR $ EditSwarmingTypeFormR swarmingTypeId
+                                , jDataSwarmingTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteSwarmingTypeFormR swarmingTypeId
+                                }
+                              ) swarmingTypeTuples
+  return jSwarmingTypeList
+
+loadSwarmingTypeListTuples :: YesodDB App [(Entity SwarmingType)]
+loadSwarmingTypeListTuples = do
+  tuples <- E.select $ E.from $ \(swarmingType) -> do
+    E.orderBy [E.asc (swarmingType E.^. SwarmingTypeSortIndex)]
+    return (swarmingType)
   return tuples

@@ -208,6 +208,9 @@
           {parent.data.translation.msgGlobalRunningTypes}
       <li>
         <a href="#">
+          {parent.data.translation.msgGlobalSwarmingTypes}
+      <li>
+        <a href="#">
           {parent.data.translation.msgGlobalTestMail}
     <ul .uk-switcher .uk-margin>
       <li>
@@ -320,6 +323,29 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditRunningType}" uk-tooltip onclick="{editRunningType}">
                   <span uk-icon="icon: pencil">
       <li>
+        <!-- swarmingType list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgSwarmingTypeName}
+              <th>
+                {parent.data.translation.msgSwarmingTypeSortIndex}
+              <th .uk-align-right>
+                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddSwarmingType}" uk-tooltip onclick="{addSwarmingType}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{parent.data.pages.admin.swarmingTypes}">
+              <td .uk-table-link>
+                <a onclick="{editSwarmingType}" .uk-link-reset>{entity.name}
+              <td .uk-table-link>
+                <a onclick="{editSwarmingType}" .uk-link-reset>{entity.sortIndex}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteSwarmingType}" uk-tooltip onclick="{deleteSwarmingType}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditSwarmingType}" uk-tooltip onclick="{editSwarmingType}">
+                  <span uk-icon="icon: pencil">
+      <li>
         <!-- test mail -->
         <button .uk-button .uk-button-primary onclick="{sendTestMail}">
           {parent.data.translation.msgGlobalSendTestMail}
@@ -361,6 +387,18 @@
     \   event.currentTarget.blur()
     \ }
     \ deleteRunningType(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ addSwarmingType(event) {
+    \   parent.tag.showModalForm("@{AdminR AddSwarmingTypeFormR}")
+    \   event.currentTarget.blur()
+    \ }
+    \ editSwarmingType(event) {
+    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteSwarmingType(event) {
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }

@@ -1268,6 +1268,114 @@ context =
               }
             ]
         }
+      , BModel
+        { bModelName = "swarmingType"
+        , bModelLabel = "Swarming Type"
+        , bModelIsJson = True
+        , bModelDbUniquenesses = []
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl = Just "AdminR AdminPageDataJsonR"
+        , bModelEditFormDataJsonUrl = Just "AdminR AdminPageDataJsonR"
+        , bModelDeleteFormDataJsonUrl = Just "AdminR AdminPageDataJsonR"
+        , bModelAddFormHasDefaultModel = False
+        , bModelEditPostLoadsModel = False
+        , bModelDeletePostLoadsModel = False
+        , bModelAddFormTitleMsg = Just "MsgGlobalAddSwarmingType"
+        , bModelEditFormTitleMsg = Just "MsgGlobalEditSwarmingType"
+        , bModelDeleteFormTitleMsg = Just "MsgGlobalDeleteSwarmingType"
+        , bModelParentHsType = Nothing
+        , bModelFormRouteHsType = "AdminR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "name"
+              , bFieldLabelDe = Just "Name"
+              , bFieldLabelEn = Just "Name"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "sortIndex"
+              , bFieldLabelDe = Just "Sortierungs-Index"
+              , bFieldLabelEn = Just "Sort Index"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            ]
+        }
 
 
 
@@ -1330,6 +1438,11 @@ context =
     , BTranslation { bTranslationKey = "addRunningType", bTranslationDe = "Wabensitz Typ hinzufügen", bTranslationEn = "Add running type" }
     , BTranslation { bTranslationKey = "deleteRunningType", bTranslationDe = "Wabensitz Typ löschen", bTranslationEn = "Delete running type" }
     , BTranslation { bTranslationKey = "editRunningType", bTranslationDe = "Wabensitz Typ bearbeiten", bTranslationEn = "Edit running type" }
+
+    , BTranslation { bTranslationKey = "swarmingTypes", bTranslationDe = "Schwarmtrieb Typen", bTranslationEn = "Swarming types" }
+    , BTranslation { bTranslationKey = "addSwarmingType", bTranslationDe = "Schwarmtrieb Typ hinzufügen", bTranslationEn = "Add swarming type" }
+    , BTranslation { bTranslationKey = "deleteSwarmingType", bTranslationDe = "Schwarmtrieb Typ löschen", bTranslationEn = "Delete swarming type" }
+    , BTranslation { bTranslationKey = "editSwarmingType", bTranslationDe = "Schwarmtrieb Typ bearbeiten", bTranslationEn = "Edit swarming type" }
 
 
 

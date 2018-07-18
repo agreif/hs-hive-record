@@ -186,6 +186,7 @@ data JDataPageAdmin = JDataPageAdmin
   , jDataPageAdminConfigs :: [JDataConfig]
   , jDataPageAdminTemperTypes :: [JDataTemperType]
   , jDataPageAdminRunningTypes :: [JDataRunningType]
+  , jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
   }
 instance ToJSON JDataPageAdmin where
   toJSON o = object
@@ -193,6 +194,7 @@ instance ToJSON JDataPageAdmin where
     , "configs" .= jDataPageAdminConfigs o
     , "temperTypes" .= jDataPageAdminTemperTypes o
     , "runningTypes" .= jDataPageAdminRunningTypes o
+    , "swarmingTypes" .= jDataPageAdminSwarmingTypes o
     ]
 
 
@@ -317,6 +319,19 @@ instance ToJSON JDataRunningType where
     [ "entity" .= entityIdToJSON (jDataRunningTypeEnt o)
     , "editFormUrl" .= jDataRunningTypeEditFormUrl o
     , "deleteFormUrl" .= jDataRunningTypeDeleteFormUrl o
+    ]
+
+
+data JDataSwarmingType = JDataSwarmingType
+  { jDataSwarmingTypeEnt :: Entity SwarmingType
+  , jDataSwarmingTypeEditFormUrl :: Text
+  , jDataSwarmingTypeDeleteFormUrl :: Text
+  }
+instance ToJSON JDataSwarmingType where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataSwarmingTypeEnt o)
+    , "editFormUrl" .= jDataSwarmingTypeEditFormUrl o
+    , "deleteFormUrl" .= jDataSwarmingTypeDeleteFormUrl o
     ]
 
 
@@ -659,6 +674,10 @@ data MsgGlobal =
   | MsgGlobalAddRunningType
   | MsgGlobalDeleteRunningType
   | MsgGlobalEditRunningType
+  | MsgGlobalSwarmingTypes
+  | MsgGlobalAddSwarmingType
+  | MsgGlobalDeleteSwarmingType
+  | MsgGlobalEditSwarmingType
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -709,6 +728,10 @@ renderGlobalGerman MsgGlobalRunningTypes = "Wabensitz Typen"
 renderGlobalGerman MsgGlobalAddRunningType = "Wabensitz Typ hinzufügen"
 renderGlobalGerman MsgGlobalDeleteRunningType = "Wabensitz Typ löschen"
 renderGlobalGerman MsgGlobalEditRunningType = "Wabensitz Typ bearbeiten"
+renderGlobalGerman MsgGlobalSwarmingTypes = "Schwarmtrieb Typen"
+renderGlobalGerman MsgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen"
+renderGlobalGerman MsgGlobalDeleteSwarmingType = "Schwarmtrieb Typ löschen"
+renderGlobalGerman MsgGlobalEditSwarmingType = "Schwarmtrieb Typ bearbeiten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -752,6 +775,10 @@ renderGlobalEnglish MsgGlobalRunningTypes = "Running types"
 renderGlobalEnglish MsgGlobalAddRunningType = "Add running type"
 renderGlobalEnglish MsgGlobalDeleteRunningType = "Delete running type"
 renderGlobalEnglish MsgGlobalEditRunningType = "Edit running type"
+renderGlobalEnglish MsgGlobalSwarmingTypes = "Swarming types"
+renderGlobalEnglish MsgGlobalAddSwarmingType = "Add swarming type"
+renderGlobalEnglish MsgGlobalDeleteSwarmingType = "Delete swarming type"
+renderGlobalEnglish MsgGlobalEditSwarmingType = "Edit swarming type"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -795,6 +822,10 @@ data Translation = Translation
   , msgGlobalAddRunningType :: Maybe Text
   , msgGlobalDeleteRunningType :: Maybe Text
   , msgGlobalEditRunningType :: Maybe Text
+  , msgGlobalSwarmingTypes :: Maybe Text
+  , msgGlobalAddSwarmingType :: Maybe Text
+  , msgGlobalDeleteSwarmingType :: Maybe Text
+  , msgGlobalEditSwarmingType :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -817,6 +848,8 @@ data Translation = Translation
   , msgTemperTypeSortIndex :: Maybe Text
   , msgRunningTypeName :: Maybe Text
   , msgRunningTypeSortIndex :: Maybe Text
+  , msgSwarmingTypeName :: Maybe Text
+  , msgSwarmingTypeSortIndex :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -864,6 +897,10 @@ translationDe = Translation
   , msgGlobalAddRunningType = Just "Wabensitz Typ hinzufügen"
   , msgGlobalDeleteRunningType = Just "Wabensitz Typ löschen"
   , msgGlobalEditRunningType = Just "Wabensitz Typ bearbeiten"
+  , msgGlobalSwarmingTypes = Just "Schwarmtrieb Typen"
+  , msgGlobalAddSwarmingType = Just "Schwarmtrieb Typ hinzufügen"
+  , msgGlobalDeleteSwarmingType = Just "Schwarmtrieb Typ löschen"
+  , msgGlobalEditSwarmingType = Just "Schwarmtrieb Typ bearbeiten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -886,6 +923,8 @@ translationDe = Translation
   , msgTemperTypeSortIndex = Just "Sortierungs-Index"
   , msgRunningTypeName = Just "Name"
   , msgRunningTypeSortIndex = Just "Sortierungs-Index"
+  , msgSwarmingTypeName = Just "Name"
+  , msgSwarmingTypeSortIndex = Just "Sortierungs-Index"
   }
 
 translationEn :: Translation
@@ -931,6 +970,10 @@ translationEn = Translation
   , msgGlobalAddRunningType = Just "Add running type"
   , msgGlobalDeleteRunningType = Just "Delete running type"
   , msgGlobalEditRunningType = Just "Edit running type"
+  , msgGlobalSwarmingTypes = Just "Swarming types"
+  , msgGlobalAddSwarmingType = Just "Add swarming type"
+  , msgGlobalDeleteSwarmingType = Just "Delete swarming type"
+  , msgGlobalEditSwarmingType = Just "Edit swarming type"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -953,6 +996,8 @@ translationEn = Translation
   , msgTemperTypeSortIndex = Just "Sort Index"
   , msgRunningTypeName = Just "Name"
   , msgRunningTypeSortIndex = Just "Sort Index"
+  , msgSwarmingTypeName = Just "Name"
+  , msgSwarmingTypeSortIndex = Just "Sort Index"
   }
 
 -- gen i18n global - end

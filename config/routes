@@ -38,6 +38,13 @@
   deleteRunningTypeForm/#RunningTypeId DeleteRunningTypeFormR GET
   deleteRunningType/#RunningTypeId DeleteRunningTypeR POST
 
+  addSwarmingTypeForm AddSwarmingTypeFormR GET
+  addSwarmingType AddSwarmingTypeR POST
+  editSwarmingTypeForm/#SwarmingTypeId EditSwarmingTypeFormR GET
+  editSwarmingType/#SwarmingTypeId EditSwarmingTypeR POST
+  deleteSwarmingTypeForm/#SwarmingTypeId DeleteSwarmingTypeFormR GET
+  deleteSwarmingType/#SwarmingTypeId DeleteSwarmingTypeR POST
+
 /hiverec HiverecR:
   home HiverecHomeR GET
   riotTags RiotTagsR GET
