@@ -108,7 +108,7 @@ Inspection json
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
-    UniqueInspectionDate date
+    UniqueInspectionHiveDate hiveId date
 
 
 InspectionHistory
