@@ -33,12 +33,14 @@ getAdminPageDataJsonR = do
   mainNavItems <- mainNavData user MainNavAdmin
   jDataUsers <- userListJDataEnts
   jDataConfigs <- configListJDataEnts
+  jDataTemperTypes <- temperTypeListJDataEnts
   let pages =
         defaultDataPages
         { jDataPageAdmin =
             Just $ JDataPageAdmin
             { jDataPageAdminUsers = jDataUsers
             , jDataPageAdminConfigs = jDataConfigs
+            , jDataPageAdminTemperTypes = jDataTemperTypes
             }
         }
   msgHome <- localizedMsg MsgGlobalHome
@@ -108,4 +110,24 @@ loadConfigListTuples = do
   tuples <- E.select $ E.from $ \(config) -> do
     E.orderBy [E.asc (config E.^. ConfigId)]
     return (config)
+  return tuples
+
+temperTypeListJDataEnts :: Handler [JDataTemperType]
+temperTypeListJDataEnts = do
+  urlRenderer <- getUrlRender
+  temperTypeTuples <- runDB loadTemperTypeListTuples
+  let jTemperTypeList = map (\(temperTypeEnt@(Entity temperTypeId _)) ->
+                                 JDataTemperType
+                                { jDataTemperTypeEnt = temperTypeEnt
+                                , jDataTemperTypeEditFormUrl = urlRenderer $ AdminR $ EditTemperTypeFormR temperTypeId
+                                , jDataTemperTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteTemperTypeFormR temperTypeId
+                                }
+                              ) temperTypeTuples
+  return jTemperTypeList
+
+loadTemperTypeListTuples :: YesodDB App [(Entity TemperType)]
+loadTemperTypeListTuples = do
+  tuples <- E.select $ E.from $ \(temperType) -> do
+    E.orderBy [E.asc (temperType E.^. TemperTypeSortIndex)]
+    return (temperType)
   return tuples

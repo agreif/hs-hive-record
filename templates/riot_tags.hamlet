@@ -202,6 +202,9 @@
           {parent.data.translation.msgGlobalConfigurations}
       <li>
         <a href="#">
+          {parent.data.translation.msgGlobalTemperTypes}
+      <li>
+        <a href="#">
           {parent.data.translation.msgGlobalTestMail}
     <ul .uk-switcher .uk-margin>
       <li>
@@ -268,6 +271,29 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditConfig}" uk-tooltip onclick="{editConfig}">
                   <span uk-icon="icon: pencil">
       <li>
+        <!-- temperType list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgTemperTypeName}
+              <th>
+                {parent.data.translation.msgTemperTypeSortIndex}
+              <th .uk-align-right>
+                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddTemperType}" uk-tooltip onclick="{addTemperType}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{parent.data.pages.admin.temperTypes}">
+              <td .uk-table-link>
+                <a onclick="{editTemperType}" .uk-link-reset>{entity.name}
+              <td .uk-table-link>
+                <a onclick="{editTemperType}" .uk-link-reset>{entity.sortIndex}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteTemperType}" uk-tooltip onclick="{deleteTemperType}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditTemperType}" uk-tooltip onclick="{editTemperType}">
+                  <span uk-icon="icon: pencil">
+      <li>
         <!-- test mail -->
         <button .uk-button .uk-button-primary onclick="{sendTestMail}">
           {parent.data.translation.msgGlobalSendTestMail}
@@ -286,6 +312,18 @@
     \ }
     \ editConfig(event) {
     \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ addTemperType(event) {
+    \   parent.tag.showModalForm("@{AdminR AddTemperTypeFormR}")
+    \   event.currentTarget.blur()
+    \ }
+    \ editTemperType(event) {
+    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteTemperType(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ sendTestMail(event) {

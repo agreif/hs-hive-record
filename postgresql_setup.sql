@@ -117,4 +117,27 @@ $function$;
 
 create trigger audit_inspection after insert or update on public.inspection for each row execute procedure public.process_audit_inspection();
 
+
+
+drop function public.process_audit_temper_type() cascade;
+create or replace function public.process_audit_temper_type()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('temper_type_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into temper_type_history
+                       (id, name, sort_index, version, created_at, created_by, updated_at, updated_by)
+                       values
+                       (new.id, new.name, new.sort_index, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                return new;
+            end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_temper_type after insert or update on public.temper_type for each row execute procedure public.process_audit_temper_type();
+
 -- gen triggers - end

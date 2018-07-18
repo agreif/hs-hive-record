@@ -184,11 +184,13 @@ instance ToJSON JDataPageHome where
 data JDataPageAdmin = JDataPageAdmin
   { jDataPageAdminUsers :: [JDataUser]
   , jDataPageAdminConfigs :: [JDataConfig]
+  , jDataPageAdminTemperTypes :: [JDataTemperType]
   }
 instance ToJSON JDataPageAdmin where
   toJSON o = object
     [ "users" .= jDataPageAdminUsers o
     , "configs" .= jDataPageAdminConfigs o
+    , "temperTypes" .= jDataPageAdminTemperTypes o
     ]
 
 
@@ -290,6 +292,17 @@ instance ToJSON JDataInspection where
     ]
 
 
+data JDataTemperType = JDataTemperType
+  { jDataTemperTypeEnt :: Entity TemperType
+  , jDataTemperTypeEditFormUrl :: Text
+  , jDataTemperTypeDeleteFormUrl :: Text
+  }
+instance ToJSON JDataTemperType where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o)
+    , "editFormUrl" .= jDataTemperTypeEditFormUrl o
+    , "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
+    ]
 
 
 
@@ -623,6 +636,10 @@ data MsgGlobal =
   | MsgGlobalAddInspection
   | MsgGlobalDeleteInspection
   | MsgGlobalEditInspection
+  | MsgGlobalTemperTypes
+  | MsgGlobalAddTemperType
+  | MsgGlobalDeleteTemperType
+  | MsgGlobalEditTemperType
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -665,6 +682,10 @@ renderGlobalGerman MsgGlobalInspections = "Durchsichten"
 renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
 renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
 renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
+renderGlobalGerman MsgGlobalTemperTypes = "Sanftmut Typen"
+renderGlobalGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
+renderGlobalGerman MsgGlobalDeleteTemperType = "Sanftmut Typ löschen"
+renderGlobalGerman MsgGlobalEditTemperType = "Sanftmut Typ bearbeiten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -700,6 +721,10 @@ renderGlobalEnglish MsgGlobalInspections = "Inspections"
 renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
 renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
 renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
+renderGlobalEnglish MsgGlobalTemperTypes = "Temper types"
+renderGlobalEnglish MsgGlobalAddTemperType = "Add temper type"
+renderGlobalEnglish MsgGlobalDeleteTemperType = "Delete temper type"
+renderGlobalEnglish MsgGlobalEditTemperType = "Edit temper type"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -735,6 +760,10 @@ data Translation = Translation
   , msgGlobalAddInspection :: Maybe Text
   , msgGlobalDeleteInspection :: Maybe Text
   , msgGlobalEditInspection :: Maybe Text
+  , msgGlobalTemperTypes :: Maybe Text
+  , msgGlobalAddTemperType :: Maybe Text
+  , msgGlobalDeleteTemperType :: Maybe Text
+  , msgGlobalEditTemperType :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -753,6 +782,8 @@ data Translation = Translation
   , msgInspectionHiveId :: Maybe Text
   , msgInspectionDate :: Maybe Text
   , msgInspectionNotes :: Maybe Text
+  , msgTemperTypeName :: Maybe Text
+  , msgTemperTypeSortIndex :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -792,6 +823,10 @@ translationDe = Translation
   , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
   , msgGlobalDeleteInspection = Just "Durchsicht löschen"
   , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
+  , msgGlobalTemperTypes = Just "Sanftmut Typen"
+  , msgGlobalAddTemperType = Just "Sanftmut Typ hinzufügen"
+  , msgGlobalDeleteTemperType = Just "Sanftmut Typ löschen"
+  , msgGlobalEditTemperType = Just "Sanftmut Typ bearbeiten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -810,6 +845,8 @@ translationDe = Translation
   , msgInspectionHiveId = Nothing
   , msgInspectionDate = Just "Datum"
   , msgInspectionNotes = Just "Notizen"
+  , msgTemperTypeName = Just "Name"
+  , msgTemperTypeSortIndex = Just "Sortierungs-Index"
   }
 
 translationEn :: Translation
@@ -847,6 +884,10 @@ translationEn = Translation
   , msgGlobalAddInspection = Just "Add inspection"
   , msgGlobalDeleteInspection = Just "Delete inspection"
   , msgGlobalEditInspection = Just "Edit inspection"
+  , msgGlobalTemperTypes = Just "Temper types"
+  , msgGlobalAddTemperType = Just "Add temper type"
+  , msgGlobalDeleteTemperType = Just "Delete temper type"
+  , msgGlobalEditTemperType = Just "Edit temper type"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -865,6 +906,8 @@ translationEn = Translation
   , msgInspectionHiveId = Nothing
   , msgInspectionDate = Just "Date"
   , msgInspectionNotes = Just "Notes"
+  , msgTemperTypeName = Just "Name"
+  , msgTemperTypeSortIndex = Just "Sort Index"
   }
 
 -- gen i18n global - end

@@ -24,6 +24,13 @@
   sendTestMailForm AddTestmailFormR GET
   sendTestMail AddTestmailR POST
 
+  addTemperTypeForm AddTemperTypeFormR GET
+  addTemperType AddTemperTypeR POST
+  editTemperTypeForm/#TemperTypeId EditTemperTypeFormR GET
+  editTemperType/#TemperTypeId EditTemperTypeR POST
+  deleteTemperTypeForm/#TemperTypeId DeleteTemperTypeFormR GET
+  deleteTemperType/#TemperTypeId DeleteTemperTypeR POST
+
 /hiverec HiverecR:
   home HiverecHomeR GET
   riotTags RiotTagsR GET
