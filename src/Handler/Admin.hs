@@ -34,6 +34,7 @@ getAdminPageDataJsonR = do
   jDataUsers <- userListJDataEnts
   jDataConfigs <- configListJDataEnts
   jDataTemperTypes <- temperTypeListJDataEnts
+  jDataRunningTypes <- runningTypeListJDataEnts
   let pages =
         defaultDataPages
         { jDataPageAdmin =
@@ -41,6 +42,7 @@ getAdminPageDataJsonR = do
             { jDataPageAdminUsers = jDataUsers
             , jDataPageAdminConfigs = jDataConfigs
             , jDataPageAdminTemperTypes = jDataTemperTypes
+            , jDataPageAdminRunningTypes = jDataRunningTypes
             }
         }
   msgHome <- localizedMsg MsgGlobalHome
@@ -130,4 +132,24 @@ loadTemperTypeListTuples = do
   tuples <- E.select $ E.from $ \(temperType) -> do
     E.orderBy [E.asc (temperType E.^. TemperTypeSortIndex)]
     return (temperType)
+  return tuples
+
+runningTypeListJDataEnts :: Handler [JDataRunningType]
+runningTypeListJDataEnts = do
+  urlRenderer <- getUrlRender
+  runningTypeTuples <- runDB loadRunningTypeListTuples
+  let jRunningTypeList = map (\(runningTypeEnt@(Entity runningTypeId _)) ->
+                                 JDataRunningType
+                                { jDataRunningTypeEnt = runningTypeEnt
+                                , jDataRunningTypeEditFormUrl = urlRenderer $ AdminR $ EditRunningTypeFormR runningTypeId
+                                , jDataRunningTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteRunningTypeFormR runningTypeId
+                                }
+                              ) runningTypeTuples
+  return jRunningTypeList
+
+loadRunningTypeListTuples :: YesodDB App [(Entity RunningType)]
+loadRunningTypeListTuples = do
+  tuples <- E.select $ E.from $ \(runningType) -> do
+    E.orderBy [E.asc (runningType E.^. RunningTypeSortIndex)]
+    return (runningType)
   return tuples

@@ -31,6 +31,13 @@
   deleteTemperTypeForm/#TemperTypeId DeleteTemperTypeFormR GET
   deleteTemperType/#TemperTypeId DeleteTemperTypeR POST
 
+  addRunningTypeForm AddRunningTypeFormR GET
+  addRunningType AddRunningTypeR POST
+  editRunningTypeForm/#RunningTypeId EditRunningTypeFormR GET
+  editRunningType/#RunningTypeId EditRunningTypeR POST
+  deleteRunningTypeForm/#RunningTypeId DeleteRunningTypeFormR GET
+  deleteRunningType/#RunningTypeId DeleteRunningTypeR POST
+
 /hiverec HiverecR:
   home HiverecHomeR GET
   riotTags RiotTagsR GET

@@ -185,12 +185,14 @@ data JDataPageAdmin = JDataPageAdmin
   { jDataPageAdminUsers :: [JDataUser]
   , jDataPageAdminConfigs :: [JDataConfig]
   , jDataPageAdminTemperTypes :: [JDataTemperType]
+  , jDataPageAdminRunningTypes :: [JDataRunningType]
   }
 instance ToJSON JDataPageAdmin where
   toJSON o = object
     [ "users" .= jDataPageAdminUsers o
     , "configs" .= jDataPageAdminConfigs o
     , "temperTypes" .= jDataPageAdminTemperTypes o
+    , "runningTypes" .= jDataPageAdminRunningTypes o
     ]
 
 
@@ -302,6 +304,19 @@ instance ToJSON JDataTemperType where
     [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o)
     , "editFormUrl" .= jDataTemperTypeEditFormUrl o
     , "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
+    ]
+
+
+data JDataRunningType = JDataRunningType
+  { jDataRunningTypeEnt :: Entity RunningType
+  , jDataRunningTypeEditFormUrl :: Text
+  , jDataRunningTypeDeleteFormUrl :: Text
+  }
+instance ToJSON JDataRunningType where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataRunningTypeEnt o)
+    , "editFormUrl" .= jDataRunningTypeEditFormUrl o
+    , "deleteFormUrl" .= jDataRunningTypeDeleteFormUrl o
     ]
 
 
@@ -640,6 +655,10 @@ data MsgGlobal =
   | MsgGlobalAddTemperType
   | MsgGlobalDeleteTemperType
   | MsgGlobalEditTemperType
+  | MsgGlobalRunningTypes
+  | MsgGlobalAddRunningType
+  | MsgGlobalDeleteRunningType
+  | MsgGlobalEditRunningType
 
 instance RenderMessage App MsgGlobal where
   renderMessage _ []        = renderGlobalGerman
@@ -686,6 +705,10 @@ renderGlobalGerman MsgGlobalTemperTypes = "Sanftmut Typen"
 renderGlobalGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
 renderGlobalGerman MsgGlobalDeleteTemperType = "Sanftmut Typ löschen"
 renderGlobalGerman MsgGlobalEditTemperType = "Sanftmut Typ bearbeiten"
+renderGlobalGerman MsgGlobalRunningTypes = "Wabensitz Typen"
+renderGlobalGerman MsgGlobalAddRunningType = "Wabensitz Typ hinzufügen"
+renderGlobalGerman MsgGlobalDeleteRunningType = "Wabensitz Typ löschen"
+renderGlobalGerman MsgGlobalEditRunningType = "Wabensitz Typ bearbeiten"
 
 renderGlobalEnglish :: MsgGlobal -> Text
 renderGlobalEnglish MsgGlobalHome = "Home"
@@ -725,6 +748,10 @@ renderGlobalEnglish MsgGlobalTemperTypes = "Temper types"
 renderGlobalEnglish MsgGlobalAddTemperType = "Add temper type"
 renderGlobalEnglish MsgGlobalDeleteTemperType = "Delete temper type"
 renderGlobalEnglish MsgGlobalEditTemperType = "Edit temper type"
+renderGlobalEnglish MsgGlobalRunningTypes = "Running types"
+renderGlobalEnglish MsgGlobalAddRunningType = "Add running type"
+renderGlobalEnglish MsgGlobalDeleteRunningType = "Delete running type"
+renderGlobalEnglish MsgGlobalEditRunningType = "Edit running type"
 
 data Translation = Translation
   { msgGlobalHome :: Maybe Text
@@ -764,6 +791,10 @@ data Translation = Translation
   , msgGlobalAddTemperType :: Maybe Text
   , msgGlobalDeleteTemperType :: Maybe Text
   , msgGlobalEditTemperType :: Maybe Text
+  , msgGlobalRunningTypes :: Maybe Text
+  , msgGlobalAddRunningType :: Maybe Text
+  , msgGlobalDeleteRunningType :: Maybe Text
+  , msgGlobalEditRunningType :: Maybe Text
   , msgUserIdent :: Maybe Text
   , msgUserPassword :: Maybe Text
   , msgUserEmail :: Maybe Text
@@ -784,6 +815,8 @@ data Translation = Translation
   , msgInspectionNotes :: Maybe Text
   , msgTemperTypeName :: Maybe Text
   , msgTemperTypeSortIndex :: Maybe Text
+  , msgRunningTypeName :: Maybe Text
+  , msgRunningTypeSortIndex :: Maybe Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -827,6 +860,10 @@ translationDe = Translation
   , msgGlobalAddTemperType = Just "Sanftmut Typ hinzufügen"
   , msgGlobalDeleteTemperType = Just "Sanftmut Typ löschen"
   , msgGlobalEditTemperType = Just "Sanftmut Typ bearbeiten"
+  , msgGlobalRunningTypes = Just "Wabensitz Typen"
+  , msgGlobalAddRunningType = Just "Wabensitz Typ hinzufügen"
+  , msgGlobalDeleteRunningType = Just "Wabensitz Typ löschen"
+  , msgGlobalEditRunningType = Just "Wabensitz Typ bearbeiten"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Passwort"
   , msgUserEmail = Just "Email"
@@ -847,6 +884,8 @@ translationDe = Translation
   , msgInspectionNotes = Just "Notizen"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sortierungs-Index"
+  , msgRunningTypeName = Just "Name"
+  , msgRunningTypeSortIndex = Just "Sortierungs-Index"
   }
 
 translationEn :: Translation
@@ -888,6 +927,10 @@ translationEn = Translation
   , msgGlobalAddTemperType = Just "Add temper type"
   , msgGlobalDeleteTemperType = Just "Delete temper type"
   , msgGlobalEditTemperType = Just "Edit temper type"
+  , msgGlobalRunningTypes = Just "Running types"
+  , msgGlobalAddRunningType = Just "Add running type"
+  , msgGlobalDeleteRunningType = Just "Delete running type"
+  , msgGlobalEditRunningType = Just "Edit running type"
   , msgUserIdent = Just "Login"
   , msgUserPassword = Just "Password"
   , msgUserEmail = Just "Email"
@@ -908,6 +951,8 @@ translationEn = Translation
   , msgInspectionNotes = Just "Notes"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sort Index"
+  , msgRunningTypeName = Just "Name"
+  , msgRunningTypeSortIndex = Just "Sort Index"
   }
 
 -- gen i18n global - end

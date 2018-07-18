@@ -205,6 +205,9 @@
           {parent.data.translation.msgGlobalTemperTypes}
       <li>
         <a href="#">
+          {parent.data.translation.msgGlobalRunningTypes}
+      <li>
+        <a href="#">
           {parent.data.translation.msgGlobalTestMail}
     <ul .uk-switcher .uk-margin>
       <li>
@@ -294,6 +297,29 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditTemperType}" uk-tooltip onclick="{editTemperType}">
                   <span uk-icon="icon: pencil">
       <li>
+        <!-- runningType list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgRunningTypeName}
+              <th>
+                {parent.data.translation.msgRunningTypeSortIndex}
+              <th .uk-align-right>
+                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddRunningType}" uk-tooltip onclick="{addRunningType}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{parent.data.pages.admin.runningTypes}">
+              <td .uk-table-link>
+                <a onclick="{editRunningType}" .uk-link-reset>{entity.name}
+              <td .uk-table-link>
+                <a onclick="{editRunningType}" .uk-link-reset>{entity.sortIndex}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteRunningType}" uk-tooltip onclick="{deleteRunningType}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditRunningType}" uk-tooltip onclick="{editRunningType}">
+                  <span uk-icon="icon: pencil">
+      <li>
         <!-- test mail -->
         <button .uk-button .uk-button-primary onclick="{sendTestMail}">
           {parent.data.translation.msgGlobalSendTestMail}
@@ -323,6 +349,18 @@
     \   event.currentTarget.blur()
     \ }
     \ deleteTemperType(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ addRunningType(event) {
+    \   parent.tag.showModalForm("@{AdminR AddRunningTypeFormR}")
+    \   event.currentTarget.blur()
+    \ }
+    \ editRunningType(event) {
+    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteRunningType(event) {
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }

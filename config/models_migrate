@@ -144,4 +144,25 @@ TemperTypeHistory
     updatedAt UTCTime
     updatedBy Text
 
+RunningType json
+    name Text
+    sortIndex Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+RunningTypeHistory
+    Id sql=vid
+    id Int MigrationOnly
+    name Text
+    sortIndex Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
 -- gen models - end
