@@ -1094,23 +1094,340 @@ context =
                   , bFieldEditViewDefault = Nothing
                   }
               }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            , BField
+              { bFieldName = "queenSeen"
+              , bFieldLabelDe = Just "Kö ges."
+              , bFieldLabelEn = Just "Queen seen"
+              , bFieldHsType = "Bool"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "checkBoxField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue = "uk-checkbox"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue = "uk-checkbox"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "beeCoveredFrames"
+              , bFieldLabelDe = Just "Bel. Waben"
+              , bFieldLabelEn = Just "Bee covered frames"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "totalFrames"
+              , bFieldLabelDe = Just "Ges. Waben"
+              , bFieldLabelEn = Just "Total frames"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "broodFrames"
+              , bFieldLabelDe = Just "Brutwaben"
+              , bFieldLabelEn = Just "Brood frames"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "pollenFrames"
+              , bFieldLabelDe = Just "Pollenwaben"
+              , bFieldLabelEn = Just "Pollen frames"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "honeyFrames"
+              , bFieldLabelDe = Just "Honigwaben"
+              , bFieldLabelEn = Just "Honey frames"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "miteFall"
+              , bFieldLabelDe = Just "Milbenfall"
+              , bFieldLabelEn = Just "Mite fall"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = True
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "intField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = False
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = False
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-medium uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "feeding"
+              , bFieldLabelDe = Just "Fütterung"
+              , bFieldLabelEn = Just "Feeding"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = True
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "textField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = False
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = False
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue =
+                            "uk-form-width-large uk-input uk-form-small"
+                        }
+                      ]
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
             , BField
               { bFieldName = "notes"
               , bFieldLabelDe = Just "Notizen"

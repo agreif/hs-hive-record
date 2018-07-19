@@ -864,6 +864,14 @@ data Translation = Translation
   , msgInspectionTemperTypeId :: Maybe Text
   , msgInspectionRunningTypeId :: Maybe Text
   , msgInspectionSwarmingTypeId :: Maybe Text
+  , msgInspectionQueenSeen :: Maybe Text
+  , msgInspectionBeeCoveredFrames :: Maybe Text
+  , msgInspectionTotalFrames :: Maybe Text
+  , msgInspectionBroodFrames :: Maybe Text
+  , msgInspectionPollenFrames :: Maybe Text
+  , msgInspectionHoneyFrames :: Maybe Text
+  , msgInspectionMiteFall :: Maybe Text
+  , msgInspectionFeeding :: Maybe Text
   , msgInspectionNotes :: Maybe Text
   , msgTemperTypeName :: Maybe Text
   , msgTemperTypeSortIndex :: Maybe Text
@@ -945,6 +953,14 @@ translationDe = Translation
   , msgInspectionTemperTypeId = Just "Sanftmut"
   , msgInspectionRunningTypeId = Just "Wabensitz"
   , msgInspectionSwarmingTypeId = Just "Schwarmtrieb"
+  , msgInspectionQueenSeen = Just "Kö ges."
+  , msgInspectionBeeCoveredFrames = Just "Bel. Waben"
+  , msgInspectionTotalFrames = Just "Ges. Waben"
+  , msgInspectionBroodFrames = Just "Brutwaben"
+  , msgInspectionPollenFrames = Just "Pollenwaben"
+  , msgInspectionHoneyFrames = Just "Honigwaben"
+  , msgInspectionMiteFall = Just "Milbenfall"
+  , msgInspectionFeeding = Just "Fütterung"
   , msgInspectionNotes = Just "Notizen"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sortierungs-Index"
@@ -1024,6 +1040,14 @@ translationEn = Translation
   , msgInspectionTemperTypeId = Just "Temper"
   , msgInspectionRunningTypeId = Just "Running Beh."
   , msgInspectionSwarmingTypeId = Just "swarming Mood"
+  , msgInspectionQueenSeen = Just "Queen seen"
+  , msgInspectionBeeCoveredFrames = Just "Bee covered frames"
+  , msgInspectionTotalFrames = Just "Total frames"
+  , msgInspectionBroodFrames = Just "Brood frames"
+  , msgInspectionPollenFrames = Just "Pollen frames"
+  , msgInspectionHoneyFrames = Just "Honey frames"
+  , msgInspectionMiteFall = Just "Mite fall"
+  , msgInspectionFeeding = Just "Feeding"
   , msgInspectionNotes = Just "Notes"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sort Index"

@@ -105,9 +105,9 @@ as $function$
        if to_regclass('inspection_history') is not null then
            if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
                 insert into inspection_history
-                       (id, hive_id, date, temper_type_id, running_type_id, swarming_type_id, notes, version, created_at, created_by, updated_at, updated_by)
+                       (id, hive_id, date, temper_type_id, running_type_id, swarming_type_id, queen_seen, bee_covered_frames, total_frames, brood_frames, pollen_frames, honey_frames, mite_fall, feeding, notes, version, created_at, created_by, updated_at, updated_by)
                        values
-                       (new.id, new.hive_id, new.date, new.temper_type_id, new.running_type_id, new.swarming_type_id, new.notes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                       (new.id, new.hive_id, new.date, new.temper_type_id, new.running_type_id, new.swarming_type_id, new.queen_seen, new.bee_covered_frames, new.total_frames, new.brood_frames, new.pollen_frames, new.honey_frames, new.mite_fall, new.feeding, new.notes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
                 return new;
             end if;
        end if;

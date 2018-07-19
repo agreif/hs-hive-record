@@ -557,6 +557,22 @@
               <th>
                 {parent.data.translation.msgGlobalSwarming}
               <th>
+                {parent.data.translation.msgInspectionQueenSeen}
+              <th>
+                {parent.data.translation.msgInspectionBeeCoveredFrames}
+              <th>
+                {parent.data.translation.msgInspectionTotalFrames}
+              <th>
+                {parent.data.translation.msgInspectionBroodFrames}
+              <th>
+                {parent.data.translation.msgInspectionPollenFrames}
+              <th>
+                {parent.data.translation.msgInspectionHoneyFrames}
+              <th>
+                {parent.data.translation.msgInspectionMiteFall}
+              <th>
+                {parent.data.translation.msgInspectionFeeding}
+              <th>
                 {parent.data.translation.msgInspectionNotes}
               <th .uk-align-right>
                 <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
@@ -575,6 +591,30 @@
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {swarmingTypeEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  <span uk-icon="icon: check" if="{inspectionEnt.queenSeen}">
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.beeCoveredFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.totalFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.broodFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.pollenFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.honeyFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.miteFall}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.feeding}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   <span .textarea-wrap>

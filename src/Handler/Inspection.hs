@@ -69,6 +69,14 @@ defaultAddInspection hiveId = do
     , inspectionTemperTypeId = temperTypeId
     , inspectionRunningTypeId = runningTypeId
     , inspectionSwarmingTypeId = swarmingTypeId
+    , inspectionQueenSeen = False
+    , inspectionBeeCoveredFrames = 0
+    , inspectionTotalFrames = 0
+    , inspectionBroodFrames = 0
+    , inspectionPollenFrames = 0
+    , inspectionHoneyFrames = 0
+    , inspectionMiteFall = Nothing
+    , inspectionFeeding = Nothing
     , inspectionNotes = Just $ Textarea defaultNoteText
     , inspectionVersion = 1
     , inspectionCreatedAt = now
@@ -84,11 +92,11 @@ defaultAddInspection hiveId = do
     defaultRunningTypeId :: YesodDB App RunningTypeId
     defaultRunningTypeId = do
       runningTypeEnts <- selectList ([] :: [Filter RunningType]) []
-      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (runningTypeSortIndex tt, ttId)) runningTypeEnts
+      return $ snd $ L.head $ L.sort $ L.map (\(Entity rtId rt) -> (runningTypeSortIndex rt, rtId)) runningTypeEnts
     defaultSwarmingTypeId :: YesodDB App SwarmingTypeId
     defaultSwarmingTypeId = do
       swarmingTypeEnts <- selectList ([] :: [Filter SwarmingType]) []
-      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (swarmingTypeSortIndex tt, ttId)) swarmingTypeEnts
+      return $ snd $ L.head $ L.sort $ L.map (\(Entity stId st) -> (swarmingTypeSortIndex st, stId)) swarmingTypeEnts
 
 -- gen data add - start
 data VAddInspection = VAddInspection
@@ -96,6 +104,14 @@ data VAddInspection = VAddInspection
   , vAddInspectionTemperTypeId :: TemperTypeId
   , vAddInspectionRunningTypeId :: RunningTypeId
   , vAddInspectionSwarmingTypeId :: SwarmingTypeId
+  , vAddInspectionQueenSeen :: Bool
+  , vAddInspectionBeeCoveredFrames :: Int
+  , vAddInspectionTotalFrames :: Int
+  , vAddInspectionBroodFrames :: Int
+  , vAddInspectionPollenFrames :: Int
+  , vAddInspectionHoneyFrames :: Int
+  , vAddInspectionMiteFall :: Maybe Int
+  , vAddInspectionFeeding :: Maybe Text
   , vAddInspectionNotes :: Maybe Textarea
   }
 -- gen data add - end
@@ -130,6 +146,14 @@ postAddInspectionR hiveId = do
             , inspectionTemperTypeId = vAddInspectionTemperTypeId vAddInspection
             , inspectionRunningTypeId = vAddInspectionRunningTypeId vAddInspection
             , inspectionSwarmingTypeId = vAddInspectionSwarmingTypeId vAddInspection
+            , inspectionQueenSeen = vAddInspectionQueenSeen vAddInspection
+            , inspectionBeeCoveredFrames = vAddInspectionBeeCoveredFrames vAddInspection
+            , inspectionTotalFrames = vAddInspectionTotalFrames vAddInspection
+            , inspectionBroodFrames = vAddInspectionBroodFrames vAddInspection
+            , inspectionPollenFrames = vAddInspectionPollenFrames vAddInspection
+            , inspectionHoneyFrames = vAddInspectionHoneyFrames vAddInspection
+            , inspectionMiteFall = vAddInspectionMiteFall vAddInspection
+            , inspectionFeeding = vAddInspectionFeeding vAddInspection
             , inspectionNotes = vAddInspectionNotes vAddInspection
             , inspectionVersion = 1
             , inspectionCreatedAt = curTime
@@ -160,10 +184,34 @@ vAddInspectionForm maybeInspection extra = do
   (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
     swarmingTypeIdFs
     (inspectionSwarmingTypeId <$> maybeInspection)
+  (queenSeenResult, queenSeenView) <- mreq checkBoxField
+    queenSeenFs
+    (inspectionQueenSeen <$> maybeInspection)
+  (beeCoveredFramesResult, beeCoveredFramesView) <- mreq intField
+    beeCoveredFramesFs
+    (inspectionBeeCoveredFrames <$> maybeInspection)
+  (totalFramesResult, totalFramesView) <- mreq intField
+    totalFramesFs
+    (inspectionTotalFrames <$> maybeInspection)
+  (broodFramesResult, broodFramesView) <- mreq intField
+    broodFramesFs
+    (inspectionBroodFrames <$> maybeInspection)
+  (pollenFramesResult, pollenFramesView) <- mreq intField
+    pollenFramesFs
+    (inspectionPollenFrames <$> maybeInspection)
+  (honeyFramesResult, honeyFramesView) <- mreq intField
+    honeyFramesFs
+    (inspectionHoneyFrames <$> maybeInspection)
+  (miteFallResult, miteFallView) <- mopt intField
+    miteFallFs
+    (inspectionMiteFall <$> maybeInspection)
+  (feedingResult, feedingView) <- mopt textField
+    feedingFs
+    (inspectionFeeding <$> maybeInspection)
   (notesResult, notesView) <- mopt textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
-  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> notesResult
+  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> totalFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> miteFallResult <*> feedingResult <*> notesResult
   let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
@@ -189,6 +237,54 @@ vAddInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput swarmingTypeIdView}
         $maybe err <- fvErrors swarmingTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
+      <div .uk-form-controls>
+        ^{fvInput queenSeenView}
+        $maybe err <- fvErrors queenSeenView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
+      <div .uk-form-controls>
+        ^{fvInput beeCoveredFramesView}
+        $maybe err <- fvErrors beeCoveredFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors totalFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors totalFramesView:.uk-text-danger for=#{fvId totalFramesView}>#{fvLabel totalFramesView}
+      <div .uk-form-controls>
+        ^{fvInput totalFramesView}
+        $maybe err <- fvErrors totalFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
+      <div .uk-form-controls>
+        ^{fvInput broodFramesView}
+        $maybe err <- fvErrors broodFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors pollenFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors pollenFramesView:.uk-text-danger for=#{fvId pollenFramesView}>#{fvLabel pollenFramesView}
+      <div .uk-form-controls>
+        ^{fvInput pollenFramesView}
+        $maybe err <- fvErrors pollenFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
+      <div .uk-form-controls>
+        ^{fvInput honeyFramesView}
+        $maybe err <- fvErrors honeyFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors miteFallView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors miteFallView:.uk-text-danger for=#{fvId miteFallView}>#{fvLabel miteFallView}
+      <div .uk-form-controls>
+        ^{fvInput miteFallView}
+        $maybe err <- fvErrors miteFallView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
+      <div .uk-form-controls>
+        ^{fvInput feedingView}
+        $maybe err <- fvErrors feedingView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
@@ -231,6 +327,70 @@ vAddInspectionForm maybeInspection extra = do
       , fsName = Just "swarmingTypeId"
       , fsAttrs = [  ]
       }
+    queenSeenFs :: FieldSettings App
+    queenSeenFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionQueenSeen
+      , fsTooltip = Nothing
+      , fsId = Just "queenSeen"
+      , fsName = Just "queenSeen"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
+    beeCoveredFramesFs :: FieldSettings App
+    beeCoveredFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionBeeCoveredFrames
+      , fsTooltip = Nothing
+      , fsId = Just "beeCoveredFrames"
+      , fsName = Just "beeCoveredFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    totalFramesFs :: FieldSettings App
+    totalFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionTotalFrames
+      , fsTooltip = Nothing
+      , fsId = Just "totalFrames"
+      , fsName = Just "totalFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    broodFramesFs :: FieldSettings App
+    broodFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionBroodFrames
+      , fsTooltip = Nothing
+      , fsId = Just "broodFrames"
+      , fsName = Just "broodFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    pollenFramesFs :: FieldSettings App
+    pollenFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionPollenFrames
+      , fsTooltip = Nothing
+      , fsId = Just "pollenFrames"
+      , fsName = Just "pollenFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    honeyFramesFs :: FieldSettings App
+    honeyFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionHoneyFrames
+      , fsTooltip = Nothing
+      , fsId = Just "honeyFrames"
+      , fsName = Just "honeyFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    miteFallFs :: FieldSettings App
+    miteFallFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionMiteFall
+      , fsTooltip = Nothing
+      , fsId = Just "miteFall"
+      , fsName = Just "miteFall"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    feedingFs :: FieldSettings App
+    feedingFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionFeeding
+      , fsTooltip = Nothing
+      , fsId = Just "feeding"
+      , fsName = Just "feeding"
+      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
       { fsLabel = SomeMessage MsgAddInspectionNotes
@@ -245,6 +405,14 @@ data MsgAddInspection =
   | MsgAddInspectionTemperTypeId
   | MsgAddInspectionRunningTypeId
   | MsgAddInspectionSwarmingTypeId
+  | MsgAddInspectionQueenSeen
+  | MsgAddInspectionBeeCoveredFrames
+  | MsgAddInspectionTotalFrames
+  | MsgAddInspectionBroodFrames
+  | MsgAddInspectionPollenFrames
+  | MsgAddInspectionHoneyFrames
+  | MsgAddInspectionMiteFall
+  | MsgAddInspectionFeeding
   | MsgAddInspectionNotes
 
 instance RenderMessage App MsgAddInspection where
@@ -259,6 +427,14 @@ renderAddInspectionGerman MsgAddInspectionDate = "Datum"
 renderAddInspectionGerman MsgAddInspectionTemperTypeId = "Sanftmut"
 renderAddInspectionGerman MsgAddInspectionRunningTypeId = "Wabensitz"
 renderAddInspectionGerman MsgAddInspectionSwarmingTypeId = "Schwarmtrieb"
+renderAddInspectionGerman MsgAddInspectionQueenSeen = "Kö ges."
+renderAddInspectionGerman MsgAddInspectionBeeCoveredFrames = "Bel. Waben"
+renderAddInspectionGerman MsgAddInspectionTotalFrames = "Ges. Waben"
+renderAddInspectionGerman MsgAddInspectionBroodFrames = "Brutwaben"
+renderAddInspectionGerman MsgAddInspectionPollenFrames = "Pollenwaben"
+renderAddInspectionGerman MsgAddInspectionHoneyFrames = "Honigwaben"
+renderAddInspectionGerman MsgAddInspectionMiteFall = "Milbenfall"
+renderAddInspectionGerman MsgAddInspectionFeeding = "Fütterung"
 renderAddInspectionGerman MsgAddInspectionNotes = "Notizen"
 
 
@@ -267,6 +443,14 @@ renderAddInspectionEnglish MsgAddInspectionDate = "Date"
 renderAddInspectionEnglish MsgAddInspectionTemperTypeId = "Temper"
 renderAddInspectionEnglish MsgAddInspectionRunningTypeId = "Running Beh."
 renderAddInspectionEnglish MsgAddInspectionSwarmingTypeId = "swarming Mood"
+renderAddInspectionEnglish MsgAddInspectionQueenSeen = "Queen seen"
+renderAddInspectionEnglish MsgAddInspectionBeeCoveredFrames = "Bee covered frames"
+renderAddInspectionEnglish MsgAddInspectionTotalFrames = "Total frames"
+renderAddInspectionEnglish MsgAddInspectionBroodFrames = "Brood frames"
+renderAddInspectionEnglish MsgAddInspectionPollenFrames = "Pollen frames"
+renderAddInspectionEnglish MsgAddInspectionHoneyFrames = "Honey frames"
+renderAddInspectionEnglish MsgAddInspectionMiteFall = "Mite fall"
+renderAddInspectionEnglish MsgAddInspectionFeeding = "Feeding"
 renderAddInspectionEnglish MsgAddInspectionNotes = "Notes"
 
 -- gen add form - end
@@ -281,6 +465,14 @@ data VEditInspection = VEditInspection
   , vEditInspectionTemperTypeId :: TemperTypeId
   , vEditInspectionRunningTypeId :: RunningTypeId
   , vEditInspectionSwarmingTypeId :: SwarmingTypeId
+  , vEditInspectionQueenSeen :: Bool
+  , vEditInspectionBeeCoveredFrames :: Int
+  , vEditInspectionTotalFrames :: Int
+  , vEditInspectionBroodFrames :: Int
+  , vEditInspectionPollenFrames :: Int
+  , vEditInspectionHoneyFrames :: Int
+  , vEditInspectionMiteFall :: Maybe Int
+  , vEditInspectionFeeding :: Maybe Text
   , vEditInspectionNotes :: Maybe Textarea
   , vEditInspectionVersion :: Int
   }
@@ -315,6 +507,14 @@ postEditInspectionR inspectionId = do
             , InspectionTemperTypeId =. vEditInspectionTemperTypeId vEditInspection
             , InspectionRunningTypeId =. vEditInspectionRunningTypeId vEditInspection
             , InspectionSwarmingTypeId =. vEditInspectionSwarmingTypeId vEditInspection
+            , InspectionQueenSeen =. vEditInspectionQueenSeen vEditInspection
+            , InspectionBeeCoveredFrames =. vEditInspectionBeeCoveredFrames vEditInspection
+            , InspectionTotalFrames =. vEditInspectionTotalFrames vEditInspection
+            , InspectionBroodFrames =. vEditInspectionBroodFrames vEditInspection
+            , InspectionPollenFrames =. vEditInspectionPollenFrames vEditInspection
+            , InspectionHoneyFrames =. vEditInspectionHoneyFrames vEditInspection
+            , InspectionMiteFall =. vEditInspectionMiteFall vEditInspection
+            , InspectionFeeding =. vEditInspectionFeeding vEditInspection
             , InspectionNotes =. vEditInspectionNotes vEditInspection
             , InspectionVersion =. vEditInspectionVersion vEditInspection + 1
             , InspectionUpdatedAt =. curTime
@@ -348,13 +548,37 @@ vEditInspectionForm maybeInspection extra = do
   (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
     swarmingTypeIdFs
     (inspectionSwarmingTypeId <$> maybeInspection)
+  (queenSeenResult, queenSeenView) <- mreq checkBoxField
+    queenSeenFs
+    (inspectionQueenSeen <$> maybeInspection)
+  (beeCoveredFramesResult, beeCoveredFramesView) <- mreq intField
+    beeCoveredFramesFs
+    (inspectionBeeCoveredFrames <$> maybeInspection)
+  (totalFramesResult, totalFramesView) <- mreq intField
+    totalFramesFs
+    (inspectionTotalFrames <$> maybeInspection)
+  (broodFramesResult, broodFramesView) <- mreq intField
+    broodFramesFs
+    (inspectionBroodFrames <$> maybeInspection)
+  (pollenFramesResult, pollenFramesView) <- mreq intField
+    pollenFramesFs
+    (inspectionPollenFrames <$> maybeInspection)
+  (honeyFramesResult, honeyFramesView) <- mreq intField
+    honeyFramesFs
+    (inspectionHoneyFrames <$> maybeInspection)
+  (miteFallResult, miteFallView) <- mopt intField
+    miteFallFs
+    (inspectionMiteFall <$> maybeInspection)
+  (feedingResult, feedingView) <- mopt textField
+    feedingFs
+    (inspectionFeeding <$> maybeInspection)
   (notesResult, notesView) <- mopt textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (inspectionVersion <$> maybeInspection)
-  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> notesResult <*> versionResult
+  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> totalFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> miteFallResult <*> feedingResult <*> notesResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
@@ -381,6 +605,54 @@ vEditInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput swarmingTypeIdView}
         $maybe err <- fvErrors swarmingTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
+      <div .uk-form-controls>
+        ^{fvInput queenSeenView}
+        $maybe err <- fvErrors queenSeenView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
+      <div .uk-form-controls>
+        ^{fvInput beeCoveredFramesView}
+        $maybe err <- fvErrors beeCoveredFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors totalFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors totalFramesView:.uk-text-danger for=#{fvId totalFramesView}>#{fvLabel totalFramesView}
+      <div .uk-form-controls>
+        ^{fvInput totalFramesView}
+        $maybe err <- fvErrors totalFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
+      <div .uk-form-controls>
+        ^{fvInput broodFramesView}
+        $maybe err <- fvErrors broodFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors pollenFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors pollenFramesView:.uk-text-danger for=#{fvId pollenFramesView}>#{fvLabel pollenFramesView}
+      <div .uk-form-controls>
+        ^{fvInput pollenFramesView}
+        $maybe err <- fvErrors pollenFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
+      <div .uk-form-controls>
+        ^{fvInput honeyFramesView}
+        $maybe err <- fvErrors honeyFramesView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors miteFallView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors miteFallView:.uk-text-danger for=#{fvId miteFallView}>#{fvLabel miteFallView}
+      <div .uk-form-controls>
+        ^{fvInput miteFallView}
+        $maybe err <- fvErrors miteFallView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
+      <div .uk-form-controls>
+        ^{fvInput feedingView}
+        $maybe err <- fvErrors feedingView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
@@ -423,6 +695,70 @@ vEditInspectionForm maybeInspection extra = do
       , fsName = Just "swarmingTypeId"
       , fsAttrs = [  ]
       }
+    queenSeenFs :: FieldSettings App
+    queenSeenFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionQueenSeen
+      , fsTooltip = Nothing
+      , fsId = Just "queenSeen"
+      , fsName = Just "queenSeen"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
+    beeCoveredFramesFs :: FieldSettings App
+    beeCoveredFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionBeeCoveredFrames
+      , fsTooltip = Nothing
+      , fsId = Just "beeCoveredFrames"
+      , fsName = Just "beeCoveredFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    totalFramesFs :: FieldSettings App
+    totalFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionTotalFrames
+      , fsTooltip = Nothing
+      , fsId = Just "totalFrames"
+      , fsName = Just "totalFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    broodFramesFs :: FieldSettings App
+    broodFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionBroodFrames
+      , fsTooltip = Nothing
+      , fsId = Just "broodFrames"
+      , fsName = Just "broodFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    pollenFramesFs :: FieldSettings App
+    pollenFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionPollenFrames
+      , fsTooltip = Nothing
+      , fsId = Just "pollenFrames"
+      , fsName = Just "pollenFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    honeyFramesFs :: FieldSettings App
+    honeyFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionHoneyFrames
+      , fsTooltip = Nothing
+      , fsId = Just "honeyFrames"
+      , fsName = Just "honeyFrames"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    miteFallFs :: FieldSettings App
+    miteFallFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionMiteFall
+      , fsTooltip = Nothing
+      , fsId = Just "miteFall"
+      , fsName = Just "miteFall"
+      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      }
+    feedingFs :: FieldSettings App
+    feedingFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionFeeding
+      , fsTooltip = Nothing
+      , fsId = Just "feeding"
+      , fsName = Just "feeding"
+      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
       { fsLabel = SomeMessage MsgEditInspectionNotes
@@ -445,6 +781,14 @@ data MsgEditInspection =
   | MsgEditInspectionTemperTypeId
   | MsgEditInspectionRunningTypeId
   | MsgEditInspectionSwarmingTypeId
+  | MsgEditInspectionQueenSeen
+  | MsgEditInspectionBeeCoveredFrames
+  | MsgEditInspectionTotalFrames
+  | MsgEditInspectionBroodFrames
+  | MsgEditInspectionPollenFrames
+  | MsgEditInspectionHoneyFrames
+  | MsgEditInspectionMiteFall
+  | MsgEditInspectionFeeding
   | MsgEditInspectionNotes
 
 instance RenderMessage App MsgEditInspection where
@@ -459,6 +803,14 @@ renderEditInspectionGerman MsgEditInspectionDate = "Datum"
 renderEditInspectionGerman MsgEditInspectionTemperTypeId = "Sanftmut"
 renderEditInspectionGerman MsgEditInspectionRunningTypeId = "Wabensitz"
 renderEditInspectionGerman MsgEditInspectionSwarmingTypeId = "Schwarmtrieb"
+renderEditInspectionGerman MsgEditInspectionQueenSeen = "Kö ges."
+renderEditInspectionGerman MsgEditInspectionBeeCoveredFrames = "Bel. Waben"
+renderEditInspectionGerman MsgEditInspectionTotalFrames = "Ges. Waben"
+renderEditInspectionGerman MsgEditInspectionBroodFrames = "Brutwaben"
+renderEditInspectionGerman MsgEditInspectionPollenFrames = "Pollenwaben"
+renderEditInspectionGerman MsgEditInspectionHoneyFrames = "Honigwaben"
+renderEditInspectionGerman MsgEditInspectionMiteFall = "Milbenfall"
+renderEditInspectionGerman MsgEditInspectionFeeding = "Fütterung"
 renderEditInspectionGerman MsgEditInspectionNotes = "Notizen"
 
 
@@ -467,6 +819,14 @@ renderEditInspectionEnglish MsgEditInspectionDate = "Date"
 renderEditInspectionEnglish MsgEditInspectionTemperTypeId = "Temper"
 renderEditInspectionEnglish MsgEditInspectionRunningTypeId = "Running Beh."
 renderEditInspectionEnglish MsgEditInspectionSwarmingTypeId = "swarming Mood"
+renderEditInspectionEnglish MsgEditInspectionQueenSeen = "Queen seen"
+renderEditInspectionEnglish MsgEditInspectionBeeCoveredFrames = "Bee covered frames"
+renderEditInspectionEnglish MsgEditInspectionTotalFrames = "Total frames"
+renderEditInspectionEnglish MsgEditInspectionBroodFrames = "Brood frames"
+renderEditInspectionEnglish MsgEditInspectionPollenFrames = "Pollen frames"
+renderEditInspectionEnglish MsgEditInspectionHoneyFrames = "Honey frames"
+renderEditInspectionEnglish MsgEditInspectionMiteFall = "Mite fall"
+renderEditInspectionEnglish MsgEditInspectionFeeding = "Feeding"
 renderEditInspectionEnglish MsgEditInspectionNotes = "Notes"
 
 -- gen edit form - end

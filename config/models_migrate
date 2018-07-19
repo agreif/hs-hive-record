@@ -105,6 +105,14 @@ Inspection json
     temperTypeId TemperTypeId
     runningTypeId RunningTypeId
     swarmingTypeId SwarmingTypeId
+    queenSeen Bool
+    beeCoveredFrames Int
+    totalFrames Int
+    broodFrames Int
+    pollenFrames Int
+    honeyFrames Int
+    miteFall Int Maybe
+    feeding Text Maybe
     notes Textarea Maybe
     version Int
     createdAt UTCTime
@@ -122,6 +130,14 @@ InspectionHistory
     temperTypeId Int
     runningTypeId Int
     swarmingTypeId Int
+    queenSeen Bool
+    beeCoveredFrames Int
+    totalFrames Int
+    broodFrames Int
+    pollenFrames Int
+    honeyFrames Int
+    miteFall Int Maybe
+    feeding Text Maybe
     notes Textarea Maybe
     version Int
     createdAt UTCTime
