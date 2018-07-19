@@ -106,8 +106,8 @@ Inspection json
     runningTypeId RunningTypeId
     swarmingTypeId SwarmingTypeId
     queenSeen Bool
-    beeCoveredFrames Int
     totalFrames Int
+    beeCoveredFrames Int
     broodFrames Int
     pollenFrames Int
     honeyFrames Int
@@ -131,8 +131,8 @@ InspectionHistory
     runningTypeId Int
     swarmingTypeId Int
     queenSeen Bool
-    beeCoveredFrames Int
     totalFrames Int
+    beeCoveredFrames Int
     broodFrames Int
     pollenFrames Int
     honeyFrames Int

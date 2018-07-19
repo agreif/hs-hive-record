@@ -559,9 +559,9 @@
               <th>
                 {parent.data.translation.msgInspectionQueenSeen}
               <th>
-                {parent.data.translation.msgInspectionBeeCoveredFrames}
-              <th>
                 {parent.data.translation.msgInspectionTotalFrames}
+              <th>
+                {parent.data.translation.msgInspectionBeeCoveredFrames}
               <th>
                 {parent.data.translation.msgInspectionBroodFrames}
               <th>
@@ -596,10 +596,10 @@
                   <span uk-icon="icon: check" if="{inspectionEnt.queenSeen}">
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.beeCoveredFrames}
+                  {inspectionEnt.totalFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.totalFrames}
+                  {inspectionEnt.beeCoveredFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.broodFrames}

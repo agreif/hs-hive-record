@@ -865,8 +865,8 @@ data Translation = Translation
   , msgInspectionRunningTypeId :: Maybe Text
   , msgInspectionSwarmingTypeId :: Maybe Text
   , msgInspectionQueenSeen :: Maybe Text
-  , msgInspectionBeeCoveredFrames :: Maybe Text
   , msgInspectionTotalFrames :: Maybe Text
+  , msgInspectionBeeCoveredFrames :: Maybe Text
   , msgInspectionBroodFrames :: Maybe Text
   , msgInspectionPollenFrames :: Maybe Text
   , msgInspectionHoneyFrames :: Maybe Text
@@ -954,8 +954,8 @@ translationDe = Translation
   , msgInspectionRunningTypeId = Just "Wabensitz"
   , msgInspectionSwarmingTypeId = Just "Schwarmtrieb"
   , msgInspectionQueenSeen = Just "Kö ges."
-  , msgInspectionBeeCoveredFrames = Just "Bel. Waben"
   , msgInspectionTotalFrames = Just "Ges. Waben"
+  , msgInspectionBeeCoveredFrames = Just "Bel. Waben"
   , msgInspectionBroodFrames = Just "Brutwaben"
   , msgInspectionPollenFrames = Just "Pollenwaben"
   , msgInspectionHoneyFrames = Just "Honigwaben"
@@ -1041,8 +1041,8 @@ translationEn = Translation
   , msgInspectionRunningTypeId = Just "Running Beh."
   , msgInspectionSwarmingTypeId = Just "swarming Mood"
   , msgInspectionQueenSeen = Just "Queen seen"
-  , msgInspectionBeeCoveredFrames = Just "Bee covered frames"
   , msgInspectionTotalFrames = Just "Total frames"
+  , msgInspectionBeeCoveredFrames = Just "Bee covered frames"
   , msgInspectionBroodFrames = Just "Brood frames"
   , msgInspectionPollenFrames = Just "Pollen frames"
   , msgInspectionHoneyFrames = Just "Honey frames"

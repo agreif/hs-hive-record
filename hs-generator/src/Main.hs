@@ -1135,9 +1135,9 @@ context =
                   }
               }
             , BField
-              { bFieldName = "beeCoveredFrames"
-              , bFieldLabelDe = Just "Bel. Waben"
-              , bFieldLabelEn = Just "Bee covered frames"
+              { bFieldName = "totalFrames"
+              , bFieldLabelDe = Just "Ges. Waben"
+              , bFieldLabelEn = Just "Total frames"
               , bFieldHsType = "Int"
               , bFieldDb =
                   Just $
@@ -1177,9 +1177,9 @@ context =
                   }
               }
             , BField
-              { bFieldName = "totalFrames"
-              , bFieldLabelDe = Just "Ges. Waben"
-              , bFieldLabelEn = Just "Total frames"
+              { bFieldName = "beeCoveredFrames"
+              , bFieldLabelDe = Just "Bel. Waben"
+              , bFieldLabelEn = Just "Bee covered frames"
               , bFieldHsType = "Int"
               , bFieldDb =
                   Just $
@@ -1453,7 +1453,7 @@ context =
                             "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
-                        { bFieldAttrKey = "rows", bFieldAttrValue = "27" }
+                        { bFieldAttrKey = "rows", bFieldAttrValue = "10" }
                       ]
                   , bFieldAddViewDefault = Nothing
                   }
@@ -1469,7 +1469,7 @@ context =
                             "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
-                        { bFieldAttrKey = "rows", bFieldAttrValue = "27" }
+                        { bFieldAttrKey = "rows", bFieldAttrValue = "10" }
                       ]
                   , bFieldEditViewDefault = Nothing
                   }
