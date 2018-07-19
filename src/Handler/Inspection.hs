@@ -30,31 +30,6 @@ swarmingTypeSelectField = do
 -- add inspection
 -------------------------------------------------------
 
-defaultNoteText :: Text
-defaultNoteText  = intercalate "\n"
-  [ "Wabengassen besetzt:"
-  , "Sanftmut: sehr sanft / sanft / nervös / bösartig"
-  , "Wabensitz: fest / ruhig / laufend / flüchtig"
-  , "Königin:"
-  , "Königinen-Zellen:"
-  , "Brut: Stifte / offene Brut / verdeckelte Brut"
-  , "Schwarmtrieb: fehlt / leicht lenkbar / schlecht lenkbar / sehr stark"
-  , "Putztrieb: sehr gut / gut / gering / fehlt"
-  , "Winterfestigkeit: gut / mittel / gering / fehlt"
-  , "Frühjahrsentwicklung: sehr schnell / schnell / normal / langsam"
-  , "Waben +/-:"
-  , "Honigwaben entnommen:"
-  , "Mittelwände gegeben:"
-  , "Anzahl Brutwaben:"
-  , "Anzahl Pollenwaben:"
-  , "Anzahl Honigwaben:"
-  , "Fütterung:"
-  , "Wetter:"
-  , "Varroamaßnahmen:"
-  , "Milbenfall:"
-  , "Sonstiges:"
-  ]
-
 defaultAddInspection :: HiveId -> Handler Inspection
 defaultAddInspection hiveId = do
   now <- liftIO getCurrentTime
@@ -77,7 +52,7 @@ defaultAddInspection hiveId = do
     , inspectionHoneyFrames = 0
     , inspectionMiteFall = Nothing
     , inspectionFeeding = Nothing
-    , inspectionNotes = Just $ Textarea defaultNoteText
+    , inspectionNotes = Nothing
     , inspectionVersion = 1
     , inspectionCreatedAt = now
     , inspectionCreatedBy = dbSystemUser
