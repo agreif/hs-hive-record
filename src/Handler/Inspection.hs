@@ -69,7 +69,7 @@ defaultAddInspection hiveId = do
     , inspectionTemperTypeId = temperTypeId
     , inspectionRunningTypeId = runningTypeId
     , inspectionSwarmingTypeId = swarmingTypeId
-    , inspectionNotes = Textarea defaultNoteText
+    , inspectionNotes = Just $ Textarea defaultNoteText
     , inspectionVersion = 1
     , inspectionCreatedAt = now
     , inspectionCreatedBy = dbSystemUser
@@ -96,7 +96,7 @@ data VAddInspection = VAddInspection
   , vAddInspectionTemperTypeId :: TemperTypeId
   , vAddInspectionRunningTypeId :: RunningTypeId
   , vAddInspectionSwarmingTypeId :: SwarmingTypeId
-  , vAddInspectionNotes :: Textarea
+  , vAddInspectionNotes :: Maybe Textarea
   }
 -- gen data add - end
 
@@ -160,7 +160,7 @@ vAddInspectionForm maybeInspection extra = do
   (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
     swarmingTypeIdFs
     (inspectionSwarmingTypeId <$> maybeInspection)
-  (notesResult, notesView) <- mreq textareaField
+  (notesResult, notesView) <- mopt textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
   let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> notesResult
@@ -281,7 +281,7 @@ data VEditInspection = VEditInspection
   , vEditInspectionTemperTypeId :: TemperTypeId
   , vEditInspectionRunningTypeId :: RunningTypeId
   , vEditInspectionSwarmingTypeId :: SwarmingTypeId
-  , vEditInspectionNotes :: Textarea
+  , vEditInspectionNotes :: Maybe Textarea
   , vEditInspectionVersion :: Int
   }
 -- gen data edit - end
@@ -348,7 +348,7 @@ vEditInspectionForm maybeInspection extra = do
   (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
     swarmingTypeIdFs
     (inspectionSwarmingTypeId <$> maybeInspection)
-  (notesResult, notesView) <- mreq textareaField
+  (notesResult, notesView) <- mopt textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
   (versionResult, versionView) <- mreq hiddenField

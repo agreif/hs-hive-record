@@ -1119,7 +1119,7 @@ context =
               , bFieldDb =
                   Just $
                   BFieldDb
-                  { bFieldDbIsNullable = False
+                  { bFieldDbIsNullable = True
                   , bFieldDbDefault = Nothing
                   , bFieldDbCanUpdate = True
                   }
@@ -1127,7 +1127,7 @@ context =
               , bFieldAddView =
                   Just $
                   BFieldAddView
-                  { bFieldAddViewIsRequired = True
+                  { bFieldAddViewIsRequired = False
                   , bFieldAddViewIsDisabled = False
                   , bFieldAddViewAttrs =
                       [ BFieldAttr
@@ -1143,7 +1143,7 @@ context =
               , bFieldEditView =
                   Just $
                   BFieldEditView
-                  { bFieldEditViewIsRequired = True
+                  { bFieldEditViewIsRequired = False
                   , bFieldEditViewIsDisabled = False
                   , bFieldEditViewAttrs =
                       [ BFieldAttr

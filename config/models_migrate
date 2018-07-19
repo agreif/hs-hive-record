@@ -105,7 +105,7 @@ Inspection json
     temperTypeId TemperTypeId
     runningTypeId RunningTypeId
     swarmingTypeId SwarmingTypeId
-    notes Textarea
+    notes Textarea Maybe
     version Int
     createdAt UTCTime
     createdBy Text
@@ -122,7 +122,7 @@ InspectionHistory
     temperTypeId Int
     runningTypeId Int
     swarmingTypeId Int
-    notes Textarea
+    notes Textarea Maybe
     version Int
     createdAt UTCTime
     createdBy Text
