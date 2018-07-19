@@ -157,24 +157,22 @@ getLocationDetailPageDataJsonR locationId = do
     , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
-locationDetailHiveJDatas :: LocationId -> Handler [JDataHive]
+locationDetailHiveJDatas :: LocationId -> Handler [JDataHiveDetail]
 locationDetailHiveJDatas locationId = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveName]
+  hiveDetailTuples <- forM hiveEnts $ \(hiveEnt@(Entity hiveId _ )) -> do
+    maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
+    return (hiveEnt, maybeLastInspectionEnt)
   return $ map
-    (\(hiveEnt@(Entity hiveId _)) ->
-       JDataHive
-       { jDataHiveEnt = hiveEnt
+    (\(hiveEnt@(Entity hiveId _), maybeLastInspectionEnt) ->
+       JDataHiveDetail
+       { jDataHiveDetailHiveEnt = hiveEnt
+       , jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt
        , jDataHiveDetailPageUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
        , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
        })
-    hiveEnts
-
-
-
-
-
-
+    hiveDetailTuples
 
 -------------------------------------------------------
 -- add location

@@ -22,6 +22,7 @@ import qualified Data.Maybe as M
 import qualified Data.Conduit.Binary as CB
 import qualified Data.ByteString as B
 import Data.Time
+import qualified Database.Esqueleto as E
 
 -- These handlers embed files in the executable at compile time to avoid a
 -- runtime dependency, and for efficiency.
@@ -245,7 +246,7 @@ instance ToJSON JDataLocation where
 data JDataPageLocationDetail = JDataPageLocationDetail
   { jDataPageLocationDetailLocationEnt :: Entity Location
   , jDataPageLocationDetailLocationEditFormUrl :: Text
-  , jDataPageCustomerDetailHives :: [JDataHive]
+  , jDataPageCustomerDetailHives :: [JDataHiveDetail]
   , jDataPageCustomerDetailHiveAddFormUrl :: Text
   }
 instance ToJSON JDataPageLocationDetail where
@@ -256,14 +257,16 @@ instance ToJSON JDataPageLocationDetail where
     , "hiveAddFormUrl" .= jDataPageCustomerDetailHiveAddFormUrl o
     ]
 
-data JDataHive = JDataHive
-  { jDataHiveEnt :: Entity Hive
+data JDataHiveDetail = JDataHiveDetail
+  { jDataHiveDetailHiveEnt :: Entity Hive
+  , jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection)
   , jDataHiveDetailPageUrl :: Text
   , jDataHiveDeleteFormUrl :: Text
   }
-instance ToJSON JDataHive where
+instance ToJSON JDataHiveDetail where
   toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataHiveEnt o)
+    [ "hiveEnt" .= entityIdToJSON (jDataHiveDetailHiveEnt o)
+    , "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o
     , "detailPageUrl" .= jDataHiveDetailPageUrl o
     , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
     ]
@@ -384,6 +387,23 @@ mainNavData user mainNav = do
       , jDataNavItemBadge = Nothing
       }
     ]
+
+--------------------------------------------------------------------------------
+-- app specific helpers
+--------------------------------------------------------------------------------
+
+getLastInspectionEnt :: HiveId -> YesodDB App (Maybe (Entity Inspection))
+getLastInspectionEnt hiveId = do
+  inspectionEnts <- E.select $ E.from $ \(h `E.InnerJoin` i) -> do
+    E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
+    E.where_ (h E.^. HiveId E.==. E.val hiveId)
+    E.orderBy [E.desc (i E.^. InspectionDate)]
+    E.limit 1
+    return i
+  case inspectionEnts of
+    [inspectionEnt] -> return $ Just inspectionEnt
+    _ -> return Nothing
+
 --------------------------------------------------------------------------------
 -- generic helpers
 --------------------------------------------------------------------------------
@@ -672,6 +692,7 @@ data MsgGlobal =
   | MsgGlobalAddInspection
   | MsgGlobalDeleteInspection
   | MsgGlobalEditInspection
+  | MsgGlobalLastInspection
   | MsgGlobalTemper
   | MsgGlobalTemperTypes
   | MsgGlobalAddTemperType
@@ -729,6 +750,7 @@ renderGlobalGerman MsgGlobalInspections = "Durchsichten"
 renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
 renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
 renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
+renderGlobalGerman MsgGlobalLastInspection = "Letzte Durchsicht"
 renderGlobalGerman MsgGlobalTemper = "Sanftmut"
 renderGlobalGerman MsgGlobalTemperTypes = "Sanftmut Typen"
 renderGlobalGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
@@ -779,6 +801,7 @@ renderGlobalEnglish MsgGlobalInspections = "Inspections"
 renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
 renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
 renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
+renderGlobalEnglish MsgGlobalLastInspection = "Last inspection"
 renderGlobalEnglish MsgGlobalTemper = "Temper"
 renderGlobalEnglish MsgGlobalTemperTypes = "Temper types"
 renderGlobalEnglish MsgGlobalAddTemperType = "Add temper type"
@@ -829,6 +852,7 @@ data Translation = Translation
   , msgGlobalAddInspection :: Maybe Text
   , msgGlobalDeleteInspection :: Maybe Text
   , msgGlobalEditInspection :: Maybe Text
+  , msgGlobalLastInspection :: Maybe Text
   , msgGlobalTemper :: Maybe Text
   , msgGlobalTemperTypes :: Maybe Text
   , msgGlobalAddTemperType :: Maybe Text
@@ -918,6 +942,7 @@ translationDe = Translation
   , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
   , msgGlobalDeleteInspection = Just "Durchsicht löschen"
   , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
+  , msgGlobalLastInspection = Just "Letzte Durchsicht"
   , msgGlobalTemper = Just "Sanftmut"
   , msgGlobalTemperTypes = Just "Sanftmut Typen"
   , msgGlobalAddTemperType = Just "Sanftmut Typ hinzufügen"
@@ -1005,6 +1030,7 @@ translationEn = Translation
   , msgGlobalAddInspection = Just "Add inspection"
   , msgGlobalDeleteInspection = Just "Delete inspection"
   , msgGlobalEditInspection = Just "Edit inspection"
+  , msgGlobalLastInspection = Just "Last inspection"
   , msgGlobalTemper = Just "Temper"
   , msgGlobalTemperTypes = Just "Temper types"
   , msgGlobalAddTemperType = Just "Add temper type"

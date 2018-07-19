@@ -10,7 +10,6 @@ module Handler.Inspection where
 import Handler.Common
 import Import
 import qualified Data.List as L
-import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
@@ -38,9 +37,9 @@ defaultAddInspection hiveId = do
   temperTypeId <- runDB defaultTemperTypeId
   runningTypeId <- runDB defaultRunningTypeId
   swarmingTypeId <- runDB defaultSwarmingTypeId
-  maybeLastInspection <- runDB $ getLastInspection hiveId
-  case maybeLastInspection of
-    Just inspection ->
+  maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
+  case maybeLastInspectionEnt of
+    Just (Entity _ inspection) ->
       return $ Inspection
       { inspectionHiveId = hiveId
       , inspectionDate = today
@@ -97,18 +96,6 @@ defaultAddInspection hiveId = do
     defaultSwarmingTypeId = do
       swarmingTypeEnts <- selectList ([] :: [Filter SwarmingType]) []
       return $ snd $ L.head $ L.sort $ L.map (\(Entity stId st) -> (swarmingTypeSortIndex st, stId)) swarmingTypeEnts
-
-getLastInspection :: HiveId -> YesodDB App (Maybe Inspection)
-getLastInspection hiveId = do
-  inspectionEnts <- E.select $ E.from $ \(h `E.InnerJoin` i) -> do
-    E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
-    E.where_ (h E.^. HiveId E.==. E.val hiveId)
-    E.orderBy [E.desc (i E.^. InspectionDate)]
-    E.limit 1
-    return i
-  case inspectionEnts of
-    [Entity _ inspection] -> return $ Just inspection
-    _ -> return Nothing
 
 -- gen data add - start
 data VAddInspection = VAddInspection

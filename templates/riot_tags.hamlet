@@ -474,7 +474,9 @@
               <th>
                 {parent.data.translation.msgHiveName}
               <th>
-                {parent.data.translation.msgHiveDscription}
+                {parent.data.translation.msgHiveDescription}
+              <th>
+                {parent.data.translation.msgGlobalLastInspection}
               <th .uk-align-right>
                 <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
                   <span uk-icon="icon: plus">
@@ -482,11 +484,15 @@
             <tr each="{parent.data.pages.locationDetail.hives}">
               <td .uk-table-link>
                 <a onclick="{detailHive}" .uk-link-reset>
-                  {entity.name}
+                  {hiveEnt.name}
               <td .uk-table-link>
                 <a onclick="{detailHive}" .uk-link-reset>
                   <span .textarea-wrap>
-                    {entity.description}
+                    {hiveEnt.description}
+              <td .uk-table-link>
+                <a onclick="{detailHive}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {formatDateStr(lastInspectionEnt.date, parent.parent.data.currentLanguage)}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteHive}" uk-tooltip onclick="{deleteHive}">
                   <span uk-icon="icon: trash">
