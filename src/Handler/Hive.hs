@@ -112,6 +112,7 @@ loadInspectionListTuples hiveId = do
     E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
     E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
     E.where_ (h E.^. HiveId E.==. E.val hiveId)
+    E.orderBy [E.asc (i E.^. InspectionDate)]
     return (i, tt, rt, st)
   return tuples
 
