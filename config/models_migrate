@@ -102,6 +102,9 @@ HiveHistory
 Inspection json
     hiveId HiveId
     date Day
+    temperTypeId TemperTypeId
+    runningTypeId RunningTypeId
+    swarmingTypeId SwarmingTypeId
     notes Textarea
     version Int
     createdAt UTCTime
@@ -116,6 +119,9 @@ InspectionHistory
     id Int MigrationOnly
     hiveId Int
     date Day
+    temperTypeId Int
+    runningTypeId Int
+    swarmingTypeId Int
     notes Textarea
     version Int
     createdAt UTCTime

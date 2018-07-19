@@ -1005,6 +1005,113 @@ context =
                   }
               }
             , BField
+              { bFieldName = "temperTypeId"
+              , bFieldLabelDe = Just "Sanftmut"
+              , bFieldLabelEn = Just "Temper"
+              , bFieldHsType = "TemperTypeId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "temperTypeSelectField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs = []
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs = []
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "runningTypeId"
+              , bFieldLabelDe = Just "Wabensitz"
+              , bFieldLabelEn = Just "Running Beh."
+              , bFieldHsType = "RunningTypeId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "runningTypeSelectField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs = []
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs = []
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            , BField
+              { bFieldName = "swarmingTypeId"
+              , bFieldLabelDe = Just "Schwarmtrieb"
+              , bFieldLabelEn = Just "swarming Mood"
+              , bFieldHsType = "SwarmingTypeId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = True
+                  }
+              , bFieldFormFieldType = Just "swarmingTypeSelectField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs = []
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs = []
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            , BField
               { bFieldName = "notes"
               , bFieldLabelDe = Just "Notizen"
               , bFieldLabelEn = Just "Notes"
@@ -1429,16 +1536,19 @@ context =
     , BTranslation { bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection" }
     , BTranslation { bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection" }
 
+    , BTranslation { bTranslationKey = "temper", bTranslationDe = "Sanftmut", bTranslationEn = "Temper" }
     , BTranslation { bTranslationKey = "temperTypes", bTranslationDe = "Sanftmut Typen", bTranslationEn = "Temper types" }
     , BTranslation { bTranslationKey = "addTemperType", bTranslationDe = "Sanftmut Typ hinzufügen", bTranslationEn = "Add temper type" }
     , BTranslation { bTranslationKey = "deleteTemperType", bTranslationDe = "Sanftmut Typ löschen", bTranslationEn = "Delete temper type" }
     , BTranslation { bTranslationKey = "editTemperType", bTranslationDe = "Sanftmut Typ bearbeiten", bTranslationEn = "Edit temper type" }
 
+    , BTranslation { bTranslationKey = "running", bTranslationDe = "Wabensitz", bTranslationEn = "Running beh." }
     , BTranslation { bTranslationKey = "runningTypes", bTranslationDe = "Wabensitz Typen", bTranslationEn = "Running types" }
     , BTranslation { bTranslationKey = "addRunningType", bTranslationDe = "Wabensitz Typ hinzufügen", bTranslationEn = "Add running type" }
     , BTranslation { bTranslationKey = "deleteRunningType", bTranslationDe = "Wabensitz Typ löschen", bTranslationEn = "Delete running type" }
     , BTranslation { bTranslationKey = "editRunningType", bTranslationDe = "Wabensitz Typ bearbeiten", bTranslationEn = "Edit running type" }
 
+    , BTranslation { bTranslationKey = "swarming", bTranslationDe = "Schwarmtrieb", bTranslationEn = "Swarming mood" }
     , BTranslation { bTranslationKey = "swarmingTypes", bTranslationDe = "Schwarmtrieb Typen", bTranslationEn = "Swarming types" }
     , BTranslation { bTranslationKey = "addSwarmingType", bTranslationDe = "Schwarmtrieb Typ hinzufügen", bTranslationEn = "Add swarming type" }
     , BTranslation { bTranslationKey = "deleteSwarmingType", bTranslationDe = "Schwarmtrieb Typ löschen", bTranslationEn = "Delete swarming type" }

@@ -9,14 +9,26 @@ module Handler.Inspection where
 
 import Handler.Common
 import Import
+import qualified Data.List as L
 --import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
+temperTypeSelectField :: Field Handler (Key TemperType)
+temperTypeSelectField = do
+  selectField $ optionsPersistKey [] [Asc TemperTypeSortIndex] temperTypeName
+
+runningTypeSelectField :: Field Handler (Key RunningType)
+runningTypeSelectField = do
+  selectField $ optionsPersistKey [] [Asc RunningTypeSortIndex] runningTypeName
+
+swarmingTypeSelectField :: Field Handler (Key SwarmingType)
+swarmingTypeSelectField = do
+  selectField $ optionsPersistKey [] [Asc SwarmingTypeSortIndex] swarmingTypeName
+
 -------------------------------------------------------
 -- add inspection
 -------------------------------------------------------
-
 
 defaultNoteText :: Text
 defaultNoteText  = intercalate "\n"
@@ -43,16 +55,20 @@ defaultNoteText  = intercalate "\n"
   , "Sonstiges:"
   ]
 
-
-
-
 defaultAddInspection :: HiveId -> Handler Inspection
 defaultAddInspection hiveId = do
   now <- liftIO getCurrentTime
   today <- liftIO getCurrentDay
+  -- assume there any types
+  temperTypeId <- runDB defaultTemperTypeId
+  runningTypeId <- runDB defaultRunningTypeId
+  swarmingTypeId <- runDB defaultSwarmingTypeId
   return $ Inspection
     { inspectionHiveId = hiveId
     , inspectionDate = today
+    , inspectionTemperTypeId = temperTypeId
+    , inspectionRunningTypeId = runningTypeId
+    , inspectionSwarmingTypeId = swarmingTypeId
     , inspectionNotes = Textarea defaultNoteText
     , inspectionVersion = 1
     , inspectionCreatedAt = now
@@ -60,10 +76,26 @@ defaultAddInspection hiveId = do
     , inspectionUpdatedAt = now
     , inspectionUpdatedBy = dbSystemUser
     }
+  where
+    defaultTemperTypeId :: YesodDB App TemperTypeId
+    defaultTemperTypeId = do
+      temperTypeEnts <- selectList ([] :: [Filter TemperType]) []
+      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (temperTypeSortIndex tt, ttId)) temperTypeEnts
+    defaultRunningTypeId :: YesodDB App RunningTypeId
+    defaultRunningTypeId = do
+      runningTypeEnts <- selectList ([] :: [Filter RunningType]) []
+      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (runningTypeSortIndex tt, ttId)) runningTypeEnts
+    defaultSwarmingTypeId :: YesodDB App SwarmingTypeId
+    defaultSwarmingTypeId = do
+      swarmingTypeEnts <- selectList ([] :: [Filter SwarmingType]) []
+      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (swarmingTypeSortIndex tt, ttId)) swarmingTypeEnts
 
 -- gen data add - start
 data VAddInspection = VAddInspection
   { vAddInspectionDate :: Day
+  , vAddInspectionTemperTypeId :: TemperTypeId
+  , vAddInspectionRunningTypeId :: RunningTypeId
+  , vAddInspectionSwarmingTypeId :: SwarmingTypeId
   , vAddInspectionNotes :: Textarea
   }
 -- gen data add - end
@@ -95,6 +127,9 @@ postAddInspectionR hiveId = do
             {
             inspectionHiveId = hiveId
             , inspectionDate = vAddInspectionDate vAddInspection
+            , inspectionTemperTypeId = vAddInspectionTemperTypeId vAddInspection
+            , inspectionRunningTypeId = vAddInspectionRunningTypeId vAddInspection
+            , inspectionSwarmingTypeId = vAddInspectionSwarmingTypeId vAddInspection
             , inspectionNotes = vAddInspectionNotes vAddInspection
             , inspectionVersion = 1
             , inspectionCreatedAt = curTime
@@ -116,10 +151,19 @@ vAddInspectionForm maybeInspection extra = do
   (dateResult, dateView) <- mreq dayField
     dateFs
     (inspectionDate <$> maybeInspection)
+  (temperTypeIdResult, temperTypeIdView) <- mreq temperTypeSelectField
+    temperTypeIdFs
+    (inspectionTemperTypeId <$> maybeInspection)
+  (runningTypeIdResult, runningTypeIdView) <- mreq runningTypeSelectField
+    runningTypeIdFs
+    (inspectionRunningTypeId <$> maybeInspection)
+  (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
+    swarmingTypeIdFs
+    (inspectionSwarmingTypeId <$> maybeInspection)
   (notesResult, notesView) <- mreq textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
-  let vAddInspectionResult = VAddInspection <$> dateResult <*> notesResult
+  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> notesResult
   let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
@@ -127,6 +171,24 @@ vAddInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput dateView}
         $maybe err <- fvErrors dateView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput temperTypeIdView}
+        $maybe err <- fvErrors temperTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors runningTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors runningTypeIdView:.uk-text-danger for=#{fvId runningTypeIdView}>#{fvLabel runningTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput runningTypeIdView}
+        $maybe err <- fvErrors runningTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput swarmingTypeIdView}
+        $maybe err <- fvErrors swarmingTypeIdView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
@@ -145,6 +207,30 @@ vAddInspectionForm maybeInspection extra = do
       , fsName = Just "date"
       , fsAttrs = [  ]
       }
+    temperTypeIdFs :: FieldSettings App
+    temperTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionTemperTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "temperTypeId"
+      , fsName = Just "temperTypeId"
+      , fsAttrs = [  ]
+      }
+    runningTypeIdFs :: FieldSettings App
+    runningTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionRunningTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "runningTypeId"
+      , fsName = Just "runningTypeId"
+      , fsAttrs = [  ]
+      }
+    swarmingTypeIdFs :: FieldSettings App
+    swarmingTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgAddInspectionSwarmingTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "swarmingTypeId"
+      , fsName = Just "swarmingTypeId"
+      , fsAttrs = [  ]
+      }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
       { fsLabel = SomeMessage MsgAddInspectionNotes
@@ -156,6 +242,9 @@ vAddInspectionForm maybeInspection extra = do
 
 data MsgAddInspection =
   MsgAddInspectionDate
+  | MsgAddInspectionTemperTypeId
+  | MsgAddInspectionRunningTypeId
+  | MsgAddInspectionSwarmingTypeId
   | MsgAddInspectionNotes
 
 instance RenderMessage App MsgAddInspection where
@@ -167,11 +256,17 @@ instance RenderMessage App MsgAddInspection where
 
 renderAddInspectionGerman :: MsgAddInspection -> Text
 renderAddInspectionGerman MsgAddInspectionDate = "Datum"
+renderAddInspectionGerman MsgAddInspectionTemperTypeId = "Sanftmut"
+renderAddInspectionGerman MsgAddInspectionRunningTypeId = "Wabensitz"
+renderAddInspectionGerman MsgAddInspectionSwarmingTypeId = "Schwarmtrieb"
 renderAddInspectionGerman MsgAddInspectionNotes = "Notizen"
 
 
 renderAddInspectionEnglish :: MsgAddInspection -> Text
 renderAddInspectionEnglish MsgAddInspectionDate = "Date"
+renderAddInspectionEnglish MsgAddInspectionTemperTypeId = "Temper"
+renderAddInspectionEnglish MsgAddInspectionRunningTypeId = "Running Beh."
+renderAddInspectionEnglish MsgAddInspectionSwarmingTypeId = "swarming Mood"
 renderAddInspectionEnglish MsgAddInspectionNotes = "Notes"
 
 -- gen add form - end
@@ -183,6 +278,9 @@ renderAddInspectionEnglish MsgAddInspectionNotes = "Notes"
 -- gen data edit - start
 data VEditInspection = VEditInspection
   { vEditInspectionDate :: Day
+  , vEditInspectionTemperTypeId :: TemperTypeId
+  , vEditInspectionRunningTypeId :: RunningTypeId
+  , vEditInspectionSwarmingTypeId :: SwarmingTypeId
   , vEditInspectionNotes :: Textarea
   , vEditInspectionVersion :: Int
   }
@@ -214,6 +312,9 @@ postEditInspectionR inspectionId = do
       inspection <- runDB $ get404 inspectionId
       let persistFields = [
             InspectionDate =. vEditInspectionDate vEditInspection
+            , InspectionTemperTypeId =. vEditInspectionTemperTypeId vEditInspection
+            , InspectionRunningTypeId =. vEditInspectionRunningTypeId vEditInspection
+            , InspectionSwarmingTypeId =. vEditInspectionSwarmingTypeId vEditInspection
             , InspectionNotes =. vEditInspectionNotes vEditInspection
             , InspectionVersion =. vEditInspectionVersion vEditInspection + 1
             , InspectionUpdatedAt =. curTime
@@ -238,13 +339,22 @@ vEditInspectionForm maybeInspection extra = do
   (dateResult, dateView) <- mreq dayField
     dateFs
     (inspectionDate <$> maybeInspection)
+  (temperTypeIdResult, temperTypeIdView) <- mreq temperTypeSelectField
+    temperTypeIdFs
+    (inspectionTemperTypeId <$> maybeInspection)
+  (runningTypeIdResult, runningTypeIdView) <- mreq runningTypeSelectField
+    runningTypeIdFs
+    (inspectionRunningTypeId <$> maybeInspection)
+  (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
+    swarmingTypeIdFs
+    (inspectionSwarmingTypeId <$> maybeInspection)
   (notesResult, notesView) <- mreq textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (inspectionVersion <$> maybeInspection)
-  let vEditInspectionResult = VEditInspection <$> dateResult <*> notesResult <*> versionResult
+  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> notesResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
@@ -253,6 +363,24 @@ vEditInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput dateView}
         $maybe err <- fvErrors dateView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput temperTypeIdView}
+        $maybe err <- fvErrors temperTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors runningTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors runningTypeIdView:.uk-text-danger for=#{fvId runningTypeIdView}>#{fvLabel runningTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput runningTypeIdView}
+        $maybe err <- fvErrors runningTypeIdView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
+      <div .uk-form-controls>
+        ^{fvInput swarmingTypeIdView}
+        $maybe err <- fvErrors swarmingTypeIdView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
@@ -269,6 +397,30 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "date"
       , fsName = Just "date"
+      , fsAttrs = [  ]
+      }
+    temperTypeIdFs :: FieldSettings App
+    temperTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionTemperTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "temperTypeId"
+      , fsName = Just "temperTypeId"
+      , fsAttrs = [  ]
+      }
+    runningTypeIdFs :: FieldSettings App
+    runningTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionRunningTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "runningTypeId"
+      , fsName = Just "runningTypeId"
+      , fsAttrs = [  ]
+      }
+    swarmingTypeIdFs :: FieldSettings App
+    swarmingTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgEditInspectionSwarmingTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "swarmingTypeId"
+      , fsName = Just "swarmingTypeId"
       , fsAttrs = [  ]
       }
     notesFs :: FieldSettings App
@@ -290,6 +442,9 @@ vEditInspectionForm maybeInspection extra = do
 
 data MsgEditInspection =
   MsgEditInspectionDate
+  | MsgEditInspectionTemperTypeId
+  | MsgEditInspectionRunningTypeId
+  | MsgEditInspectionSwarmingTypeId
   | MsgEditInspectionNotes
 
 instance RenderMessage App MsgEditInspection where
@@ -301,11 +456,17 @@ instance RenderMessage App MsgEditInspection where
 
 renderEditInspectionGerman :: MsgEditInspection -> Text
 renderEditInspectionGerman MsgEditInspectionDate = "Datum"
+renderEditInspectionGerman MsgEditInspectionTemperTypeId = "Sanftmut"
+renderEditInspectionGerman MsgEditInspectionRunningTypeId = "Wabensitz"
+renderEditInspectionGerman MsgEditInspectionSwarmingTypeId = "Schwarmtrieb"
 renderEditInspectionGerman MsgEditInspectionNotes = "Notizen"
 
 
 renderEditInspectionEnglish :: MsgEditInspection -> Text
 renderEditInspectionEnglish MsgEditInspectionDate = "Date"
+renderEditInspectionEnglish MsgEditInspectionTemperTypeId = "Temper"
+renderEditInspectionEnglish MsgEditInspectionRunningTypeId = "Running Beh."
+renderEditInspectionEnglish MsgEditInspectionSwarmingTypeId = "swarming Mood"
 renderEditInspectionEnglish MsgEditInspectionNotes = "Notes"
 
 -- gen edit form - end

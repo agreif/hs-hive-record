@@ -9,7 +9,7 @@ module Handler.Hive where
 
 import Handler.Common
 import Import
---import qualified Database.Esqueleto as E
+import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 import qualified Data.Text.Encoding as TE
@@ -91,17 +91,29 @@ getHiveDetailPageDataJsonR hiveId = do
 hiveDetailInspectionJDatas :: HiveId -> Handler [JDataInspection]
 hiveDetailInspectionJDatas hiveId = do
   urlRenderer <- getUrlRender
-  inspectionEnts <- runDB $ selectList [InspectionHiveId ==. hiveId] [Desc InspectionDate]
+  inspectionEntTuples <- runDB $ loadInspectionListTuples hiveId
   return $ map
-    (\(inspectionEnt@(Entity inspectionId _)) ->
+    (\(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt) ->
        JDataInspection
        { jDataInspectionEnt = inspectionEnt
+       , jDataInspectionTemperTypeEnt = temperTypeEnt
+       , jDataInspectionRunningTypeEnt = runningTypeEnt
+       , jDataInspectionSwarmingTypeEnt = swarmingTypeEnt
        , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
        , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
        })
-    inspectionEnts
+    inspectionEntTuples
 
-
+loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType)]
+loadInspectionListTuples hiveId = do
+  tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` rt `E.InnerJoin` st) -> do
+    E.on (i E.^. InspectionSwarmingTypeId E.==. st E.^. SwarmingTypeId)
+    E.on (i E.^. InspectionRunningTypeId E.==. rt E.^. RunningTypeId)
+    E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
+    E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
+    E.where_ (h E.^. HiveId E.==. E.val hiveId)
+    return (i, tt, rt, st)
+  return tuples
 
 
 

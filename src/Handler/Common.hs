@@ -285,12 +285,18 @@ instance ToJSON JDataPageHiveDetail where
 
 data JDataInspection = JDataInspection
   { jDataInspectionEnt :: Entity Inspection
+  , jDataInspectionTemperTypeEnt :: Entity TemperType
+  , jDataInspectionRunningTypeEnt :: Entity RunningType
+  , jDataInspectionSwarmingTypeEnt :: Entity SwarmingType
   , jDataInspectionEditFormUrl :: Text
   , jDataInspectionDeleteFormUrl :: Text
   }
 instance ToJSON JDataInspection where
   toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataInspectionEnt o)
+    [ "inspectionEnt" .= entityIdToJSON (jDataInspectionEnt o)
+    , "temperTypeEnt" .= entityIdToJSON (jDataInspectionTemperTypeEnt o)
+    , "runningTypeEnt" .= entityIdToJSON (jDataInspectionRunningTypeEnt o)
+    , "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o)
     , "editFormUrl" .= jDataInspectionEditFormUrl o
     , "deleteFormUrl" .= jDataInspectionDeleteFormUrl o
     ]
@@ -666,14 +672,17 @@ data MsgGlobal =
   | MsgGlobalAddInspection
   | MsgGlobalDeleteInspection
   | MsgGlobalEditInspection
+  | MsgGlobalTemper
   | MsgGlobalTemperTypes
   | MsgGlobalAddTemperType
   | MsgGlobalDeleteTemperType
   | MsgGlobalEditTemperType
+  | MsgGlobalRunning
   | MsgGlobalRunningTypes
   | MsgGlobalAddRunningType
   | MsgGlobalDeleteRunningType
   | MsgGlobalEditRunningType
+  | MsgGlobalSwarming
   | MsgGlobalSwarmingTypes
   | MsgGlobalAddSwarmingType
   | MsgGlobalDeleteSwarmingType
@@ -720,14 +729,17 @@ renderGlobalGerman MsgGlobalInspections = "Durchsichten"
 renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
 renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
 renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
+renderGlobalGerman MsgGlobalTemper = "Sanftmut"
 renderGlobalGerman MsgGlobalTemperTypes = "Sanftmut Typen"
 renderGlobalGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
 renderGlobalGerman MsgGlobalDeleteTemperType = "Sanftmut Typ löschen"
 renderGlobalGerman MsgGlobalEditTemperType = "Sanftmut Typ bearbeiten"
+renderGlobalGerman MsgGlobalRunning = "Wabensitz"
 renderGlobalGerman MsgGlobalRunningTypes = "Wabensitz Typen"
 renderGlobalGerman MsgGlobalAddRunningType = "Wabensitz Typ hinzufügen"
 renderGlobalGerman MsgGlobalDeleteRunningType = "Wabensitz Typ löschen"
 renderGlobalGerman MsgGlobalEditRunningType = "Wabensitz Typ bearbeiten"
+renderGlobalGerman MsgGlobalSwarming = "Schwarmtrieb"
 renderGlobalGerman MsgGlobalSwarmingTypes = "Schwarmtrieb Typen"
 renderGlobalGerman MsgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen"
 renderGlobalGerman MsgGlobalDeleteSwarmingType = "Schwarmtrieb Typ löschen"
@@ -767,14 +779,17 @@ renderGlobalEnglish MsgGlobalInspections = "Inspections"
 renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
 renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
 renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
+renderGlobalEnglish MsgGlobalTemper = "Temper"
 renderGlobalEnglish MsgGlobalTemperTypes = "Temper types"
 renderGlobalEnglish MsgGlobalAddTemperType = "Add temper type"
 renderGlobalEnglish MsgGlobalDeleteTemperType = "Delete temper type"
 renderGlobalEnglish MsgGlobalEditTemperType = "Edit temper type"
+renderGlobalEnglish MsgGlobalRunning = "Running beh."
 renderGlobalEnglish MsgGlobalRunningTypes = "Running types"
 renderGlobalEnglish MsgGlobalAddRunningType = "Add running type"
 renderGlobalEnglish MsgGlobalDeleteRunningType = "Delete running type"
 renderGlobalEnglish MsgGlobalEditRunningType = "Edit running type"
+renderGlobalEnglish MsgGlobalSwarming = "Swarming mood"
 renderGlobalEnglish MsgGlobalSwarmingTypes = "Swarming types"
 renderGlobalEnglish MsgGlobalAddSwarmingType = "Add swarming type"
 renderGlobalEnglish MsgGlobalDeleteSwarmingType = "Delete swarming type"
@@ -814,14 +829,17 @@ data Translation = Translation
   , msgGlobalAddInspection :: Maybe Text
   , msgGlobalDeleteInspection :: Maybe Text
   , msgGlobalEditInspection :: Maybe Text
+  , msgGlobalTemper :: Maybe Text
   , msgGlobalTemperTypes :: Maybe Text
   , msgGlobalAddTemperType :: Maybe Text
   , msgGlobalDeleteTemperType :: Maybe Text
   , msgGlobalEditTemperType :: Maybe Text
+  , msgGlobalRunning :: Maybe Text
   , msgGlobalRunningTypes :: Maybe Text
   , msgGlobalAddRunningType :: Maybe Text
   , msgGlobalDeleteRunningType :: Maybe Text
   , msgGlobalEditRunningType :: Maybe Text
+  , msgGlobalSwarming :: Maybe Text
   , msgGlobalSwarmingTypes :: Maybe Text
   , msgGlobalAddSwarmingType :: Maybe Text
   , msgGlobalDeleteSwarmingType :: Maybe Text
@@ -843,6 +861,9 @@ data Translation = Translation
   , msgHiveDescription :: Maybe Text
   , msgInspectionHiveId :: Maybe Text
   , msgInspectionDate :: Maybe Text
+  , msgInspectionTemperTypeId :: Maybe Text
+  , msgInspectionRunningTypeId :: Maybe Text
+  , msgInspectionSwarmingTypeId :: Maybe Text
   , msgInspectionNotes :: Maybe Text
   , msgTemperTypeName :: Maybe Text
   , msgTemperTypeSortIndex :: Maybe Text
@@ -889,14 +910,17 @@ translationDe = Translation
   , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
   , msgGlobalDeleteInspection = Just "Durchsicht löschen"
   , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
+  , msgGlobalTemper = Just "Sanftmut"
   , msgGlobalTemperTypes = Just "Sanftmut Typen"
   , msgGlobalAddTemperType = Just "Sanftmut Typ hinzufügen"
   , msgGlobalDeleteTemperType = Just "Sanftmut Typ löschen"
   , msgGlobalEditTemperType = Just "Sanftmut Typ bearbeiten"
+  , msgGlobalRunning = Just "Wabensitz"
   , msgGlobalRunningTypes = Just "Wabensitz Typen"
   , msgGlobalAddRunningType = Just "Wabensitz Typ hinzufügen"
   , msgGlobalDeleteRunningType = Just "Wabensitz Typ löschen"
   , msgGlobalEditRunningType = Just "Wabensitz Typ bearbeiten"
+  , msgGlobalSwarming = Just "Schwarmtrieb"
   , msgGlobalSwarmingTypes = Just "Schwarmtrieb Typen"
   , msgGlobalAddSwarmingType = Just "Schwarmtrieb Typ hinzufügen"
   , msgGlobalDeleteSwarmingType = Just "Schwarmtrieb Typ löschen"
@@ -918,6 +942,9 @@ translationDe = Translation
   , msgHiveDescription = Just "Beschreibung"
   , msgInspectionHiveId = Nothing
   , msgInspectionDate = Just "Datum"
+  , msgInspectionTemperTypeId = Just "Sanftmut"
+  , msgInspectionRunningTypeId = Just "Wabensitz"
+  , msgInspectionSwarmingTypeId = Just "Schwarmtrieb"
   , msgInspectionNotes = Just "Notizen"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sortierungs-Index"
@@ -962,14 +989,17 @@ translationEn = Translation
   , msgGlobalAddInspection = Just "Add inspection"
   , msgGlobalDeleteInspection = Just "Delete inspection"
   , msgGlobalEditInspection = Just "Edit inspection"
+  , msgGlobalTemper = Just "Temper"
   , msgGlobalTemperTypes = Just "Temper types"
   , msgGlobalAddTemperType = Just "Add temper type"
   , msgGlobalDeleteTemperType = Just "Delete temper type"
   , msgGlobalEditTemperType = Just "Edit temper type"
+  , msgGlobalRunning = Just "Running beh."
   , msgGlobalRunningTypes = Just "Running types"
   , msgGlobalAddRunningType = Just "Add running type"
   , msgGlobalDeleteRunningType = Just "Delete running type"
   , msgGlobalEditRunningType = Just "Edit running type"
+  , msgGlobalSwarming = Just "Swarming mood"
   , msgGlobalSwarmingTypes = Just "Swarming types"
   , msgGlobalAddSwarmingType = Just "Add swarming type"
   , msgGlobalDeleteSwarmingType = Just "Delete swarming type"
@@ -991,6 +1021,9 @@ translationEn = Translation
   , msgHiveDescription = Just "Description"
   , msgInspectionHiveId = Nothing
   , msgInspectionDate = Just "Date"
+  , msgInspectionTemperTypeId = Just "Temper"
+  , msgInspectionRunningTypeId = Just "Running Beh."
+  , msgInspectionSwarmingTypeId = Just "swarming Mood"
   , msgInspectionNotes = Just "Notes"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sort Index"
