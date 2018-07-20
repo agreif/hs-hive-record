@@ -526,7 +526,7 @@
       <li .uk-active>
         <a href="#">
           {parent.data.translation.msgGlobalInspectionsLast10}
-      <li .uk-active>
+      <li>
         <a href="#">
           {parent.data.translation.msgGlobalInspectionsAll}
     <ul .uk-switcher .uk-margin>
