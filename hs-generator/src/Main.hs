@@ -1848,7 +1848,8 @@ context =
     , BTranslation { bTranslationKey = "hiveMasterData", bTranslationDe = "Stock-Daten", bTranslationEn = "Hive data" }
 
     , BTranslation { bTranslationKey = "inspection", bTranslationDe = "Durchsicht", bTranslationEn = "Inspection" }
-    , BTranslation { bTranslationKey = "inspections", bTranslationDe = "Durchsichten", bTranslationEn = "Inspections" }
+    , BTranslation { bTranslationKey = "inspectionsAll", bTranslationDe = "Durchsichten (alle)", bTranslationEn = "Inspections (all)" }
+    , BTranslation { bTranslationKey = "inspectionsLast10", bTranslationDe = "Durchsichten (letzten 10)", bTranslationEn = "Inspections (last 10)" }
     , BTranslation { bTranslationKey = "addInspection", bTranslationDe = "Durchsicht hinzufügen", bTranslationEn = "Add inspection" }
     , BTranslation { bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection" }
     , BTranslation { bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection" }

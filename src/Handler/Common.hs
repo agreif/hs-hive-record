@@ -688,7 +688,8 @@ data MsgGlobal =
   | MsgGlobalEditHive
   | MsgGlobalHiveMasterData
   | MsgGlobalInspection
-  | MsgGlobalInspections
+  | MsgGlobalInspectionsAll
+  | MsgGlobalInspectionsLast10
   | MsgGlobalAddInspection
   | MsgGlobalDeleteInspection
   | MsgGlobalEditInspection
@@ -746,7 +747,8 @@ renderGlobalGerman MsgGlobalDeleteHive = "Bienenstock löschen"
 renderGlobalGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
 renderGlobalGerman MsgGlobalHiveMasterData = "Stock-Daten"
 renderGlobalGerman MsgGlobalInspection = "Durchsicht"
-renderGlobalGerman MsgGlobalInspections = "Durchsichten"
+renderGlobalGerman MsgGlobalInspectionsAll = "Durchsichten (alle)"
+renderGlobalGerman MsgGlobalInspectionsLast10 = "Durchsichten (letzten 10)"
 renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
 renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
 renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
@@ -797,7 +799,8 @@ renderGlobalEnglish MsgGlobalDeleteHive = "Delete hive"
 renderGlobalEnglish MsgGlobalEditHive = "Edit hive"
 renderGlobalEnglish MsgGlobalHiveMasterData = "Hive data"
 renderGlobalEnglish MsgGlobalInspection = "Inspection"
-renderGlobalEnglish MsgGlobalInspections = "Inspections"
+renderGlobalEnglish MsgGlobalInspectionsAll = "Inspections (all)"
+renderGlobalEnglish MsgGlobalInspectionsLast10 = "Inspections (last 10)"
 renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
 renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
 renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
@@ -848,7 +851,8 @@ data Translation = Translation
   , msgGlobalEditHive :: Maybe Text
   , msgGlobalHiveMasterData :: Maybe Text
   , msgGlobalInspection :: Maybe Text
-  , msgGlobalInspections :: Maybe Text
+  , msgGlobalInspectionsAll :: Maybe Text
+  , msgGlobalInspectionsLast10 :: Maybe Text
   , msgGlobalAddInspection :: Maybe Text
   , msgGlobalDeleteInspection :: Maybe Text
   , msgGlobalEditInspection :: Maybe Text
@@ -938,7 +942,8 @@ translationDe = Translation
   , msgGlobalEditHive = Just "Bienenstock bearbeiten"
   , msgGlobalHiveMasterData = Just "Stock-Daten"
   , msgGlobalInspection = Just "Durchsicht"
-  , msgGlobalInspections = Just "Durchsichten"
+  , msgGlobalInspectionsAll = Just "Durchsichten (alle)"
+  , msgGlobalInspectionsLast10 = Just "Durchsichten (letzten 10)"
   , msgGlobalAddInspection = Just "Durchsicht hinzufügen"
   , msgGlobalDeleteInspection = Just "Durchsicht löschen"
   , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
@@ -1026,7 +1031,8 @@ translationEn = Translation
   , msgGlobalEditHive = Just "Edit hive"
   , msgGlobalHiveMasterData = Just "Hive data"
   , msgGlobalInspection = Just "Inspection"
-  , msgGlobalInspections = Just "Inspections"
+  , msgGlobalInspectionsAll = Just "Inspections (all)"
+  , msgGlobalInspectionsLast10 = Just "Inspections (last 10)"
   , msgGlobalAddInspection = Just "Add inspection"
   , msgGlobalDeleteInspection = Just "Delete inspection"
   , msgGlobalEditInspection = Just "Edit inspection"

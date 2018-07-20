@@ -525,7 +525,10 @@
           {parent.data.translation.msgGlobalHiveMasterData}
       <li .uk-active>
         <a href="#">
-          {parent.data.translation.msgGlobalInspections}
+          {parent.data.translation.msgGlobalInspectionsLast10}
+      <li .uk-active>
+        <a href="#">
+          {parent.data.translation.msgGlobalInspectionsAll}
     <ul .uk-switcher .uk-margin>
       <li>
         <!-- master data -->
@@ -548,6 +551,87 @@
                     {parent.data.pages.hiveDetail.hiveEnt.description}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
+                  <span uk-icon="icon: pencil">
+      <li>
+        <!-- inspection list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {parent.data.translation.msgInspectionDate}
+              <th>
+                {parent.data.translation.msgGlobalTemper}
+              <th>
+                {parent.data.translation.msgGlobalRunning}
+              <th>
+                {parent.data.translation.msgGlobalSwarming}
+              <th>
+                {parent.data.translation.msgInspectionQueenSeen}
+              <th>
+                {parent.data.translation.msgInspectionTotalFrames}
+              <th>
+                {parent.data.translation.msgInspectionBeeCoveredFrames}
+              <th>
+                {parent.data.translation.msgInspectionBroodFrames}
+              <th>
+                {parent.data.translation.msgInspectionPollenFrames}
+              <th>
+                {parent.data.translation.msgInspectionHoneyFrames}
+              <th>
+                {parent.data.translation.msgInspectionMiteFall}
+              <th>
+                {parent.data.translation.msgInspectionFeeding}
+              <th>
+                {parent.data.translation.msgInspectionNotes}
+              <th .uk-align-right>
+                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{parent.data.pages.hiveDetail.inspections.slice(-10)}">
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {formatDateStr(inspectionEnt.date, parent.parent.data.currentLanguage)}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {temperTypeEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {runningTypeEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {swarmingTypeEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  <span uk-icon="icon: check" if="{inspectionEnt.queenSeen}">
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.totalFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.beeCoveredFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.broodFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.pollenFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.honeyFrames}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.miteFall}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.feeding}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {inspectionEnt.notes}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteInspection}" uk-tooltip onclick="{deleteInspection}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{editInspection}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- inspection list -->
