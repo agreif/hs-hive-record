@@ -450,7 +450,7 @@
       <li .uk-active>
         <a href="#">
           {parent.data.translation.msgGlobalHives}
-    <ul class="uk-switcher uk-margin">
+    <ul .uk-switcher .uk-margin>
       <li>
         <!-- master data -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
@@ -526,7 +526,7 @@
       <li .uk-active>
         <a href="#">
           {parent.data.translation.msgGlobalInspections}
-    <ul class="uk-switcher uk-margin">
+    <ul .uk-switcher .uk-margin>
       <li>
         <!-- master data -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
