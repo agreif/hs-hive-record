@@ -19,15 +19,14 @@ import Control.Monad.Logger (LogSource)
 import Yesod.Auth.Message   (AuthMessage(InvalidLogin))
 import Control.Monad.Trans.Maybe
 
--- Used only when in "auth-dummy-login" setting is enabled.
--- import Yesod.Auth.Dummy
-
--- import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
 import Yesod.Auth.HashDB
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Form.I18n.German
+
+import System.Directory (doesDirectoryExist, createDirectory)
+import Network.Wai.Parse (tempFileBackEndOpts)
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -150,6 +149,17 @@ instance Yesod App where
 
     makeLogger :: App -> IO Logger
     makeLogger = return . appLogger
+
+    -- | Maximum allowed length of the request body, in bytes.
+    maximumContentLength _ _ = Nothing
+    fileUpload _ _ = FileUploadDisk $ tempFileBackEndOpts myTempDir "webenc.buf"
+
+myTempDir :: IO String
+myTempDir = do
+    let dirPathStr = "/tmp/hiverec-tmp"
+    isdir <- doesDirectoryExist dirPathStr
+    when (not isdir) $ createDirectory dirPathStr
+    return dirPathStr
 
 formLayout :: WidgetT App IO () -> Handler Html
 formLayout widget = do
