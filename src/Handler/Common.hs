@@ -293,6 +293,8 @@ data JDataInspection = JDataInspection
   , jDataInspectionSwarmingTypeEnt :: Entity SwarmingType
   , jDataInspectionEditFormUrl :: Text
   , jDataInspectionDeleteFormUrl :: Text
+  , jDataInspectionInspectionfileAddFormUrl :: Text
+  , jDataInspectionInspectionfiles :: [JDataInspectionfile]
   }
 instance ToJSON JDataInspection where
   toJSON o = object
@@ -302,7 +304,31 @@ instance ToJSON JDataInspection where
     , "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o)
     , "editFormUrl" .= jDataInspectionEditFormUrl o
     , "deleteFormUrl" .= jDataInspectionDeleteFormUrl o
+    , "inspectionfileAddFormUrl" .= jDataInspectionInspectionfileAddFormUrl o
+    , "inspectionfiles" .= jDataInspectionInspectionfiles o
     ]
+data JDataInspectionfile = JDataInspectionfile
+  { jDataInspectionfileEnt :: Entity Inspectionfile
+  , jDataInspectionfileEditFormUrl :: Text
+  , jDataInspectionfileDeleteFormUrl :: Text
+  , jDataInspectionfileDownloadUrl :: Text
+  }
+instance ToJSON JDataInspectionfile where
+  toJSON o = object
+    [ "entity" .= entityIdToJSON (jDataInspectionfileEnt o)
+    , "editFormUrl" .= jDataInspectionfileEditFormUrl o
+    , "deleteFormUrl" .= jDataInspectionfileDeleteFormUrl o
+    , "downloadUrl" .= jDataInspectionfileDownloadUrl o
+    ]
+
+
+
+
+
+
+
+
+
 
 
 data JDataTemperType = JDataTemperType
@@ -694,6 +720,10 @@ data MsgGlobal =
   | MsgGlobalDeleteInspection
   | MsgGlobalEditInspection
   | MsgGlobalLastInspection
+  | MsgGlobalInspectionfiles
+  | MsgGlobalAddInspectionfile
+  | MsgGlobalDeleteInspectionfile
+  | MsgGlobalEditInspectionfile
   | MsgGlobalTemper
   | MsgGlobalTemperTypes
   | MsgGlobalAddTemperType
@@ -753,6 +783,10 @@ renderGlobalGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
 renderGlobalGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
 renderGlobalGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
 renderGlobalGerman MsgGlobalLastInspection = "Letzte Durchsicht"
+renderGlobalGerman MsgGlobalInspectionfiles = "Dateien"
+renderGlobalGerman MsgGlobalAddInspectionfile = "Durchsicht-Datei hinzufügen"
+renderGlobalGerman MsgGlobalDeleteInspectionfile = "Durchsicht-Datei löschen"
+renderGlobalGerman MsgGlobalEditInspectionfile = "Durchsicht-Datei bearbeiten"
 renderGlobalGerman MsgGlobalTemper = "Sanftmut"
 renderGlobalGerman MsgGlobalTemperTypes = "Sanftmut Typen"
 renderGlobalGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
@@ -805,6 +839,10 @@ renderGlobalEnglish MsgGlobalAddInspection = "Add inspection"
 renderGlobalEnglish MsgGlobalDeleteInspection = "Delete inspection"
 renderGlobalEnglish MsgGlobalEditInspection = "Edit inspection"
 renderGlobalEnglish MsgGlobalLastInspection = "Last inspection"
+renderGlobalEnglish MsgGlobalInspectionfiles = "Files"
+renderGlobalEnglish MsgGlobalAddInspectionfile = "Add inspection-file"
+renderGlobalEnglish MsgGlobalDeleteInspectionfile = "Delete inspection-file"
+renderGlobalEnglish MsgGlobalEditInspectionfile = "Edit inspection-file"
 renderGlobalEnglish MsgGlobalTemper = "Temper"
 renderGlobalEnglish MsgGlobalTemperTypes = "Temper types"
 renderGlobalEnglish MsgGlobalAddTemperType = "Add temper type"
@@ -857,6 +895,10 @@ data Translation = Translation
   , msgGlobalDeleteInspection :: Maybe Text
   , msgGlobalEditInspection :: Maybe Text
   , msgGlobalLastInspection :: Maybe Text
+  , msgGlobalInspectionfiles :: Maybe Text
+  , msgGlobalAddInspectionfile :: Maybe Text
+  , msgGlobalDeleteInspectionfile :: Maybe Text
+  , msgGlobalEditInspectionfile :: Maybe Text
   , msgGlobalTemper :: Maybe Text
   , msgGlobalTemperTypes :: Maybe Text
   , msgGlobalAddTemperType :: Maybe Text
@@ -883,6 +925,7 @@ data Translation = Translation
   , msgConfigDoubleValue :: Maybe Text
   , msgConfigBoolValue :: Maybe Text
   , msgTestmailEmail :: Maybe Text
+  , msgRawdataBytes :: Maybe Text
   , msgLocationName :: Maybe Text
   , msgHiveLocationId :: Maybe Text
   , msgHiveName :: Maybe Text
@@ -901,6 +944,12 @@ data Translation = Translation
   , msgInspectionMiteFall :: Maybe Text
   , msgInspectionFeeding :: Maybe Text
   , msgInspectionNotes :: Maybe Text
+  , msgInspectionfileInspectionId :: Maybe Text
+  , msgInspectionfileRawdataId :: Maybe Text
+  , msgInspectionfileFilename :: Maybe Text
+  , msgInspectionfileMimetype :: Maybe Text
+  , msgInspectionfileSize :: Maybe Text
+  , msgInspectionfileFile :: Maybe Text
   , msgTemperTypeName :: Maybe Text
   , msgTemperTypeSortIndex :: Maybe Text
   , msgRunningTypeName :: Maybe Text
@@ -948,6 +997,10 @@ translationDe = Translation
   , msgGlobalDeleteInspection = Just "Durchsicht löschen"
   , msgGlobalEditInspection = Just "Durchsicht bearbeiten"
   , msgGlobalLastInspection = Just "Letzte Durchsicht"
+  , msgGlobalInspectionfiles = Just "Dateien"
+  , msgGlobalAddInspectionfile = Just "Durchsicht-Datei hinzufügen"
+  , msgGlobalDeleteInspectionfile = Just "Durchsicht-Datei löschen"
+  , msgGlobalEditInspectionfile = Just "Durchsicht-Datei bearbeiten"
   , msgGlobalTemper = Just "Sanftmut"
   , msgGlobalTemperTypes = Just "Sanftmut Typen"
   , msgGlobalAddTemperType = Just "Sanftmut Typ hinzufügen"
@@ -974,6 +1027,7 @@ translationDe = Translation
   , msgConfigDoubleValue = Just "Double-Wert"
   , msgConfigBoolValue = Just "Boolean-Wert"
   , msgTestmailEmail = Just "Email"
+  , msgRawdataBytes = Just "Bytes"
   , msgLocationName = Just "Name"
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
@@ -992,6 +1046,12 @@ translationDe = Translation
   , msgInspectionMiteFall = Just "Milbenfall"
   , msgInspectionFeeding = Just "Fütterung"
   , msgInspectionNotes = Just "Notizen"
+  , msgInspectionfileInspectionId = Nothing
+  , msgInspectionfileRawdataId = Nothing
+  , msgInspectionfileFilename = Just "Dateiname"
+  , msgInspectionfileMimetype = Just "MIME Type"
+  , msgInspectionfileSize = Just "Groesse"
+  , msgInspectionfileFile = Just "Datei"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sortierungs-Index"
   , msgRunningTypeName = Just "Name"
@@ -1037,6 +1097,10 @@ translationEn = Translation
   , msgGlobalDeleteInspection = Just "Delete inspection"
   , msgGlobalEditInspection = Just "Edit inspection"
   , msgGlobalLastInspection = Just "Last inspection"
+  , msgGlobalInspectionfiles = Just "Files"
+  , msgGlobalAddInspectionfile = Just "Add inspection-file"
+  , msgGlobalDeleteInspectionfile = Just "Delete inspection-file"
+  , msgGlobalEditInspectionfile = Just "Edit inspection-file"
   , msgGlobalTemper = Just "Temper"
   , msgGlobalTemperTypes = Just "Temper types"
   , msgGlobalAddTemperType = Just "Add temper type"
@@ -1063,6 +1127,7 @@ translationEn = Translation
   , msgConfigDoubleValue = Just "Double-Value"
   , msgConfigBoolValue = Just "Boolean-Value"
   , msgTestmailEmail = Just "Email"
+  , msgRawdataBytes = Just "Bytes"
   , msgLocationName = Just "Name"
   , msgHiveLocationId = Nothing
   , msgHiveName = Just "Name"
@@ -1081,6 +1146,12 @@ translationEn = Translation
   , msgInspectionMiteFall = Just "Mite fall"
   , msgInspectionFeeding = Just "Feeding"
   , msgInspectionNotes = Just "Notes"
+  , msgInspectionfileInspectionId = Nothing
+  , msgInspectionfileRawdataId = Nothing
+  , msgInspectionfileFilename = Just "Filename"
+  , msgInspectionfileMimetype = Just "MIME Type"
+  , msgInspectionfileSize = Just "Size"
+  , msgInspectionfileFile = Just "File"
   , msgTemperTypeName = Just "Name"
   , msgTemperTypeSortIndex = Just "Sort Index"
   , msgRunningTypeName = Just "Name"

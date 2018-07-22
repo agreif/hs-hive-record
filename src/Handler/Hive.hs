@@ -93,7 +93,7 @@ hiveDetailInspectionJDatas hiveId = do
   urlRenderer <- getUrlRender
   inspectionEntTuples <- runDB $ loadInspectionListTuples hiveId
   return $ map
-    (\(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt) ->
+    (\(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
        JDataInspection
        { jDataInspectionEnt = inspectionEnt
        , jDataInspectionTemperTypeEnt = temperTypeEnt
@@ -101,10 +101,25 @@ hiveDetailInspectionJDatas hiveId = do
        , jDataInspectionSwarmingTypeEnt = swarmingTypeEnt
        , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
        , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
+       , jDataInspectionInspectionfileAddFormUrl = urlRenderer $ HiverecR $ AddInspectionfileFormR inspectionId
+       , jDataInspectionInspectionfiles = getInspectionfileJDatas inspectionfileEnts urlRenderer
        })
     inspectionEntTuples
 
-loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType)]
+getInspectionfileJDatas :: [Entity Inspectionfile] -> (Route App -> Text) -> [JDataInspectionfile]
+getInspectionfileJDatas inspectionfileEnts urlRenderer =
+  map
+  (\inspectionfileEnt@(Entity inspectionfileId _) ->
+      JDataInspectionfile
+      { jDataInspectionfileEnt = inspectionfileEnt
+      , jDataInspectionfileEditFormUrl = urlRenderer $ HiverecR $ EditInspectionfileFormR inspectionfileId
+      , jDataInspectionfileDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionfileFormR inspectionfileId
+      , jDataInspectionfileDownloadUrl = urlRenderer $ HiverecR $ DownloadInspectionfileR inspectionfileId
+      })
+  inspectionfileEnts
+
+
+loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
 loadInspectionListTuples hiveId = do
   tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` rt `E.InnerJoin` st) -> do
     E.on (i E.^. InspectionSwarmingTypeId E.==. st E.^. SwarmingTypeId)
@@ -114,7 +129,12 @@ loadInspectionListTuples hiveId = do
     E.where_ (h E.^. HiveId E.==. E.val hiveId)
     E.orderBy [E.asc (i E.^. InspectionDate)]
     return (i, tt, rt, st)
-  return tuples
+  tuples' <- forM tuples
+             (\(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
+                 inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
+                 return (inspectionEnt, tt, rt, st, inspectionfileEnts)
+             )
+  return tuples'
 
 
 

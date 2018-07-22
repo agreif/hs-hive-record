@@ -50,6 +50,29 @@ create trigger audit_config after insert or update on public.config for each row
 
 
 
+drop function public.process_audit_rawdata() cascade;
+create or replace function public.process_audit_rawdata()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('rawdata_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into rawdata_history
+                       (id, bytes, version, created_at, created_by, updated_at, updated_by)
+                       values
+                       (new.id, new.bytes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                return new;
+            end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_rawdata after insert or update on public.rawdata for each row execute procedure public.process_audit_rawdata();
+
+
+
 drop function public.process_audit_location() cascade;
 create or replace function public.process_audit_location()
  returns trigger
@@ -116,6 +139,29 @@ as $function$
 $function$;
 
 create trigger audit_inspection after insert or update on public.inspection for each row execute procedure public.process_audit_inspection();
+
+
+
+drop function public.process_audit_inspectionfile() cascade;
+create or replace function public.process_audit_inspectionfile()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('inspectionfile_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into inspectionfile_history
+                       (id, inspection_id, rawdata_id, filename, mimetype, size, version, created_at, created_by, updated_at, updated_by)
+                       values
+                       (new.id, new.inspection_id, new.rawdata_id, new.filename, new.mimetype, new.size, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                return new;
+            end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_inspectionfile after insert or update on public.inspectionfile for each row execute procedure public.process_audit_inspectionfile();
 
 
 

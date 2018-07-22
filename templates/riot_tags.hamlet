@@ -582,6 +582,8 @@
               <th>
                 {parent.data.translation.msgInspectionFeeding}
               <th>
+                {parent.data.translation.msgGlobalInspectionfiles}
+              <th>
                 {parent.data.translation.msgInspectionNotes}
               <th .uk-align-right>
                 <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
@@ -625,12 +627,23 @@
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.feeding}
               <td .uk-table-link>
+                <span each="{inspectionfiles}">
+                  <a href="{downloadUrl}">
+                    {entity.filename}
+                  <button .uk-button .uk-button-link title="{parent.parent.parent.data.translation.msgGlobalEditInspectionfile}" uk-tooltip onclick="{editInspectionfile}">
+                    <span uk-icon="icon: pencil">
+                  <button .uk-button .uk-button-link title="{parent.parent.parent.data.translation.msgGlobalDeleteInspectionfile}" uk-tooltip onclick="{deleteInspectionfile}">
+                    <span uk-icon="icon: trash">
+                  <br>
+              <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   <span .textarea-wrap>
                     {inspectionEnt.notes}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteInspection}" uk-tooltip onclick="{deleteInspection}">
                   <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalAddInspectionfile}" uk-tooltip onclick="{addInspectionfile}">
+                  <span uk-icon="icon: upload">
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{editInspection}">
                   <span uk-icon="icon: pencil">
       <li>
@@ -662,6 +675,8 @@
                 {parent.data.translation.msgInspectionMiteFall}
               <th>
                 {parent.data.translation.msgInspectionFeeding}
+              <th>
+                {parent.data.translation.msgGlobalInspectionfiles}
               <th>
                 {parent.data.translation.msgInspectionNotes}
               <th .uk-align-right>
@@ -706,12 +721,23 @@
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.feeding}
               <td .uk-table-link>
+                <span each="{inspectionfiles}">
+                  <a href="{downloadUrl}">
+                    {entity.filename}
+                  <button .uk-button .uk-button-link title="{parent.parent.parent.data.translation.msgGlobalEditInspectionfile}" uk-tooltip onclick="{editInspectionfile}">
+                    <span uk-icon="icon: pencil">
+                  <button .uk-button .uk-button-link title="{parent.parent.parent.data.translation.msgGlobalDeleteInspectionfile}" uk-tooltip onclick="{deleteInspectionfile}">
+                    <span uk-icon="icon: trash">
+                  <br>
+              <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   <span .textarea-wrap>
                     {inspectionEnt.notes}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteInspection}" uk-tooltip onclick="{deleteInspection}">
                   <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalAddInspectionfile}" uk-tooltip onclick="{addInspectionfile}">
+                  <span uk-icon="icon: upload">
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{editInspection}">
                   <span uk-icon="icon: pencil">
   <script>
@@ -728,6 +754,18 @@
     \   event.currentTarget.blur()
     \ }
     \ deleteInspection(event) {
+    \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ addInspectionfile(event) {
+    \   parent.tag.showModalForm(event.item.inspectionfileAddFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ editInspectionfile(event) {
+    \   parent.tag.showModalForm(event.item.editFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ deleteInspectionfile(event) {
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }

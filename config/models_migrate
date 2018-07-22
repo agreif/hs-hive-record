@@ -56,6 +56,25 @@ ConfigHistory
     updatedBy Text
 
 
+Rawdata
+    bytes ByteString
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+RawdataHistory
+    Id sql=vid
+    id Int MigrationOnly
+    bytes ByteString
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
 Location json
     name Text
     version Int
@@ -139,6 +158,33 @@ InspectionHistory
     miteFall Int Maybe
     feeding Text Maybe
     notes Textarea Maybe
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+Inspectionfile json
+    inspectionId InspectionId
+    rawdataId RawdataId
+    filename Text
+    mimetype Text
+    size Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+InspectionfileHistory
+    Id sql=vid
+    id Int MigrationOnly
+    inspectionId Int
+    rawdataId Int
+    filename Text
+    mimetype Text
+    size Int
     version Int
     createdAt UTCTime
     createdBy Text

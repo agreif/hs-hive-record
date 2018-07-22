@@ -85,3 +85,11 @@
   editInspection/#InspectionId EditInspectionR POST
   deleteInspectionForm/#InspectionId DeleteInspectionFormR GET
   deleteInspection/#InspectionId DeleteInspectionR POST
+
+  addInspectionfileForm/#InspectionId AddInspectionfileFormR GET
+  addInspectionfile/#InspectionId AddInspectionfileR POST
+  editInspectionfileForm/#InspectionfileId EditInspectionfileFormR GET
+  editInspectionfile/#InspectionfileId EditInspectionfileR POST
+  deleteInspectionfileForm/#InspectionfileId DeleteInspectionfileFormR GET
+  deleteInspectionfile/#InspectionfileId DeleteInspectionfileR POST
+  downloadInspectionfile/#InspectionfileId DownloadInspectionfileR GET

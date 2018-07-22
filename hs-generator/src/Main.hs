@@ -737,6 +737,49 @@ context =
 
 
       , BModel
+        { bModelName = "Rawdata"
+        , bModelLabel = "Rawdata"
+        , bModelIsJson = False
+        , bModelDbUniquenesses = []
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl = Nothing
+        , bModelEditFormDataJsonUrl = Nothing
+        , bModelDeleteFormDataJsonUrl = Nothing
+        , bModelAddFormHasDefaultModel = False
+        , bModelEditPostLoadsModel = False
+        , bModelDeletePostLoadsModel = False
+        , bModelAddFormTitleMsg = Nothing
+        , bModelEditFormTitleMsg = Nothing
+        , bModelDeleteFormTitleMsg = Nothing
+        , bModelParentHsType = Nothing
+        , bModelFormRouteHsType = "CrmR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "bytes"
+              , bFieldLabelDe = Just "Bytes"
+              , bFieldLabelEn = Just "Bytes"
+              , bFieldHsType = "ByteString"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            ]
+        }
+
+
+
+      , BModel
         { bModelName = "location"
         , bModelLabel = "Location"
         , bModelIsJson = True
@@ -1477,6 +1520,146 @@ context =
             ]
         }
       , BModel
+        { bModelName = "inspectionfile"
+        , bModelLabel = "Inspection File"
+        , bModelIsJson = True
+        , bModelDbUniquenesses = []
+        , bModelDbHasHistoryTable = True
+        , bModelHsDerivings = []
+        , bModelAddFormEntityLoader = Nothing
+        , bModelEditFormEntityLoader = Nothing
+        , bModelDeleteFormEntityLoader = Nothing
+        , bModelAddFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelEditFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelDeleteFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bModelAddFormHasDefaultModel = False
+        , bModelEditPostLoadsModel = False
+        , bModelDeletePostLoadsModel = False
+        , bModelAddFormTitleMsg = Just "MsgGlobalAddInspectionfile"
+        , bModelEditFormTitleMsg = Just "MsgGlobalEditInspectionfile"
+        , bModelDeleteFormTitleMsg = Just "MsgGlobalDeleteInspectionfile"
+        , bModelParentHsType = Just "Inspection"
+        , bModelFormRouteHsType = "HiverecR"
+        , bModelFields =
+            [ BField
+              { bFieldName = "inspectionId"
+              , bFieldLabelDe = Nothing
+              , bFieldLabelEn = Nothing
+              , bFieldHsType = "InspectionId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "rawdataId"
+              , bFieldLabelDe = Nothing
+              , bFieldLabelEn = Nothing
+              , bFieldHsType = "RawdataId"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "filename"
+              , bFieldLabelDe = Just "Dateiname"
+              , bFieldLabelEn = Just "Filename"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "mimetype"
+              , bFieldLabelDe = Just "MIME Type"
+              , bFieldLabelEn = Just "MIME Type"
+              , bFieldHsType = "Text"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "size"
+              , bFieldLabelDe = Just "Groesse"
+              , bFieldLabelEn = Just "Size"
+              , bFieldHsType = "Int"
+              , bFieldDb =
+                  Just $
+                  BFieldDb
+                  { bFieldDbIsNullable = False
+                  , bFieldDbDefault = Nothing
+                  , bFieldDbCanUpdate = False
+                  }
+              , bFieldFormFieldType = Nothing
+              , bFieldAddView = Nothing
+              , bFieldEditView = Nothing
+              }
+            , BField
+              { bFieldName = "file"
+              , bFieldLabelDe = Just "Datei"
+              , bFieldLabelEn = Just "File"
+              , bFieldHsType = "FileInfo"
+              , bFieldDb = Nothing
+              , bFieldFormFieldType = Just "fileField"
+              , bFieldAddView =
+                  Just $
+                  BFieldAddView
+                  { bFieldAddViewIsRequired = True
+                  , bFieldAddViewIsDisabled = False
+                  , bFieldAddViewAttrs = []
+                  , bFieldAddViewDefault = Nothing
+                  }
+              , bFieldEditView =
+                  Just $
+                  BFieldEditView
+                  { bFieldEditViewIsRequired = True
+                  , bFieldEditViewIsDisabled = False
+                  , bFieldEditViewAttrs = []
+                  , bFieldEditViewDefault = Nothing
+                  }
+              }
+            ]
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+      , BModel
         { bModelName = "temperType"
         , bModelLabel = "Temper Type"
         , bModelIsJson = True
@@ -1854,6 +2037,11 @@ context =
     , BTranslation { bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection" }
     , BTranslation { bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection" }
     , BTranslation { bTranslationKey = "lastInspection", bTranslationDe = "Letzte Durchsicht", bTranslationEn = "Last inspection" }
+
+    , BTranslation { bTranslationKey = "inspectionfiles", bTranslationDe = "Dateien", bTranslationEn = "Files" }
+    , BTranslation { bTranslationKey = "addInspectionfile", bTranslationDe = "Durchsicht-Datei hinzufügen", bTranslationEn = "Add inspection-file" }
+    , BTranslation { bTranslationKey = "deleteInspectionfile", bTranslationDe = "Durchsicht-Datei löschen", bTranslationEn = "Delete inspection-file" }
+    , BTranslation { bTranslationKey = "editInspectionfile", bTranslationDe = "Durchsicht-Datei bearbeiten", bTranslationEn = "Edit inspection-file" }
 
     , BTranslation { bTranslationKey = "temper", bTranslationDe = "Sanftmut", bTranslationEn = "Temper" }
     , BTranslation { bTranslationKey = "temperTypes", bTranslationDe = "Sanftmut Typen", bTranslationEn = "Temper types" }

@@ -50,6 +50,7 @@ import Handler.TestMail
 import Handler.Location
 import Handler.Hive
 import Handler.Inspection
+import Handler.Inspectionfile
 import Handler.TemperType
 import Handler.RunningType
 import Handler.SwarmingType
