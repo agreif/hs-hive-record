@@ -78,15 +78,14 @@ postAddInspectionfileR inspectionId = do
 getDownloadInspectionfileR :: InspectionfileId -> Handler TypedContent
 getDownloadInspectionfileR inspectionfileId = do
   Inspectionfile { inspectionfileFilename = filename
-               , inspectionfileMimetype = mimetype
-               , inspectionfileSize = size
-               , inspectionfileRawdataId = rawdataId
-               } <- runDB $ get404 inspectionfileId
+                 , inspectionfileMimetype = mimetype
+                 , inspectionfileRawdataId = rawdataId
+                 } <- runDB $ get404 inspectionfileId
   rawdata <- runDB $ get404 rawdataId
   let bytes = rawdataBytes rawdata
   addHeader "Content-Disposition" $
     T.concat ["attachment; filename=\"", filename, "\""]
---  addHeader "Content-Length" (pack $ show size)
+  addHeader "Content-Length" "1000"
   sendResponse (TE.encodeUtf8 mimetype, toContent bytes)
 
 vAddInspectionfileForm :: Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
