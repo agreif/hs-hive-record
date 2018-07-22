@@ -86,7 +86,7 @@ getDownloadInspectionfileR inspectionfileId = do
   let bytes = rawdataBytes rawdata
   addHeader "Content-Disposition" $
     T.concat ["attachment; filename=\"", filename, "\""]
-  addHeader "Content-Length" (pack $ show size)
+--  addHeader "Content-Length" (pack $ show size)
   sendResponse (TE.encodeUtf8 mimetype, toContent bytes)
 
 vAddInspectionfileForm :: Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
