@@ -65,15 +65,6 @@ Rawdata
     updatedBy Text
 
 
-RawdataHistory
-    Id sql=vid
-    id Int MigrationOnly
-    bytes ByteString
-    version Int
-    createdAt UTCTime
-    createdBy Text
-    updatedAt UTCTime
-    updatedBy Text
 
 Location json
     name Text
