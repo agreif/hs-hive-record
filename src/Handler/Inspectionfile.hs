@@ -9,6 +9,7 @@ module Handler.Inspectionfile where
 
 import Handler.Common
 import Import
+import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
@@ -86,11 +87,21 @@ getDownloadInspectionfileR inspectionfileId = do
   -- rawdata <- runDB $ get404 rawdataId
   -- let bytes = rawdataBytes rawdata
   -- sendResponse (TE.encodeUtf8 mimetype, toContent bytes)
-  let bytesSource = selectSource [RawdataId ==. rawdataId] []
+
+  -- let bytesSource = selectSource [RawdataId ==. rawdataId] []
+  -- respondSourceDB (TE.encodeUtf8 mimetype) $ bytesSource $= awaitForever toBuilder'
+  -- where
+  --   toBuilder' (Entity _ rawdata) = do
+  --     sendChunkBS $ rawdataBytes rawdata
+  --     sendFlush
+
+  let bytesSource = E.selectSource $ E.from $ \rd -> do
+        E.where_ (rd E.^. RawdataId E.==. E.val rawdataId)
+        return $ rd E.^. RawdataBytes
   respondSourceDB (TE.encodeUtf8 mimetype) $ bytesSource $= awaitForever toBuilder'
   where
-    toBuilder' (Entity _ rawdata) = do
-      sendChunkBS $ rawdataBytes rawdata
+    toBuilder' (E.Value bytes) = do
+      sendChunkBS bytes
       sendFlush
 
 vAddInspectionfileForm :: Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
