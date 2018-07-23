@@ -81,11 +81,17 @@ getDownloadInspectionfileR inspectionfileId = do
                  , inspectionfileMimetype = mimetype
                  , inspectionfileRawdataId = rawdataId
                  } <- runDB $ get404 inspectionfileId
-  rawdata <- runDB $ get404 rawdataId
-  let bytes = rawdataBytes rawdata
   addHeader "Content-Disposition" $
     T.concat ["attachment; filename=\"", filename, "\""]
-  sendResponse (TE.encodeUtf8 mimetype, toContent bytes)
+  -- rawdata <- runDB $ get404 rawdataId
+  -- let bytes = rawdataBytes rawdata
+  -- sendResponse (TE.encodeUtf8 mimetype, toContent bytes)
+  let bytesSource = selectSource [RawdataId ==. rawdataId] []
+  respondSourceDB (TE.encodeUtf8 mimetype) $ bytesSource $= awaitForever toBuilder'
+  where
+    toBuilder' (Entity _ rawdata) = do
+      sendChunkBS $ rawdataBytes rawdata
+      sendFlush
 
 vAddInspectionfileForm :: Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
 vAddInspectionfileForm maybeVAddInspectionfile extra = do
