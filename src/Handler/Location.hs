@@ -36,7 +36,7 @@ getLocationListPageDataJsonR = do
   req <- getRequest
   appName <- runDB $ configAppName
   urlRenderer <- getUrlRender
-  mainNavItems <- mainNavData user MainNavLocation
+  mainNavItems <- mainNavData user MainNavLocations
   jDataLocations <- locationListJDatas
   let pages =
         defaultDataPages
@@ -109,7 +109,7 @@ getLocationDetailPageDataJsonR locationId = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB $ configAppName
-  mainNavItems <- mainNavData user MainNavLocation
+  mainNavItems <- mainNavData user MainNavLocations
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
   jDataHives <- locationDetailHiveJDatas locationId

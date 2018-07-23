@@ -35,7 +35,7 @@ getHiveDetailPageDataJsonR hiveId = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB $ configAppName
-  mainNavItems <- mainNavData user MainNavLocation
+  mainNavItems <- mainNavData user MainNavLocations
   hive <- runDB $ get404 hiveId
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId

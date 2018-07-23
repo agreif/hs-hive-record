@@ -107,8 +107,9 @@ instance ToJSON JData where
 data JDataNavItem = JDataNavItem
   { jDataNavItemLabel :: Text
   , jDataNavItemIsActive :: Bool
-  , jDataNavItemPageDataUrl :: Text
+  , jDataNavItemPageDataUrl :: Maybe Text
   , jDataNavItemBadge :: Maybe Text
+  , jDataNavItemDropdownItems :: Maybe [JDataNavItem]
   }
 instance ToJSON JDataNavItem where
   toJSON o = object
@@ -116,6 +117,7 @@ instance ToJSON JDataNavItem where
     , "isActive" .= jDataNavItemIsActive o
     , "dataUrl" .= jDataNavItemPageDataUrl o
     , "badge" .= jDataNavItemBadge o
+    , "dropdownItems" .= jDataNavItemDropdownItems o
     ]
 
 
@@ -379,7 +381,8 @@ instance ToJSON JDataSwarmingType where
 data MainNav
   = MainNavHome
   | MainNavAdmin
-  | MainNavLocation
+  | MainNavLocations
+  | MainNavHives
   deriving (Eq)
 
 mainNavData :: User -> MainNav -> Handler [JDataNavItem]
@@ -388,12 +391,15 @@ mainNavData user mainNav = do
   msgHome <- localizedMsg MsgGlobalHome
   msgAdmin <- localizedMsg MsgGlobalAdmin
   msgLocations <- localizedMsg MsgGlobalLocations
+  msgHives <- localizedMsg MsgGlobalHives
+  hiveNavItems <- getHiveNavItems
   return $
     [ JDataNavItem
       { jDataNavItemLabel = msgHome
       , jDataNavItemIsActive = mainNav == MainNavHome
-      , jDataNavItemPageDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+      , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
       , jDataNavItemBadge = Nothing
+      , jDataNavItemDropdownItems = Nothing
       }
     ]
     ++
@@ -401,18 +407,30 @@ mainNavData user mainNav = do
       True -> [ JDataNavItem
                 { jDataNavItemLabel = msgAdmin
                 , jDataNavItemIsActive = mainNav == MainNavAdmin
-                , jDataNavItemPageDataUrl = urlRenderer $ AdminR AdminPageDataJsonR
+                , jDataNavItemPageDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
                 , jDataNavItemBadge = Nothing
+                , jDataNavItemDropdownItems = Nothing
                 } ]
       False -> []
     ++
     [ JDataNavItem
       { jDataNavItemLabel = msgLocations
-      , jDataNavItemIsActive = mainNav == MainNavLocation
-      , jDataNavItemPageDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+      , jDataNavItemIsActive = mainNav == MainNavLocations
+      , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
       , jDataNavItemBadge = Nothing
+      , jDataNavItemDropdownItems = Nothing
       }
     ]
+    ++
+    case not $ null hiveNavItems of
+      True -> [ JDataNavItem
+                { jDataNavItemLabel = msgHives
+                , jDataNavItemIsActive = mainNav == MainNavHives
+                , jDataNavItemPageDataUrl = Nothing
+                , jDataNavItemBadge = Nothing
+                , jDataNavItemDropdownItems = Just hiveNavItems
+                } ]
+      False -> []
 
 --------------------------------------------------------------------------------
 -- app specific helpers
@@ -429,6 +447,23 @@ getLastInspectionEnt hiveId = do
   case inspectionEnts of
     [inspectionEnt] -> return $ Just inspectionEnt
     _ -> return Nothing
+
+getHiveNavItems :: Handler [JDataNavItem]
+getHiveNavItems = do
+  tuples <- runDB $ do
+    E.select $ E.from $ \(h `E.InnerJoin` l) -> do
+      E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
+      E.orderBy [E.asc (l E.^. LocationName), E.asc (h E.^. HiveName)]
+      return (h, l)
+  urlRenderer <- getUrlRender
+  forM tuples $ \(Entity hiveId hive, Entity _ location) ->
+    return $ JDataNavItem
+    { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
+    , jDataNavItemIsActive = False
+    , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+    , jDataNavItemBadge = Nothing
+    , jDataNavItemDropdownItems = Nothing
+    }
 
 --------------------------------------------------------------------------------
 -- generic helpers
