@@ -136,7 +136,7 @@
               {badge}
           <a href="#" if="{dropdownItems}">
             {label}
-          <div .uk-navbar-dropdown if="{dropdownItems}">
+          <div .uk-navbar-dropdown .uk-navbar-dropdown-width-2 if="{dropdownItems}">
             <ul .uk-nav .uk-navbar-dropdown-nav>
               <li each="{dropdownItems}">
                 <a onclick="{switchNav}">
