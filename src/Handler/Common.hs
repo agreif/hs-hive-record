@@ -977,7 +977,6 @@ data Translation = Translation
   , msgInspectionPollenFrames :: Maybe Text
   , msgInspectionHoneyFrames :: Maybe Text
   , msgInspectionTreatment :: Maybe Text
-  , msgInspectionMiteFall :: Maybe Text
   , msgInspectionFeeding :: Maybe Text
   , msgInspectionNotes :: Maybe Text
   , msgInspectionfileInspectionId :: Maybe Text
@@ -1080,7 +1079,6 @@ translationDe = Translation
   , msgInspectionPollenFrames = Just "Pollenwaben"
   , msgInspectionHoneyFrames = Just "Honigwaben"
   , msgInspectionTreatment = Just "Behandlung"
-  , msgInspectionMiteFall = Just "Milbenfall"
   , msgInspectionFeeding = Just "Fütterung"
   , msgInspectionNotes = Just "Notizen"
   , msgInspectionfileInspectionId = Nothing
@@ -1181,7 +1179,6 @@ translationEn = Translation
   , msgInspectionPollenFrames = Just "Pollen frames"
   , msgInspectionHoneyFrames = Just "Honey frames"
   , msgInspectionTreatment = Just "Treatment"
-  , msgInspectionMiteFall = Just "Mite fall"
   , msgInspectionFeeding = Just "Feeding"
   , msgInspectionNotes = Just "Notes"
   , msgInspectionfileInspectionId = Nothing

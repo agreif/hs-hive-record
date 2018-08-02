@@ -122,7 +122,6 @@ Inspection json
     pollenFrames Int
     honeyFrames Int
     treatment Text Maybe
-    miteFall Int Maybe
     feeding Text Maybe
     notes Textarea Maybe
     version Int
@@ -148,7 +147,6 @@ InspectionHistory
     pollenFrames Int
     honeyFrames Int
     treatment Text Maybe
-    miteFall Int Maybe
     feeding Text Maybe
     notes Textarea Maybe
     version Int

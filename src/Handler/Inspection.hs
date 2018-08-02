@@ -52,7 +52,6 @@ defaultAddInspection hiveId = do
       , inspectionBroodFrames = inspectionBroodFrames inspection
       , inspectionPollenFrames = inspectionPollenFrames inspection
       , inspectionHoneyFrames = inspectionHoneyFrames inspection
-      , inspectionMiteFall = Nothing
       , inspectionTreatment = Nothing
       , inspectionFeeding = Nothing
       , inspectionNotes = Nothing
@@ -75,7 +74,6 @@ defaultAddInspection hiveId = do
       , inspectionBroodFrames = 0
       , inspectionPollenFrames = 0
       , inspectionHoneyFrames = 0
-      , inspectionMiteFall = Nothing
       , inspectionTreatment = Nothing
       , inspectionFeeding = Nothing
       , inspectionNotes = Nothing
@@ -112,7 +110,6 @@ data VAddInspection = VAddInspection
   , vAddInspectionPollenFrames :: Int
   , vAddInspectionHoneyFrames :: Int
   , vAddInspectionTreatment :: Maybe Text
-  , vAddInspectionMiteFall :: Maybe Int
   , vAddInspectionFeeding :: Maybe Text
   , vAddInspectionNotes :: Maybe Textarea
   }
@@ -155,7 +152,6 @@ postAddInspectionR hiveId = do
             , inspectionPollenFrames = vAddInspectionPollenFrames vAddInspection
             , inspectionHoneyFrames = vAddInspectionHoneyFrames vAddInspection
             , inspectionTreatment = vAddInspectionTreatment vAddInspection
-            , inspectionMiteFall = vAddInspectionMiteFall vAddInspection
             , inspectionFeeding = vAddInspectionFeeding vAddInspection
             , inspectionNotes = vAddInspectionNotes vAddInspection
             , inspectionVersion = 1
@@ -208,16 +204,13 @@ vAddInspectionForm maybeInspection extra = do
   (treatmentResult, treatmentView) <- mopt textField
     treatmentFs
     (inspectionTreatment <$> maybeInspection)
-  (miteFallResult, miteFallView) <- mopt intField
-    miteFallFs
-    (inspectionMiteFall <$> maybeInspection)
   (feedingResult, feedingView) <- mopt textField
     feedingFs
     (inspectionFeeding <$> maybeInspection)
   (notesResult, notesView) <- mopt textareaField
     notesFs
     (inspectionNotes <$> maybeInspection)
-  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> treatmentResult <*> miteFallResult <*> feedingResult <*> notesResult
+  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult
   let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
@@ -285,12 +278,6 @@ vAddInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput treatmentView}
         $maybe err <- fvErrors treatmentView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors miteFallView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors miteFallView:.uk-text-danger for=#{fvId miteFallView}>#{fvLabel miteFallView}
-      <div .uk-form-controls>
-        ^{fvInput miteFallView}
-        $maybe err <- fvErrors miteFallView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
@@ -395,14 +382,6 @@ vAddInspectionForm maybeInspection extra = do
       , fsName = Just "treatment"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
-    miteFallFs :: FieldSettings App
-    miteFallFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionMiteFall
-      , fsTooltip = Nothing
-      , fsId = Just "miteFall"
-      , fsName = Just "miteFall"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
-      }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
       { fsLabel = SomeMessage MsgAddInspectionFeeding
@@ -432,7 +411,6 @@ data MsgAddInspection =
   | MsgAddInspectionPollenFrames
   | MsgAddInspectionHoneyFrames
   | MsgAddInspectionTreatment
-  | MsgAddInspectionMiteFall
   | MsgAddInspectionFeeding
   | MsgAddInspectionNotes
 
@@ -455,7 +433,6 @@ renderAddInspectionGerman MsgAddInspectionBroodFrames = "Brutwaben"
 renderAddInspectionGerman MsgAddInspectionPollenFrames = "Pollenwaben"
 renderAddInspectionGerman MsgAddInspectionHoneyFrames = "Honigwaben"
 renderAddInspectionGerman MsgAddInspectionTreatment = "Behandlung"
-renderAddInspectionGerman MsgAddInspectionMiteFall = "Milbenfall"
 renderAddInspectionGerman MsgAddInspectionFeeding = "Fütterung"
 renderAddInspectionGerman MsgAddInspectionNotes = "Notizen"
 
@@ -472,7 +449,6 @@ renderAddInspectionEnglish MsgAddInspectionBroodFrames = "Brood frames"
 renderAddInspectionEnglish MsgAddInspectionPollenFrames = "Pollen frames"
 renderAddInspectionEnglish MsgAddInspectionHoneyFrames = "Honey frames"
 renderAddInspectionEnglish MsgAddInspectionTreatment = "Treatment"
-renderAddInspectionEnglish MsgAddInspectionMiteFall = "Mite fall"
 renderAddInspectionEnglish MsgAddInspectionFeeding = "Feeding"
 renderAddInspectionEnglish MsgAddInspectionNotes = "Notes"
 
@@ -495,7 +471,6 @@ data VEditInspection = VEditInspection
   , vEditInspectionPollenFrames :: Int
   , vEditInspectionHoneyFrames :: Int
   , vEditInspectionTreatment :: Maybe Text
-  , vEditInspectionMiteFall :: Maybe Int
   , vEditInspectionFeeding :: Maybe Text
   , vEditInspectionNotes :: Maybe Textarea
   , vEditInspectionVersion :: Int
@@ -538,7 +513,6 @@ postEditInspectionR inspectionId = do
             , InspectionPollenFrames =. vEditInspectionPollenFrames vEditInspection
             , InspectionHoneyFrames =. vEditInspectionHoneyFrames vEditInspection
             , InspectionTreatment =. vEditInspectionTreatment vEditInspection
-            , InspectionMiteFall =. vEditInspectionMiteFall vEditInspection
             , InspectionFeeding =. vEditInspectionFeeding vEditInspection
             , InspectionNotes =. vEditInspectionNotes vEditInspection
             , InspectionVersion =. vEditInspectionVersion vEditInspection + 1
@@ -594,9 +568,6 @@ vEditInspectionForm maybeInspection extra = do
   (treatmentResult, treatmentView) <- mopt textField
     treatmentFs
     (inspectionTreatment <$> maybeInspection)
-  (miteFallResult, miteFallView) <- mopt intField
-    miteFallFs
-    (inspectionMiteFall <$> maybeInspection)
   (feedingResult, feedingView) <- mopt textField
     feedingFs
     (inspectionFeeding <$> maybeInspection)
@@ -606,7 +577,7 @@ vEditInspectionForm maybeInspection extra = do
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (inspectionVersion <$> maybeInspection)
-  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> treatmentResult <*> miteFallResult <*> feedingResult <*> notesResult <*> versionResult
+  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> pollenFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
@@ -675,12 +646,6 @@ vEditInspectionForm maybeInspection extra = do
       <div .uk-form-controls>
         ^{fvInput treatmentView}
         $maybe err <- fvErrors treatmentView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors miteFallView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors miteFallView:.uk-text-danger for=#{fvId miteFallView}>#{fvLabel miteFallView}
-      <div .uk-form-controls>
-        ^{fvInput miteFallView}
-        $maybe err <- fvErrors miteFallView
           &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
@@ -785,14 +750,6 @@ vEditInspectionForm maybeInspection extra = do
       , fsName = Just "treatment"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
-    miteFallFs :: FieldSettings App
-    miteFallFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionMiteFall
-      , fsTooltip = Nothing
-      , fsId = Just "miteFall"
-      , fsName = Just "miteFall"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
-      }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
       { fsLabel = SomeMessage MsgEditInspectionFeeding
@@ -830,7 +787,6 @@ data MsgEditInspection =
   | MsgEditInspectionPollenFrames
   | MsgEditInspectionHoneyFrames
   | MsgEditInspectionTreatment
-  | MsgEditInspectionMiteFall
   | MsgEditInspectionFeeding
   | MsgEditInspectionNotes
 
@@ -853,7 +809,6 @@ renderEditInspectionGerman MsgEditInspectionBroodFrames = "Brutwaben"
 renderEditInspectionGerman MsgEditInspectionPollenFrames = "Pollenwaben"
 renderEditInspectionGerman MsgEditInspectionHoneyFrames = "Honigwaben"
 renderEditInspectionGerman MsgEditInspectionTreatment = "Behandlung"
-renderEditInspectionGerman MsgEditInspectionMiteFall = "Milbenfall"
 renderEditInspectionGerman MsgEditInspectionFeeding = "Fütterung"
 renderEditInspectionGerman MsgEditInspectionNotes = "Notizen"
 
@@ -870,7 +825,6 @@ renderEditInspectionEnglish MsgEditInspectionBroodFrames = "Brood frames"
 renderEditInspectionEnglish MsgEditInspectionPollenFrames = "Pollen frames"
 renderEditInspectionEnglish MsgEditInspectionHoneyFrames = "Honey frames"
 renderEditInspectionEnglish MsgEditInspectionTreatment = "Treatment"
-renderEditInspectionEnglish MsgEditInspectionMiteFall = "Mite fall"
 renderEditInspectionEnglish MsgEditInspectionFeeding = "Feeding"
 renderEditInspectionEnglish MsgEditInspectionNotes = "Notes"
 

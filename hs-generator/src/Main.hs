@@ -1429,53 +1429,6 @@ context =
                   , bFieldEditViewDefault = Nothing
                   }
               }
-
-
-
-
-
-            , BField
-              { bFieldName = "miteFall"
-              , bFieldLabelDe = Just "Milbenfall"
-              , bFieldLabelEn = Just "Mite fall"
-              , bFieldHsType = "Int"
-              , bFieldDb =
-                  Just $
-                  BFieldDb
-                  { bFieldDbIsNullable = True
-                  , bFieldDbDefault = Nothing
-                  , bFieldDbCanUpdate = True
-                  }
-              , bFieldFormFieldType = Just "intField"
-              , bFieldAddView =
-                  Just $
-                  BFieldAddView
-                  { bFieldAddViewIsRequired = False
-                  , bFieldAddViewIsDisabled = False
-                  , bFieldAddViewAttrs =
-                      [ BFieldAttr
-                        { bFieldAttrKey = "class"
-                        , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
-                        }
-                      ]
-                  , bFieldAddViewDefault = Nothing
-                  }
-              , bFieldEditView =
-                  Just $
-                  BFieldEditView
-                  { bFieldEditViewIsRequired = False
-                  , bFieldEditViewIsDisabled = False
-                  , bFieldEditViewAttrs =
-                      [ BFieldAttr
-                        { bFieldAttrKey = "class"
-                        , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
-                        }
-                      ]
-                  , bFieldEditViewDefault = Nothing
-                  }
-              }
             , BField
               { bFieldName = "feeding"
               , bFieldLabelDe = Just "Fütterung"
