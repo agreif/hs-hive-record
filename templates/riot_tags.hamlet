@@ -587,6 +587,8 @@
               <th>
                 {parent.data.translation.msgInspectionMiteFall}
               <th>
+                {parent.data.translation.msgInspectionTreatment}
+              <th>
                 {parent.data.translation.msgInspectionFeeding}
               <th>
                 {parent.data.translation.msgGlobalInspectionfiles}
@@ -630,6 +632,9 @@
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.miteFall}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.treatment}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.feeding}
@@ -681,6 +686,8 @@
               <th>
                 {parent.data.translation.msgInspectionMiteFall}
               <th>
+                {parent.data.translation.msgInspectionTreatment}
+              <th>
                 {parent.data.translation.msgInspectionFeeding}
               <th>
                 {parent.data.translation.msgGlobalInspectionfiles}
@@ -724,6 +731,9 @@
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.miteFall}
+              <td .uk-table-link>
+                <a onclick="{editInspection}" .uk-link-reset>
+                  {inspectionEnt.treatment}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.feeding}

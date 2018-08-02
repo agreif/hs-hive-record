@@ -976,6 +976,7 @@ data Translation = Translation
   , msgInspectionBroodFrames :: Maybe Text
   , msgInspectionPollenFrames :: Maybe Text
   , msgInspectionHoneyFrames :: Maybe Text
+  , msgInspectionTreatment :: Maybe Text
   , msgInspectionMiteFall :: Maybe Text
   , msgInspectionFeeding :: Maybe Text
   , msgInspectionNotes :: Maybe Text
@@ -1078,6 +1079,7 @@ translationDe = Translation
   , msgInspectionBroodFrames = Just "Brutwaben"
   , msgInspectionPollenFrames = Just "Pollenwaben"
   , msgInspectionHoneyFrames = Just "Honigwaben"
+  , msgInspectionTreatment = Just "Behandlung"
   , msgInspectionMiteFall = Just "Milbenfall"
   , msgInspectionFeeding = Just "Fütterung"
   , msgInspectionNotes = Just "Notizen"
@@ -1178,6 +1180,7 @@ translationEn = Translation
   , msgInspectionBroodFrames = Just "Brood frames"
   , msgInspectionPollenFrames = Just "Pollen frames"
   , msgInspectionHoneyFrames = Just "Honey frames"
+  , msgInspectionTreatment = Just "Treatment"
   , msgInspectionMiteFall = Just "Mite fall"
   , msgInspectionFeeding = Just "Feeding"
   , msgInspectionNotes = Just "Notes"
