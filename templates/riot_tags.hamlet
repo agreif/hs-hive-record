@@ -583,8 +583,6 @@
               <th>
                 {parent.data.translation.msgInspectionHoneyFrames}
               <th>
-                {parent.data.translation.msgInspectionPollenFrames}
-              <th>
                 {parent.data.translation.msgInspectionTreatment}
               <th>
                 {parent.data.translation.msgInspectionFeeding}
@@ -624,9 +622,6 @@
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.honeyFrames}
-              <td .uk-table-link>
-                <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.pollenFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.treatment}
@@ -675,8 +670,6 @@
               <th>
                 {parent.data.translation.msgInspectionBroodFrames}
               <th>
-                {parent.data.translation.msgInspectionPollenFrames}
-              <th>
                 {parent.data.translation.msgInspectionHoneyFrames}
               <th>
                 {parent.data.translation.msgInspectionTreatment}
@@ -715,9 +708,6 @@
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.broodFrames}
-              <td .uk-table-link>
-                <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.pollenFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.honeyFrames}

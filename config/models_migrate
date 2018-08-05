@@ -120,7 +120,6 @@ Inspection json
     beeCoveredFrames Int
     broodFrames Int
     honeyFrames Int
-    pollenFrames Int
     treatment Text Maybe
     feeding Text Maybe
     notes Textarea Maybe
@@ -145,7 +144,6 @@ InspectionHistory
     beeCoveredFrames Int
     broodFrames Int
     honeyFrames Int
-    pollenFrames Int
     treatment Text Maybe
     feeding Text Maybe
     notes Textarea Maybe

@@ -1346,48 +1346,6 @@ context =
                   }
               }
             , BField
-              { bFieldName = "pollenFrames"
-              , bFieldLabelDe = Just "Pollenwaben"
-              , bFieldLabelEn = Just "Pollen frames"
-              , bFieldHsType = "Int"
-              , bFieldDb =
-                  Just $
-                  BFieldDb
-                  { bFieldDbIsNullable = False
-                  , bFieldDbDefault = Nothing
-                  , bFieldDbCanUpdate = True
-                  }
-              , bFieldFormFieldType = Just "intField"
-              , bFieldAddView =
-                  Just $
-                  BFieldAddView
-                  { bFieldAddViewIsRequired = True
-                  , bFieldAddViewIsDisabled = False
-                  , bFieldAddViewAttrs =
-                      [ BFieldAttr
-                        { bFieldAttrKey = "class"
-                        , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
-                        }
-                      ]
-                  , bFieldAddViewDefault = Nothing
-                  }
-              , bFieldEditView =
-                  Just $
-                  BFieldEditView
-                  { bFieldEditViewIsRequired = True
-                  , bFieldEditViewIsDisabled = False
-                  , bFieldEditViewAttrs =
-                      [ BFieldAttr
-                        { bFieldAttrKey = "class"
-                        , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
-                        }
-                      ]
-                  , bFieldEditViewDefault = Nothing
-                  }
-              }
-            , BField
               { bFieldName = "treatment"
               , bFieldLabelDe = Just "Behandlung"
               , bFieldLabelEn = Just "Treatment"
