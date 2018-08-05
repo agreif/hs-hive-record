@@ -1304,9 +1304,9 @@ context =
                   }
               }
             , BField
-              { bFieldName = "pollenFrames"
-              , bFieldLabelDe = Just "Pollenwaben"
-              , bFieldLabelEn = Just "Pollen frames"
+              { bFieldName = "honeyFrames"
+              , bFieldLabelDe = Just "Honigwaben"
+              , bFieldLabelEn = Just "Honey frames"
               , bFieldHsType = "Int"
               , bFieldDb =
                   Just $
@@ -1346,9 +1346,9 @@ context =
                   }
               }
             , BField
-              { bFieldName = "honeyFrames"
-              , bFieldLabelDe = Just "Honigwaben"
-              , bFieldLabelEn = Just "Honey frames"
+              { bFieldName = "pollenFrames"
+              , bFieldLabelDe = Just "Pollenwaben"
+              , bFieldLabelEn = Just "Pollen frames"
               , bFieldHsType = "Int"
               , bFieldDb =
                   Just $

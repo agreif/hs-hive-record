@@ -581,9 +581,9 @@
               <th>
                 {parent.data.translation.msgInspectionBroodFrames}
               <th>
-                {parent.data.translation.msgInspectionPollenFrames}
-              <th>
                 {parent.data.translation.msgInspectionHoneyFrames}
+              <th>
+                {parent.data.translation.msgInspectionPollenFrames}
               <th>
                 {parent.data.translation.msgInspectionTreatment}
               <th>
@@ -623,10 +623,10 @@
                   {inspectionEnt.broodFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.pollenFrames}
+                  {inspectionEnt.honeyFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {inspectionEnt.honeyFrames}
+                  {inspectionEnt.pollenFrames}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {inspectionEnt.treatment}

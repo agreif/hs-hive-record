@@ -974,8 +974,8 @@ data Translation = Translation
   , msgInspectionTotalFrames :: Maybe Text
   , msgInspectionBeeCoveredFrames :: Maybe Text
   , msgInspectionBroodFrames :: Maybe Text
-  , msgInspectionPollenFrames :: Maybe Text
   , msgInspectionHoneyFrames :: Maybe Text
+  , msgInspectionPollenFrames :: Maybe Text
   , msgInspectionTreatment :: Maybe Text
   , msgInspectionFeeding :: Maybe Text
   , msgInspectionNotes :: Maybe Text
@@ -1076,8 +1076,8 @@ translationDe = Translation
   , msgInspectionTotalFrames = Just "Ges. Waben"
   , msgInspectionBeeCoveredFrames = Just "Bel. Waben"
   , msgInspectionBroodFrames = Just "Brutwaben"
-  , msgInspectionPollenFrames = Just "Pollenwaben"
   , msgInspectionHoneyFrames = Just "Honigwaben"
+  , msgInspectionPollenFrames = Just "Pollenwaben"
   , msgInspectionTreatment = Just "Behandlung"
   , msgInspectionFeeding = Just "Fütterung"
   , msgInspectionNotes = Just "Notizen"
@@ -1176,8 +1176,8 @@ translationEn = Translation
   , msgInspectionTotalFrames = Just "Total frames"
   , msgInspectionBeeCoveredFrames = Just "Bee covered frames"
   , msgInspectionBroodFrames = Just "Brood frames"
-  , msgInspectionPollenFrames = Just "Pollen frames"
   , msgInspectionHoneyFrames = Just "Honey frames"
+  , msgInspectionPollenFrames = Just "Pollen frames"
   , msgInspectionTreatment = Just "Treatment"
   , msgInspectionFeeding = Just "Feeding"
   , msgInspectionNotes = Just "Notes"
