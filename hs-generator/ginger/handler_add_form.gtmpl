@@ -1,3 +1,0 @@
-{%- set _formType = 'Add' %}
-{%- set _fields = model.addViewFields %}
-{%- include 'handler_form.gtmpl' -%}

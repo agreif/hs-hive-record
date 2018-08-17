@@ -38,9 +38,15 @@ resolver: lts-10.10
 packages:
 - .
 - hs-generator
+#- ../hs-yesod-model-generator
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 # extra-deps: []
+
+extra-deps:
+- git: https://github.com/Greif-IT/hs-yesod-model-generator.git
+  commit: 6d686d61054fed65681112eafd082c32904e9758
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

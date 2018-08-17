@@ -1,3 +1,0 @@
-{%- set _formType = 'Edit' %}
-{%- set _fields = model.editViewFields %}
-{%- include 'handler_form.gtmpl' -%}
