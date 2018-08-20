@@ -174,20 +174,25 @@
             <a onclick="{switchBreadcrumb}">{label}
   <script>
     \ switchNav(event) {
+    \   event.preventDefault()
     \   parent.tag.refreshData(event.item.dataUrl, true, false)
     \ }
     \ switchBreadcrumb(event) {
+    \   event.preventDefault()
     \   parent.tag.refreshData(event.item.dataUrl, true, false)
     \ }
     \ editMyProfile(event) {
+    \   event.preventDefault()
     \   dataJsonUrl = window.history.state ? window.history.state.dataJsonUrl : "@{HiverecR HomePageDataJsonR}"
     \   parent.tag.showModalForm("@{HiverecR EditMyprofileFormR}", dataJsonUrl)
     \ }
     \ changeLanguageDe(event) {
+    \   event.preventDefault()
     \   parent.tag.postRequest(parent.tag.data.languageDeUrl)
     \   event.currentTarget.blur()
     \ }
     \ changeLanguageEn(event) {
+    \   event.preventDefault()
     \   parent.tag.postRequest(parent.tag.data.languageEnUrl)
     \   event.currentTarget.blur()
     \ }
@@ -358,58 +363,72 @@
           {parent.data.translation.msgGlobalSendTestMail}
   <script>
     \ addUser(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{AdminR AddUserFormR}")
     \   event.currentTarget.blur()
     \ }
     \ editUser(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteUser(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ editConfig(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addTemperType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{AdminR AddTemperTypeFormR}")
     \   event.currentTarget.blur()
     \ }
     \ editTemperType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteTemperType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addRunningType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{AdminR AddRunningTypeFormR}")
     \   event.currentTarget.blur()
     \ }
     \ editRunningType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteRunningType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addSwarmingType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{AdminR AddSwarmingTypeFormR}")
     \   event.currentTarget.blur()
     \ }
     \ editSwarmingType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteSwarmingType(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ sendTestMail(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{AdminR AddTestmailFormR}")
     \ }
 
@@ -435,14 +454,17 @@
               <span uk-icon="icon: file-edit">
   <script>
     \ addLocation(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm("@{HiverecR AddLocationFormR}")
     \   event.currentTarget.blur()
     \ }
     \ detailLocation(event) {
+    \   event.preventDefault()
     \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteLocation(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
@@ -507,18 +529,22 @@
                   <span uk-icon="icon: file-edit">
   <script>
     \ editLocation(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(parent.tag.data.pages.locationDetail.locationEditFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addHive(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(parent.tag.data.pages.locationDetail.hiveAddFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ detailHive(event) {
+    \   event.preventDefault()
     \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteHive(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
@@ -739,30 +765,37 @@
                   <span uk-icon="icon: pencil">
   <script>
     \ editHive(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(parent.tag.data.pages.hiveDetail.hiveEditFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addInspection(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(parent.tag.data.pages.hiveDetail.inspectionAddFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ editInspection(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteInspection(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ addInspectionfile(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.inspectionfileAddFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ editInspectionfile(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.editFormUrl)
     \   event.currentTarget.blur()
     \ }
     \ deleteInspectionfile(event) {
+    \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
     \   event.currentTarget.blur()
     \ }
