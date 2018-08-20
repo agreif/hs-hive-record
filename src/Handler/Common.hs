@@ -747,6 +747,7 @@ data MsgGlobal =
   | MsgGlobalHives
   | MsgGlobalAddHive
   | MsgGlobalDeleteHive
+  | MsgGlobalDetailHive
   | MsgGlobalEditHive
   | MsgGlobalHiveMasterData
   | MsgGlobalInspection
@@ -810,6 +811,7 @@ renderGlobalGerman MsgGlobalHive = "Bienenstock"
 renderGlobalGerman MsgGlobalHives = "Bienenstöcke"
 renderGlobalGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
 renderGlobalGerman MsgGlobalDeleteHive = "Bienenstock löschen"
+renderGlobalGerman MsgGlobalDetailHive = "Bienenstock Details"
 renderGlobalGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
 renderGlobalGerman MsgGlobalHiveMasterData = "Stock-Daten"
 renderGlobalGerman MsgGlobalInspection = "Durchsicht"
@@ -866,6 +868,7 @@ renderGlobalEnglish MsgGlobalHive = "Hive"
 renderGlobalEnglish MsgGlobalHives = "Hives"
 renderGlobalEnglish MsgGlobalAddHive = "Add hive"
 renderGlobalEnglish MsgGlobalDeleteHive = "Delete hive"
+renderGlobalEnglish MsgGlobalDetailHive = "Hive details"
 renderGlobalEnglish MsgGlobalEditHive = "Edit hive"
 renderGlobalEnglish MsgGlobalHiveMasterData = "Hive data"
 renderGlobalEnglish MsgGlobalInspection = "Inspection"
@@ -922,6 +925,7 @@ data Translation = Translation
   , msgGlobalHives :: Maybe Text
   , msgGlobalAddHive :: Maybe Text
   , msgGlobalDeleteHive :: Maybe Text
+  , msgGlobalDetailHive :: Maybe Text
   , msgGlobalEditHive :: Maybe Text
   , msgGlobalHiveMasterData :: Maybe Text
   , msgGlobalInspection :: Maybe Text
@@ -1023,6 +1027,7 @@ translationDe = Translation
   , msgGlobalHives = Just "Bienenstöcke"
   , msgGlobalAddHive = Just "Bienenstock hinzufügen"
   , msgGlobalDeleteHive = Just "Bienenstock löschen"
+  , msgGlobalDetailHive = Just "Bienenstock Details"
   , msgGlobalEditHive = Just "Bienenstock bearbeiten"
   , msgGlobalHiveMasterData = Just "Stock-Daten"
   , msgGlobalInspection = Just "Durchsicht"
@@ -1122,6 +1127,7 @@ translationEn = Translation
   , msgGlobalHives = Just "Hives"
   , msgGlobalAddHive = Just "Add hive"
   , msgGlobalDeleteHive = Just "Delete hive"
+  , msgGlobalDetailHive = Just "Hive details"
   , msgGlobalEditHive = Just "Edit hive"
   , msgGlobalHiveMasterData = Just "Hive data"
   , msgGlobalInspection = Just "Inspection"
