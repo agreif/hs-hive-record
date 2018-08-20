@@ -107,6 +107,7 @@ instance ToJSON JData where
 data JDataNavItem = JDataNavItem
   { jDataNavItemLabel :: Text
   , jDataNavItemIsActive :: Bool
+  , jDataNavItemUrl :: Maybe Text
   , jDataNavItemPageDataUrl :: Maybe Text
   , jDataNavItemBadge :: Maybe Text
   , jDataNavItemDropdownItems :: Maybe [JDataNavItem]
@@ -115,6 +116,7 @@ instance ToJSON JDataNavItem where
   toJSON o = object
     [ "label" .= jDataNavItemLabel o
     , "isActive" .= jDataNavItemIsActive o
+    , "url" .= jDataNavItemUrl o
     , "dataUrl" .= jDataNavItemPageDataUrl o
     , "badge" .= jDataNavItemBadge o
     , "dropdownItems" .= jDataNavItemDropdownItems o
@@ -397,6 +399,7 @@ mainNavData user mainNav = do
     [ JDataNavItem
       { jDataNavItemLabel = msgHome
       , jDataNavItemIsActive = mainNav == MainNavHome
+      , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiverecHomeR
       , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
       , jDataNavItemBadge = Nothing
       , jDataNavItemDropdownItems = Nothing
@@ -407,6 +410,7 @@ mainNavData user mainNav = do
       True -> [ JDataNavItem
                 { jDataNavItemLabel = msgAdmin
                 , jDataNavItemIsActive = mainNav == MainNavAdmin
+                , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
                 , jDataNavItemPageDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
                 , jDataNavItemBadge = Nothing
                 , jDataNavItemDropdownItems = Nothing
@@ -416,6 +420,7 @@ mainNavData user mainNav = do
     [ JDataNavItem
       { jDataNavItemLabel = msgLocations
       , jDataNavItemIsActive = mainNav == MainNavLocations
+      , jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR
       , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
       , jDataNavItemBadge = Nothing
       , jDataNavItemDropdownItems = Nothing
@@ -426,6 +431,7 @@ mainNavData user mainNav = do
       True -> [ JDataNavItem
                 { jDataNavItemLabel = msgHives
                 , jDataNavItemIsActive = mainNav == MainNavHives
+                , jDataNavItemUrl = Nothing
                 , jDataNavItemPageDataUrl = Nothing
                 , jDataNavItemBadge = Nothing
                 , jDataNavItemDropdownItems = Just hiveNavItems
@@ -460,6 +466,7 @@ getHiveNavItems = do
     return $ JDataNavItem
     { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
     , jDataNavItemIsActive = False
+    , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
     , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
     , jDataNavItemBadge = Nothing
     , jDataNavItemDropdownItems = Nothing

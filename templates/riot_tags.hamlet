@@ -130,7 +130,7 @@
       <div .uk-navbar-item .uk-logo>{parent.data.appName}
       <ul .uk-navbar-nav>
         <li each="{parent.data.mainNavItems}" class="{uk-active: isActive}">
-          <a onclick="{switchNav}" if="{!Array.isArray(dropdownItems) || !dropdownItems.length}">
+          <a href="{url}" onclick="{switchNav}" if="{!Array.isArray(dropdownItems) || !dropdownItems.length}">
             {label}
             <span if="{badge}" .uk-badge .uk-margin-small-left>
               {badge}
