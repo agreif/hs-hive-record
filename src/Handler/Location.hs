@@ -80,7 +80,8 @@ locationListJDatas = do
   let jLocationList = map (\locationEnt@(Entity locationId _) ->
                            JDataLocation
                            { jDataLocationEnt = locationEnt
-                           , jDataLocationDetailPageUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+                           , jDataLocationDetailUrl = urlRenderer $ HiverecR $ LocationDetailR locationId
+                           , jDataLocationDetailPageDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
                            , jDataLocationDeleteFormUrl = urlRenderer $ HiverecR $ DeleteLocationFormR locationId
                            }
                         ) locationTuples
@@ -169,7 +170,8 @@ locationDetailHiveJDatas locationId = do
        JDataHiveDetail
        { jDataHiveDetailHiveEnt = hiveEnt
        , jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt
-       , jDataHiveDetailPageUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+       , jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId
+       , jDataHiveDetailPageDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
        , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
        })
     hiveDetailTuples

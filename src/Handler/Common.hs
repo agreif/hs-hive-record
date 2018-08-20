@@ -237,13 +237,15 @@ instance ToJSON JDataPageLocationList where
     ]
 data JDataLocation = JDataLocation
   { jDataLocationEnt :: Entity Location
-  , jDataLocationDetailPageUrl :: Text
+  , jDataLocationDetailUrl :: Text
+  , jDataLocationDetailPageDataUrl :: Text
   , jDataLocationDeleteFormUrl :: Text
   }
 instance ToJSON JDataLocation where
   toJSON o = object
     [ "entity" .= entityIdToJSON (jDataLocationEnt o)
-    , "detailPageUrl" .= jDataLocationDetailPageUrl o
+    , "detailUrl" .= jDataLocationDetailUrl o
+    , "detailPageDataUrl" .= jDataLocationDetailPageDataUrl o
     , "deleteFormUrl" .= jDataLocationDeleteFormUrl o
     ]
 
@@ -264,14 +266,16 @@ instance ToJSON JDataPageLocationDetail where
 data JDataHiveDetail = JDataHiveDetail
   { jDataHiveDetailHiveEnt :: Entity Hive
   , jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection)
-  , jDataHiveDetailPageUrl :: Text
+  , jDataHiveDetailUrl :: Text
+  , jDataHiveDetailPageDataUrl :: Text
   , jDataHiveDeleteFormUrl :: Text
   }
 instance ToJSON JDataHiveDetail where
   toJSON o = object
     [ "hiveEnt" .= entityIdToJSON (jDataHiveDetailHiveEnt o)
     , "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o
-    , "detailPageUrl" .= jDataHiveDetailPageUrl o
+    , "detailUrl" .= jDataHiveDetailUrl o
+    , "detailPageDataUrl" .= jDataHiveDetailPageDataUrl o
     , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
     ]
 

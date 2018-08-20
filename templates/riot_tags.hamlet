@@ -446,7 +446,7 @@
       <tbody>
         <tr each="{parent.data.pages.locationList.locations}">
           <td .uk-table-link>
-            <a onclick="{detailLocation}" .uk-link-reset>{entity.name}
+            <a href="{detailUrl}" onclick="{detailLocation}" .uk-link-reset>{entity.name}
           <td .uk-width-small>
             <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{deleteLocation}">
               <span uk-icon="icon: trash">
@@ -460,7 +460,7 @@
     \ }
     \ detailLocation(event) {
     \   event.preventDefault()
-    \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
+    \   parent.tag.refreshData(event.item.detailPageDataUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteLocation(event) {
@@ -512,14 +512,14 @@
           <tbody>
             <tr each="{parent.data.pages.locationDetail.hives}">
               <td .uk-table-link>
-                <a onclick="{detailHive}" .uk-link-reset>
+                <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
                   {hiveEnt.name}
               <td .uk-table-link>
-                <a onclick="{detailHive}" .uk-link-reset>
+                <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
                   <span .textarea-wrap>
                     {hiveEnt.description}
               <td .uk-table-link>
-                <a onclick="{detailHive}" .uk-link-reset>
+                <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
                   <span .textarea-wrap>
                     {formatDateStr(lastInspectionEnt.date, parent.parent.data.currentLanguage)}
               <td .uk-width-small>
@@ -540,7 +540,7 @@
     \ }
     \ detailHive(event) {
     \   event.preventDefault()
-    \   parent.tag.refreshData(event.item.detailPageUrl, true, true)
+    \   parent.tag.refreshData(event.item.detailPageDataUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteHive(event) {
