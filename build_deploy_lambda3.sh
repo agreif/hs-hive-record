@@ -11,6 +11,7 @@ fi
 
 git pull
 
+stack clean
 stack install
 if test $? -ne 0; then
     exit 1
