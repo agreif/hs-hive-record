@@ -583,7 +583,7 @@
                   <span .textarea-wrap>
                     {parent.data.pages.hiveDetail.hiveEnt.description}
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
+                <button .uk-float-right .uk-button .uk-button-link title="{parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- inspection list - last 10 -->
