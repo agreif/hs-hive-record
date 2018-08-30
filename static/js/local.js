@@ -58,6 +58,12 @@ function formatDate(date, langs) {
                                    {day: "2-digit", month: "2-digit", year: "numeric"});
 }
 
+function formatDateStrWithWeekday(dateStr, langs) {
+    if (typeof langs == "undefined") console.log("formatDateWithWeekday: languages missing (" + date + ")")
+    return new Date(dateStr).toLocaleDateString(langs,
+                                                {day: "2-digit", month: "2-digit", year: "numeric", weekday: "short"});
+}
+
 function formatDateStr(dateStr, langs) {
     if (typeof langs == "undefined") console.log("formatDateStr: languages missing (" + dateStr + ")")
     return formatDate(new Date(dateStr), langs);

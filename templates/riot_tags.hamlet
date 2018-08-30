@@ -586,7 +586,7 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">
       <li>
-        <!-- inspection list -->
+        <!-- inspection list - last 10 -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
           <thead>
             <tr>
@@ -623,7 +623,7 @@
             <tr each="{parent.data.pages.hiveDetail.inspections.slice(-10)}">
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {formatDateStr(inspectionEnt.date, parent.parent.data.currentLanguage)}
+                  {formatDateStrWithWeekday(inspectionEnt.date, parent.parent.data.currentLanguage)}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {temperTypeEnt.name}
@@ -675,7 +675,7 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{editInspection}">
                   <span uk-icon="icon: pencil">
       <li>
-        <!-- inspection list -->
+        <!-- inspection list - all -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
           <thead>
             <tr>
@@ -712,7 +712,7 @@
             <tr each="{parent.data.pages.hiveDetail.inspections}">
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
-                  {formatDateStr(inspectionEnt.date, parent.parent.data.currentLanguage)}
+                  {formatDateStrWithWeekday(inspectionEnt.date, parent.parent.data.currentLanguage)}
               <td .uk-table-link>
                 <a onclick="{editInspection}" .uk-link-reset>
                   {temperTypeEnt.name}
