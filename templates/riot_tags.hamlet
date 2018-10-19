@@ -237,7 +237,7 @@
               <th>
                 {parent.data.translation.msgUserIsAdmin}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddUser}" uk-tooltip onclick="{addUser}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddUser}" uk-tooltip onclick="{addUser}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.admin.users}">
@@ -298,7 +298,7 @@
               <th>
                 {parent.data.translation.msgTemperTypeSortIndex}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddTemperType}" uk-tooltip onclick="{addTemperType}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddTemperType}" uk-tooltip onclick="{addTemperType}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.admin.temperTypes}">
@@ -321,7 +321,7 @@
               <th>
                 {parent.data.translation.msgRunningTypeSortIndex}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddRunningType}" uk-tooltip onclick="{addRunningType}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddRunningType}" uk-tooltip onclick="{addRunningType}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.admin.runningTypes}">
@@ -344,7 +344,7 @@
               <th>
                 {parent.data.translation.msgSwarmingTypeSortIndex}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddSwarmingType}" uk-tooltip onclick="{addSwarmingType}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddSwarmingType}" uk-tooltip onclick="{addSwarmingType}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.admin.swarmingTypes}">
@@ -441,7 +441,7 @@
           <th>
             {parent.data.translation.msgLocationName}
           <th .uk-align-right>
-            <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddLocation}" uk-tooltip onclick="{addLocation}">
+            <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddLocation}" uk-tooltip onclick="{addLocation}">
               <span uk-icon="icon: plus">
       <tbody>
         <tr each="{parent.data.pages.locationList.locations}">
@@ -507,7 +507,7 @@
               <th>
                 {parent.data.translation.msgGlobalLastInspection}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.locationDetail.hives}">
@@ -617,7 +617,7 @@
               <th>
                 {parent.data.translation.msgInspectionNotes}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.hiveDetail.inspections.slice(-10)}">
@@ -706,7 +706,7 @@
               <th>
                 {parent.data.translation.msgInspectionNotes}
               <th .uk-align-right>
-                <button .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{parent.data.pages.hiveDetail.inspections}">
