@@ -16,6 +16,7 @@
     \     dataType: "json",
     \   }).done(function(data, textStatus, jqXHR) {
     \     tag.data = data
+    \     document.title = data.appName
     \     tag.update()
     \     if (scrollToTop) {
     \       window.scrollTo(0, 0)
@@ -194,6 +195,25 @@
     \ changeLanguageEn(event) {
     \   event.preventDefault()
     \   parent.tag.postRequest(parent.tag.data.languageEnUrl)
+    \   event.currentTarget.blur()
+    \ }
+
+<pagination-tag>
+  <ul .uk-pagination .uk-flex-center uk-margin if="{opts.items}">
+    <li class="{uk-active: isActive}" each="{opts.items}">
+      <a onclick="{showPage}" if="{!isDisabled}">
+        <span if="{label}">
+          {label}
+        <span .uk-pagination-previous if="{isPrevious}">
+          <span uk-icon="icon: chevron-left">
+        <span .uk-pagination-next if="{isNext}">
+          <span uk-icon="icon: chevron-right">
+      <span if="{isDisabled}">
+        {label}
+  <script>
+    \ showPage(event) {
+    \   event.preventDefault()
+    \   parent.tag.postRequest(event.item.dataUrl, true)
     \   event.currentTarget.blur()
     \ }
 
