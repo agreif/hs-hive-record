@@ -29,7 +29,7 @@ data VAddUser = VAddUser
 -- gen get add form - start
 getAddUserFormR :: Handler Html
 getAddUserFormR = do
-  (formWidget, _) <- generateFormPost $ vAddUserForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddUserForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddUser}
@@ -171,7 +171,7 @@ data VEditUser = VEditUser
 getEditUserFormR :: UserId -> Handler Html
 getEditUserFormR userId = do
   user <- runDB $ get404 userId
-  (formWidget, _) <- generateFormPost $ vEditUserForm $ Just user
+  (formWidget, _) <- generateFormPost $ vEditUserForm (Just user)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditUser}

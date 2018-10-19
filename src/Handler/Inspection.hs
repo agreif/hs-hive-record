@@ -116,7 +116,7 @@ data VAddInspection = VAddInspection
 getAddInspectionFormR :: HiveId -> Handler Html
 getAddInspectionFormR hiveId = do
   defaultAddModel <- defaultAddInspection hiveId
-  (formWidget, _) <- generateFormPost $ vAddInspectionForm $ Just defaultAddModel
+  (formWidget, _) <- generateFormPost $ vAddInspectionForm (Just defaultAddModel)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddInspection}
@@ -156,7 +156,9 @@ postAddInspectionR hiveId = do
             , inspectionUpdatedAt = curTime
             , inspectionUpdatedBy = userIdent authUser
             }
-      _ <- runDB $ insert inspection
+      runDB $ do
+        _ <- insert inspection
+        return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
@@ -456,7 +458,7 @@ data VEditInspection = VEditInspection
 getEditInspectionFormR :: InspectionId -> Handler Html
 getEditInspectionFormR inspectionId = do
   inspection <- runDB $ get404 inspectionId
-  (formWidget, _) <- generateFormPost $ vEditInspectionForm $ Just inspection
+  (formWidget, _) <- generateFormPost $ vEditInspectionForm (Just inspection)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditInspection}
@@ -493,9 +495,11 @@ postEditInspectionR inspectionId = do
             , InspectionUpdatedAt =. curTime
             , InspectionUpdatedBy =. userIdent authUser
             ]
-      updateCount <- runDB $ updateWhereCount [ InspectionId ==. inspectionId
-                                              , InspectionVersion ==. vEditInspectionVersion vEditInspection
-                                              ] persistFields
+      updateCount <- runDB $ do
+        uc <- updateWhereCount [ InspectionId ==. inspectionId
+                               , InspectionVersion ==. vEditInspectionVersion vEditInspection
+                               ] persistFields
+        return uc
       if updateCount == 1
         then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
         else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }

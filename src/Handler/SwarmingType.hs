@@ -26,7 +26,7 @@ data VAddSwarmingType = VAddSwarmingType
 -- gen get add form - start
 getAddSwarmingTypeFormR :: Handler Html
 getAddSwarmingTypeFormR = do
-  (formWidget, _) <- generateFormPost $ vAddSwarmingTypeForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddSwarmingTypeForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddSwarmingType}
@@ -55,7 +55,9 @@ postAddSwarmingTypeR = do
             , swarmingTypeUpdatedAt = curTime
             , swarmingTypeUpdatedBy = userIdent authUser
             }
-      _ <- runDB $ insert swarmingType
+      runDB $ do
+        _ <- insert swarmingType
+        return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
@@ -145,7 +147,7 @@ data VEditSwarmingType = VEditSwarmingType
 getEditSwarmingTypeFormR :: SwarmingTypeId -> Handler Html
 getEditSwarmingTypeFormR swarmingTypeId = do
   swarmingType <- runDB $ get404 swarmingTypeId
-  (formWidget, _) <- generateFormPost $ vEditSwarmingTypeForm $ Just swarmingType
+  (formWidget, _) <- generateFormPost $ vEditSwarmingTypeForm (Just swarmingType)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditSwarmingType}
@@ -171,9 +173,11 @@ postEditSwarmingTypeR swarmingTypeId = do
             , SwarmingTypeUpdatedAt =. curTime
             , SwarmingTypeUpdatedBy =. userIdent authUser
             ]
-      updateCount <- runDB $ updateWhereCount [ SwarmingTypeId ==. swarmingTypeId
-                                              , SwarmingTypeVersion ==. vEditSwarmingTypeVersion vEditSwarmingType
-                                              ] persistFields
+      updateCount <- runDB $ do
+        uc <- updateWhereCount [ SwarmingTypeId ==. swarmingTypeId
+                               , SwarmingTypeVersion ==. vEditSwarmingTypeVersion vEditSwarmingType
+                               ] persistFields
+        return uc
       if updateCount == 1
         then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }
         else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }

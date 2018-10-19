@@ -26,7 +26,7 @@ data VAddTemperType = VAddTemperType
 -- gen get add form - start
 getAddTemperTypeFormR :: Handler Html
 getAddTemperTypeFormR = do
-  (formWidget, _) <- generateFormPost $ vAddTemperTypeForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddTemperTypeForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddTemperType}
@@ -55,7 +55,9 @@ postAddTemperTypeR = do
             , temperTypeUpdatedAt = curTime
             , temperTypeUpdatedBy = userIdent authUser
             }
-      _ <- runDB $ insert temperType
+      runDB $ do
+        _ <- insert temperType
+        return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
@@ -145,7 +147,7 @@ data VEditTemperType = VEditTemperType
 getEditTemperTypeFormR :: TemperTypeId -> Handler Html
 getEditTemperTypeFormR temperTypeId = do
   temperType <- runDB $ get404 temperTypeId
-  (formWidget, _) <- generateFormPost $ vEditTemperTypeForm $ Just temperType
+  (formWidget, _) <- generateFormPost $ vEditTemperTypeForm (Just temperType)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditTemperType}
@@ -171,9 +173,11 @@ postEditTemperTypeR temperTypeId = do
             , TemperTypeUpdatedAt =. curTime
             , TemperTypeUpdatedBy =. userIdent authUser
             ]
-      updateCount <- runDB $ updateWhereCount [ TemperTypeId ==. temperTypeId
-                                              , TemperTypeVersion ==. vEditTemperTypeVersion vEditTemperType
-                                              ] persistFields
+      updateCount <- runDB $ do
+        uc <- updateWhereCount [ TemperTypeId ==. temperTypeId
+                               , TemperTypeVersion ==. vEditTemperTypeVersion vEditTemperType
+                               ] persistFields
+        return uc
       if updateCount == 1
         then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }
         else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR }

@@ -28,7 +28,7 @@ data VAddInspectionfile = VAddInspectionfile
 -- gen get add form - start
 getAddInspectionfileFormR :: InspectionId -> Handler Html
 getAddInspectionfileFormR inspectionId = do
-  (formWidget, _) <- generateFormPost $ vAddInspectionfileForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddInspectionfileForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddInspectionfile}

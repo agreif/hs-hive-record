@@ -189,7 +189,7 @@ data VAddLocation = VAddLocation
 -- gen get add form - start
 getAddLocationFormR :: Handler Html
 getAddLocationFormR = do
-  (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddLocationForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddLocation}
@@ -217,7 +217,9 @@ postAddLocationR = do
             , locationUpdatedAt = curTime
             , locationUpdatedBy = userIdent authUser
             }
-      _ <- runDB $ insert location
+      runDB $ do
+        _ <- insert location
+        return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
@@ -286,7 +288,7 @@ data VEditLocation = VEditLocation
 getEditLocationFormR :: LocationId -> Handler Html
 getEditLocationFormR locationId = do
   location <- runDB $ get404 locationId
-  (formWidget, _) <- generateFormPost $ vEditLocationForm $ Just location
+  (formWidget, _) <- generateFormPost $ vEditLocationForm (Just location)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditLocation}
@@ -311,9 +313,11 @@ postEditLocationR locationId = do
             , LocationUpdatedAt =. curTime
             , LocationUpdatedBy =. userIdent authUser
             ]
-      updateCount <- runDB $ updateWhereCount [ LocationId ==. locationId
-                                              , LocationVersion ==. vEditLocationVersion vEditLocation
-                                              ] persistFields
+      updateCount <- runDB $ do
+        uc <- updateWhereCount [ LocationId ==. locationId
+                               , LocationVersion ==. vEditLocationVersion vEditLocation
+                               ] persistFields
+        return uc
       if updateCount == 1
         then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
         else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }

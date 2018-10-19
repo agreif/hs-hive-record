@@ -153,7 +153,7 @@ data VAddHive = VAddHive
 -- gen get add form - start
 getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
-  (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddHiveForm (Nothing)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddHive}
@@ -183,7 +183,9 @@ postAddHiveR locationId = do
             , hiveUpdatedAt = curTime
             , hiveUpdatedBy = userIdent authUser
             }
-      _ <- runDB $ insert hive
+      runDB $ do
+        _ <- insert hive
+        return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
@@ -273,7 +275,7 @@ data VEditHive = VEditHive
 getEditHiveFormR :: HiveId -> Handler Html
 getEditHiveFormR hiveId = do
   hive <- runDB $ get404 hiveId
-  (formWidget, _) <- generateFormPost $ vEditHiveForm $ Just hive
+  (formWidget, _) <- generateFormPost $ vEditHiveForm (Just hive)
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalEditHive}
@@ -299,9 +301,11 @@ postEditHiveR hiveId = do
             , HiveUpdatedAt =. curTime
             , HiveUpdatedBy =. userIdent authUser
             ]
-      updateCount <- runDB $ updateWhereCount [ HiveId ==. hiveId
-                                              , HiveVersion ==. vEditHiveVersion vEditHive
-                                              ] persistFields
+      updateCount <- runDB $ do
+        uc <- updateWhereCount [ HiveId ==. hiveId
+                               , HiveVersion ==. vEditHiveVersion vEditHive
+                               ] persistFields
+        return uc
       if updateCount == 1
         then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
         else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
