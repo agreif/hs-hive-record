@@ -94,7 +94,7 @@ vAddSwarmingTypeForm maybeSwarmingType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddSwarmingTypeName
+      { fsLabel = SomeMessage MsgSwarmingTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -102,33 +102,12 @@ vAddSwarmingTypeForm maybeSwarmingType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddSwarmingTypeSortIndex
+      { fsLabel = SomeMessage MsgSwarmingTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
       , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
       }
-
-data MsgAddSwarmingType =
-  MsgAddSwarmingTypeName
-  | MsgAddSwarmingTypeSortIndex
-
-instance RenderMessage App MsgAddSwarmingType where
-  renderMessage _ []        = renderAddSwarmingTypeGerman
-  renderMessage _ ("de":_) = renderAddSwarmingTypeGerman
-  renderMessage _ ("en":_) = renderAddSwarmingTypeEnglish
-  renderMessage _ ("en-US":_) = renderAddSwarmingTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddSwarmingTypeGerman :: MsgAddSwarmingType -> Text
-renderAddSwarmingTypeGerman MsgAddSwarmingTypeName = "Name"
-renderAddSwarmingTypeGerman MsgAddSwarmingTypeSortIndex = "Sortierungs-Index"
-
-
-renderAddSwarmingTypeEnglish :: MsgAddSwarmingType -> Text
-renderAddSwarmingTypeEnglish MsgAddSwarmingTypeName = "Name"
-renderAddSwarmingTypeEnglish MsgAddSwarmingTypeSortIndex = "Sort Index"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -221,7 +200,7 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditSwarmingTypeName
+      { fsLabel = SomeMessage MsgSwarmingTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -229,7 +208,7 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditSwarmingTypeSortIndex
+      { fsLabel = SomeMessage MsgSwarmingTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
@@ -243,27 +222,6 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditSwarmingType =
-  MsgEditSwarmingTypeName
-  | MsgEditSwarmingTypeSortIndex
-
-instance RenderMessage App MsgEditSwarmingType where
-  renderMessage _ []        = renderEditSwarmingTypeGerman
-  renderMessage _ ("de":_) = renderEditSwarmingTypeGerman
-  renderMessage _ ("en":_) = renderEditSwarmingTypeEnglish
-  renderMessage _ ("en-US":_) = renderEditSwarmingTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditSwarmingTypeGerman :: MsgEditSwarmingType -> Text
-renderEditSwarmingTypeGerman MsgEditSwarmingTypeName = "Name"
-renderEditSwarmingTypeGerman MsgEditSwarmingTypeSortIndex = "Sortierungs-Index"
-
-
-renderEditSwarmingTypeEnglish :: MsgEditSwarmingType -> Text
-renderEditSwarmingTypeEnglish MsgEditSwarmingTypeName = "Name"
-renderEditSwarmingTypeEnglish MsgEditSwarmingTypeSortIndex = "Sort Index"
-
 -- gen edit form - end
 
 -------------------------------------------------------

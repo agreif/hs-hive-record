@@ -69,28 +69,10 @@ vAddTestmailForm maybeTestmail extra = do
   where
     emailFs :: FieldSettings App
     emailFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddTestmailEmail
+      { fsLabel = SomeMessage MsgTestmailEmail
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
-
-data MsgAddTestmail =
-  MsgAddTestmailEmail
-
-instance RenderMessage App MsgAddTestmail where
-  renderMessage _ []        = renderAddTestmailGerman
-  renderMessage _ ("de":_) = renderAddTestmailGerman
-  renderMessage _ ("en":_) = renderAddTestmailEnglish
-  renderMessage _ ("en-US":_) = renderAddTestmailEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddTestmailGerman :: MsgAddTestmail -> Text
-renderAddTestmailGerman MsgAddTestmailEmail = "Email"
-
-
-renderAddTestmailEnglish :: MsgAddTestmail -> Text
-renderAddTestmailEnglish MsgAddTestmailEmail = "Email"
-
 -- gen add form - end

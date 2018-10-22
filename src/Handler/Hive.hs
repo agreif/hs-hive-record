@@ -222,7 +222,7 @@ vAddHiveForm maybeHive extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddHiveName
+      { fsLabel = SomeMessage MsgHiveName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -230,33 +230,12 @@ vAddHiveForm maybeHive extra = do
       }
     descriptionFs :: FieldSettings App
     descriptionFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddHiveDescription
+      { fsLabel = SomeMessage MsgHiveDescription
       , fsTooltip = Nothing
       , fsId = Just "description"
       , fsName = Just "description"
       , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
       }
-
-data MsgAddHive =
-  MsgAddHiveName
-  | MsgAddHiveDescription
-
-instance RenderMessage App MsgAddHive where
-  renderMessage _ []        = renderAddHiveGerman
-  renderMessage _ ("de":_) = renderAddHiveGerman
-  renderMessage _ ("en":_) = renderAddHiveEnglish
-  renderMessage _ ("en-US":_) = renderAddHiveEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddHiveGerman :: MsgAddHive -> Text
-renderAddHiveGerman MsgAddHiveName = "Name"
-renderAddHiveGerman MsgAddHiveDescription = "Beschreibung"
-
-
-renderAddHiveEnglish :: MsgAddHive -> Text
-renderAddHiveEnglish MsgAddHiveName = "Name"
-renderAddHiveEnglish MsgAddHiveDescription = "Description"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -349,7 +328,7 @@ vEditHiveForm maybeHive extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditHiveName
+      { fsLabel = SomeMessage MsgHiveName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -357,7 +336,7 @@ vEditHiveForm maybeHive extra = do
       }
     descriptionFs :: FieldSettings App
     descriptionFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditHiveDescription
+      { fsLabel = SomeMessage MsgHiveDescription
       , fsTooltip = Nothing
       , fsId = Just "description"
       , fsName = Just "description"
@@ -371,27 +350,6 @@ vEditHiveForm maybeHive extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditHive =
-  MsgEditHiveName
-  | MsgEditHiveDescription
-
-instance RenderMessage App MsgEditHive where
-  renderMessage _ []        = renderEditHiveGerman
-  renderMessage _ ("de":_) = renderEditHiveGerman
-  renderMessage _ ("en":_) = renderEditHiveEnglish
-  renderMessage _ ("en-US":_) = renderEditHiveEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditHiveGerman :: MsgEditHive -> Text
-renderEditHiveGerman MsgEditHiveName = "Name"
-renderEditHiveGerman MsgEditHiveDescription = "Beschreibung"
-
-
-renderEditHiveEnglish :: MsgEditHive -> Text
-renderEditHiveEnglish MsgEditHiveName = "Name"
-renderEditHiveEnglish MsgEditHiveDescription = "Description"
-
 -- gen edit form - end
 
 -------------------------------------------------------

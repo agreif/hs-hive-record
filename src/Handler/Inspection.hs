@@ -285,7 +285,7 @@ vAddInspectionForm maybeInspection extra = do
   where
     dateFs :: FieldSettings App
     dateFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionDate
+      { fsLabel = SomeMessage MsgInspectionDate
       , fsTooltip = Nothing
       , fsId = Just "date"
       , fsName = Just "date"
@@ -293,7 +293,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     temperTypeIdFs :: FieldSettings App
     temperTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionTemperTypeId
+      { fsLabel = SomeMessage MsgInspectionTemperTypeId
       , fsTooltip = Nothing
       , fsId = Just "temperTypeId"
       , fsName = Just "temperTypeId"
@@ -301,7 +301,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     runningTypeIdFs :: FieldSettings App
     runningTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionRunningTypeId
+      { fsLabel = SomeMessage MsgInspectionRunningTypeId
       , fsTooltip = Nothing
       , fsId = Just "runningTypeId"
       , fsName = Just "runningTypeId"
@@ -309,7 +309,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     swarmingTypeIdFs :: FieldSettings App
     swarmingTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionSwarmingTypeId
+      { fsLabel = SomeMessage MsgInspectionSwarmingTypeId
       , fsTooltip = Nothing
       , fsId = Just "swarmingTypeId"
       , fsName = Just "swarmingTypeId"
@@ -317,7 +317,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     queenSeenFs :: FieldSettings App
     queenSeenFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionQueenSeen
+      { fsLabel = SomeMessage MsgInspectionQueenSeen
       , fsTooltip = Nothing
       , fsId = Just "queenSeen"
       , fsName = Just "queenSeen"
@@ -325,7 +325,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     totalFramesFs :: FieldSettings App
     totalFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionTotalFrames
+      { fsLabel = SomeMessage MsgInspectionTotalFrames
       , fsTooltip = Nothing
       , fsId = Just "totalFrames"
       , fsName = Just "totalFrames"
@@ -333,7 +333,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     beeCoveredFramesFs :: FieldSettings App
     beeCoveredFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionBeeCoveredFrames
+      { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames
       , fsTooltip = Nothing
       , fsId = Just "beeCoveredFrames"
       , fsName = Just "beeCoveredFrames"
@@ -341,7 +341,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     broodFramesFs :: FieldSettings App
     broodFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionBroodFrames
+      { fsLabel = SomeMessage MsgInspectionBroodFrames
       , fsTooltip = Nothing
       , fsId = Just "broodFrames"
       , fsName = Just "broodFrames"
@@ -349,7 +349,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     honeyFramesFs :: FieldSettings App
     honeyFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionHoneyFrames
+      { fsLabel = SomeMessage MsgInspectionHoneyFrames
       , fsTooltip = Nothing
       , fsId = Just "honeyFrames"
       , fsName = Just "honeyFrames"
@@ -357,7 +357,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     treatmentFs :: FieldSettings App
     treatmentFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionTreatment
+      { fsLabel = SomeMessage MsgInspectionTreatment
       , fsTooltip = Nothing
       , fsId = Just "treatment"
       , fsName = Just "treatment"
@@ -365,7 +365,7 @@ vAddInspectionForm maybeInspection extra = do
       }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionFeeding
+      { fsLabel = SomeMessage MsgInspectionFeeding
       , fsTooltip = Nothing
       , fsId = Just "feeding"
       , fsName = Just "feeding"
@@ -373,63 +373,12 @@ vAddInspectionForm maybeInspection extra = do
       }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddInspectionNotes
+      { fsLabel = SomeMessage MsgInspectionNotes
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
       , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
       }
-
-data MsgAddInspection =
-  MsgAddInspectionDate
-  | MsgAddInspectionTemperTypeId
-  | MsgAddInspectionRunningTypeId
-  | MsgAddInspectionSwarmingTypeId
-  | MsgAddInspectionQueenSeen
-  | MsgAddInspectionTotalFrames
-  | MsgAddInspectionBeeCoveredFrames
-  | MsgAddInspectionBroodFrames
-  | MsgAddInspectionHoneyFrames
-  | MsgAddInspectionTreatment
-  | MsgAddInspectionFeeding
-  | MsgAddInspectionNotes
-
-instance RenderMessage App MsgAddInspection where
-  renderMessage _ []        = renderAddInspectionGerman
-  renderMessage _ ("de":_) = renderAddInspectionGerman
-  renderMessage _ ("en":_) = renderAddInspectionEnglish
-  renderMessage _ ("en-US":_) = renderAddInspectionEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddInspectionGerman :: MsgAddInspection -> Text
-renderAddInspectionGerman MsgAddInspectionDate = "Datum"
-renderAddInspectionGerman MsgAddInspectionTemperTypeId = "Sanftmut"
-renderAddInspectionGerman MsgAddInspectionRunningTypeId = "Wabensitz"
-renderAddInspectionGerman MsgAddInspectionSwarmingTypeId = "Schwarmtrieb"
-renderAddInspectionGerman MsgAddInspectionQueenSeen = "Kö ges."
-renderAddInspectionGerman MsgAddInspectionTotalFrames = "Ges. Waben"
-renderAddInspectionGerman MsgAddInspectionBeeCoveredFrames = "Bel. Waben"
-renderAddInspectionGerman MsgAddInspectionBroodFrames = "Brutwaben"
-renderAddInspectionGerman MsgAddInspectionHoneyFrames = "Honigwaben"
-renderAddInspectionGerman MsgAddInspectionTreatment = "Behandlung"
-renderAddInspectionGerman MsgAddInspectionFeeding = "Fütterung"
-renderAddInspectionGerman MsgAddInspectionNotes = "Notizen"
-
-
-renderAddInspectionEnglish :: MsgAddInspection -> Text
-renderAddInspectionEnglish MsgAddInspectionDate = "Date"
-renderAddInspectionEnglish MsgAddInspectionTemperTypeId = "Temper"
-renderAddInspectionEnglish MsgAddInspectionRunningTypeId = "Running Beh."
-renderAddInspectionEnglish MsgAddInspectionSwarmingTypeId = "swarming Mood"
-renderAddInspectionEnglish MsgAddInspectionQueenSeen = "Queen seen"
-renderAddInspectionEnglish MsgAddInspectionTotalFrames = "Total frames"
-renderAddInspectionEnglish MsgAddInspectionBeeCoveredFrames = "Bee covered frames"
-renderAddInspectionEnglish MsgAddInspectionBroodFrames = "Brood frames"
-renderAddInspectionEnglish MsgAddInspectionHoneyFrames = "Honey frames"
-renderAddInspectionEnglish MsgAddInspectionTreatment = "Treatment"
-renderAddInspectionEnglish MsgAddInspectionFeeding = "Feeding"
-renderAddInspectionEnglish MsgAddInspectionNotes = "Notes"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -633,7 +582,7 @@ vEditInspectionForm maybeInspection extra = do
   where
     dateFs :: FieldSettings App
     dateFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionDate
+      { fsLabel = SomeMessage MsgInspectionDate
       , fsTooltip = Nothing
       , fsId = Just "date"
       , fsName = Just "date"
@@ -641,7 +590,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     temperTypeIdFs :: FieldSettings App
     temperTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionTemperTypeId
+      { fsLabel = SomeMessage MsgInspectionTemperTypeId
       , fsTooltip = Nothing
       , fsId = Just "temperTypeId"
       , fsName = Just "temperTypeId"
@@ -649,7 +598,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     runningTypeIdFs :: FieldSettings App
     runningTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionRunningTypeId
+      { fsLabel = SomeMessage MsgInspectionRunningTypeId
       , fsTooltip = Nothing
       , fsId = Just "runningTypeId"
       , fsName = Just "runningTypeId"
@@ -657,7 +606,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     swarmingTypeIdFs :: FieldSettings App
     swarmingTypeIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionSwarmingTypeId
+      { fsLabel = SomeMessage MsgInspectionSwarmingTypeId
       , fsTooltip = Nothing
       , fsId = Just "swarmingTypeId"
       , fsName = Just "swarmingTypeId"
@@ -665,7 +614,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     queenSeenFs :: FieldSettings App
     queenSeenFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionQueenSeen
+      { fsLabel = SomeMessage MsgInspectionQueenSeen
       , fsTooltip = Nothing
       , fsId = Just "queenSeen"
       , fsName = Just "queenSeen"
@@ -673,7 +622,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     totalFramesFs :: FieldSettings App
     totalFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionTotalFrames
+      { fsLabel = SomeMessage MsgInspectionTotalFrames
       , fsTooltip = Nothing
       , fsId = Just "totalFrames"
       , fsName = Just "totalFrames"
@@ -681,7 +630,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     beeCoveredFramesFs :: FieldSettings App
     beeCoveredFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionBeeCoveredFrames
+      { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames
       , fsTooltip = Nothing
       , fsId = Just "beeCoveredFrames"
       , fsName = Just "beeCoveredFrames"
@@ -689,7 +638,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     broodFramesFs :: FieldSettings App
     broodFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionBroodFrames
+      { fsLabel = SomeMessage MsgInspectionBroodFrames
       , fsTooltip = Nothing
       , fsId = Just "broodFrames"
       , fsName = Just "broodFrames"
@@ -697,7 +646,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     honeyFramesFs :: FieldSettings App
     honeyFramesFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionHoneyFrames
+      { fsLabel = SomeMessage MsgInspectionHoneyFrames
       , fsTooltip = Nothing
       , fsId = Just "honeyFrames"
       , fsName = Just "honeyFrames"
@@ -705,7 +654,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     treatmentFs :: FieldSettings App
     treatmentFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionTreatment
+      { fsLabel = SomeMessage MsgInspectionTreatment
       , fsTooltip = Nothing
       , fsId = Just "treatment"
       , fsName = Just "treatment"
@@ -713,7 +662,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionFeeding
+      { fsLabel = SomeMessage MsgInspectionFeeding
       , fsTooltip = Nothing
       , fsId = Just "feeding"
       , fsName = Just "feeding"
@@ -721,7 +670,7 @@ vEditInspectionForm maybeInspection extra = do
       }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditInspectionNotes
+      { fsLabel = SomeMessage MsgInspectionNotes
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
@@ -735,57 +684,6 @@ vEditInspectionForm maybeInspection extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditInspection =
-  MsgEditInspectionDate
-  | MsgEditInspectionTemperTypeId
-  | MsgEditInspectionRunningTypeId
-  | MsgEditInspectionSwarmingTypeId
-  | MsgEditInspectionQueenSeen
-  | MsgEditInspectionTotalFrames
-  | MsgEditInspectionBeeCoveredFrames
-  | MsgEditInspectionBroodFrames
-  | MsgEditInspectionHoneyFrames
-  | MsgEditInspectionTreatment
-  | MsgEditInspectionFeeding
-  | MsgEditInspectionNotes
-
-instance RenderMessage App MsgEditInspection where
-  renderMessage _ []        = renderEditInspectionGerman
-  renderMessage _ ("de":_) = renderEditInspectionGerman
-  renderMessage _ ("en":_) = renderEditInspectionEnglish
-  renderMessage _ ("en-US":_) = renderEditInspectionEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditInspectionGerman :: MsgEditInspection -> Text
-renderEditInspectionGerman MsgEditInspectionDate = "Datum"
-renderEditInspectionGerman MsgEditInspectionTemperTypeId = "Sanftmut"
-renderEditInspectionGerman MsgEditInspectionRunningTypeId = "Wabensitz"
-renderEditInspectionGerman MsgEditInspectionSwarmingTypeId = "Schwarmtrieb"
-renderEditInspectionGerman MsgEditInspectionQueenSeen = "Kö ges."
-renderEditInspectionGerman MsgEditInspectionTotalFrames = "Ges. Waben"
-renderEditInspectionGerman MsgEditInspectionBeeCoveredFrames = "Bel. Waben"
-renderEditInspectionGerman MsgEditInspectionBroodFrames = "Brutwaben"
-renderEditInspectionGerman MsgEditInspectionHoneyFrames = "Honigwaben"
-renderEditInspectionGerman MsgEditInspectionTreatment = "Behandlung"
-renderEditInspectionGerman MsgEditInspectionFeeding = "Fütterung"
-renderEditInspectionGerman MsgEditInspectionNotes = "Notizen"
-
-
-renderEditInspectionEnglish :: MsgEditInspection -> Text
-renderEditInspectionEnglish MsgEditInspectionDate = "Date"
-renderEditInspectionEnglish MsgEditInspectionTemperTypeId = "Temper"
-renderEditInspectionEnglish MsgEditInspectionRunningTypeId = "Running Beh."
-renderEditInspectionEnglish MsgEditInspectionSwarmingTypeId = "swarming Mood"
-renderEditInspectionEnglish MsgEditInspectionQueenSeen = "Queen seen"
-renderEditInspectionEnglish MsgEditInspectionTotalFrames = "Total frames"
-renderEditInspectionEnglish MsgEditInspectionBeeCoveredFrames = "Bee covered frames"
-renderEditInspectionEnglish MsgEditInspectionBroodFrames = "Brood frames"
-renderEditInspectionEnglish MsgEditInspectionHoneyFrames = "Honey frames"
-renderEditInspectionEnglish MsgEditInspectionTreatment = "Treatment"
-renderEditInspectionEnglish MsgEditInspectionFeeding = "Feeding"
-renderEditInspectionEnglish MsgEditInspectionNotes = "Notes"
-
 -- gen edit form - end
 
 -------------------------------------------------------

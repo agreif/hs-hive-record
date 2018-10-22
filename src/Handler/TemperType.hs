@@ -94,7 +94,7 @@ vAddTemperTypeForm maybeTemperType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddTemperTypeName
+      { fsLabel = SomeMessage MsgTemperTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -102,33 +102,12 @@ vAddTemperTypeForm maybeTemperType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddTemperTypeSortIndex
+      { fsLabel = SomeMessage MsgTemperTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
       , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
       }
-
-data MsgAddTemperType =
-  MsgAddTemperTypeName
-  | MsgAddTemperTypeSortIndex
-
-instance RenderMessage App MsgAddTemperType where
-  renderMessage _ []        = renderAddTemperTypeGerman
-  renderMessage _ ("de":_) = renderAddTemperTypeGerman
-  renderMessage _ ("en":_) = renderAddTemperTypeEnglish
-  renderMessage _ ("en-US":_) = renderAddTemperTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddTemperTypeGerman :: MsgAddTemperType -> Text
-renderAddTemperTypeGerman MsgAddTemperTypeName = "Name"
-renderAddTemperTypeGerman MsgAddTemperTypeSortIndex = "Sortierungs-Index"
-
-
-renderAddTemperTypeEnglish :: MsgAddTemperType -> Text
-renderAddTemperTypeEnglish MsgAddTemperTypeName = "Name"
-renderAddTemperTypeEnglish MsgAddTemperTypeSortIndex = "Sort Index"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -221,7 +200,7 @@ vEditTemperTypeForm maybeTemperType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditTemperTypeName
+      { fsLabel = SomeMessage MsgTemperTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -229,7 +208,7 @@ vEditTemperTypeForm maybeTemperType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditTemperTypeSortIndex
+      { fsLabel = SomeMessage MsgTemperTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
@@ -243,27 +222,6 @@ vEditTemperTypeForm maybeTemperType extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditTemperType =
-  MsgEditTemperTypeName
-  | MsgEditTemperTypeSortIndex
-
-instance RenderMessage App MsgEditTemperType where
-  renderMessage _ []        = renderEditTemperTypeGerman
-  renderMessage _ ("de":_) = renderEditTemperTypeGerman
-  renderMessage _ ("en":_) = renderEditTemperTypeEnglish
-  renderMessage _ ("en-US":_) = renderEditTemperTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditTemperTypeGerman :: MsgEditTemperType -> Text
-renderEditTemperTypeGerman MsgEditTemperTypeName = "Name"
-renderEditTemperTypeGerman MsgEditTemperTypeSortIndex = "Sortierungs-Index"
-
-
-renderEditTemperTypeEnglish :: MsgEditTemperType -> Text
-renderEditTemperTypeEnglish MsgEditTemperTypeName = "Name"
-renderEditTemperTypeEnglish MsgEditTemperTypeSortIndex = "Sort Index"
-
 -- gen edit form - end
 
 -------------------------------------------------------

@@ -105,7 +105,7 @@ vAddUserForm maybeUser extra = do
   where
     identFs :: FieldSettings App
     identFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddUserIdent
+      { fsLabel = SomeMessage MsgUserIdent
       , fsTooltip = Nothing
       , fsId = Just "ident"
       , fsName = Just "ident"
@@ -113,7 +113,7 @@ vAddUserForm maybeUser extra = do
       }
     emailFs :: FieldSettings App
     emailFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddUserEmail
+      { fsLabel = SomeMessage MsgUserEmail
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
@@ -121,36 +121,12 @@ vAddUserForm maybeUser extra = do
       }
     isAdminFs :: FieldSettings App
     isAdminFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddUserIsAdmin
+      { fsLabel = SomeMessage MsgUserIsAdmin
       , fsTooltip = Nothing
       , fsId = Just "isAdmin"
       , fsName = Just "isAdmin"
       , fsAttrs = [ ("class","uk-checkbox") ]
       }
-
-data MsgAddUser =
-  MsgAddUserIdent
-  | MsgAddUserEmail
-  | MsgAddUserIsAdmin
-
-instance RenderMessage App MsgAddUser where
-  renderMessage _ []        = renderAddUserGerman
-  renderMessage _ ("de":_) = renderAddUserGerman
-  renderMessage _ ("en":_) = renderAddUserEnglish
-  renderMessage _ ("en-US":_) = renderAddUserEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddUserGerman :: MsgAddUser -> Text
-renderAddUserGerman MsgAddUserIdent = "Login"
-renderAddUserGerman MsgAddUserEmail = "Email"
-renderAddUserGerman MsgAddUserIsAdmin = "Ist Admin?"
-
-
-renderAddUserEnglish :: MsgAddUser -> Text
-renderAddUserEnglish MsgAddUserIdent = "Login"
-renderAddUserEnglish MsgAddUserEmail = "Email"
-renderAddUserEnglish MsgAddUserIsAdmin = "Is admin?"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -268,7 +244,7 @@ vEditUserForm maybeUser extra = do
   where
     identFs :: FieldSettings App
     identFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditUserIdent
+      { fsLabel = SomeMessage MsgUserIdent
       , fsTooltip = Nothing
       , fsId = Just "ident"
       , fsName = Just "ident"
@@ -276,7 +252,7 @@ vEditUserForm maybeUser extra = do
       }
     emailFs :: FieldSettings App
     emailFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditUserEmail
+      { fsLabel = SomeMessage MsgUserEmail
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
@@ -284,7 +260,7 @@ vEditUserForm maybeUser extra = do
       }
     isAdminFs :: FieldSettings App
     isAdminFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditUserIsAdmin
+      { fsLabel = SomeMessage MsgUserIsAdmin
       , fsTooltip = Nothing
       , fsId = Just "isAdmin"
       , fsName = Just "isAdmin"
@@ -292,7 +268,7 @@ vEditUserForm maybeUser extra = do
       }
     isResetPasswordFs :: FieldSettings App
     isResetPasswordFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditUserIsResetPassword
+      { fsLabel = SomeMessage MsgUserIsResetPassword
       , fsTooltip = Nothing
       , fsId = Just "isResetPassword"
       , fsName = Just "isResetPassword"
@@ -306,33 +282,6 @@ vEditUserForm maybeUser extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditUser =
-  MsgEditUserIdent
-  | MsgEditUserEmail
-  | MsgEditUserIsAdmin
-  | MsgEditUserIsResetPassword
-
-instance RenderMessage App MsgEditUser where
-  renderMessage _ []        = renderEditUserGerman
-  renderMessage _ ("de":_) = renderEditUserGerman
-  renderMessage _ ("en":_) = renderEditUserEnglish
-  renderMessage _ ("en-US":_) = renderEditUserEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditUserGerman :: MsgEditUser -> Text
-renderEditUserGerman MsgEditUserIdent = "Login"
-renderEditUserGerman MsgEditUserEmail = "Email"
-renderEditUserGerman MsgEditUserIsAdmin = "Ist Admin?"
-renderEditUserGerman MsgEditUserIsResetPassword = "Neues Passwort generieren? (Wird per Email zugesendet)"
-
-
-renderEditUserEnglish :: MsgEditUser -> Text
-renderEditUserEnglish MsgEditUserIdent = "Login"
-renderEditUserEnglish MsgEditUserEmail = "Email"
-renderEditUserEnglish MsgEditUserIsAdmin = "Is admin?"
-renderEditUserEnglish MsgEditUserIsResetPassword = "Generate new password? (Will be sent by email)"
-
 -- gen edit form - end
 
 -------------------------------------------------------

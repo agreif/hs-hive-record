@@ -247,30 +247,12 @@ vAddLocationForm maybeLocation extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddLocationName
+      { fsLabel = SomeMessage MsgLocationName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
       , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
       }
-
-data MsgAddLocation =
-  MsgAddLocationName
-
-instance RenderMessage App MsgAddLocation where
-  renderMessage _ []        = renderAddLocationGerman
-  renderMessage _ ("de":_) = renderAddLocationGerman
-  renderMessage _ ("en":_) = renderAddLocationEnglish
-  renderMessage _ ("en-US":_) = renderAddLocationEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddLocationGerman :: MsgAddLocation -> Text
-renderAddLocationGerman MsgAddLocationName = "Name"
-
-
-renderAddLocationEnglish :: MsgAddLocation -> Text
-renderAddLocationEnglish MsgAddLocationName = "Name"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -352,7 +334,7 @@ vEditLocationForm maybeLocation extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditLocationName
+      { fsLabel = SomeMessage MsgLocationName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -366,24 +348,6 @@ vEditLocationForm maybeLocation extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditLocation =
-  MsgEditLocationName
-
-instance RenderMessage App MsgEditLocation where
-  renderMessage _ []        = renderEditLocationGerman
-  renderMessage _ ("de":_) = renderEditLocationGerman
-  renderMessage _ ("en":_) = renderEditLocationEnglish
-  renderMessage _ ("en-US":_) = renderEditLocationEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditLocationGerman :: MsgEditLocation -> Text
-renderEditLocationGerman MsgEditLocationName = "Name"
-
-
-renderEditLocationEnglish :: MsgEditLocation -> Text
-renderEditLocationEnglish MsgEditLocationName = "Name"
-
 -- gen edit form - end
 
 -------------------------------------------------------

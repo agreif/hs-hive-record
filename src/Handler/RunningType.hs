@@ -94,7 +94,7 @@ vAddRunningTypeForm maybeRunningType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddRunningTypeName
+      { fsLabel = SomeMessage MsgRunningTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -102,33 +102,12 @@ vAddRunningTypeForm maybeRunningType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgAddRunningTypeSortIndex
+      { fsLabel = SomeMessage MsgRunningTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
       , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
       }
-
-data MsgAddRunningType =
-  MsgAddRunningTypeName
-  | MsgAddRunningTypeSortIndex
-
-instance RenderMessage App MsgAddRunningType where
-  renderMessage _ []        = renderAddRunningTypeGerman
-  renderMessage _ ("de":_) = renderAddRunningTypeGerman
-  renderMessage _ ("en":_) = renderAddRunningTypeEnglish
-  renderMessage _ ("en-US":_) = renderAddRunningTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderAddRunningTypeGerman :: MsgAddRunningType -> Text
-renderAddRunningTypeGerman MsgAddRunningTypeName = "Name"
-renderAddRunningTypeGerman MsgAddRunningTypeSortIndex = "Sortierungs-Index"
-
-
-renderAddRunningTypeEnglish :: MsgAddRunningType -> Text
-renderAddRunningTypeEnglish MsgAddRunningTypeName = "Name"
-renderAddRunningTypeEnglish MsgAddRunningTypeSortIndex = "Sort Index"
-
 -- gen add form - end
 
 -------------------------------------------------------
@@ -221,7 +200,7 @@ vEditRunningTypeForm maybeRunningType extra = do
   where
     nameFs :: FieldSettings App
     nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditRunningTypeName
+      { fsLabel = SomeMessage MsgRunningTypeName
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
@@ -229,7 +208,7 @@ vEditRunningTypeForm maybeRunningType extra = do
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgEditRunningTypeSortIndex
+      { fsLabel = SomeMessage MsgRunningTypeSortIndex
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
@@ -243,27 +222,6 @@ vEditRunningTypeForm maybeRunningType extra = do
       , fsName = Just "version"
       , fsAttrs = []
       }
-
-data MsgEditRunningType =
-  MsgEditRunningTypeName
-  | MsgEditRunningTypeSortIndex
-
-instance RenderMessage App MsgEditRunningType where
-  renderMessage _ []        = renderEditRunningTypeGerman
-  renderMessage _ ("de":_) = renderEditRunningTypeGerman
-  renderMessage _ ("en":_) = renderEditRunningTypeEnglish
-  renderMessage _ ("en-US":_) = renderEditRunningTypeEnglish
-  renderMessage m (_   :ls) = renderMessage m ls
-
-renderEditRunningTypeGerman :: MsgEditRunningType -> Text
-renderEditRunningTypeGerman MsgEditRunningTypeName = "Name"
-renderEditRunningTypeGerman MsgEditRunningTypeSortIndex = "Sortierungs-Index"
-
-
-renderEditRunningTypeEnglish :: MsgEditRunningType -> Text
-renderEditRunningTypeEnglish MsgEditRunningTypeName = "Name"
-renderEditRunningTypeEnglish MsgEditRunningTypeSortIndex = "Sort Index"
-
 -- gen edit form - end
 
 -------------------------------------------------------
