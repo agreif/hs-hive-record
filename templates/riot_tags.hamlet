@@ -124,6 +124,11 @@
     \       alert("error" + jqXHR.status + " ------ " + textStatus)
     \   })
     \ }
+    \ tag.scrollToTop = function(event) {
+    \   event.preventDefault()
+    \   $('html, body').animate({scrollTop : 0},800);
+    \   event.currentTarget.blur()
+    \ }
 
 <nav-tag>
   <nav .uk-navbar-container .uk-margin-small-top uk-navbar>
