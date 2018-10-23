@@ -15,6 +15,17 @@ window.addEventListener('popstate', function(event) {
     })
 });
 
+$(document).ready(function(){
+    //Check to see if the window is top if not then display button
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+});
+
 function formatDouble(num, langs) {
     if (typeof langs == "undefined") console.log("formatDouble: languages missing (" + num + ")")
     if (typeof num == "undefined" || num === null)
