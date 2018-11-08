@@ -81,7 +81,7 @@ locationListJDatas = do
                            JDataLocation
                            { jDataLocationEnt = locationEnt
                            , jDataLocationDetailUrl = urlRenderer $ HiverecR $ LocationDetailR locationId
-                           , jDataLocationDetailPageDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+                           , jDataLocationDetailDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
                            , jDataLocationDeleteFormUrl = urlRenderer $ HiverecR $ DeleteLocationFormR locationId
                            }
                         ) locationTuples
@@ -171,7 +171,7 @@ locationDetailHiveJDatas locationId = do
        { jDataHiveDetailHiveEnt = hiveEnt
        , jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt
        , jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId
-       , jDataHiveDetailPageDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+       , jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
        , jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
        })
     hiveDetailTuples
