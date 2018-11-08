@@ -108,7 +108,7 @@ data JDataNavItem = JDataNavItem
   { jDataNavItemLabel :: Text
   , jDataNavItemIsActive :: Bool
   , jDataNavItemUrl :: Maybe Text
-  , jDataNavItemPageDataUrl :: Maybe Text
+  , jDataNavItemDataUrl :: Maybe Text
   , jDataNavItemBadge :: Maybe Text
   , jDataNavItemDropdownItems :: Maybe [JDataNavItem]
   }
@@ -117,7 +117,7 @@ instance ToJSON JDataNavItem where
     [ "label" .= jDataNavItemLabel o
     , "isActive" .= jDataNavItemIsActive o
     , "url" .= jDataNavItemUrl o
-    , "dataUrl" .= jDataNavItemPageDataUrl o
+    , "dataUrl" .= jDataNavItemDataUrl o
     , "badge" .= jDataNavItemBadge o
     , "dropdownItems" .= jDataNavItemDropdownItems o
     ]
@@ -238,14 +238,14 @@ instance ToJSON JDataPageLocationList where
 data JDataLocation = JDataLocation
   { jDataLocationEnt :: Entity Location
   , jDataLocationDetailUrl :: Text
-  , jDataLocationDetailPageDataUrl :: Text
+  , jDataLocationDetailDataUrl :: Text
   , jDataLocationDeleteFormUrl :: Text
   }
 instance ToJSON JDataLocation where
   toJSON o = object
     [ "entity" .= entityIdToJSON (jDataLocationEnt o)
     , "detailUrl" .= jDataLocationDetailUrl o
-    , "detailPageDataUrl" .= jDataLocationDetailPageDataUrl o
+    , "detailDataUrl" .= jDataLocationDetailDataUrl o
     , "deleteFormUrl" .= jDataLocationDeleteFormUrl o
     ]
 
@@ -267,7 +267,7 @@ data JDataHiveDetail = JDataHiveDetail
   { jDataHiveDetailHiveEnt :: Entity Hive
   , jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection)
   , jDataHiveDetailUrl :: Text
-  , jDataHiveDetailPageDataUrl :: Text
+  , jDataHiveDetailDataUrl :: Text
   , jDataHiveDeleteFormUrl :: Text
   }
 instance ToJSON JDataHiveDetail where
@@ -275,7 +275,7 @@ instance ToJSON JDataHiveDetail where
     [ "hiveEnt" .= entityIdToJSON (jDataHiveDetailHiveEnt o)
     , "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o
     , "detailUrl" .= jDataHiveDetailUrl o
-    , "detailPageDataUrl" .= jDataHiveDetailPageDataUrl o
+    , "detailDataUrl" .= jDataHiveDetailDataUrl o
     , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
     ]
 
@@ -404,7 +404,7 @@ mainNavData user mainNav = do
       { jDataNavItemLabel = msgHome
       , jDataNavItemIsActive = mainNav == MainNavHome
       , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiverecHomeR
-      , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
+      , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
       , jDataNavItemBadge = Nothing
       , jDataNavItemDropdownItems = Nothing
       }
@@ -415,7 +415,7 @@ mainNavData user mainNav = do
                 { jDataNavItemLabel = msgAdmin
                 , jDataNavItemIsActive = mainNav == MainNavAdmin
                 , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
-                , jDataNavItemPageDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
+                , jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
                 , jDataNavItemBadge = Nothing
                 , jDataNavItemDropdownItems = Nothing
                 } ]
@@ -425,7 +425,7 @@ mainNavData user mainNav = do
       { jDataNavItemLabel = msgLocations
       , jDataNavItemIsActive = mainNav == MainNavLocations
       , jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR
-      , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
+      , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
       , jDataNavItemBadge = Nothing
       , jDataNavItemDropdownItems = Nothing
       }
@@ -436,7 +436,7 @@ mainNavData user mainNav = do
                 { jDataNavItemLabel = msgHives
                 , jDataNavItemIsActive = mainNav == MainNavHives
                 , jDataNavItemUrl = Nothing
-                , jDataNavItemPageDataUrl = Nothing
+                , jDataNavItemDataUrl = Nothing
                 , jDataNavItemBadge = Nothing
                 , jDataNavItemDropdownItems = Just hiveNavItems
                 } ]
@@ -471,7 +471,7 @@ getHiveNavItems = do
     { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
     , jDataNavItemIsActive = False
     , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
-    , jDataNavItemPageDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+    , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
     , jDataNavItemBadge = Nothing
     , jDataNavItemDropdownItems = Nothing
     }
