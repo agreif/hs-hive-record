@@ -62,7 +62,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -76,7 +76,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -120,7 +120,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -134,7 +134,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -253,7 +253,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -281,7 +281,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -295,7 +295,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -323,7 +323,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -337,7 +337,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -365,7 +365,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -379,7 +379,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -464,7 +464,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -571,7 +571,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -585,7 +585,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -660,7 +660,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -674,7 +674,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -702,7 +702,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small"
+                            "uk-textarea uk-form-small uk-form-width-large"
                         }
                       , BFieldAttr
                         {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
@@ -718,7 +718,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small"
+                            "uk-textarea uk-form-small uk-form-width-large"
                         }
                       , BFieldAttr
                         {bFieldAttrKey = "rows", bFieldAttrValue = "5"}
@@ -955,7 +955,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -969,7 +969,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -997,7 +997,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1011,7 +1011,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1039,7 +1039,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1053,7 +1053,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1081,7 +1081,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1095,7 +1095,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1123,7 +1123,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1137,7 +1137,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1165,7 +1165,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1179,7 +1179,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1207,7 +1207,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
+                            "uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
                         { bFieldAttrKey = "rows", bFieldAttrValue = "10" }
@@ -1223,7 +1223,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-textarea uk-form-small uk-width-5-6"
+                            "uk-textarea uk-form-small uk-width-5-6"
                         }
                       , BFieldAttr
                         { bFieldAttrKey = "rows", bFieldAttrValue = "10" }
@@ -1425,7 +1425,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1439,7 +1439,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1467,7 +1467,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1481,7 +1481,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1537,7 +1537,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1551,7 +1551,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1579,7 +1579,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1593,7 +1593,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1649,7 +1649,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1663,7 +1663,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-large uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-large"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1691,7 +1691,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
@@ -1705,7 +1705,7 @@ context =
                       [ BFieldAttr
                         { bFieldAttrKey = "class"
                         , bFieldAttrValue =
-                            "uk-form-width-medium uk-input uk-form-small"
+                            "uk-input uk-form-small uk-form-width-medium"
                         }
                       ]
                   , bFieldViewDefault = Nothing
