@@ -16,7 +16,6 @@ context =
   { bContextCrudModels =
       [ BCrudModel
         { bCrudModelName = "user"
-        , bCrudModelLabel = "User"
         , bCrudModelIsJson = False
         , bCrudModelDbUniquenesses = ["UniqueUserIdent ident"]
         , bCrudModelDbHasHistoryTable = True
@@ -207,7 +206,6 @@ context =
         }
       , BCrudModel
         { bCrudModelName = "config"
-        , bCrudModelLabel = "Config"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = ["UniqueConfigCode code"]
         , bCrudModelDbHasHistoryTable = True
@@ -426,7 +424,6 @@ context =
         }
       , BCrudModel
         { bCrudModelName = "testmail"
-        , bCrudModelLabel = "Test Mail"
         , bCrudModelIsJson = False
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = False
@@ -481,7 +478,6 @@ context =
 
       , BCrudModel
         { bCrudModelName = "Rawdata"
-        , bCrudModelLabel = "Rawdata"
         , bCrudModelIsJson = False
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = False
@@ -529,7 +525,6 @@ context =
 
       , BCrudModel
         { bCrudModelName = "location"
-        , bCrudModelLabel = "Location"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = ["UniqueLocationName name"]
         , bCrudModelDbHasHistoryTable = True
@@ -603,7 +598,6 @@ context =
 
       , BCrudModel
         { bCrudModelName = "hive"
-        , bCrudModelLabel = "Hive"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = True
@@ -739,7 +733,6 @@ context =
 
       , BCrudModel
         { bCrudModelName = "inspection"
-        , bCrudModelLabel = "Inspection"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = ["UniqueInspectionHiveDate hiveId date"]
         , bCrudModelDbHasHistoryTable = True
@@ -1242,7 +1235,6 @@ context =
         }
       , BCrudModel
         { bCrudModelName = "inspectionfile"
-        , bCrudModelLabel = "Inspection File"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = True
@@ -1387,7 +1379,6 @@ context =
 
       , BCrudModel
         { bCrudModelName = "temperType"
-        , bCrudModelLabel = "Temper Type"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = True
@@ -1500,7 +1491,6 @@ context =
         }
       , BCrudModel
         { bCrudModelName = "runningType"
-        , bCrudModelLabel = "Running Type"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = True
@@ -1613,7 +1603,6 @@ context =
         }
       , BCrudModel
         { bCrudModelName = "swarmingType"
-        , bCrudModelLabel = "Swarming Type"
         , bCrudModelIsJson = True
         , bCrudModelDbUniquenesses = []
         , bCrudModelDbHasHistoryTable = True
