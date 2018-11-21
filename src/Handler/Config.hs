@@ -138,7 +138,7 @@ vEditConfigForm maybeConfig extra = do
       , fsTooltip = Nothing
       , fsId = Just "code"
       , fsName = Just "code"
-      , fsAttrs = [ ("disabled",""), ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("disabled",""), ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     stringValueFs :: FieldSettings App
     stringValueFs = FieldSettings
@@ -146,7 +146,7 @@ vEditConfigForm maybeConfig extra = do
       , fsTooltip = Nothing
       , fsId = Just "stringValue"
       , fsName = Just "stringValue"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     intValueFs :: FieldSettings App
     intValueFs = FieldSettings
@@ -154,7 +154,7 @@ vEditConfigForm maybeConfig extra = do
       , fsTooltip = Nothing
       , fsId = Just "intValue"
       , fsName = Just "intValue"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     doubleValueFs :: FieldSettings App
     doubleValueFs = FieldSettings
@@ -162,7 +162,7 @@ vEditConfigForm maybeConfig extra = do
       , fsTooltip = Nothing
       , fsId = Just "doubleValue"
       , fsName = Just "doubleValue"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     boolValueFs :: FieldSettings App
     boolValueFs = FieldSettings

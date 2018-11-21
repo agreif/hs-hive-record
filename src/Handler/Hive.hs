@@ -153,7 +153,7 @@ data VAddHive = VAddHive
 -- gen get add form - start
 getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
-  (formWidget, _) <- generateFormPost $ vAddHiveForm (Nothing)
+  (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddHive}
@@ -226,7 +226,7 @@ vAddHiveForm maybeHive extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     descriptionFs :: FieldSettings App
     descriptionFs = FieldSettings
@@ -234,7 +234,7 @@ vAddHiveForm maybeHive extra = do
       , fsTooltip = Nothing
       , fsId = Just "description"
       , fsName = Just "description"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
       }
 -- gen add form - end
 
@@ -332,7 +332,7 @@ vEditHiveForm maybeHive extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     descriptionFs :: FieldSettings App
     descriptionFs = FieldSettings
@@ -340,7 +340,7 @@ vEditHiveForm maybeHive extra = do
       , fsTooltip = Nothing
       , fsId = Just "description"
       , fsName = Just "description"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small"), ("rows","5") ]
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings

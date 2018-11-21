@@ -189,7 +189,7 @@ data VAddLocation = VAddLocation
 -- gen get add form - start
 getAddLocationFormR :: Handler Html
 getAddLocationFormR = do
-  (formWidget, _) <- generateFormPost $ vAddLocationForm (Nothing)
+  (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddLocation}
@@ -251,7 +251,7 @@ vAddLocationForm maybeLocation extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
 -- gen add form - end
 
@@ -338,7 +338,7 @@ vEditLocationForm maybeLocation extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings

@@ -29,7 +29,7 @@ data VAddUser = VAddUser
 -- gen get add form - start
 getAddUserFormR :: Handler Html
 getAddUserFormR = do
-  (formWidget, _) <- generateFormPost $ vAddUserForm (Nothing)
+  (formWidget, _) <- generateFormPost $ vAddUserForm Nothing
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddUser}
@@ -109,7 +109,7 @@ vAddUserForm maybeUser extra = do
       , fsTooltip = Nothing
       , fsId = Just "ident"
       , fsName = Just "ident"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     emailFs :: FieldSettings App
     emailFs = FieldSettings
@@ -117,7 +117,7 @@ vAddUserForm maybeUser extra = do
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     isAdminFs :: FieldSettings App
     isAdminFs = FieldSettings
@@ -248,7 +248,7 @@ vEditUserForm maybeUser extra = do
       , fsTooltip = Nothing
       , fsId = Just "ident"
       , fsName = Just "ident"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     emailFs :: FieldSettings App
     emailFs = FieldSettings
@@ -256,7 +256,7 @@ vEditUserForm maybeUser extra = do
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     isAdminFs :: FieldSettings App
     isAdminFs = FieldSettings

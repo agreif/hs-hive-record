@@ -203,6 +203,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
       , BCrudModel
         { bCrudModelName = "config"
@@ -421,6 +422,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
       , BCrudModel
         { bCrudModelName = "testmail"
@@ -472,6 +474,7 @@ context =
               , bCrudFieldEditView = Nothing
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 
@@ -519,6 +522,7 @@ context =
               , bCrudFieldEditView = Nothing
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 
@@ -592,6 +596,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 
@@ -727,6 +732,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 
@@ -1232,6 +1238,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
       , BCrudModel
         { bCrudModelName = "inspectionfile"
@@ -1364,6 +1371,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 
@@ -1488,6 +1496,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
       , BCrudModel
         { bCrudModelName = "runningType"
@@ -1600,6 +1609,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
       , BCrudModel
         { bCrudModelName = "swarmingType"
@@ -1712,6 +1722,7 @@ context =
                   }
               }
             ]
+        , bCrudModelTranslations = Nothing
         }
 
 

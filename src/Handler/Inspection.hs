@@ -115,8 +115,8 @@ data VAddInspection = VAddInspection
 -- gen get add form - start
 getAddInspectionFormR :: HiveId -> Handler Html
 getAddInspectionFormR hiveId = do
-  defaultAddModel <- defaultAddInspection hiveId
-  (formWidget, _) <- generateFormPost $ vAddInspectionForm (Just defaultAddModel)
+  defaultMaybeAddModel <- defaultAddInspection hiveId
+  (formWidget, _) <- generateFormPost $ vAddInspectionForm defaultMaybeAddModel
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddInspection}
@@ -329,7 +329,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "totalFrames"
       , fsName = Just "totalFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     beeCoveredFramesFs :: FieldSettings App
     beeCoveredFramesFs = FieldSettings
@@ -337,7 +337,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "beeCoveredFrames"
       , fsName = Just "beeCoveredFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     broodFramesFs :: FieldSettings App
     broodFramesFs = FieldSettings
@@ -345,7 +345,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "broodFrames"
       , fsName = Just "broodFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     honeyFramesFs :: FieldSettings App
     honeyFramesFs = FieldSettings
@@ -353,7 +353,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "honeyFrames"
       , fsName = Just "honeyFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     treatmentFs :: FieldSettings App
     treatmentFs = FieldSettings
@@ -361,7 +361,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "treatment"
       , fsName = Just "treatment"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
@@ -369,7 +369,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "feeding"
       , fsName = Just "feeding"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
@@ -377,7 +377,7 @@ vAddInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
       }
 -- gen add form - end
 
@@ -626,7 +626,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "totalFrames"
       , fsName = Just "totalFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     beeCoveredFramesFs :: FieldSettings App
     beeCoveredFramesFs = FieldSettings
@@ -634,7 +634,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "beeCoveredFrames"
       , fsName = Just "beeCoveredFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     broodFramesFs :: FieldSettings App
     broodFramesFs = FieldSettings
@@ -642,7 +642,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "broodFrames"
       , fsName = Just "broodFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     honeyFramesFs :: FieldSettings App
     honeyFramesFs = FieldSettings
@@ -650,7 +650,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "honeyFrames"
       , fsName = Just "honeyFrames"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     treatmentFs :: FieldSettings App
     treatmentFs = FieldSettings
@@ -658,7 +658,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "treatment"
       , fsName = Just "treatment"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     feedingFs :: FieldSettings App
     feedingFs = FieldSettings
@@ -666,7 +666,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "feeding"
       , fsName = Just "feeding"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     notesFs :: FieldSettings App
     notesFs = FieldSettings
@@ -674,7 +674,7 @@ vEditInspectionForm maybeInspection extra = do
       , fsTooltip = Nothing
       , fsId = Just "notes"
       , fsName = Just "notes"
-      , fsAttrs = [ ("class","uk-form-width-large uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings

@@ -39,7 +39,7 @@ data VAddTestmail = VAddTestmail
 -- gen get add form - start
 getAddTestmailFormR :: Handler Html
 getAddTestmailFormR = do
-  (formWidget, _) <- generateFormPost $ vAddTestmailForm (Nothing)
+  (formWidget, _) <- generateFormPost $ vAddTestmailForm Nothing
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalSendTestMail}
@@ -73,6 +73,6 @@ vAddTestmailForm maybeTestmail extra = do
       , fsTooltip = Nothing
       , fsId = Just "email"
       , fsName = Just "email"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
 -- gen add form - end

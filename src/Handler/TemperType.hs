@@ -26,7 +26,7 @@ data VAddTemperType = VAddTemperType
 -- gen get add form - start
 getAddTemperTypeFormR :: Handler Html
 getAddTemperTypeFormR = do
-  (formWidget, _) <- generateFormPost $ vAddTemperTypeForm (Nothing)
+  (formWidget, _) <- generateFormPost $ vAddTemperTypeForm Nothing
   formLayout $ do
     toWidget [whamlet|
       <h1>_{MsgGlobalAddTemperType}
@@ -98,7 +98,7 @@ vAddTemperTypeForm maybeTemperType extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
@@ -106,7 +106,7 @@ vAddTemperTypeForm maybeTemperType extra = do
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
 -- gen add form - end
 
@@ -204,7 +204,7 @@ vEditTemperTypeForm maybeTemperType extra = do
       , fsTooltip = Nothing
       , fsId = Just "name"
       , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-form-width-large uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
       }
     sortIndexFs :: FieldSettings App
     sortIndexFs = FieldSettings
@@ -212,7 +212,7 @@ vEditTemperTypeForm maybeTemperType extra = do
       , fsTooltip = Nothing
       , fsId = Just "sortIndex"
       , fsName = Just "sortIndex"
-      , fsAttrs = [ ("class","uk-form-width-medium uk-input uk-form-small") ]
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings
