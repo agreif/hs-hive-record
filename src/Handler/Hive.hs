@@ -16,7 +16,7 @@ import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
 -------------------------------------------------------
--- hive detail page
+-- detail
 -------------------------------------------------------
 
 getHiveDetailR :: HiveId -> Handler Html
@@ -136,11 +136,8 @@ loadInspectionListTuples hiveId = do
              )
   return tuples'
 
-
-
-
 -------------------------------------------------------
--- add hive
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -239,7 +236,7 @@ vAddHiveForm maybeHive extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit hive
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -353,7 +350,7 @@ vEditHiveForm maybeHive extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete hive
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

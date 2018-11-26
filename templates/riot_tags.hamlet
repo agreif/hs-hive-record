@@ -107,7 +107,7 @@
     \     modal.destroy();
     \   })
     \ }
-    \ tag.postRequest = function(url) {
+    \ tag.postRequest = function(url, scrollToTop) {
     \   headers = {}
     \   headers[tag.data.csrfHeaderName] = tag.data.csrfToken
     \   $.ajax({
@@ -116,7 +116,7 @@
     \       dataType: "json",
     \       headers: headers
     \   }).done(function(data, textStatus, jqXHR) {
-    \       tag.refreshData(data.dataJsonUrl, false, false)
+    \       tag.refreshData(data.dataJsonUrl, false, scrollToTop)
     \   }).fail(function(jqXHR, textStatus) {
     \     if (jqXHR.status == 401)
     \       window.location.href = "@{AuthR LoginR}"
@@ -130,10 +130,20 @@
     \   event.currentTarget.blur()
     \ }
 
+<raw>
+  <span>
+    {replaceContent(opts.content)}
+  <script>
+    // e.g.: <raw content="{var}">
+    replaceContent(content) {
+      this.root.innerHTML = content
+    }
+
 <nav-tag>
-  <nav .uk-navbar-container .uk-margin-small-top uk-navbar>
+  <nav .uk-navbar-container .uk-margin-small-top uk-navbar="offset: -10">
     <div .uk-navbar-left>
-      <div .uk-navbar-item .uk-logo>{parent.data.appName}
+      <div .uk-navbar-item .uk-logo>
+        {parent.data.appName}
       <ul .uk-navbar-nav>
         <li each="{parent.data.mainNavItems}" class="{uk-active: isActive}">
           <a href="{url}" onclick="{switchNav}" if="{!Array.isArray(dropdownItems) || !dropdownItems.length}">
@@ -171,13 +181,15 @@
     <div .uk-width-1-1>
       <ul .uk-subnav .uk-subnav-divider>
         <li each="{parent.data.subNavItems}" class="{uk-active: isActive}">
-          <a onclick="{switchNav}">{label}
+          <a onclick="{switchNav}">
+            {label}
   <div .uk-child-width-expand .uk-margin-small-top .uk-margin-small-right uk-grid>
     <div .uk-width-1-1>
       <div .uk-align-right>
         <ul .uk-breadcrumb>
           <li each="{parent.data.breadcrumbItems}">
-            <a onclick="{switchBreadcrumb}">{label}
+            <a onclick="{switchBreadcrumb}">
+              {label}
   <script>
     \ switchNav(event) {
     \   event.preventDefault()
@@ -267,9 +279,11 @@
           <tbody>
             <tr each="{parent.data.pages.admin.users}">
               <td .uk-table-link>
-                <a onclick="{editUser}" .uk-link-reset>{entity.ident}
+                <a onclick="{editUser}" .uk-link-reset>
+                  {entity.ident}
               <td .uk-table-link>
-                <a onclick="{editUser}" .uk-link-reset>{entity.email}
+                <a onclick="{editUser}" .uk-link-reset>
+                  {entity.email}
               <td .uk-table-link>
                 <a onclick="{editUser}" .uk-link-reset>
                   <span uk-icon="icon: check" if="{entity.isAdmin}">
@@ -328,9 +342,11 @@
           <tbody>
             <tr each="{parent.data.pages.admin.temperTypes}">
               <td .uk-table-link>
-                <a onclick="{editTemperType}" .uk-link-reset>{entity.name}
+                <a onclick="{editTemperType}" .uk-link-reset>
+                  {entity.name}
               <td .uk-table-link>
-                <a onclick="{editTemperType}" .uk-link-reset>{entity.sortIndex}
+                <a onclick="{editTemperType}" .uk-link-reset>
+                  {entity.sortIndex}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteTemperType}" uk-tooltip onclick="{deleteTemperType}">
                   <span uk-icon="icon: trash">
@@ -351,9 +367,11 @@
           <tbody>
             <tr each="{parent.data.pages.admin.runningTypes}">
               <td .uk-table-link>
-                <a onclick="{editRunningType}" .uk-link-reset>{entity.name}
+                <a onclick="{editRunningType}" .uk-link-reset>
+                  {entity.name}
               <td .uk-table-link>
-                <a onclick="{editRunningType}" .uk-link-reset>{entity.sortIndex}
+                <a onclick="{editRunningType}" .uk-link-reset>
+                  {entity.sortIndex}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteRunningType}" uk-tooltip onclick="{deleteRunningType}">
                   <span uk-icon="icon: trash">
@@ -374,9 +392,11 @@
           <tbody>
             <tr each="{parent.data.pages.admin.swarmingTypes}">
               <td .uk-table-link>
-                <a onclick="{editSwarmingType}" .uk-link-reset>{entity.name}
+                <a onclick="{editSwarmingType}" .uk-link-reset>
+                  {entity.name}
               <td .uk-table-link>
-                <a onclick="{editSwarmingType}" .uk-link-reset>{entity.sortIndex}
+                <a onclick="{editSwarmingType}" .uk-link-reset>
+                  {entity.sortIndex}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteSwarmingType}" uk-tooltip onclick="{deleteSwarmingType}">
                   <span uk-icon="icon: trash">
@@ -459,7 +479,8 @@
 
 <location-list-page-tag>
   <div if="{parent.data.pages.locationList}">
-    <h1>{parent.data.translation.msgGlobalLocations}
+    <h1>
+      {parent.data.translation.msgGlobalLocations}
     <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
       <thead>
         <tr>
@@ -471,7 +492,8 @@
       <tbody>
         <tr each="{parent.data.pages.locationList.locations}">
           <td .uk-table-link>
-            <a href="{detailUrl}" onclick="{detailLocation}" .uk-link-reset>{entity.name}
+            <a href="{detailUrl}" onclick="{detailLocation}" .uk-link-reset>
+              {entity.name}
           <td .uk-width-small>
             <button .uk-float-right .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{deleteLocation}">
               <span uk-icon="icon: trash">
@@ -485,7 +507,7 @@
     \ }
     \ detailLocation(event) {
     \   event.preventDefault()
-    \   parent.tag.refreshData(event.item.detailPageDataUrl, true, true)
+    \   parent.tag.refreshData(event.item.detailDataUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteLocation(event) {
@@ -496,7 +518,8 @@
 
 <location-detail-page-tag>
   <div if="{parent.data.pages.locationDetail}">
-    <h1>{parent.data.translation.msgGlobalLocation}: {parent.data.pages.locationDetail.locationEnt.name}
+    <h1>
+      {parent.data.translation.msgGlobalLocation}: {parent.data.pages.locationDetail.locationEnt.name}
     <ul uk-tab>
       <li>
         <a href="#">
@@ -516,7 +539,8 @@
           <tbody>
             <tr>
               <td .uk-table-link>
-                <a onclick="{editLocation}" .uk-link-reset>{parent.data.pages.locationDetail.locationEnt.name}
+                <a onclick="{editLocation}" .uk-link-reset>
+                  {parent.data.pages.locationDetail.locationEnt.name}
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{editLocation}">
                   <span uk-icon="icon: pencil">
@@ -565,7 +589,7 @@
     \ }
     \ detailHive(event) {
     \   event.preventDefault()
-    \   parent.tag.refreshData(event.item.detailPageDataUrl, true, true)
+    \   parent.tag.refreshData(event.item.detailDataUrl, true, true)
     \   event.currentTarget.blur()
     \ }
     \ deleteHive(event) {
@@ -576,7 +600,8 @@
 
 <hive-detail-page-tag>
   <div if="{parent.data.pages.hiveDetail}">
-    <h1>{parent.data.translation.msgGlobalHive}: {parent.data.pages.hiveDetail.hiveEnt.name}
+    <h1>
+      {parent.data.translation.msgGlobalHive}: {parent.data.pages.hiveDetail.hiveEnt.name}
     <ul uk-tab>
       <li>
         <a href="#">

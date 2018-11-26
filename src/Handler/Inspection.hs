@@ -10,6 +10,7 @@ module Handler.Inspection where
 import Handler.Common
 import Import
 import qualified Data.List as L
+import qualified Data.Maybe as M
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
@@ -26,21 +27,21 @@ swarmingTypeSelectField = do
   selectField $ optionsPersistKey [] [Asc SwarmingTypeSortIndex] swarmingTypeName
 
 -------------------------------------------------------
--- add inspection
+-- add
 -------------------------------------------------------
 
-defaultAddInspection :: HiveId -> Handler Inspection
+defaultAddInspection :: HiveId -> Handler (Maybe Inspection)
 defaultAddInspection hiveId = do
   now <- liftIO getCurrentTime
   today <- liftIO getCurrentDay
-  -- assume there any types
-  temperTypeId <- runDB defaultTemperTypeId
-  runningTypeId <- runDB defaultRunningTypeId
-  swarmingTypeId <- runDB defaultSwarmingTypeId
+  maybeTemperTypeId <- runDB defaultTemperTypeId
+  maybeRunningTypeId <- runDB defaultRunningTypeId
+  maybeSwarmingTypeId <- runDB defaultSwarmingTypeId
   maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
   case maybeLastInspectionEnt of
     Just (Entity _ inspection) ->
-      return $ Inspection
+      return $ Just $
+      Inspection
       { inspectionHiveId = hiveId
       , inspectionDate = today
       , inspectionTemperTypeId = inspectionTemperTypeId inspection
@@ -61,39 +62,52 @@ defaultAddInspection hiveId = do
       , inspectionUpdatedBy = dbSystemUser
       }
     _ ->
-      return $ Inspection
-      { inspectionHiveId = hiveId
-      , inspectionDate = today
-      , inspectionTemperTypeId = temperTypeId
-      , inspectionRunningTypeId = runningTypeId
-      , inspectionSwarmingTypeId = swarmingTypeId
-      , inspectionQueenSeen = False
-      , inspectionBeeCoveredFrames = 0
-      , inspectionTotalFrames = 0
-      , inspectionBroodFrames = 0
-      , inspectionHoneyFrames = 0
-      , inspectionTreatment = Nothing
-      , inspectionFeeding = Nothing
-      , inspectionNotes = Nothing
-      , inspectionVersion = 1
-      , inspectionCreatedAt = now
-      , inspectionCreatedBy = dbSystemUser
-      , inspectionUpdatedAt = now
-      , inspectionUpdatedBy = dbSystemUser
-      }
+      return $
+      if M.isNothing maybeTemperTypeId || M.isNothing maybeRunningTypeId || M.isNothing maybeSwarmingTypeId
+      then Nothing
+      else Just $
+           Inspection
+           { inspectionHiveId = hiveId
+           , inspectionDate = today
+           , inspectionTemperTypeId = M.fromJust maybeTemperTypeId
+           , inspectionRunningTypeId = M.fromJust maybeRunningTypeId
+           , inspectionSwarmingTypeId = M.fromJust maybeSwarmingTypeId
+           , inspectionQueenSeen = False
+           , inspectionBeeCoveredFrames = 0
+           , inspectionTotalFrames = 0
+           , inspectionBroodFrames = 0
+           , inspectionHoneyFrames = 0
+           , inspectionTreatment = Nothing
+           , inspectionFeeding = Nothing
+           , inspectionNotes = Nothing
+           , inspectionVersion = 1
+           , inspectionCreatedAt = now
+           , inspectionCreatedBy = dbSystemUser
+           , inspectionUpdatedAt = now
+           , inspectionUpdatedBy = dbSystemUser
+           }
   where
-    defaultTemperTypeId :: YesodDB App TemperTypeId
+    defaultTemperTypeId :: YesodDB App (Maybe TemperTypeId)
     defaultTemperTypeId = do
       temperTypeEnts <- selectList ([] :: [Filter TemperType]) []
-      return $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (temperTypeSortIndex tt, ttId)) temperTypeEnts
-    defaultRunningTypeId :: YesodDB App RunningTypeId
+      if L.null temperTypeEnts
+        then return Nothing
+        else return $
+             Just $ snd $ L.head $ L.sort $ L.map (\(Entity ttId tt) -> (temperTypeSortIndex tt, ttId)) temperTypeEnts
+    defaultRunningTypeId :: YesodDB App (Maybe RunningTypeId)
     defaultRunningTypeId = do
       runningTypeEnts <- selectList ([] :: [Filter RunningType]) []
-      return $ snd $ L.head $ L.sort $ L.map (\(Entity rtId rt) -> (runningTypeSortIndex rt, rtId)) runningTypeEnts
-    defaultSwarmingTypeId :: YesodDB App SwarmingTypeId
+      if L.null runningTypeEnts
+        then return Nothing
+        else return $
+             Just $ snd $ L.head $ L.sort $ L.map (\(Entity rtId rt) -> (runningTypeSortIndex rt, rtId)) runningTypeEnts
+    defaultSwarmingTypeId :: YesodDB App (Maybe SwarmingTypeId)
     defaultSwarmingTypeId = do
       swarmingTypeEnts <- selectList ([] :: [Filter SwarmingType]) []
-      return $ snd $ L.head $ L.sort $ L.map (\(Entity stId st) -> (swarmingTypeSortIndex st, stId)) swarmingTypeEnts
+      if L.null swarmingTypeEnts
+        then return Nothing
+        else return $
+             Just $ snd $ L.head $ L.sort $ L.map (\(Entity stId st) -> (swarmingTypeSortIndex st, stId)) swarmingTypeEnts
 
 -- gen data add - start
 data VAddInspection = VAddInspection
@@ -382,7 +396,7 @@ vAddInspectionForm maybeInspection extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit inspection
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -687,7 +701,7 @@ vEditInspectionForm maybeInspection extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete inspection
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

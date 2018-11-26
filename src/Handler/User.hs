@@ -15,7 +15,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- add user
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -130,7 +130,7 @@ vAddUserForm maybeUser extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit user
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -285,7 +285,7 @@ vEditUserForm maybeUser extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete user
+-- delete
 -------------------------------------------------------
 
 -- gen delete form - start

@@ -13,7 +13,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- add temper type
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -111,7 +111,7 @@ vAddTemperTypeForm maybeTemperType extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit temper Type
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -225,7 +225,7 @@ vEditTemperTypeForm maybeTemperType extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete temper type
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

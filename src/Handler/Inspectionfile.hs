@@ -16,7 +16,7 @@ import qualified Data.Text.Encoding as TE
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- add inspectionfile
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -131,7 +131,7 @@ vAddInspectionfileForm maybeVAddInspectionfile extra = do
       }
 
 -------------------------------------------------------
--- edit inspectionfile
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -233,7 +233,7 @@ vEditInspectionfileForm inspectionfile maybeVEditInspectionfile extra = do
       }
 
 -------------------------------------------------------
--- delete inspectionfile
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

@@ -13,7 +13,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- edit config
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start

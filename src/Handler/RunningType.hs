@@ -13,7 +13,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- add running type
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -111,7 +111,7 @@ vAddRunningTypeForm maybeRunningType extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit running Type
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -225,7 +225,7 @@ vEditRunningTypeForm maybeRunningType extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete running type
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

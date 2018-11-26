@@ -9,14 +9,13 @@ module Handler.Location where
 
 import Handler.Common
 import Import
---import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
 -------------------------------------------------------
--- location list page
+-- list
 -------------------------------------------------------
 
 getLocationListR :: Handler Html
@@ -91,7 +90,7 @@ loadLocationList :: YesodDB App [Entity Location]
 loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 
 -------------------------------------------------------
--- location detail page
+-- detail
 -------------------------------------------------------
 
 getLocationDetailR :: LocationId -> Handler Html
@@ -177,7 +176,7 @@ locationDetailHiveJDatas locationId = do
     hiveDetailTuples
 
 -------------------------------------------------------
--- add location
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -256,7 +255,7 @@ vAddLocationForm maybeLocation extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit location
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -351,7 +350,7 @@ vEditLocationForm maybeLocation extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete location
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start

@@ -13,7 +13,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 -------------------------------------------------------
--- add swarming type
+-- add
 -------------------------------------------------------
 
 -- gen data add - start
@@ -111,7 +111,7 @@ vAddSwarmingTypeForm maybeSwarmingType extra = do
 -- gen add form - end
 
 -------------------------------------------------------
--- edit swarming Type
+-- edit
 -------------------------------------------------------
 
 -- gen data edit - start
@@ -225,7 +225,7 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
 -- gen edit form - end
 
 -------------------------------------------------------
--- delete swarming type
+-- delete
 -------------------------------------------------------
 
 -- gen get delete form - start
