@@ -260,7 +260,7 @@
           {parent.data.translation.msgGlobalSwarmingTypes}
       <li>
         <a href="#">
-          {parent.data.translation.msgGlobalTestMail}
+          {parent.data.translation.msgTestmailTestMail}
     <ul .uk-switcher .uk-margin>
       <li>
         <!-- user list -->
@@ -405,7 +405,7 @@
       <li>
         <!-- test mail -->
         <button .uk-button .uk-button-primary onclick="{sendTestMail}">
-          {parent.data.translation.msgGlobalSendTestMail}
+          {parent.data.translation.msgTestmailSendTestMail}
   <script>
     \ addUser(event) {
     \   event.preventDefault()
@@ -474,7 +474,7 @@
     \ }
     \ sendTestMail(event) {
     \   event.preventDefault()
-    \   parent.tag.showModalForm("@{AdminR AddTestmailFormR}")
+    \   parent.tag.showModalForm("@{AdminR SendTestmailFormR}")
     \ }
 
 <location-list-page-tag>

@@ -20,8 +20,6 @@ data AppMessage =
   | MsgGlobalDeleteUser
   | MsgGlobalConfigurations
   | MsgGlobalEditConfig
-  | MsgGlobalTestMail
-  | MsgGlobalSendTestMail
   | MsgGlobalCancel
   | MsgGlobalLocation
   | MsgGlobalLocations
@@ -72,7 +70,6 @@ data AppMessage =
   | MsgConfigIntValue
   | MsgConfigDoubleValue
   | MsgConfigBoolValue
-  | MsgTestmailEmail
   | MsgRawdataBytes
   | MsgLocationName
   | MsgHiveLocationId
@@ -103,6 +100,9 @@ data AppMessage =
   | MsgRunningTypeSortIndex
   | MsgSwarmingTypeName
   | MsgSwarmingTypeSortIndex
+  | MsgTestmailEmail
+  | MsgTestmailTestMail
+  | MsgTestmailSendTestMail
 
 renderMessageGerman :: AppMessage -> Text
 renderMessageGerman MsgGlobalHome = "Home"
@@ -118,8 +118,6 @@ renderMessageGerman MsgGlobalEditUser = "Nutzer bearbeiten"
 renderMessageGerman MsgGlobalDeleteUser = "Nutzer löschen"
 renderMessageGerman MsgGlobalConfigurations = "Konfigurationen"
 renderMessageGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
-renderMessageGerman MsgGlobalTestMail = "Test-Mail"
-renderMessageGerman MsgGlobalSendTestMail = "Test-Mail senden..."
 renderMessageGerman MsgGlobalCancel = "Abbrechen"
 renderMessageGerman MsgGlobalLocation = "Standort"
 renderMessageGerman MsgGlobalLocations = "Standorte"
@@ -170,7 +168,6 @@ renderMessageGerman MsgConfigStringValue = "String-Wert"
 renderMessageGerman MsgConfigIntValue = "Integer-Wert"
 renderMessageGerman MsgConfigDoubleValue = "Double-Wert"
 renderMessageGerman MsgConfigBoolValue = "Boolean-Wert"
-renderMessageGerman MsgTestmailEmail = "Email"
 renderMessageGerman MsgRawdataBytes = "Bytes"
 renderMessageGerman MsgLocationName = "Name"
 renderMessageGerman MsgHiveLocationId = ""
@@ -201,6 +198,9 @@ renderMessageGerman MsgRunningTypeName = "Name"
 renderMessageGerman MsgRunningTypeSortIndex = "Sortierungs-Index"
 renderMessageGerman MsgSwarmingTypeName = "Name"
 renderMessageGerman MsgSwarmingTypeSortIndex = "Sortierungs-Index"
+renderMessageGerman MsgTestmailEmail = "Email"
+renderMessageGerman MsgTestmailTestMail = "Test-Mail"
+renderMessageGerman MsgTestmailSendTestMail = "Test-Mail senden..."
 
 renderMessageEnglish :: AppMessage -> Text
 renderMessageEnglish MsgGlobalHome = "Home"
@@ -216,8 +216,6 @@ renderMessageEnglish MsgGlobalEditUser = "Edit user"
 renderMessageEnglish MsgGlobalDeleteUser = "Delete user"
 renderMessageEnglish MsgGlobalConfigurations = "Configurations"
 renderMessageEnglish MsgGlobalEditConfig = "Edit config"
-renderMessageEnglish MsgGlobalTestMail = "Test-Mail"
-renderMessageEnglish MsgGlobalSendTestMail = "Send Test-Mail..."
 renderMessageEnglish MsgGlobalCancel = "Cancel"
 renderMessageEnglish MsgGlobalLocation = "Location"
 renderMessageEnglish MsgGlobalLocations = "Locations"
@@ -268,7 +266,6 @@ renderMessageEnglish MsgConfigStringValue = "String-Value"
 renderMessageEnglish MsgConfigIntValue = "Integer-Value"
 renderMessageEnglish MsgConfigDoubleValue = "Double-Value"
 renderMessageEnglish MsgConfigBoolValue = "Boolean-Value"
-renderMessageEnglish MsgTestmailEmail = "Email"
 renderMessageEnglish MsgRawdataBytes = "Bytes"
 renderMessageEnglish MsgLocationName = "Name"
 renderMessageEnglish MsgHiveLocationId = ""
@@ -299,6 +296,9 @@ renderMessageEnglish MsgRunningTypeName = "Name"
 renderMessageEnglish MsgRunningTypeSortIndex = "Sort Index"
 renderMessageEnglish MsgSwarmingTypeName = "Name"
 renderMessageEnglish MsgSwarmingTypeSortIndex = "Sort Index"
+renderMessageEnglish MsgTestmailEmail = "Email"
+renderMessageEnglish MsgTestmailTestMail = "Test-Mail"
+renderMessageEnglish MsgTestmailSendTestMail = "Send Test-Mail..."
 
 data Translation = Translation
   { msgGlobalHome :: Text
@@ -314,8 +314,6 @@ data Translation = Translation
   , msgGlobalDeleteUser :: Text
   , msgGlobalConfigurations :: Text
   , msgGlobalEditConfig :: Text
-  , msgGlobalTestMail :: Text
-  , msgGlobalSendTestMail :: Text
   , msgGlobalCancel :: Text
   , msgGlobalLocation :: Text
   , msgGlobalLocations :: Text
@@ -366,7 +364,6 @@ data Translation = Translation
   , msgConfigIntValue :: Text
   , msgConfigDoubleValue :: Text
   , msgConfigBoolValue :: Text
-  , msgTestmailEmail :: Text
   , msgRawdataBytes :: Text
   , msgLocationName :: Text
   , msgHiveLocationId :: Text
@@ -397,6 +394,9 @@ data Translation = Translation
   , msgRunningTypeSortIndex :: Text
   , msgSwarmingTypeName :: Text
   , msgSwarmingTypeSortIndex :: Text
+  , msgTestmailEmail :: Text
+  , msgTestmailTestMail :: Text
+  , msgTestmailSendTestMail :: Text
   } deriving Generic
 
 instance ToJSON Translation
@@ -416,8 +416,6 @@ translationDe = Translation
   , msgGlobalDeleteUser = "Nutzer löschen"
   , msgGlobalConfigurations = "Konfigurationen"
   , msgGlobalEditConfig = "Konfiguration bearbeiten"
-  , msgGlobalTestMail = "Test-Mail"
-  , msgGlobalSendTestMail = "Test-Mail senden..."
   , msgGlobalCancel = "Abbrechen"
   , msgGlobalLocation = "Standort"
   , msgGlobalLocations = "Standorte"
@@ -468,7 +466,6 @@ translationDe = Translation
   , msgConfigIntValue = "Integer-Wert"
   , msgConfigDoubleValue = "Double-Wert"
   , msgConfigBoolValue = "Boolean-Wert"
-  , msgTestmailEmail = "Email"
   , msgRawdataBytes = "Bytes"
   , msgLocationName = "Name"
   , msgHiveLocationId = ""
@@ -498,7 +495,10 @@ translationDe = Translation
   , msgRunningTypeName = "Name"
   , msgRunningTypeSortIndex = "Sortierungs-Index"
   , msgSwarmingTypeName = "Name"
-  , msgSwarmingTypeSortIndex = "Sortierungs-Index"}
+  , msgSwarmingTypeSortIndex = "Sortierungs-Index"
+  , msgTestmailEmail = "Email"
+  , msgTestmailTestMail = "Test-Mail"
+  , msgTestmailSendTestMail = "Test-Mail senden..."}
 
 translationEn :: Translation
 translationEn = Translation
@@ -515,8 +515,6 @@ translationEn = Translation
   , msgGlobalDeleteUser = "Delete user"
   , msgGlobalConfigurations = "Configurations"
   , msgGlobalEditConfig = "Edit config"
-  , msgGlobalTestMail = "Test-Mail"
-  , msgGlobalSendTestMail = "Send Test-Mail..."
   , msgGlobalCancel = "Cancel"
   , msgGlobalLocation = "Location"
   , msgGlobalLocations = "Locations"
@@ -567,7 +565,6 @@ translationEn = Translation
   , msgConfigIntValue = "Integer-Value"
   , msgConfigDoubleValue = "Double-Value"
   , msgConfigBoolValue = "Boolean-Value"
-  , msgTestmailEmail = "Email"
   , msgRawdataBytes = "Bytes"
   , msgLocationName = "Name"
   , msgHiveLocationId = ""
@@ -597,6 +594,9 @@ translationEn = Translation
   , msgRunningTypeName = "Name"
   , msgRunningTypeSortIndex = "Sort Index"
   , msgSwarmingTypeName = "Name"
-  , msgSwarmingTypeSortIndex = "Sort Index"}
+  , msgSwarmingTypeSortIndex = "Sort Index"
+  , msgTestmailEmail = "Email"
+  , msgTestmailTestMail = "Test-Mail"
+  , msgTestmailSendTestMail = "Send Test-Mail..."}
 
 -- gen i18n - end

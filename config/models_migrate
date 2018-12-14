@@ -55,7 +55,6 @@ ConfigHistory
     updatedAt UTCTime
     updatedBy Text
 
-
 Rawdata
     bytes ByteString
     version Int
