@@ -1,5 +1,5 @@
 # hs-hive-record
-Lightweight be hive record tracking system
+Lightweight bee hive record tracking system
 
 You can define different locations and for each also different hives. All hives can have entries that a re the results of the individual inspections.
 
