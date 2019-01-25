@@ -11,6 +11,14 @@ sudo su postgres -c 'createuser --createdb --encrypted --no-inherit --login --pw
 sudo su postgres -c 'createdb --encoding=UTF-8 --owner=my-project --template=template0 hiverec'
 ```
 
+# Generate model code
+All model definitions and the ginger templates are in the hs-generator subproject.
+If model definitions changed you can regenerate the haskell code with
+```
+cd hs-hive-record
+sh run_gen.sh
+```
+
 # Run Yesod server
 ```
 cd hs-hive-record
@@ -43,10 +51,3 @@ sh run_passwd.sh mySecretPassword78574
 will generate the hash: sha256|17|sm/d6UdH7+nRXZt7bJaAeg==|HVpHzSBOHQPwZiqmfEHiCZZPZh4tFLQyEuDKsNdqcN0=
 
 then you can update the appropriate database row for the admin user or some other user
-
-All model definitions and the ginger templates are in the hs-generator subproject.
-If model definitions changed you can regenerate the haskell code with
-```
-cd hs-hive-record
-sh run_gen.sh
-```
