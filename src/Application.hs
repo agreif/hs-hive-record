@@ -44,7 +44,7 @@ import Handler.Home
 import Handler.Admin
 import Handler.User
 import Handler.Config
-import Handler.InitDb
+-- import Handler.InitDb
 import Handler.MyProfile
 import Handler.TestMail
 import Handler.Location
