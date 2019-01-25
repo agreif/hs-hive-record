@@ -29,7 +29,7 @@ data VAddInspectionfile = VAddInspectionfile
 getAddInspectionfileFormR :: InspectionId -> Handler Html
 getAddInspectionfileFormR inspectionId = do
   (formWidget, _) <- generateFormPost $ vAddInspectionfileForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddInspectionfile}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionfileR inspectionId}>
@@ -240,7 +240,7 @@ vEditInspectionfileForm inspectionfile maybeVEditInspectionfile extra = do
 getDeleteInspectionfileFormR :: InspectionfileId -> Handler Html
 getDeleteInspectionfileFormR inspectionfileId = do
   (formWidget, _) <- generateFormPost $ vDeleteInspectionfileForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteInspectionfile}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionfileR inspectionfileId}>

@@ -27,7 +27,7 @@ data VAddRunningType = VAddRunningType
 getAddRunningTypeFormR :: Handler Html
 getAddRunningTypeFormR = do
   (formWidget, _) <- generateFormPost $ vAddRunningTypeForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddRunningType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddRunningTypeR}>
@@ -127,7 +127,7 @@ getEditRunningTypeFormR :: RunningTypeId -> Handler Html
 getEditRunningTypeFormR runningTypeId = do
   runningType <- runDB $ get404 runningTypeId
   (formWidget, _) <- generateFormPost $ vEditRunningTypeForm (Just runningType)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditRunningType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditRunningTypeR runningTypeId}>
@@ -232,7 +232,7 @@ vEditRunningTypeForm maybeRunningType extra = do
 getDeleteRunningTypeFormR :: RunningTypeId -> Handler Html
 getDeleteRunningTypeFormR runningTypeId = do
   (formWidget, _) <- generateFormPost $ vDeleteRunningTypeForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteRunningType}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteRunningTypeR runningTypeId}>

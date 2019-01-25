@@ -189,7 +189,7 @@ data VAddLocation = VAddLocation
 getAddLocationFormR :: Handler Html
 getAddLocationFormR = do
   (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddLocationR}>
@@ -270,7 +270,7 @@ getEditLocationFormR :: LocationId -> Handler Html
 getEditLocationFormR locationId = do
   location <- runDB $ get404 locationId
   (formWidget, _) <- generateFormPost $ vEditLocationForm (Just location)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditLocationR locationId}>
@@ -357,7 +357,7 @@ vEditLocationForm maybeLocation extra = do
 getDeleteLocationFormR :: LocationId -> Handler Html
 getDeleteLocationFormR locationId = do
   (formWidget, _) <- generateFormPost $ vDeleteLocationForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteLocation}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteLocationR locationId}>

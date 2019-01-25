@@ -151,7 +151,7 @@ data VAddHive = VAddHive
 getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
   (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddHiveR locationId}>
@@ -252,7 +252,7 @@ getEditHiveFormR :: HiveId -> Handler Html
 getEditHiveFormR hiveId = do
   hive <- runDB $ get404 hiveId
   (formWidget, _) <- generateFormPost $ vEditHiveForm (Just hive)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditHiveR hiveId}>
@@ -357,7 +357,7 @@ vEditHiveForm maybeHive extra = do
 getDeleteHiveFormR :: HiveId -> Handler Html
 getDeleteHiveFormR hiveId = do
   (formWidget, _) <- generateFormPost $ vDeleteHiveForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteHive}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteHiveR hiveId}>

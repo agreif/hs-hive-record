@@ -30,7 +30,7 @@ data VAddUser = VAddUser
 getAddUserFormR :: Handler Html
 getAddUserFormR = do
   (formWidget, _) <- generateFormPost $ vAddUserForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddUserR}>
@@ -148,7 +148,7 @@ getEditUserFormR :: UserId -> Handler Html
 getEditUserFormR userId = do
   user <- runDB $ get404 userId
   (formWidget, _) <- generateFormPost $ vEditUserForm (Just user)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditUserR userId}>
@@ -300,7 +300,7 @@ vDeleteUserForm extra = do
 getDeleteUserFormR :: UserId -> Handler Html
 getDeleteUserFormR userId = do
   (formWidget, _) <- generateFormPost $ vDeleteUserForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteUser}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteUserR userId}>

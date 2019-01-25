@@ -39,8 +39,8 @@ data VSendTestmail = VSendTestmail
 -- gen get action form - start
 getSendTestmailFormR :: Handler Html
 getSendTestmailFormR = do
-  (formWidget, _) <- generateFormPost $ vSendTestmailForm (Nothing)
-  formLayout $ do
+  (formWidget, _) <- generateFormPost $ vSendTestmailForm Nothing
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgTestmailSendTestMail}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ SendTestmailR}>

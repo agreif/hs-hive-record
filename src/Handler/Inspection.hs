@@ -131,7 +131,7 @@ getAddInspectionFormR :: HiveId -> Handler Html
 getAddInspectionFormR hiveId = do
   defaultMaybeAddModel <- defaultAddInspection hiveId
   (formWidget, _) <- generateFormPost $ vAddInspectionForm defaultMaybeAddModel
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionR hiveId}>
@@ -422,7 +422,7 @@ getEditInspectionFormR :: InspectionId -> Handler Html
 getEditInspectionFormR inspectionId = do
   inspection <- runDB $ get404 inspectionId
   (formWidget, _) <- generateFormPost $ vEditInspectionForm (Just inspection)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditInspectionR inspectionId}>
@@ -708,7 +708,7 @@ vEditInspectionForm maybeInspection extra = do
 getDeleteInspectionFormR :: InspectionId -> Handler Html
 getDeleteInspectionFormR inspectionId = do
   (formWidget, _) <- generateFormPost $ vDeleteInspectionForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteInspection}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionR inspectionId}>

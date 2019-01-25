@@ -32,7 +32,7 @@ getEditConfigFormR :: ConfigId -> Handler Html
 getEditConfigFormR configId = do
   config <- runDB $ get404 configId
   (formWidget, _) <- generateFormPost $ vEditConfigForm (Just config)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditConfig}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditConfigR configId}>

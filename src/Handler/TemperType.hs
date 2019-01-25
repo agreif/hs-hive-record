@@ -27,7 +27,7 @@ data VAddTemperType = VAddTemperType
 getAddTemperTypeFormR :: Handler Html
 getAddTemperTypeFormR = do
   (formWidget, _) <- generateFormPost $ vAddTemperTypeForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddTemperType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddTemperTypeR}>
@@ -127,7 +127,7 @@ getEditTemperTypeFormR :: TemperTypeId -> Handler Html
 getEditTemperTypeFormR temperTypeId = do
   temperType <- runDB $ get404 temperTypeId
   (formWidget, _) <- generateFormPost $ vEditTemperTypeForm (Just temperType)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditTemperType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditTemperTypeR temperTypeId}>
@@ -232,7 +232,7 @@ vEditTemperTypeForm maybeTemperType extra = do
 getDeleteTemperTypeFormR :: TemperTypeId -> Handler Html
 getDeleteTemperTypeFormR temperTypeId = do
   (formWidget, _) <- generateFormPost $ vDeleteTemperTypeForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteTemperType}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteTemperTypeR temperTypeId}>

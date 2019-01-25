@@ -27,7 +27,7 @@ data VAddSwarmingType = VAddSwarmingType
 getAddSwarmingTypeFormR :: Handler Html
 getAddSwarmingTypeFormR = do
   (formWidget, _) <- generateFormPost $ vAddSwarmingTypeForm Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalAddSwarmingType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddSwarmingTypeR}>
@@ -127,7 +127,7 @@ getEditSwarmingTypeFormR :: SwarmingTypeId -> Handler Html
 getEditSwarmingTypeFormR swarmingTypeId = do
   swarmingType <- runDB $ get404 swarmingTypeId
   (formWidget, _) <- generateFormPost $ vEditSwarmingTypeForm (Just swarmingType)
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditSwarmingType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditSwarmingTypeR swarmingTypeId}>
@@ -232,7 +232,7 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
 getDeleteSwarmingTypeFormR :: SwarmingTypeId -> Handler Html
 getDeleteSwarmingTypeFormR swarmingTypeId = do
   (formWidget, _) <- generateFormPost $ vDeleteSwarmingTypeForm
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalDeleteSwarmingType}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteSwarmingTypeR swarmingTypeId}>
