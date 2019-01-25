@@ -3,6 +3,8 @@ Lightweight be hive record tracking system
 
 You can define different locations and for each also different hives. All hives can have entries that a re the results of the individual inspections.
 
+![screenshot](images/image1.png)
+
 # Create PostgreSQL database (ubuntu)
 ```
 sudo su postgres -c 'createuser --createdb --encrypted --no-inherit --login --pwprompt --no-createrole --no-superuser --no-replication hiverec'
