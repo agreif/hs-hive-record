@@ -1,10 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude     #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE TypeFamilies          #-}
-
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TypeFamilies #-}
 module Handler.Admin where
 
 import Handler.Common
@@ -14,7 +11,7 @@ import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
 getAdminHomeR :: Handler Html
-getAdminHomeR = defaultLayout $ do
+getAdminHomeR = defaultLayout $
   toWidget [whamlet|
                    <body-tag>
                    <script>
