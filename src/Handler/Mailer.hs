@@ -2,7 +2,6 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Mailer where
@@ -17,25 +16,23 @@ import Control.Concurrent (forkIO)
 
 sendTestMail :: Text -> Handler ()
 sendTestMail email = do
-  do
-    appName <- runDB configAppName
-    sendMail' email
-      ("[" ++ appName ++ "] Test-Mail")
-      (textPartContent)
-      (htmlPartContent)
+  appName <- runDB configAppName
+  sendMail' email
+    ("[" ++ appName ++ "] Test-Mail")
+    textPartContent
+    htmlPartContent
   where
     textPartContent = encodeUtf8 [stext| Test-Mail |]
     htmlPartContent = renderHtml [shamlet| Test-Mail |]
 
 sendPasswordNewAccountMail :: User -> Text -> Handler ()
 sendPasswordNewAccountMail user passwd = do
-  do
-    loginUrl <- renderUrlToText $ AuthR LoginR
-    appName <- runDB configAppName
-    sendMail' (userEmail user)
-      ("[" ++ appName ++ "] Neuer Nutzer angelegt")
-      (textPartContent user appName loginUrl)
-      (htmlPartContent user appName loginUrl)
+  loginUrl <- renderUrlToText $ AuthR LoginR
+  appName <- runDB configAppName
+  sendMail' (userEmail user)
+    ("[" ++ appName ++ "] Neuer Nutzer angelegt")
+    (textPartContent user appName loginUrl)
+    (htmlPartContent user appName loginUrl)
   where
     textPartContent user' appName loginUrl = encodeUtf8
       [stext|
@@ -104,7 +101,7 @@ Ihr #{appName} Team
 
 sendMail' :: Text -> Text -> LBS.ByteString -> LBS.ByteString -> Handler ()
 sendMail' to subject textPartContent htmlPartContent = do
-  from <- runDB $ configEmailFrom
+  from <- runDB configEmailFrom
   let mail = Mail
         { mailFrom = Address Nothing from
         , mailTo = [Address Nothing to]

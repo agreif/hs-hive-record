@@ -410,16 +410,15 @@ mainNavData user mainNav = do
       }
     ]
     ++
-    case userIsAdmin user of
-      True -> [ JDataNavItem
-                { jDataNavItemLabel = msgAdmin
-                , jDataNavItemIsActive = mainNav == MainNavAdmin
-                , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
-                , jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
-                , jDataNavItemBadge = Nothing
-                , jDataNavItemDropdownItems = Nothing
-                } ]
-      False -> []
+    [ JDataNavItem
+      { jDataNavItemLabel = msgAdmin
+      , jDataNavItemIsActive = mainNav == MainNavAdmin
+      , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
+      , jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
+      , jDataNavItemBadge = Nothing
+      , jDataNavItemDropdownItems = Nothing
+      }
+    | userIsAdmin user ]
     ++
     [ JDataNavItem
       { jDataNavItemLabel = msgLocations
@@ -431,16 +430,15 @@ mainNavData user mainNav = do
       }
     ]
     ++
-    case not $ null hiveNavItems of
-      True -> [ JDataNavItem
-                { jDataNavItemLabel = msgHives
-                , jDataNavItemIsActive = mainNav == MainNavHives
-                , jDataNavItemUrl = Nothing
-                , jDataNavItemDataUrl = Nothing
-                , jDataNavItemBadge = Nothing
-                , jDataNavItemDropdownItems = Just hiveNavItems
-                } ]
-      False -> []
+    [ JDataNavItem
+      { jDataNavItemLabel = msgHives
+      , jDataNavItemIsActive = mainNav == MainNavHives
+      , jDataNavItemUrl = Nothing
+      , jDataNavItemDataUrl = Nothing
+      , jDataNavItemBadge = Nothing
+      , jDataNavItemDropdownItems = Just hiveNavItems
+      }
+    | not $ null hiveNavItems ]
 
 --------------------------------------------------------------------------------
 -- app specific helpers
@@ -460,7 +458,7 @@ getLastInspectionEnt hiveId = do
 
 getHiveNavItems :: Handler [JDataNavItem]
 getHiveNavItems = do
-  tuples <- runDB $ do
+  tuples <- runDB $
     E.select $ E.from $ \(h `E.InnerJoin` l) -> do
       E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
       E.orderBy [E.asc (l E.^. LocationName), E.asc (h E.^. HiveName)]
@@ -488,8 +486,7 @@ randomMixedCaseString len = do
   values <- evalRandIO (sequence (replicate len $ rnd 65 90))
   let str = toLower $ map C.chr values
   -- in average in every 2 chars is an uppercase char
-  str' <- upcaseChars (quot len 2) str
-  return str'
+  upcaseChars (quot len 2) str
   where
     upcaseChars :: Int -> String -> IO String
     upcaseChars countChars str =
@@ -562,7 +559,7 @@ humanReadableBytes size
     units = ["","KB","MB","GB","TB","PB","EB","ZB"] :: [String]
 
 getCurrentDay :: IO Day
-getCurrentDay = getCurrentTime >>= return . utctDay
+getCurrentDay = utctDay <$> getCurrentTime
 
 maybeTextToText :: Maybe Text -> Text
 maybeTextToText Nothing = ""

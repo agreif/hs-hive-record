@@ -2,7 +2,6 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Inspectionfile where
@@ -43,7 +42,7 @@ postAddInspectionfileR :: InspectionId -> Handler Value
 postAddInspectionfileR inspectionId = do
   ((result, formWidget), _) <- runFormPost $ vAddInspectionfileForm Nothing
   case result of
-    FormSuccess (VAddInspectionfile { vAddInspectionfileFile = fileInfo }) -> do
+    FormSuccess VAddInspectionfile { vAddInspectionfileFile = fileInfo } -> do
       curTime <- liftIO getCurrentTime
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
@@ -145,7 +144,7 @@ getEditInspectionfileFormR :: InspectionfileId -> Handler Html
 getEditInspectionfileFormR inspectionfileId = do
   inspectionfile <- runDB $ get404 inspectionfileId
   (formWidget, _) <- generateFormPost $ vEditInspectionfileForm inspectionfile Nothing
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>Edit Inspection File
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditInspectionfileR inspectionfileId}>
@@ -159,9 +158,9 @@ postEditInspectionfileR inspectionfileId = do
   inspectionfile <- runDB $ get404 inspectionfileId
   ((result, formWidget), _) <- runFormPost $ vEditInspectionfileForm inspectionfile Nothing
   case result of
-    FormSuccess (VEditInspectionfile
+    FormSuccess VEditInspectionfile
                  { vEditInspectionfileFile = fileInfo
-                 , vEditInspectionfileVersion = version }) -> do
+                 , vEditInspectionfileVersion = version } -> do
       curTime <- liftIO getCurrentTime
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender

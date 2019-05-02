@@ -2,7 +2,6 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.MyProfile where
@@ -29,9 +28,8 @@ postEditMyprofileR = do
             , UserUpdatedAt =. curTime
             , UserUpdatedBy =. userIdent authUser
             ]
-      let persistFields' = persistFields ++ if vEditMyprofileIsResetPassword vEditMyprofile
-                                            then [UserPassword =. (Just passwdHash)]
-                                            else []
+      let persistFields' = persistFields ++ [ UserPassword =. Just passwdHash
+                                            | vEditMyprofileIsResetPassword vEditMyprofile ]
       updateCount <- runDB $ updateWhereCount [ UserId ==. userId
                                               , UserVersion ==. vEditMyprofileVersion vEditMyprofile
                                               ] persistFields'
@@ -58,7 +56,7 @@ getEditMyprofileFormR = do
   Entity userId _ <- requireAuth
   myProfile <- runDB $ get404 userId
   (formWidget, _) <- generateFormPost $ vEditMyprofileForm $ Just myProfile
-  formLayout $ do
+  formLayout $
     toWidget [whamlet|
       <h1>_{MsgGlobalEditMyProfile}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ EditMyprofileR}>
@@ -73,7 +71,7 @@ vEditMyprofileForm maybeUser extra = do
     (userEmail <$> maybeUser)
   (isResetPasswordResult, isResetPasswordView) <- mreq checkBoxField
     vMyprofileIsResetPasswordFieldSettings
-    (Nothing)
+    Nothing
   (versionResult, versionView) <- mreq hiddenField
     vMyprofileVersionFieldSettings
     (userVersion <$> maybeUser)

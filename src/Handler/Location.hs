@@ -2,7 +2,6 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Location where
@@ -163,7 +162,7 @@ locationDetailHiveJDatas :: LocationId -> Handler [JDataHiveDetail]
 locationDetailHiveJDatas locationId = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveName]
-  hiveDetailTuples <- forM hiveEnts $ \(hiveEnt@(Entity hiveId _ )) -> do
+  hiveDetailTuples <- forM hiveEnts $ \hiveEnt@(Entity hiveId _ ) -> do
     maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
     return (hiveEnt, maybeLastInspectionEnt)
   return $ map

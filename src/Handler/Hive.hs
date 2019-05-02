@@ -2,7 +2,6 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Hive where
@@ -134,12 +133,11 @@ loadInspectionListTuples hiveId = do
     E.where_ (h E.^. HiveId E.==. E.val hiveId)
     E.orderBy [E.asc (i E.^. InspectionDate)]
     return (i, tt, rt, st)
-  tuples' <- forM tuples
-             (\(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
-                 inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
-                 return (inspectionEnt, tt, rt, st, inspectionfileEnts)
-             )
-  return tuples'
+  forM tuples
+    (\(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
+        inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
+        return (inspectionEnt, tt, rt, st, inspectionfileEnts)
+    )
 
 -------------------------------------------------------
 -- add
