@@ -15,12 +15,17 @@ import Database.Persist.Sql (updateWhereCount)
 import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
+locationSelectField :: Field Handler (Key Location)
+locationSelectField =
+  selectField $ optionsPersistKey [] [Asc LocationName] locationName
+
 -------------------------------------------------------
 -- detail
 -------------------------------------------------------
 
 getHiveDetailR :: HiveId -> Handler Html
-getHiveDetailR hiveId = defaultLayout $ do
+getHiveDetailR hiveId =
+  defaultLayout $
   toWidget [whamlet|
                    <body-tag>
                    <script>
@@ -34,7 +39,7 @@ getHiveDetailPageDataJsonR :: HiveId -> Handler Value
 getHiveDetailPageDataJsonR hiveId = do
   Entity _ user <- requireAuth
   req <- getRequest
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   mainNavItems <- mainNavData user MainNavLocations
   hive <- runDB $ get404 hiveId
   let locationId = hiveLocationId hive
@@ -241,7 +246,8 @@ vAddHiveForm maybeHive extra = do
 
 -- gen data edit - start
 data VEditHive = VEditHive
-  { vEditHiveName :: Text
+  { vEditHiveLocationId :: LocationId
+  , vEditHiveName :: Text
   , vEditHiveDescription :: Maybe Textarea
   , vEditHiveVersion :: Int
   }
@@ -271,7 +277,8 @@ postEditHiveR hiveId = do
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields = [
-            HiveName =. vEditHiveName vEditHive
+            HiveLocationId =. vEditHiveLocationId vEditHive
+            , HiveName =. vEditHiveName vEditHive
             , HiveDescription =. vEditHiveDescription vEditHive
             , HiveVersion =. vEditHiveVersion vEditHive + 1
             , HiveUpdatedAt =. curTime
@@ -295,6 +302,9 @@ postEditHiveR hiveId = do
 -- gen edit form - start
 vEditHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VEditHive, Widget)
 vEditHiveForm maybeHive extra = do
+  (locationIdResult, locationIdView) <- mreq locationSelectField
+    locationIdFs
+    (hiveLocationId <$> maybeHive)
   (nameResult, nameView) <- mreq textField
     nameFs
     (hiveName <$> maybeHive)
@@ -304,10 +314,16 @@ vEditHiveForm maybeHive extra = do
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (hiveVersion <$> maybeHive)
-  let vEditHiveResult = VEditHive <$> nameResult <*> descriptionResult <*> versionResult
+  let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> descriptionResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
+    <div .uk-margin-small :not $ null $ fvErrors locationIdView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors locationIdView:.uk-text-danger for=#{fvId locationIdView}>#{fvLabel locationIdView}
+      <div .uk-form-controls>
+        ^{fvInput locationIdView}
+        $maybe err <- fvErrors locationIdView
+          &nbsp;#{err}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
@@ -323,6 +339,14 @@ vEditHiveForm maybeHive extra = do
     |]
   return (vEditHiveResult, formWidget)
   where
+    locationIdFs :: FieldSettings App
+    locationIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgHiveLocationId
+      , fsTooltip = Nothing
+      , fsId = Just "locationId"
+      , fsName = Just "locationId"
+      , fsAttrs = [  ]
+      }
     nameFs :: FieldSettings App
     nameFs = FieldSettings
       { fsLabel = SomeMessage MsgHiveName
