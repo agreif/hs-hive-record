@@ -1,8 +1,6 @@
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Inspection where
@@ -15,15 +13,15 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 
 temperTypeSelectField :: Field Handler (Key TemperType)
-temperTypeSelectField = do
+temperTypeSelectField =
   selectField $ optionsPersistKey [] [Asc TemperTypeSortIndex] temperTypeName
 
 runningTypeSelectField :: Field Handler (Key RunningType)
-runningTypeSelectField = do
+runningTypeSelectField =
   selectField $ optionsPersistKey [] [Asc RunningTypeSortIndex] runningTypeName
 
 swarmingTypeSelectField :: Field Handler (Key SwarmingType)
-swarmingTypeSelectField = do
+swarmingTypeSelectField =
   selectField $ optionsPersistKey [] [Asc SwarmingTypeSortIndex] swarmingTypeName
 
 -------------------------------------------------------

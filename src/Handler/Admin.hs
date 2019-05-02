@@ -25,7 +25,7 @@ getAdminPageDataJsonR :: Handler Value
 getAdminPageDataJsonR = do
   Entity _ user <- requireAuth
   req <- getRequest
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   urlRenderer <- getUrlRender
   mainNavItems <- mainNavData user MainNavAdmin
   jDataUsers <- userListJDataEnts
@@ -78,7 +78,7 @@ userListJDataEnts :: Handler [JDataUser]
 userListJDataEnts = do
   urlRenderer <- getUrlRender
   userTuples <- runDB loadUserListTuples
-  let jUserList = map (\(userEnt@(Entity userId _)) ->
+  let jUserList = map (\userEnt@(Entity userId _) ->
                            JDataUser
                            { jDataUserEnt = userEnt
                            , jDataUserEditFormUrl = urlRenderer $ AdminR $ EditUserFormR userId
@@ -87,18 +87,17 @@ userListJDataEnts = do
                         ) userTuples
   return jUserList
 
-loadUserListTuples :: YesodDB App [(Entity User)]
-loadUserListTuples = do
-  tuples <- E.select $ E.from $ \(user) -> do
+loadUserListTuples :: YesodDB App [Entity User]
+loadUserListTuples =
+  E.select $ E.from $ \user -> do
     E.orderBy [E.asc (user E.^. UserId)]
-    return (user)
-  return tuples
+    return user
 
 configListJDataEnts :: Handler [JDataConfig]
 configListJDataEnts = do
   urlRenderer <- getUrlRender
   configTuples <- runDB loadConfigListTuples
-  let jConfigList = map (\(configEnt@(Entity configId _)) ->
+  let jConfigList = map (\configEnt@(Entity configId _) ->
                            JDataConfig
                            { jDataConfigEnt = configEnt
                            , jDataConfigEditFormUrl = urlRenderer $ AdminR $ EditConfigFormR configId
@@ -106,19 +105,18 @@ configListJDataEnts = do
                         ) configTuples
   return jConfigList
 
-loadConfigListTuples :: YesodDB App [(Entity Config)]
-loadConfigListTuples = do
-  tuples <- E.select $ E.from $ \(config) -> do
+loadConfigListTuples :: YesodDB App [Entity Config]
+loadConfigListTuples =
+  E.select $ E.from $ \config -> do
     E.orderBy [E.asc (config E.^. ConfigId)]
-    return (config)
-  return tuples
+    return config
 
 temperTypeListJDataEnts :: Handler [JDataTemperType]
 temperTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   temperTypeTuples <- runDB loadTemperTypeListTuples
-  let jTemperTypeList = map (\(temperTypeEnt@(Entity temperTypeId _)) ->
-                                 JDataTemperType
+  let jTemperTypeList = map (\temperTypeEnt@(Entity temperTypeId _) ->
+                                JDataTemperType
                                 { jDataTemperTypeEnt = temperTypeEnt
                                 , jDataTemperTypeEditFormUrl = urlRenderer $ AdminR $ EditTemperTypeFormR temperTypeId
                                 , jDataTemperTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteTemperTypeFormR temperTypeId
@@ -126,19 +124,18 @@ temperTypeListJDataEnts = do
                               ) temperTypeTuples
   return jTemperTypeList
 
-loadTemperTypeListTuples :: YesodDB App [(Entity TemperType)]
-loadTemperTypeListTuples = do
-  tuples <- E.select $ E.from $ \(temperType) -> do
+loadTemperTypeListTuples :: YesodDB App [Entity TemperType]
+loadTemperTypeListTuples =
+  E.select $ E.from $ \temperType -> do
     E.orderBy [E.asc (temperType E.^. TemperTypeSortIndex)]
-    return (temperType)
-  return tuples
+    return temperType
 
 runningTypeListJDataEnts :: Handler [JDataRunningType]
 runningTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   runningTypeTuples <- runDB loadRunningTypeListTuples
-  let jRunningTypeList = map (\(runningTypeEnt@(Entity runningTypeId _)) ->
-                                 JDataRunningType
+  let jRunningTypeList = map (\runningTypeEnt@(Entity runningTypeId _) ->
+                                JDataRunningType
                                 { jDataRunningTypeEnt = runningTypeEnt
                                 , jDataRunningTypeEditFormUrl = urlRenderer $ AdminR $ EditRunningTypeFormR runningTypeId
                                 , jDataRunningTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteRunningTypeFormR runningTypeId
@@ -146,29 +143,27 @@ runningTypeListJDataEnts = do
                               ) runningTypeTuples
   return jRunningTypeList
 
-loadRunningTypeListTuples :: YesodDB App [(Entity RunningType)]
-loadRunningTypeListTuples = do
-  tuples <- E.select $ E.from $ \(runningType) -> do
+loadRunningTypeListTuples :: YesodDB App [Entity RunningType]
+loadRunningTypeListTuples =
+  E.select $ E.from $ \runningType -> do
     E.orderBy [E.asc (runningType E.^. RunningTypeSortIndex)]
-    return (runningType)
-  return tuples
+    return runningType
 
 swarmingTypeListJDataEnts :: Handler [JDataSwarmingType]
 swarmingTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   swarmingTypeTuples <- runDB loadSwarmingTypeListTuples
-  let jSwarmingTypeList = map (\(swarmingTypeEnt@(Entity swarmingTypeId _)) ->
-                                 JDataSwarmingType
-                                { jDataSwarmingTypeEnt = swarmingTypeEnt
-                                , jDataSwarmingTypeEditFormUrl = urlRenderer $ AdminR $ EditSwarmingTypeFormR swarmingTypeId
-                                , jDataSwarmingTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteSwarmingTypeFormR swarmingTypeId
-                                }
+  let jSwarmingTypeList = map (\swarmingTypeEnt@(Entity swarmingTypeId _) ->
+                                  JDataSwarmingType
+                                  { jDataSwarmingTypeEnt = swarmingTypeEnt
+                                  , jDataSwarmingTypeEditFormUrl = urlRenderer $ AdminR $ EditSwarmingTypeFormR swarmingTypeId
+                                  , jDataSwarmingTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteSwarmingTypeFormR swarmingTypeId
+                                  }
                               ) swarmingTypeTuples
   return jSwarmingTypeList
 
-loadSwarmingTypeListTuples :: YesodDB App [(Entity SwarmingType)]
-loadSwarmingTypeListTuples = do
-  tuples <- E.select $ E.from $ \(swarmingType) -> do
+loadSwarmingTypeListTuples :: YesodDB App [Entity SwarmingType]
+loadSwarmingTypeListTuples =
+  E.select $ E.from $ \swarmingType -> do
     E.orderBy [E.asc (swarmingType E.^. SwarmingTypeSortIndex)]
-    return (swarmingType)
-  return tuples
+    return swarmingType

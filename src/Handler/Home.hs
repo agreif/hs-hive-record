@@ -17,7 +17,8 @@ getHomeR :: Handler Html
 getHomeR = redirect $ HiverecR HiverecHomeR
 
 getHiverecHomeR :: Handler Html
-getHiverecHomeR = defaultLayout $ do
+getHiverecHomeR =
+  defaultLayout $
   toWidget [whamlet|
                    <body-tag>
                    <script>
@@ -31,7 +32,7 @@ getHomePageDataJsonR :: Handler Value
 getHomePageDataJsonR = do
   Entity _ user <- requireAuth
   req <- getRequest
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   urlRenderer <- getUrlRender
   mainNavItems <- mainNavData user MainNavHome
   let pages = defaultDataPages

@@ -19,7 +19,8 @@ import qualified Data.CaseInsensitive as CI
 -------------------------------------------------------
 
 getLocationListR :: Handler Html
-getLocationListR = defaultLayout $ do
+getLocationListR =
+  defaultLayout $
   toWidget [whamlet|
                    <body-tag>
                    <script>
@@ -33,7 +34,7 @@ getLocationListPageDataJsonR :: Handler Value
 getLocationListPageDataJsonR = do
   Entity _ user <- requireAuth
   req <- getRequest
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   urlRenderer <- getUrlRender
   mainNavItems <- mainNavData user MainNavLocations
   jDataLocations <- locationListJDatas
@@ -94,7 +95,8 @@ loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 -------------------------------------------------------
 
 getLocationDetailR :: LocationId -> Handler Html
-getLocationDetailR locationId = defaultLayout $ do
+getLocationDetailR locationId =
+  defaultLayout $
   toWidget [whamlet|
                    <body-tag>
                    <script>
@@ -108,7 +110,7 @@ getLocationDetailPageDataJsonR :: LocationId -> Handler Value
 getLocationDetailPageDataJsonR locationId = do
   Entity _ user <- requireAuth
   req <- getRequest
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   mainNavItems <- mainNavData user MainNavLocations
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender

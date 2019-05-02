@@ -18,7 +18,7 @@ import Control.Concurrent (forkIO)
 sendTestMail :: Text -> Handler ()
 sendTestMail email = do
   do
-    appName <- runDB $ configAppName
+    appName <- runDB configAppName
     sendMail' email
       ("[" ++ appName ++ "] Test-Mail")
       (textPartContent)
@@ -31,7 +31,7 @@ sendPasswordNewAccountMail :: User -> Text -> Handler ()
 sendPasswordNewAccountMail user passwd = do
   do
     loginUrl <- renderUrlToText $ AuthR LoginR
-    appName <- runDB $ configAppName
+    appName <- runDB configAppName
     sendMail' (userEmail user)
       ("[" ++ appName ++ "] Neuer Nutzer angelegt")
       (textPartContent user appName loginUrl)
@@ -72,7 +72,7 @@ Ihr #{appName} Team
 
 sendPasswordResetMail :: User -> Text -> Handler ()
 sendPasswordResetMail user passwd = do
-  appName <- runDB $ configAppName
+  appName <- runDB configAppName
   sendMail' (userEmail user)
     ("[" ++ appName ++ "] Ihr Passwort wurde zurückgesetzt")
     (textPartContent user passwd appName)
