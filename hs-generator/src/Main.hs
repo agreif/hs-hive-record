@@ -572,19 +572,26 @@ context =
         , bCrudModelFields =
             [ BCrudField
               { bCrudFieldName = "locationId"
-              , bCrudFieldLabelDe = Nothing
-              , bCrudFieldLabelEn = Nothing
+              , bCrudFieldLabelDe = Just "Standort"
+              , bCrudFieldLabelEn = Just "Location"
               , bCrudFieldHsType = "LocationId"
               , bCrudFieldDb =
                   Just $
                   BCrudFieldDb
                   { bCrudFieldDbIsNullable = False
                   , bCrudFieldDbDefault = Nothing
-                  , bCrudFieldDbCanUpdate = False
+                  , bCrudFieldDbCanUpdate = True
                   }
-              , bCrudFieldFormFieldType = Nothing
+              , bCrudFieldFormFieldType = Just "locationSelectField"
               , bCrudFieldAddView = Nothing
-              , bCrudFieldEditView = Nothing
+              , bCrudFieldEditView =
+                  Just $
+                  BFieldView
+                  { bFieldViewIsRequired = True
+                  , bFieldViewIsDisabled = False
+                  , bFieldViewAttrs = []
+                  , bFieldViewDefault = Nothing
+                  }
               }
             , BCrudField
               { bCrudFieldName = "name"
