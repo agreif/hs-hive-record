@@ -582,6 +582,9 @@ dayFormatHtml5 = "%Y-%m-%d"
 formatDay :: Day -> Text
 formatDay = pack . formatTime defaultTimeLocale dayFormatGerman
 
+parseDay :: Text -> Handler Day
+parseDay dayText = parseTimeM False defaultTimeLocale dayFormatGerman $ unpack dayText
+
 formatYearMonth :: Day -> Text
 formatYearMonth = pack . formatTime defaultTimeLocale yearMonthFormatGerman
 

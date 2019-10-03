@@ -31,7 +31,10 @@ swarmingTypeSelectField =
 defaultAddInspection :: HiveId -> Handler (Maybe Inspection)
 defaultAddInspection hiveId = do
   now <- liftIO getCurrentTime
-  today <- liftIO getCurrentDay
+  maybeToday <- getInspectionDateFromSession
+  today <- case maybeToday of
+             Just today' -> return today'
+             _ -> liftIO getCurrentDay
   maybeTemperTypeId <- runDB defaultTemperTypeId
   maybeRunningTypeId <- runDB defaultRunningTypeId
   maybeSwarmingTypeId <- runDB defaultSwarmingTypeId
@@ -138,6 +141,24 @@ getAddInspectionFormR hiveId = do
       |]
 -- gen get add form - end
 
+inspectionDateSessionKey :: Text
+inspectionDateSessionKey = "inspectionDate"
+
+storeInspectionDateToSession :: VAddInspection -> YesodDB App ()
+storeInspectionDateToSession vAddInspection = do
+  let dateStr = formatDay $ vAddInspectionDate vAddInspection
+  setSession inspectionDateSessionKey dateStr
+  return ()
+
+getInspectionDateFromSession :: Handler (Maybe Day)
+getInspectionDateFromSession = do
+  maybeDateText <- lookupSession inspectionDateSessionKey
+  case maybeDateText of
+    Just dateText -> do
+      day <- parseDay dateText
+      return $ Just day
+    _ -> return Nothing
+
 -- gen post add form - start
 postAddInspectionR :: HiveId -> Handler Value
 postAddInspectionR hiveId = do
@@ -169,7 +190,8 @@ postAddInspectionR hiveId = do
             , inspectionUpdatedBy = userIdent authUser
             }
       runDB $ do
-        _ <- insert inspection
+        inspectionId <- insert inspection
+        storeInspectionDateToSession vAddInspection
         return ()
       returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
     _ -> do
