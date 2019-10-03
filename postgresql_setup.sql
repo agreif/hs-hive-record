@@ -83,9 +83,9 @@ as $function$
        if to_regclass('hive_history') is not null then
            if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
                 insert into hive_history
-                       (id, location_id, name, description, version, created_at, created_by, updated_at, updated_by)
+                       (id, location_id, name, description, is_dissolved, version, created_at, created_by, updated_at, updated_by)
                        values
-                       (new.id, new.location_id, new.name, new.description, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                       (new.id, new.location_id, new.name, new.description, new.is_dissolved, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
                 return new;
             end if;
        end if;

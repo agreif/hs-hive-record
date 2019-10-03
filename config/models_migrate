@@ -89,6 +89,7 @@ Hive json
     locationId LocationId
     name Text
     description Textarea Maybe
+    isDissolved Bool default=False
     version Int
     createdAt UTCTime
     createdBy Text
@@ -102,6 +103,7 @@ HiveHistory
     locationId Int
     name Text
     description Textarea Maybe
+    isDissolved Bool default=False
     version Int
     createdAt UTCTime
     createdBy Text

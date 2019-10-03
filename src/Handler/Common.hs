@@ -462,6 +462,7 @@ getHiveNavItems = do
     E.select $ E.from $ \(h `E.InnerJoin` l) -> do
       E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
       E.orderBy [E.asc (l E.^. LocationName), E.asc (h E.^. HiveName)]
+      E.where_ $ (h E.^. HiveIsDissolved) E.!=. E.val True
       return (h, l)
   urlRenderer <- getUrlRender
   forM tuples $ \(Entity hiveId hive, Entity _ location) ->

@@ -75,6 +75,7 @@ data AppMessage =
   | MsgHiveLocationId
   | MsgHiveName
   | MsgHiveDescription
+  | MsgHiveIsDissolved
   | MsgInspectionHiveId
   | MsgInspectionDate
   | MsgInspectionTemperTypeId
@@ -173,6 +174,7 @@ renderMessageGerman MsgLocationName = "Name"
 renderMessageGerman MsgHiveLocationId = "Standort"
 renderMessageGerman MsgHiveName = "Name"
 renderMessageGerman MsgHiveDescription = "Beschreibung"
+renderMessageGerman MsgHiveIsDissolved = "Ist aufgelöst?"
 renderMessageGerman MsgInspectionHiveId = ""
 renderMessageGerman MsgInspectionDate = "Datum"
 renderMessageGerman MsgInspectionTemperTypeId = "Sanftmut"
@@ -271,6 +273,7 @@ renderMessageEnglish MsgLocationName = "Name"
 renderMessageEnglish MsgHiveLocationId = "Location"
 renderMessageEnglish MsgHiveName = "Name"
 renderMessageEnglish MsgHiveDescription = "Description"
+renderMessageEnglish MsgHiveIsDissolved = "Is dissolved?"
 renderMessageEnglish MsgInspectionHiveId = ""
 renderMessageEnglish MsgInspectionDate = "Date"
 renderMessageEnglish MsgInspectionTemperTypeId = "Temper"
@@ -369,6 +372,7 @@ data Translation = Translation
   , msgHiveLocationId :: Text
   , msgHiveName :: Text
   , msgHiveDescription :: Text
+  , msgHiveIsDissolved :: Text
   , msgInspectionHiveId :: Text
   , msgInspectionDate :: Text
   , msgInspectionTemperTypeId :: Text
@@ -471,6 +475,7 @@ translationDe = Translation
   , msgHiveLocationId = "Standort"
   , msgHiveName = "Name"
   , msgHiveDescription = "Beschreibung"
+  , msgHiveIsDissolved = "Ist aufgelöst?"
   , msgInspectionHiveId = ""
   , msgInspectionDate = "Datum"
   , msgInspectionTemperTypeId = "Sanftmut"
@@ -570,6 +575,7 @@ translationEn = Translation
   , msgHiveLocationId = "Location"
   , msgHiveName = "Name"
   , msgHiveDescription = "Description"
+  , msgHiveIsDissolved = "Is dissolved?"
   , msgInspectionHiveId = ""
   , msgInspectionDate = "Date"
   , msgInspectionTemperTypeId = "Temper"

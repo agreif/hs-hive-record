@@ -681,6 +681,46 @@ context =
                   , bFieldViewDefault = Nothing
                   }
               }
+            , BCrudField
+              { bCrudFieldName = "isDissolved"
+              , bCrudFieldLabelDe = Just "Ist aufgelöst?"
+              , bCrudFieldLabelEn = Just "Is dissolved?"
+              , bCrudFieldHsType = "Bool"
+              , bCrudFieldDb =
+                  Just $
+                  BCrudFieldDb
+                  { bCrudFieldDbIsNullable = False
+                  , bCrudFieldDbDefault = Just "False"
+                  , bCrudFieldDbCanUpdate = True
+                  }
+              , bCrudFieldFormFieldType = Just "checkBoxField"
+              , bCrudFieldAddView =
+                  Just $
+                  BFieldView
+                  { bFieldViewIsRequired = True
+                  , bFieldViewIsDisabled = False
+                  , bFieldViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue = "uk-checkbox"
+                        }
+                      ]
+                  , bFieldViewDefault = Nothing
+                  }
+              , bCrudFieldEditView =
+                  Just $
+                  BFieldView
+                  { bFieldViewIsRequired = True
+                  , bFieldViewIsDisabled = False
+                  , bFieldViewAttrs =
+                      [ BFieldAttr
+                        { bFieldAttrKey = "class"
+                        , bFieldAttrValue = "uk-checkbox"
+                        }
+                      ]
+                  , bFieldViewDefault = Nothing
+                  }
+              }
             ]
         , bCrudModelTranslations = Nothing
         }

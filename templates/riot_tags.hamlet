@@ -552,6 +552,8 @@
               <th>
                 {parent.data.translation.msgHiveName}
               <th>
+                {parent.data.translation.msgHiveIsDissolved}
+              <th>
                 {parent.data.translation.msgHiveDescription}
               <th>
                 {parent.data.translation.msgGlobalLastInspection}
@@ -563,6 +565,9 @@
               <td .uk-table-link>
                 <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
                   {hiveEnt.name}
+              <td .uk-table-link>
+                <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
+                  <span uk-icon="icon: check" if="{hiveEnt.isDissolved}">
               <td .uk-table-link>
                 <a href="{detailUrl}" onclick="{detailHive}" .uk-link-reset>
                   <span .textarea-wrap>
@@ -622,6 +627,8 @@
                 {parent.data.translation.msgHiveName}
               <th>
                 {parent.data.translation.msgHiveDescription}
+              <th>
+                {parent.data.translation.msgHiveIsDissolved}
               <th .uk-align-right>
           <tbody>
             <tr>
@@ -632,6 +639,9 @@
                 <a onclick="{editHive}" .uk-link-reset>
                   <span .textarea-wrap>
                     {parent.data.pages.hiveDetail.hiveEnt.description}
+              <td .uk-table-link>
+                <a onclick="{editHove}" .uk-link-reset>
+                  <span uk-icon="icon: check" if="{parent.data.pages.hiveDetail.hiveEnt.isDissolved}">
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{parent.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">

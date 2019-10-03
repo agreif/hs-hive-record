@@ -147,6 +147,7 @@ loadInspectionListTuples hiveId = do
 data VAddHive = VAddHive
   { vAddHiveName :: Text
   , vAddHiveDescription :: Maybe Textarea
+  , vAddHiveIsDissolved :: Bool
   }
 -- gen data add - end
 
@@ -177,6 +178,7 @@ postAddHiveR locationId = do
             hiveLocationId = locationId
             , hiveName = vAddHiveName vAddHive
             , hiveDescription = vAddHiveDescription vAddHive
+            , hiveIsDissolved = vAddHiveIsDissolved vAddHive
             , hiveVersion = 1
             , hiveCreatedAt = curTime
             , hiveCreatedBy = userIdent authUser
@@ -202,7 +204,10 @@ vAddHiveForm maybeHive extra = do
   (descriptionResult, descriptionView) <- mopt textareaField
     descriptionFs
     (hiveDescription <$> maybeHive)
-  let vAddHiveResult = VAddHive <$> nameResult <*> descriptionResult
+  (isDissolvedResult, isDissolvedView) <- mreq checkBoxField
+    isDissolvedFs
+    (hiveIsDissolved <$> maybeHive)
+  let vAddHiveResult = VAddHive <$> nameResult <*> descriptionResult <*> isDissolvedResult
   let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
@@ -216,6 +221,12 @@ vAddHiveForm maybeHive extra = do
       <div .uk-form-controls>
         ^{fvInput descriptionView}
         $maybe err <- fvErrors descriptionView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
+      <div .uk-form-controls>
+        ^{fvInput isDissolvedView}
+        $maybe err <- fvErrors isDissolvedView
           &nbsp;#{err}
     |]
   return (vAddHiveResult, formWidget)
@@ -236,6 +247,14 @@ vAddHiveForm maybeHive extra = do
       , fsName = Just "description"
       , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
       }
+    isDissolvedFs :: FieldSettings App
+    isDissolvedFs = FieldSettings
+      { fsLabel = SomeMessage MsgHiveIsDissolved
+      , fsTooltip = Nothing
+      , fsId = Just "isDissolved"
+      , fsName = Just "isDissolved"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
 -- gen add form - end
 
 -------------------------------------------------------
@@ -247,6 +266,7 @@ data VEditHive = VEditHive
   { vEditHiveLocationId :: LocationId
   , vEditHiveName :: Text
   , vEditHiveDescription :: Maybe Textarea
+  , vEditHiveIsDissolved :: Bool
   , vEditHiveVersion :: Int
   }
 -- gen data edit - end
@@ -278,6 +298,7 @@ postEditHiveR hiveId = do
             HiveLocationId =. vEditHiveLocationId vEditHive
             , HiveName =. vEditHiveName vEditHive
             , HiveDescription =. vEditHiveDescription vEditHive
+            , HiveIsDissolved =. vEditHiveIsDissolved vEditHive
             , HiveVersion =. vEditHiveVersion vEditHive + 1
             , HiveUpdatedAt =. curTime
             , HiveUpdatedBy =. userIdent authUser
@@ -309,10 +330,13 @@ vEditHiveForm maybeHive extra = do
   (descriptionResult, descriptionView) <- mopt textareaField
     descriptionFs
     (hiveDescription <$> maybeHive)
+  (isDissolvedResult, isDissolvedView) <- mreq checkBoxField
+    isDissolvedFs
+    (hiveIsDissolved <$> maybeHive)
   (versionResult, versionView) <- mreq hiddenField
     versionFs
     (hiveVersion <$> maybeHive)
-  let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> descriptionResult <*> versionResult
+  let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> descriptionResult <*> isDissolvedResult <*> versionResult
   let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
@@ -333,6 +357,12 @@ vEditHiveForm maybeHive extra = do
       <div .uk-form-controls>
         ^{fvInput descriptionView}
         $maybe err <- fvErrors descriptionView
+          &nbsp;#{err}
+    <div .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
+      <label .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
+      <div .uk-form-controls>
+        ^{fvInput isDissolvedView}
+        $maybe err <- fvErrors isDissolvedView
           &nbsp;#{err}
     |]
   return (vEditHiveResult, formWidget)
@@ -360,6 +390,14 @@ vEditHiveForm maybeHive extra = do
       , fsId = Just "description"
       , fsName = Just "description"
       , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
+      }
+    isDissolvedFs :: FieldSettings App
+    isDissolvedFs = FieldSettings
+      { fsLabel = SomeMessage MsgHiveIsDissolved
+      , fsTooltip = Nothing
+      , fsId = Just "isDissolved"
+      , fsName = Just "isDissolved"
+      , fsAttrs = [ ("class","uk-checkbox") ]
       }
     versionFs :: FieldSettings App
     versionFs = FieldSettings
