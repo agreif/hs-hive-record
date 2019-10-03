@@ -690,7 +690,7 @@ context =
                   Just $
                   BCrudFieldDb
                   { bCrudFieldDbIsNullable = False
-                  , bCrudFieldDbDefault = Just "False"
+                  , bCrudFieldDbDefault = Nothing
                   , bCrudFieldDbCanUpdate = True
                   }
               , bCrudFieldFormFieldType = Just "checkBoxField"
