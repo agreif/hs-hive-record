@@ -156,6 +156,7 @@ data JDataPages = JDataPages
   , jDataPageAdmin :: Maybe JDataPageAdmin
   , jDataPageLocationList :: Maybe JDataPageLocationList
   , jDataPageLocationDetail :: Maybe JDataPageLocationDetail
+  , jDataPageHiveOverview :: Maybe JDataPageHiveOverview
   , jDataPageHiveDetail :: Maybe JDataPageHiveDetail
   }
 instance ToJSON JDataPages where
@@ -164,6 +165,7 @@ instance ToJSON JDataPages where
     , "admin" .= jDataPageAdmin o
     , "locationList" .= jDataPageLocationList o
     , "locationDetail" .= jDataPageLocationDetail o
+    , "hiveOverview" .= jDataPageHiveOverview o
     , "hiveDetail" .= jDataPageHiveDetail o
     ]
 
@@ -173,6 +175,7 @@ defaultDataPages = JDataPages
   , jDataPageAdmin = Nothing
   , jDataPageLocationList = Nothing
   , jDataPageLocationDetail = Nothing
+  , jDataPageHiveOverview = Nothing
   , jDataPageHiveDetail = Nothing
   }
 
@@ -330,13 +333,25 @@ instance ToJSON JDataInspectionfile where
     ]
 
 
+newtype JDataPageHiveOverview = JDataPageHiveOverview
+  { jDataPageHiveOverviewHives :: [JDataHiveOverviewHive]
+  }
+instance ToJSON JDataPageHiveOverview where
+  toJSON o = object
+    [ "hives" .= jDataPageHiveOverviewHives o
+    ]
 
-
-
-
-
-
-
+data JDataHiveOverviewHive = JDataHiveOverviewHive
+  { jDataHiveOverviewHiveEnt :: Entity Hive
+  , jDataHiveOverviewHiveInspections :: [JDataInspection]
+  , jDataHiveOverviewInspectionAddFormUrl :: Text
+  }
+instance ToJSON JDataHiveOverviewHive where
+  toJSON o = object
+    [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o)
+    , "inspections" .= jDataHiveOverviewHiveInspections o
+    , "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o
+    ]
 
 
 data JDataTemperType = JDataTemperType
@@ -458,6 +473,7 @@ getLastInspectionEnt hiveId = do
 
 getHiveNavItems :: Handler [JDataNavItem]
 getHiveNavItems = do
+  msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
   tuples <- runDB $
     E.select $ E.from $ \(h `E.InnerJoin` l) -> do
       E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
@@ -465,15 +481,28 @@ getHiveNavItems = do
       E.where_ $ (h E.^. HiveIsDissolved) E.!=. E.val True
       return (h, l)
   urlRenderer <- getUrlRender
-  forM tuples $ \(Entity hiveId hive, Entity _ location) ->
-    return $ JDataNavItem
-    { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
-    , jDataNavItemIsActive = False
-    , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
-    , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
-    , jDataNavItemBadge = Nothing
-    , jDataNavItemDropdownItems = Nothing
-    }
+  let hiveOverviewItem =
+        JDataNavItem
+        { jDataNavItemLabel = msgHiveOverview
+        , jDataNavItemIsActive = False
+        , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiveOverviewR
+        , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HiveOverviewPageDataJsonR
+        , jDataNavItemBadge = Nothing
+        , jDataNavItemDropdownItems = Nothing
+        }
+  let hiveItems =
+        map ( \(Entity hiveId hive, Entity _ location) ->
+                JDataNavItem
+                { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
+                , jDataNavItemIsActive = False
+                , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
+                , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+                , jDataNavItemBadge = Nothing
+                , jDataNavItemDropdownItems = Nothing
+                }
+            )
+        tuples
+  return $ hiveOverviewItem:hiveItems
 
 --------------------------------------------------------------------------------
 -- generic helpers

@@ -206,6 +206,7 @@ postAddLocationR = do
   case result of
     FormSuccess vAddLocation -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let location = Location

@@ -19,6 +19,81 @@ locationSelectField =
   selectField $ optionsPersistKey [] [Asc LocationName] locationName
 
 -------------------------------------------------------
+-- overview
+-------------------------------------------------------
+
+getHiveOverviewR :: Handler Html
+getHiveOverviewR =
+  defaultLayout $
+  toWidget [whamlet|
+                   <body-tag>
+                   <script>
+                     \ riot.compile(function() {
+                     \   bodyTag = riot.mount('body-tag')[0]
+                     \   bodyTag.refreshData("@{HiverecR $ HiveOverviewPageDataJsonR}")
+                     \ })
+                   |]
+
+getHiveOverviewPageDataJsonR :: Handler Value
+getHiveOverviewPageDataJsonR = do
+  Entity _ user <- requireAuth
+  req <- getRequest
+  appName <- runDB configAppName
+  mainNavItems <- mainNavData user MainNavLocations
+  urlRenderer <- getUrlRender
+  hiveOverviewJDatas <- getHiveOverviewJDatas
+  let pages =
+        defaultDataPages
+        { jDataPageHiveOverview =
+            Just $ JDataPageHiveOverview
+            { jDataPageHiveOverviewHives = hiveOverviewJDatas
+            }
+        }
+  msgHome <- localizedMsg MsgGlobalHome
+  msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
+  currentLanguage <- getLanguage
+  translation <- getTranslation
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR HiveOverviewPageDataJsonR
+  returnJson JData
+    { jDataAppName = appName
+    , jDataUserIdent = userIdent user
+    , jDataMainNavItems = mainNavItems
+    , jDataSubNavItems = []
+    , jDataPages = pages
+    , jDataHistoryState = Just JDataHistoryState
+      { jDataHistoryStateUrl = urlRenderer $ HiverecR HiveOverviewR
+      , jDataHistoryStateTitle = msgHiveOverview
+      }
+    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
+    , jDataCsrfToken = reqToken req
+    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgHome
+                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
+                             , JDataBreadcrumbItem
+                               { jDataBreadcrumbItemLabel = msgHiveOverview
+                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
+                             ]
+    , jDataCurrentLanguage = currentLanguage
+    , jDataTranslation = translation
+    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
+    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
+    }
+
+getHiveOverviewJDatas :: Handler [JDataHiveOverviewHive]
+getHiveOverviewJDatas = do
+  urlRenderer <- getUrlRender
+  hiveEnts <- runDB $ selectList [HiveIsDissolved ==. False] [Asc HiveName]
+  forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
+    inspections <- hiveDetailInspectionJDatas hiveId
+    return $
+      JDataHiveOverviewHive
+      { jDataHiveOverviewHiveEnt = hiveEnt
+      , jDataHiveOverviewHiveInspections = inspections
+      , jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId
+      }
+
+
+-------------------------------------------------------
 -- detail
 -------------------------------------------------------
 
@@ -171,6 +246,7 @@ postAddHiveR locationId = do
   case result of
     FormSuccess vAddHive -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let hive = Hive

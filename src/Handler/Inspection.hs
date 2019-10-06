@@ -141,6 +141,19 @@ getAddInspectionFormR hiveId = do
       |]
 -- gen get add form - end
 
+
+getHiveOverviewAddInspectionFormR :: HiveId -> Handler Html
+getHiveOverviewAddInspectionFormR hiveId = do
+  defaultMaybeAddModel <- defaultAddInspection hiveId
+  (formWidget, _) <- generateFormPost $ vAddInspectionForm defaultMaybeAddModel
+  formLayout $
+    toWidget [whamlet|
+      <h1>_{MsgGlobalAddInspection}
+      <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ HiveOverviewAddInspectionR hiveId}>
+        <div #modal-form-widget>
+          ^{formWidget}
+      |]
+
 inspectionDateSessionKey :: Text
 inspectionDateSessionKey = "inspectionDate"
 
@@ -159,6 +172,9 @@ getInspectionDateFromSession = do
       return $ Just day
     _ -> return Nothing
 
+postHiveOverviewAddInspectionR :: HiveId -> Handler Value
+postHiveOverviewAddInspectionR = postAddInspectionR
+
 -- gen post add form - start
 postAddInspectionR :: HiveId -> Handler Value
 postAddInspectionR hiveId = do
@@ -166,6 +182,7 @@ postAddInspectionR hiveId = do
   case result of
     FormSuccess vAddInspection -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let inspection = Inspection
@@ -193,12 +210,18 @@ postAddInspectionR hiveId = do
         inspectionId <- insert inspection
         storeInspectionDateToSession vAddInspection
         return ()
-      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
+      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $ VFormSubmitInvalid
         { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 -- gen post add form - end
+
+getAddInspectionSuccessDataJsonUrl :: Inspection -> Maybe (Route App) -> Route App
+getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute =
+  case maybeCurRoute of
+    Just (HiverecR (HiveOverviewAddInspectionR _)) -> HiverecR HiveOverviewPageDataJsonR
+    _ -> HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection
 
 -- gen add form - start
 vAddInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VAddInspection, Widget)

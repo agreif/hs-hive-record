@@ -42,6 +42,7 @@ postAddTemperTypeR = do
   case result of
     FormSuccess vAddTemperType -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let temperType = TemperType

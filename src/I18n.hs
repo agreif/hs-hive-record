@@ -27,6 +27,7 @@ data AppMessage =
   | MsgGlobalEditLocation
   | MsgGlobalDeleteLocation
   | MsgGlobalLocationMasterData
+  | MsgGlobalHiveOverview
   | MsgGlobalHive
   | MsgGlobalHives
   | MsgGlobalAddHive
@@ -126,6 +127,7 @@ renderMessageGerman MsgGlobalAddLocation = "Standort hinzufügen"
 renderMessageGerman MsgGlobalEditLocation = "Standort bearbeiten"
 renderMessageGerman MsgGlobalDeleteLocation = "Standort löschen"
 renderMessageGerman MsgGlobalLocationMasterData = "Standort-Daten"
+renderMessageGerman MsgGlobalHiveOverview = "Bienenstock Übersicht"
 renderMessageGerman MsgGlobalHive = "Bienenstock"
 renderMessageGerman MsgGlobalHives = "Bienenstöcke"
 renderMessageGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
@@ -225,6 +227,7 @@ renderMessageEnglish MsgGlobalAddLocation = "Add location"
 renderMessageEnglish MsgGlobalEditLocation = "Edit location"
 renderMessageEnglish MsgGlobalDeleteLocation = "Delete location"
 renderMessageEnglish MsgGlobalLocationMasterData = "Location data"
+renderMessageEnglish MsgGlobalHiveOverview = "Hive Overview"
 renderMessageEnglish MsgGlobalHive = "Hive"
 renderMessageEnglish MsgGlobalHives = "Hives"
 renderMessageEnglish MsgGlobalAddHive = "Add hive"
@@ -324,6 +327,7 @@ data Translation = Translation
   , msgGlobalEditLocation :: Text
   , msgGlobalDeleteLocation :: Text
   , msgGlobalLocationMasterData :: Text
+  , msgGlobalHiveOverview :: Text
   , msgGlobalHive :: Text
   , msgGlobalHives :: Text
   , msgGlobalAddHive :: Text
@@ -427,6 +431,7 @@ translationDe = Translation
   , msgGlobalEditLocation = "Standort bearbeiten"
   , msgGlobalDeleteLocation = "Standort löschen"
   , msgGlobalLocationMasterData = "Standort-Daten"
+  , msgGlobalHiveOverview = "Bienenstock Übersicht"
   , msgGlobalHive = "Bienenstock"
   , msgGlobalHives = "Bienenstöcke"
   , msgGlobalAddHive = "Bienenstock hinzufügen"
@@ -527,6 +532,7 @@ translationEn = Translation
   , msgGlobalEditLocation = "Edit location"
   , msgGlobalDeleteLocation = "Delete location"
   , msgGlobalLocationMasterData = "Location data"
+  , msgGlobalHiveOverview = "Hive Overview"
   , msgGlobalHive = "Hive"
   , msgGlobalHives = "Hives"
   , msgGlobalAddHive = "Add hive"

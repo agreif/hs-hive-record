@@ -5,6 +5,7 @@
     <admin-page-tag>
     <location-list-page-tag>
     <location-detail-page-tag>
+    <hive-overview-page-tag>
     <hive-detail-page-tag>
   <script>
     \ tag = this
@@ -857,5 +858,91 @@
     \ deleteInspectionfile(event) {
     \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.deleteFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+
+<hive-overview-page-tag>
+  <div if="{parent.data.pages.hiveOverview}">
+    <h1>
+      {parent.data.translation.msgGlobalHiveOverview}
+    <ul uk-accordion="multiple: true">
+      <li class="uk-open" each="{parent.data.pages.hiveOverview.hives}">
+        <a class="uk-accordion-title" href="#">
+          {hiveEnt.name}
+        <div class="uk-accordion-content">
+          <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+            <thead>
+              <tr>
+                <th>
+                  {parent.parent.data.translation.msgInspectionDate}
+                <th>
+                  {parent.parent.data.translation.msgGlobalTemper}
+                <th>
+                  {parent.parent.data.translation.msgGlobalRunning}
+                <th>
+                  {parent.parent.data.translation.msgGlobalSwarming}
+                <th>
+                  {parent.parent.data.translation.msgInspectionQueenSeen}
+                <th>
+                  {parent.parent.data.translation.msgInspectionTotalFrames}
+                <th>
+                  {parent.parent.data.translation.msgInspectionBeeCoveredFrames}
+                <th>
+                  {parent.parent.data.translation.msgInspectionBroodFrames}
+                <th>
+                  {parent.parent.data.translation.msgInspectionHoneyFrames}
+                <th>
+                  {parent.parent.data.translation.msgInspectionTreatment}
+                <th>
+                  {parent.parent.data.translation.msgInspectionFeeding}
+                <th>
+                  {parent.parent.data.translation.msgInspectionNotes}
+                <th .uk-align-right>
+                  <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{parent.parent.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                    <span uk-icon="icon: plus">
+            <tbody>
+              <tr each="{inspections.slice(-2)}">
+                <td .uk-table-link .uk-text-nowrap>
+                  <a .uk-link-reset>
+                    {formatDateStrWithWeekday(inspectionEnt.date, parent.parent.parent.data.currentLanguage)}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {temperTypeEnt.name}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {runningTypeEnt.name}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {swarmingTypeEnt.name}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    <span uk-icon="icon: check" if="{inspectionEnt.queenSeen}">
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.totalFrames}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.beeCoveredFrames}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.broodFrames}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.honeyFrames}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.treatment}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    {inspectionEnt.feeding}
+                <td .uk-table-link>
+                  <a .uk-link-reset>
+                    <span .textarea-wrap>
+                      {inspectionEnt.notes}
+                <td .uk-width-small>
+  <script>
+    \ addInspection(event) {
+    \   event.preventDefault()
+    \   parent.tag.showModalForm(event.item.inspectionAddFormUrl)
     \   event.currentTarget.blur()
     \ }

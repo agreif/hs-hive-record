@@ -738,7 +738,7 @@ context =
         , bCrudModelAddFormEntityLoader = Nothing
         , bCrudModelEditFormEntityLoader = Nothing
         , bCrudModelDeleteFormEntityLoader = Nothing
-        , bCrudModelAddFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
+        , bCrudModelAddFormDataJsonUrl = Just "getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute" -- "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
         , bCrudModelEditFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
         , bCrudModelDeleteFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection"
         , bCrudModelAddFormHasDefaultModel = True
@@ -1793,6 +1793,7 @@ context =
     , BTranslation { bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location" }
     , BTranslation { bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Daten", bTranslationEn = "Location data" }
 
+    , BTranslation { bTranslationKey = "hiveOverview", bTranslationDe = "Bienenstock Übersicht", bTranslationEn = "Hive Overview" }
     , BTranslation { bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive" }
     , BTranslation { bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives" }
     , BTranslation { bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive" }

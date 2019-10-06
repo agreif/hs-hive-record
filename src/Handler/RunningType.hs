@@ -42,6 +42,7 @@ postAddRunningTypeR = do
   case result of
     FormSuccess vAddRunningType -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let runningType = RunningType
