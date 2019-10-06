@@ -343,7 +343,7 @@ instance ToJSON JDataPageHiveOverview where
 
 data JDataHiveOverviewHive = JDataHiveOverviewHive
   { jDataHiveOverviewHiveEnt :: Entity Hive
-  , jDataHiveOverviewHiveInspections :: [JDataInspection]
+  , jDataHiveOverviewHiveInspections :: [JDataHiveOverviewHiveInspection]
   , jDataHiveOverviewInspectionAddFormUrl :: Text
   }
 instance ToJSON JDataHiveOverviewHive where
@@ -351,6 +351,16 @@ instance ToJSON JDataHiveOverviewHive where
     [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o)
     , "inspections" .= jDataHiveOverviewHiveInspections o
     , "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o
+    ]
+
+data JDataHiveOverviewHiveInspection = JDataHiveOverviewHiveInspection
+  { jDataHiveOverviewHiveInspection :: JDataInspection
+  , jDataHiveOverviewHiveInspectionHiveDetailDataUrl :: Text
+  }
+instance ToJSON JDataHiveOverviewHiveInspection where
+  toJSON o = object
+    [ "hiveDetailDataUrl" .= jDataHiveOverviewHiveInspectionHiveDetailDataUrl o
+    , "inspection" .= jDataHiveOverviewHiveInspection o
     ]
 
 

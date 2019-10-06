@@ -903,46 +903,51 @@
             <tbody>
               <tr each="{inspections.slice(-2)}">
                 <td .uk-table-link .uk-text-nowrap>
-                  <a .uk-link-reset>
-                    {formatDateStrWithWeekday(inspectionEnt.date, parent.parent.parent.data.currentLanguage)}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {formatDateStrWithWeekday(inspection.inspectionEnt.date, parent.parent.parent.data.currentLanguage)}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {temperTypeEnt.name}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.temperTypeEnt.name}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {runningTypeEnt.name}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.runningTypeEnt.name}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {swarmingTypeEnt.name}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.swarmingTypeEnt.name}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    <span uk-icon="icon: check" if="{inspectionEnt.queenSeen}">
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    <span uk-icon="icon: check" if="{inspection.inspectionEnt.queenSeen}">
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.totalFrames}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.totalFrames}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.beeCoveredFrames}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.beeCoveredFrames}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.broodFrames}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.broodFrames}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.honeyFrames}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.honeyFrames}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.treatment}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.treatment}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
-                    {inspectionEnt.feeding}
+                  <a onclick="{detailHive}" .uk-link-reset>
+                    {inspection.inspectionEnt.feeding}
                 <td .uk-table-link>
-                  <a .uk-link-reset>
+                  <a onclick="{detailHive}" .uk-link-reset>
                     <span .textarea-wrap>
-                      {inspectionEnt.notes}
+                      {inspection.inspectionEnt.notes}
                 <td .uk-width-small>
   <script>
     \ addInspection(event) {
     \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.inspectionAddFormUrl)
+    \   event.currentTarget.blur()
+    \ }
+    \ detailHive(event) {
+    \   event.preventDefault()
+    \   parent.tag.refreshData(event.item.hiveDetailDataUrl, true, true)
     \   event.currentTarget.blur()
     \ }

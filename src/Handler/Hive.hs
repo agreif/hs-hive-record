@@ -88,7 +88,13 @@ getHiveOverviewJDatas = do
     return $
       JDataHiveOverviewHive
       { jDataHiveOverviewHiveEnt = hiveEnt
-      , jDataHiveOverviewHiveInspections = inspections
+      , jDataHiveOverviewHiveInspections =
+          map ( \inspectionJdata ->
+                  JDataHiveOverviewHiveInspection
+                  { jDataHiveOverviewHiveInspection = inspectionJdata
+                  , jDataHiveOverviewHiveInspectionHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+                  }
+              ) inspections
       , jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId
       }
 
