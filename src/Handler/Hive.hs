@@ -98,7 +98,6 @@ getHiveOverviewJDatas = do
       , jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId
       }
 
-
 -------------------------------------------------------
 -- detail
 -------------------------------------------------------
@@ -202,7 +201,6 @@ getInspectionfileJDatas inspectionfileEnts urlRenderer =
       , jDataInspectionfileDownloadUrl = urlRenderer $ HiverecR $ DownloadInspectionfileR inspectionfileId
       })
   inspectionfileEnts
-
 
 loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
 loadInspectionListTuples hiveId = do
