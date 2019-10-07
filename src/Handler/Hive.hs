@@ -84,18 +84,19 @@ getHiveOverviewJDatas = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveIsDissolved ==. False] [Asc HiveName]
   forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
-    inspections <- hiveDetailInspectionJDatas hiveId
+    inspectionTuples <- hiveDetailInspectionJDatas hiveId
     return $
       JDataHiveOverviewHive
       { jDataHiveOverviewHiveEnt = hiveEnt
       , jDataHiveOverviewHiveInspections =
-          map ( \inspectionJdata ->
+          map ( \(inspectionId, inspectionJdata) ->
                   JDataHiveOverviewHiveInspection
                   { jDataHiveOverviewHiveInspection = inspectionJdata
-                  , jDataHiveOverviewHiveInspectionHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+                  , jDataHiveOverviewHiveInspectionEditFormUrl = urlRenderer $ HiverecR $ HiveOverviewEditInspectionFormR inspectionId
                   }
-              ) inspections
+              ) inspectionTuples
       , jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId
+      , jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
       }
 
 -------------------------------------------------------
@@ -124,7 +125,8 @@ getHiveDetailPageDataJsonR hiveId = do
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
-  jDataInspections <- hiveDetailInspectionJDatas hiveId
+  jDataInspections' <- hiveDetailInspectionJDatas hiveId
+  let jDataInspections = map snd jDataInspections'
   let pages =
         defaultDataPages
         { jDataPageHiveDetail =
@@ -172,22 +174,24 @@ getHiveDetailPageDataJsonR hiveId = do
     , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
-hiveDetailInspectionJDatas :: HiveId -> Handler [JDataInspection]
+hiveDetailInspectionJDatas :: HiveId -> Handler [(InspectionId, JDataInspection)]
 hiveDetailInspectionJDatas hiveId = do
   urlRenderer <- getUrlRender
   inspectionEntTuples <- runDB $ loadInspectionListTuples hiveId
   return $ map
     (\(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
-       JDataInspection
-       { jDataInspectionEnt = inspectionEnt
-       , jDataInspectionTemperTypeEnt = temperTypeEnt
-       , jDataInspectionRunningTypeEnt = runningTypeEnt
-       , jDataInspectionSwarmingTypeEnt = swarmingTypeEnt
-       , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
-       , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
-       , jDataInspectionInspectionfileAddFormUrl = urlRenderer $ HiverecR $ AddInspectionfileFormR inspectionId
-       , jDataInspectionInspectionfiles = getInspectionfileJDatas inspectionfileEnts urlRenderer
-       })
+       ( inspectionId
+       , JDataInspection
+         { jDataInspectionEnt = inspectionEnt
+         , jDataInspectionTemperTypeEnt = temperTypeEnt
+         , jDataInspectionRunningTypeEnt = runningTypeEnt
+         , jDataInspectionSwarmingTypeEnt = swarmingTypeEnt
+         , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
+         , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
+         , jDataInspectionInspectionfileAddFormUrl = urlRenderer $ HiverecR $ AddInspectionfileFormR inspectionId
+         , jDataInspectionInspectionfiles = getInspectionfileJDatas inspectionfileEnts urlRenderer
+         })
+    )
     inspectionEntTuples
 
 getInspectionfileJDatas :: [Entity Inspectionfile] -> (Route App -> Text) -> [JDataInspectionfile]
@@ -372,6 +376,7 @@ postEditHiveR hiveId = do
   case result of
     FormSuccess vEditHive -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields = [

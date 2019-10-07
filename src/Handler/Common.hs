@@ -345,21 +345,23 @@ data JDataHiveOverviewHive = JDataHiveOverviewHive
   { jDataHiveOverviewHiveEnt :: Entity Hive
   , jDataHiveOverviewHiveInspections :: [JDataHiveOverviewHiveInspection]
   , jDataHiveOverviewInspectionAddFormUrl :: Text
+  , jDataHiveOverviewHiveDetailDataUrl :: Text
   }
 instance ToJSON JDataHiveOverviewHive where
   toJSON o = object
     [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o)
     , "inspections" .= jDataHiveOverviewHiveInspections o
     , "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o
+    , "hiveDetailDataUrl" .= jDataHiveOverviewHiveDetailDataUrl o
     ]
 
 data JDataHiveOverviewHiveInspection = JDataHiveOverviewHiveInspection
   { jDataHiveOverviewHiveInspection :: JDataInspection
-  , jDataHiveOverviewHiveInspectionHiveDetailDataUrl :: Text
+  , jDataHiveOverviewHiveInspectionEditFormUrl :: Text
   }
 instance ToJSON JDataHiveOverviewHiveInspection where
   toJSON o = object
-    [ "hiveDetailDataUrl" .= jDataHiveOverviewHiveInspectionHiveDetailDataUrl o
+    [ "inspectionEditFormUrl" .= jDataHiveOverviewHiveInspectionEditFormUrl o
     , "inspection" .= jDataHiveOverviewHiveInspection o
     ]
 
@@ -488,7 +490,7 @@ getHiveNavItems = do
     E.select $ E.from $ \(h `E.InnerJoin` l) -> do
       E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
       E.orderBy [E.asc (l E.^. LocationName), E.asc (h E.^. HiveName)]
-      E.where_ $ (h E.^. HiveIsDissolved) E.!=. E.val True
+      E.where_ $ (h E.^. HiveIsDissolved) E.==. E.val False
       return (h, l)
   urlRenderer <- getUrlRender
   let hiveOverviewItem =

@@ -141,7 +141,6 @@ getAddInspectionFormR hiveId = do
       |]
 -- gen get add form - end
 
-
 getHiveOverviewAddInspectionFormR :: HiveId -> Handler Html
 getHiveOverviewAddInspectionFormR hiveId = do
   defaultMaybeAddModel <- defaultAddInspection hiveId
@@ -171,9 +170,6 @@ getInspectionDateFromSession = do
       day <- parseDay dateText
       return $ Just day
     _ -> return Nothing
-
-postHiveOverviewAddInspectionR :: HiveId -> Handler Value
-postHiveOverviewAddInspectionR = postAddInspectionR
 
 -- gen post add form - start
 postAddInspectionR :: HiveId -> Handler Value
@@ -216,6 +212,9 @@ postAddInspectionR hiveId = do
       returnJson $ VFormSubmitInvalid
         { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 -- gen post add form - end
+
+postHiveOverviewAddInspectionR :: HiveId -> Handler Value
+postHiveOverviewAddInspectionR = postAddInspectionR
 
 getAddInspectionSuccessDataJsonUrl :: Inspection -> Maybe (Route App) -> Route App
 getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute =
@@ -474,6 +473,18 @@ getEditInspectionFormR inspectionId = do
       |]
 -- gen get edit form - end
 
+getHiveOverviewEditInspectionFormR :: InspectionId -> Handler Html
+getHiveOverviewEditInspectionFormR inspectionId = do
+  inspection <- runDB $ get404 inspectionId
+  (formWidget, _) <- generateFormPost $ vEditInspectionForm (Just inspection)
+  formLayout $
+    toWidget [whamlet|
+      <h1>_{MsgGlobalEditInspection}
+      <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ HiveOverviewEditInspectionR inspectionId}>
+        <div #modal-form-widget>
+          ^{formWidget}
+      |]
+
 -- gen post edit form - start
 postEditInspectionR :: InspectionId -> Handler Value
 postEditInspectionR inspectionId = do
@@ -481,6 +492,7 @@ postEditInspectionR inspectionId = do
   case result of
     FormSuccess vEditInspection -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       inspection <- runDB $ get404 inspectionId
@@ -507,14 +519,24 @@ postEditInspectionR inspectionId = do
                                ] persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection }
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $ VFormSubmitInvalid
         { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 
 -- gen post edit form - end
+
+postHiveOverviewEditInspectionR :: InspectionId -> Handler Value
+postHiveOverviewEditInspectionR = postEditInspectionR
+
+getEditInspectionSuccessDataJsonUrl :: HiveId -> Maybe (Route App) -> Route App
+getEditInspectionSuccessDataJsonUrl hiveId maybeCurRoute =
+  case maybeCurRoute of
+    Just (HiverecR (HiveOverviewEditInspectionR _)) -> HiverecR HiveOverviewPageDataJsonR
+    _ -> HiverecR $ HiveDetailPageDataJsonR hiveId
+
 
 -- gen edit form - start
 vEditInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VEditInspection, Widget)

@@ -869,6 +869,8 @@
       <li class="uk-open" each="{parent.data.pages.hiveOverview.hives}">
         <a class="uk-accordion-title" href="#">
           {hiveEnt.name}
+          <button .uk-button .uk-button-link title="{parent.parent.parent.data.translation.msgGlobalHive}" uk-tooltip onclick="{detailHive}">
+            <span uk-icon="icon: link">
         <div class="uk-accordion-content">
           <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
             <thead>
@@ -903,51 +905,56 @@
             <tbody>
               <tr each="{inspections.slice(-2)}">
                 <td .uk-table-link .uk-text-nowrap>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {formatDateStrWithWeekday(inspection.inspectionEnt.date, parent.parent.parent.data.currentLanguage)}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.temperTypeEnt.name}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.runningTypeEnt.name}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.swarmingTypeEnt.name}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     <span uk-icon="icon: check" if="{inspection.inspectionEnt.queenSeen}">
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.totalFrames}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.beeCoveredFrames}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.broodFrames}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.honeyFrames}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.treatment}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     {inspection.inspectionEnt.feeding}
                 <td .uk-table-link>
-                  <a onclick="{detailHive}" .uk-link-reset>
+                  <a onclick="{editInspection}" .uk-link-reset>
                     <span .textarea-wrap>
                       {inspection.inspectionEnt.notes}
                 <td .uk-width-small>
   <script>
+    \ detailHive(event) {
+    \   event.preventDefault()
+    \   parent.tag.refreshData(event.item.hiveDetailDataUrl, true, true)
+    \   event.currentTarget.blur()
+    \ }
     \ addInspection(event) {
     \   event.preventDefault()
     \   parent.tag.showModalForm(event.item.inspectionAddFormUrl)
     \   event.currentTarget.blur()
     \ }
-    \ detailHive(event) {
+    \ editInspection(event) {
     \   event.preventDefault()
-    \   parent.tag.refreshData(event.item.hiveDetailDataUrl, true, true)
+    \   parent.tag.showModalForm(event.item.inspectionEditFormUrl)
     \   event.currentTarget.blur()
     \ }

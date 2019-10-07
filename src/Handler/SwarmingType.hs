@@ -143,6 +143,7 @@ postEditSwarmingTypeR swarmingTypeId = do
   case result of
     FormSuccess vEditSwarmingType -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields = [

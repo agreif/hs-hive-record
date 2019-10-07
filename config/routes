@@ -71,6 +71,10 @@
 
   hiveOverview HiveOverviewR GET
   hiveOverviewPageDataJson HiveOverviewPageDataJsonR GET
+  hiveOverview/addInspectionForm/#HiveId HiveOverviewAddInspectionFormR GET
+  hiveOverview/addInspection/#HiveId HiveOverviewAddInspectionR POST
+  hiveOverview/editInspectionForm/#InspectionId HiveOverviewEditInspectionFormR GET
+  hiveOverview/editInspection/#InspectionId HiveOverviewEditInspectionR POST
 
   addHiveForm/#LocationId AddHiveFormR GET
   addHive/#LocationId AddHiveR POST
@@ -81,9 +85,6 @@
 
   hiveDetail/#HiveId HiveDetailR GET
   hiveDetailPageDataJsonR/#HiveId HiveDetailPageDataJsonR GET
-
-  hiveOverview/addInspectionForm/#HiveId HiveOverviewAddInspectionFormR GET
-  hiveOverview/addInspection/#HiveId HiveOverviewAddInspectionR POST
 
   addInspectionForm/#HiveId AddInspectionFormR GET
   addInspection/#HiveId AddInspectionR POST

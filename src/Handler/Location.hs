@@ -288,6 +288,7 @@ postEditLocationR locationId = do
   case result of
     FormSuccess vEditLocation -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields = [

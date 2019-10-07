@@ -143,6 +143,7 @@ postEditRunningTypeR runningTypeId = do
   case result of
     FormSuccess vEditRunningType -> do
       curTime <- liftIO getCurrentTime
+      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields = [
