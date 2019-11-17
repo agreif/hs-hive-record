@@ -97,7 +97,7 @@ getDownloadInspectionfileR inspectionfileId = do
   let bytesSource = E.selectSource $ E.from $ \rd -> do
         E.where_ (rd E.^. RawdataId E.==. E.val rawdataId)
         return $ rd E.^. RawdataBytes
-  respondSourceDB (TE.encodeUtf8 mimetype) $ bytesSource $= awaitForever toBuilder'
+  respondSourceDB (TE.encodeUtf8 mimetype) $ bytesSource .| awaitForever toBuilder'
   where
     toBuilder' (E.Value bytes) = do
       sendChunkBS bytes

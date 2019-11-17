@@ -16,11 +16,12 @@ import Control.Concurrent (forkIO)
 
 sendTestMail :: Text -> Handler ()
 sendTestMail email = do
-  appName <- runDB configAppName
-  sendMail' email
-    ("[" ++ appName ++ "] Test-Mail")
-    textPartContent
-    htmlPartContent
+  do
+    appName <- runDB $ configAppName
+    sendMail' email
+      ("[" ++ appName ++ "] Test-Mail")
+      (textPartContent)
+      (htmlPartContent)
   where
     textPartContent = encodeUtf8 [stext| Test-Mail |]
     htmlPartContent = renderHtml [shamlet| Test-Mail |]
@@ -101,38 +102,32 @@ Ihr #{appName} Team
 
 sendMail' :: Text -> Text -> LBS.ByteString -> LBS.ByteString -> Handler ()
 sendMail' to subject textPartContent htmlPartContent = do
-  from <- runDB configEmailFrom
+  from <- runDB $ configEmailFrom
+  appName <- runDB $ configAppName
   let mail = Mail
-        { mailFrom = Address Nothing from
+        { mailFrom = Address (Just appName) from
         , mailTo = [Address Nothing to]
         , mailCc = []
         , mailBcc = []
         , mailHeaders =
-            [ ("Subject", subject),
-              ("Reply-To", from)
+            [ ("Subject", subject)
+            , ("Reply-To", from)
             ]
-        , mailParts = [[textPart', htmlPart']]
+        , mailParts = [[htmlPart', textPart']]
         }
 
   _ <- liftIO $ forkIO $ renderSendMailCustom "/run/wrappers/bin/sendmail" ["-t"] mail
   return ()
-
-  -- _ <- liftIO $ forkIO $ renderSendMail (emptyMail $ Address Nothing from)
-  --   { mailTo = [Address Nothing to]
-  --   , mailHeaders =
-  --        [ ("Subject", subject),
-  --          ("Reply-To", from)
-  --        ]
-  --   , mailParts = [[textPart', htmlPart']] }
-  -- return ()
   where
     textPart' = Part { partType = "text/plain; charset=utf-8"
                      , partEncoding = None
-                     , partFilename = Nothing
-                     , partContent = textPartContent
-                     , partHeaders = [] }
+                     , partDisposition = DefaultDisposition
+                     , partHeaders = []
+                     , partContent = PartContent textPartContent
+                     }
     htmlPart' = Part { partType = "text/html; charset=utf-8"
                      , partEncoding = None
-                     , partFilename = Nothing
-                     , partContent = htmlPartContent
-                     , partHeaders = [] }
+                     , partDisposition = DefaultDisposition
+                     , partHeaders = []
+                     , partContent = PartContent htmlPartContent
+                     }

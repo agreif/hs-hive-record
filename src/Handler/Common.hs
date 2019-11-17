@@ -18,7 +18,6 @@ import qualified Data.Char as C
 import qualified Data.List as L
 import qualified Data.Text as T
 import Text.Printf
-import qualified Data.Maybe as M
 import qualified Data.Conduit.Binary as CB
 import qualified Data.ByteString as B
 import Data.Time
@@ -574,19 +573,19 @@ $newline never
 dbSystemUser :: Text
 dbSystemUser = "system"
 
-groupEntities :: [(Entity a, Entity b)] -> [(Entity a, [Entity b])]
-groupEntities es =
-  L.map ((\(es1, es2) -> (L.head es1, es2)) . L.unzip) $
-  L.groupBy (\(Entity id1 _, _) (Entity id2 _, _) -> id1 == id2) es
+-- groupEntities :: [(Entity a, Entity b)] -> [(Entity a, [Entity b])]
+-- groupEntities es =
+--   L.map ((\(es1, es2) -> (L.head es1, es2)) . L.unzip) $
+--   L.groupBy (\(Entity id1 _, _) (Entity id2 _, _) -> id1 == id2) es
 
-groupEntitiesMaybe :: [(Entity a, Maybe (Entity b))] -> [(Entity a, [Entity b])]
-groupEntitiesMaybe es =
-  L.map ((\(es1, es2) -> (L.head es1, M.catMaybes es2)) . L.unzip) $
-  L.groupBy (\(Entity id1 _, _) (Entity id2 _, _) -> id1 == id2) es
+-- groupEntitiesMaybe :: [(Entity a, Maybe (Entity b))] -> [(Entity a, [Entity b])]
+-- groupEntitiesMaybe es =
+--   L.map ((\(es1, es2) -> (L.head es1, M.catMaybes es2)) . L.unzip) $
+--   L.groupBy (\(Entity id1 _, _) (Entity id2 _, _) -> id1 == id2) es
 
 fileBytes :: FileInfo -> Handler B.ByteString
 fileBytes fileInfo = do
-  bytesL <- runResourceT $ fileSource fileInfo $$ CB.sinkLbs
+  bytesL <- runConduit $ fileSource fileInfo .| CB.sinkLbs
   return $ toStrict bytesL
 
 humanReadableBytes :: Integer -> String

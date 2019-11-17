@@ -18,9 +18,16 @@ packages:
   original:
     git: https://github.com/agreif/hs-yesod-model-generator.git
     commit: 1a56b5614b8ecbe46b0f150db702e34f994124c6
+- completed:
+    hackage: pwstore-fast-2.4.4@sha256:9b6a37510d8b9f37f409a8ab3babac9181afcaaa3fce8ba1c131a7ed3de30698,1351
+    pantry-tree:
+      size: 270
+      sha256: ff4a44ede62515efe5cd366a5803f7183c811c4a0cf56eea88da94181c4844c0
+  original:
+    hackage: pwstore-fast-2.4.4@sha256:9b6a37510d8b9f37f409a8ab3babac9181afcaaa3fce8ba1c131a7ed3de30698,1351
 snapshots:
 - completed:
-    size: 569901
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/10/10.yaml
-    sha256: 508f0089b680d551cb6cfe95c40e42241a373153f673de78f136040beb4937fa
-  original: lts-10.10
+    size: 525663
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/14.yaml
+    sha256: 6edc48df46eb8bf7b861e98dd30d021a92c2e1820c9bb6528aac5d997b0e14ef
+  original: lts-14.14
