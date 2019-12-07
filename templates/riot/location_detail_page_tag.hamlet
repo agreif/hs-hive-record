@@ -1,0 +1,92 @@
+<location-detail-page-tag>
+  <div if="{context.data.pages.locationDetail}">
+    <h1>
+      {context.data.translation.msgGlobalLocation}: {context.data.pages.locationDetail.locationEnt.name}
+    <ul uk-tab>
+      <li>
+        <a href="#">
+          {context.data.translation.msgGlobalLocationMasterData}
+      <li .uk-active>
+        <a href="#">
+          {context.data.translation.msgGlobalHives}
+    <ul .uk-switcher .uk-margin>
+      <li>
+        <!-- master data -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {context.data.translation.msgLocationName}
+              <th .uk-align-right>
+          <tbody>
+            <tr>
+              <td .uk-table-link>
+                <a onclick="{editLocation}" .uk-link-reset>
+                  {context.data.pages.locationDetail.locationEnt.name}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{editLocation}">
+                  <span uk-icon="icon: pencil">
+      <li>
+        <!-- hive list -->
+        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+          <thead>
+            <tr>
+              <th>
+                {context.data.translation.msgHiveName}
+              <th>
+                {context.data.translation.msgHiveIsDissolved}
+              <th>
+                {context.data.translation.msgHiveDescription}
+              <th>
+                {context.data.translation.msgGlobalLastInspection}
+              <th .uk-align-right>
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
+                  <span uk-icon="icon: plus">
+          <tbody>
+            <tr each="{hive in context.data.pages.locationDetail.hives}">
+              <td .uk-table-link>
+                <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
+                  {hive.hiveEnt.name}
+              <td .uk-table-link>
+                <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
+                  <span uk-icon="icon: check" if="{hive.hiveEnt.isDissolved}">
+              <td .uk-table-link>
+                <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
+                  <span .textarea-wrap>
+                    {hive.hiveEnt.description}
+              <td .uk-table-link>
+                <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
+                  <span .textarea-wrap if="{hive.lastInspectionEnt}">
+                    {context.formatDateStr(hive.lastInspectionEnt.date)}
+              <td .uk-width-small>
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteHive}" uk-tooltip onclick="{(e)=>deleteHive(e,hive)}">
+                  <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDetailHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
+                  <span uk-icon="icon: file-edit">
+
+  <script>
+    \ export default {
+    \   onBeforeMount(props, state) {
+    \     this.context = props.context
+    \   },
+    \   editLocation(event) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(this.context.data.pages.locationDetail.locationEditFormUrl)
+    \     event.currentTarget.blur()
+    \   },
+    \   addHive(event) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(this.context.data.pages.locationDetail.hiveAddFormUrl)
+    \     event.currentTarget.blur()
+    \   },
+    \   detailHive(event, item) {
+    \     event.preventDefault()
+    \     this.context.refreshData(item.detailDataUrl, true, true)
+    \     event.currentTarget.blur()
+    \   },
+    \   deleteHive(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.deleteFormUrl)
+    \     event.currentTarget.blur()
+    \   }
+    \ }

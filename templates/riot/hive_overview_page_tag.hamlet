@@ -1,0 +1,103 @@
+<hive-overview-page-tag>
+  <div if="{context.data.pages.hiveOverview}">
+    <h1>
+      {context.data.translation.msgGlobalHiveOverview}
+    <ul uk-accordion="multiple: true">
+      <li class="uk-open" each="{hive in context.data.pages.hiveOverview.hives}">
+        <a class="uk-accordion-title" href="#">
+          {hive.hiveEnt.name}
+          <button .uk-button .uk-button-link title="{context.data.translation.msgGlobalHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
+            <span uk-icon="icon: link">
+        <div class="uk-accordion-content">
+          <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+            <thead>
+              <tr>
+                <th>
+                  {context.data.translation.msgInspectionDate}
+                <th>
+                  {context.data.translation.msgGlobalTemper}
+                <th>
+                  {context.data.translation.msgGlobalRunning}
+                <th>
+                  {context.data.translation.msgGlobalSwarming}
+                <th>
+                  {context.data.translation.msgInspectionQueenSeen}
+                <th>
+                  {context.data.translation.msgInspectionTotalFrames}
+                <th>
+                  {context.data.translation.msgInspectionBeeCoveredFrames}
+                <th>
+                  {context.data.translation.msgInspectionBroodFrames}
+                <th>
+                  {context.data.translation.msgInspectionHoneyFrames}
+                <th>
+                  {context.data.translation.msgInspectionTreatment}
+                <th>
+                  {context.data.translation.msgInspectionFeeding}
+                <th>
+                  {context.data.translation.msgInspectionNotes}
+                <th .uk-align-right>
+                  <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{(e)=>addInspection(e,hive)}">
+                    <span uk-icon="icon: plus">
+            <tbody>
+              <tr each="{insp in hive.inspections.slice(-2)}">
+                <td .uk-table-link .uk-text-nowrap>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {context.formatDateStrWithWeekday(insp.inspection.inspectionEnt.date)}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.temperTypeEnt.name}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.runningTypeEnt.name}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.swarmingTypeEnt.name}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    <span uk-icon="icon: check" if="{insp.inspection.inspectionEnt.queenSeen}">
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.totalFrames}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.beeCoveredFrames}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.broodFrames}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.honeyFrames}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.treatment}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    {insp.inspection.inspectionEnt.feeding}
+                <td .uk-table-link>
+                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
+                    <span .textarea-wrap>
+                      {insp.inspection.inspectionEnt.notes}
+                <td .uk-width-small>
+
+  <script>
+    \ export default {
+    \   onBeforeMount(props, state) {
+    \     this.context = props.context
+    \   },
+    \   detailHive(event, item) {
+    \     event.preventDefault()
+    \     this.context.refreshData(item.hiveDetailDataUrl, true, true)
+    \     event.currentTarget.blur()
+    \   },
+    \   addInspection(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.inspectionAddFormUrl)
+    \     event.currentTarget.blur()
+    \   },
+    \   editInspection(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.inspectionEditFormUrl)
+    \     event.currentTarget.blur()
+    \   }
+    \ }

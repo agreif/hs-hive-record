@@ -2,12 +2,14 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
+{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Location where
 
 import Handler.Common
 import Import
+import Text.Hamlet (hamletFile)
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
 import qualified Data.Text.Encoding as TE
@@ -18,16 +20,10 @@ import qualified Data.CaseInsensitive as CI
 -------------------------------------------------------
 
 getLocationListR :: Handler Html
-getLocationListR =
-  defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{HiverecR $ LocationListPageDataJsonR}")
-                     \ })
-                   |]
+getLocationListR = do
+  let route = HiverecR LocationListPageDataJsonR
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getLocationListPageDataJsonR :: Handler Value
 getLocationListPageDataJsonR = do
@@ -94,16 +90,10 @@ loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 -------------------------------------------------------
 
 getLocationDetailR :: LocationId -> Handler Html
-getLocationDetailR locationId =
-  defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{HiverecR $ LocationDetailPageDataJsonR locationId}")
-                     \ })
-                   |]
+getLocationDetailR locationId = do
+  let route = HiverecR $ LocationDetailPageDataJsonR locationId
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getLocationDetailPageDataJsonR :: LocationId -> Handler Value
 getLocationDetailPageDataJsonR locationId = do

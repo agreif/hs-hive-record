@@ -1,5 +1,4 @@
 window.addEventListener('popstate', function(event) {
-    //document.location.href = document.location
     if (!event.state) {
         return
     }
@@ -9,6 +8,7 @@ window.addEventListener('popstate', function(event) {
         type: "GET",
         dataType: "json",
     }).done(function(data, textStatus, jqXHR) {
+	riot.unmount('body-tag', true)
         bodyTag = riot.mount('body-tag')[0]
         bodyTag.data = data
         bodyTag.update()
@@ -110,3 +110,10 @@ function arrayChunks (arr, len) {
     return chunks;
 }
 
+function classNames(classes) {
+    return Object.entries(classes).reduce((acc, item) => {
+	const [key, value] = item
+	if (value) return [...acc, key]
+	return acc
+    }, []).join(' ')
+}

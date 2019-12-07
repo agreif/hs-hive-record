@@ -2,12 +2,14 @@
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
+{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 module Handler.Hive where
 
 import Handler.Common
 import Import
+import Text.Hamlet (hamletFile)
 import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Database.Persist.Sql (updateWhereCount)
@@ -23,16 +25,10 @@ locationSelectField =
 -------------------------------------------------------
 
 getHiveOverviewR :: Handler Html
-getHiveOverviewR =
-  defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{HiverecR $ HiveOverviewPageDataJsonR}")
-                     \ })
-                   |]
+getHiveOverviewR = do
+  let route = HiverecR HiveOverviewPageDataJsonR
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getHiveOverviewPageDataJsonR :: Handler Value
 getHiveOverviewPageDataJsonR = do
@@ -104,16 +100,10 @@ getHiveOverviewJDatas = do
 -------------------------------------------------------
 
 getHiveDetailR :: HiveId -> Handler Html
-getHiveDetailR hiveId =
-  defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{HiverecR $ HiveDetailPageDataJsonR hiveId}")
-                     \ })
-                   |]
+getHiveDetailR hiveId = do
+  let route = HiverecR $ HiveDetailPageDataJsonR hiveId
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getHiveDetailPageDataJsonR :: HiveId -> Handler Value
 getHiveDetailPageDataJsonR hiveId = do

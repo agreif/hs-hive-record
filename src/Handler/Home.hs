@@ -17,16 +17,10 @@ getHomeR :: Handler Html
 getHomeR = redirect $ HiverecR HiverecHomeR
 
 getHiverecHomeR :: Handler Html
-getHiverecHomeR =
-  defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{HiverecR $ HomePageDataJsonR}")
-                     \ })
-                   |]
+getHiverecHomeR = do
+  let route = HiverecR HomePageDataJsonR
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getHomePageDataJsonR :: Handler Value
 getHomePageDataJsonR = do
@@ -65,8 +59,32 @@ getHomePageDataJsonR = do
     , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
     }
 
-getRiotTagsR :: Handler Html
-getRiotTagsR = withUrlRenderer $(hamletFile "templates/riot_tags.hamlet")
+getRiotBodyTagR :: Handler Html
+getRiotBodyTagR = withUrlRenderer $(hamletFile "templates/riot/body_tag.hamlet")
+
+getRiotNavTagR :: Handler Html
+getRiotNavTagR = withUrlRenderer $(hamletFile "templates/riot/nav_tag.hamlet")
+
+getRiotPaginationTagR :: Handler Html
+getRiotPaginationTagR = withUrlRenderer $(hamletFile "templates/riot/pagination_tag.hamlet")
+
+getRiotHomePageTagR :: Handler Html
+getRiotHomePageTagR = withUrlRenderer $(hamletFile "templates/riot/home_page_tag.hamlet")
+
+getRiotAdminPageTagR :: Handler Html
+getRiotAdminPageTagR = withUrlRenderer $(hamletFile "templates/riot/admin_page_tag.hamlet")
+
+getRiotHiveDetailPageTagR :: Handler Html
+getRiotHiveDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_detail_page_tag.hamlet")
+
+getRiotHiveOverviewPageTagR :: Handler Html
+getRiotHiveOverviewPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_overview_page_tag.hamlet")
+
+getRiotLocationDetailPageTagR :: Handler Html
+getRiotLocationDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/location_detail_page_tag.hamlet")
+
+getRiotLocationListPageTagR :: Handler Html
+getRiotLocationListPageTagR = withUrlRenderer $(hamletFile "templates/riot/location_list_page_tag.hamlet")
 
 postLanguageDeR :: Text -> Handler Value
 postLanguageDeR dataUrlStr = do

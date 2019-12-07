@@ -1,26 +1,23 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 
 module Handler.Admin where
 
 import Handler.Common
 import Import
+import Text.Hamlet (hamletFile)
 import qualified Database.Esqueleto as E
 import qualified Data.Text.Encoding as TE
 import qualified Data.CaseInsensitive as CI
 
 getAdminHomeR :: Handler Html
-getAdminHomeR = defaultLayout $
-  toWidget [whamlet|
-                   <body-tag>
-                   <script>
-                     \ riot.compile(function() {
-                     \   bodyTag = riot.mount('body-tag')[0]
-                     \   bodyTag.refreshData("@{AdminR $ AdminPageDataJsonR}")
-                     \ })
-                   |]
+getAdminHomeR = do
+  let route = AdminR AdminPageDataJsonR
+  dataUrl <- getUrlRender <*> pure route
+  defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
 getAdminPageDataJsonR :: Handler Value
 getAdminPageDataJsonR = do

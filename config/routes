@@ -47,7 +47,16 @@
 
 /hiverec HiverecR:
   home HiverecHomeR GET
-  riotTags RiotTagsR GET
+
+  riotBodyTag RiotBodyTagR GET
+  riotNavTag RiotNavTagR GET
+  riotPaginationTag RiotPaginationTagR GET
+  riotHomePageTag RiotHomePageTagR GET
+  riotAdminPageTag RiotAdminPageTagR GET
+  riotHiveDetailPageTag RiotHiveDetailPageTagR GET
+  riotHiveOverviewPageTag RiotHiveOverviewPageTagR GET
+  riotLocationDetailPageTag RiotLocationDetailPageTagR GET
+  riotLocationListPageTag RiotLocationListPageTagR GET
 
   homePageDataJson HomePageDataJsonR GET
 

@@ -10,12 +10,19 @@
     <script src="@{StaticR js_uikit_3_2_1_min_js}" type="text/javascript">
     <script src="@{StaticR js_uikit_icons_3_2_1_min_js}" type="text/javascript">
 
-    <script src="@{StaticR js_riot_compiler_3_9_4_min_js}" type="text/javascript">
-
     <link href="@{StaticR css_tingle_0_13_2_min_css}" rel="stylesheet" type="text/css">
     <script src="@{StaticR js_tingle_0_13_2_min_js}" type="text/javascript">
 
-    <script data-src="@{HiverecR RiotTagsR}" type="riot/tag">
+    <script src="@{StaticR js_riot_compiler_4_6_2_min_js}" type="text/javascript">
+    <script data-src="@{HiverecR RiotBodyTagR}" type="riot">
+    <script data-src="@{HiverecR RiotNavTagR}" type="riot">
+    <script data-src="@{HiverecR RiotPaginationTagR}" type="riot">
+    <script data-src="@{HiverecR RiotHomePageTagR}" type="riot">
+    <script data-src="@{HiverecR RiotAdminPageTagR}" type="riot">
+    <script data-src="@{HiverecR RiotHiveDetailPageTagR}" type="riot">
+    <script data-src="@{HiverecR RiotHiveOverviewPageTagR}" type="riot">
+    <script data-src="@{HiverecR RiotLocationDetailPageTagR}" type="riot">
+    <script data-src="@{HiverecR RiotLocationListPageTagR}" type="riot">
 
     ^{pageHead pc}
 

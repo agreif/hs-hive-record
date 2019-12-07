@@ -1,0 +1,44 @@
+<location-list-page-tag>
+  <div if="{context.data.pages.locationList}">
+    <h1>
+      {context.data.translation.msgGlobalLocations}
+    <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+      <thead>
+        <tr>
+          <th>
+            {context.data.translation.msgLocationName}
+          <th .uk-align-right>
+            <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddLocation}" uk-tooltip onclick="{addLocation}">
+              <span uk-icon="icon: plus">
+      <tbody>
+        <tr each="{loc in context.data.pages.locationList.locations}">
+          <td .uk-table-link>
+            <a href="{loc.detailurl}" onclick="{(e)=>detailLocation(e,loc)}" .uk-link-reset>
+              {loc.entity.name}
+          <td .uk-width-small>
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{(e)=>deleteLocation(e,loc)}">
+              <span uk-icon="icon: trash">
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDetailLocation}" uk-tooltip onclick="{(e)=>detailLocation(e,loc)}">
+              <span uk-icon="icon: file-edit">
+
+  <script>
+    \ export default {
+    \   onBeforeMount(props, state) {
+    \     this.context = props.context
+    \   },
+    \   addLocation(event) {
+    \     event.preventDefault()
+    \     this.context.showModalForm("@{HiverecR AddLocationFormR}")
+    \     event.currentTarget.blur()
+    \   },
+    \   detailLocation(event, item) {
+    \     event.preventDefault()
+    \     this.context.refreshData(item.detailDataUrl, true, true)
+    \     event.currentTarget.blur()
+    \   },
+    \   deleteLocation(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.deleteFormUrl)
+    \     event.currentTarget.blur()
+    \   }
+    \ }
