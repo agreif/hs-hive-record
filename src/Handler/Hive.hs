@@ -27,6 +27,8 @@ locationSelectField =
 getHiveOverviewR :: Handler Html
 getHiveOverviewR = do
   let route = HiverecR HiveOverviewPageDataJsonR
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
@@ -102,6 +104,8 @@ getHiveOverviewJDatas = do
 getHiveDetailR :: HiveId -> Handler Html
 getHiveDetailR hiveId = do
   let route = HiverecR $ HiveDetailPageDataJsonR hiveId
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 

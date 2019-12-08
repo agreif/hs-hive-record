@@ -16,6 +16,8 @@ import qualified Data.CaseInsensitive as CI
 getAdminHomeR :: Handler Html
 getAdminHomeR = do
   let route = AdminR AdminPageDataJsonR
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 

@@ -22,6 +22,8 @@ import qualified Data.CaseInsensitive as CI
 getLocationListR :: Handler Html
 getLocationListR = do
   let route = HiverecR LocationListPageDataJsonR
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
@@ -92,6 +94,8 @@ loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 getLocationDetailR :: LocationId -> Handler Html
 getLocationDetailR locationId = do
   let route = HiverecR $ LocationDetailPageDataJsonR locationId
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 

@@ -19,6 +19,8 @@ getHomeR = redirect $ HiverecR HiverecHomeR
 getHiverecHomeR :: Handler Html
 getHiverecHomeR = do
   let route = HiverecR HomePageDataJsonR
+  master <- getYesod
+  let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
@@ -74,17 +76,17 @@ getRiotHomePageTagR = withUrlRenderer $(hamletFile "templates/riot/home_page_tag
 getRiotAdminPageTagR :: Handler Html
 getRiotAdminPageTagR = withUrlRenderer $(hamletFile "templates/riot/admin_page_tag.hamlet")
 
-getRiotHiveDetailPageTagR :: Handler Html
-getRiotHiveDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_detail_page_tag.hamlet")
-
-getRiotHiveOverviewPageTagR :: Handler Html
-getRiotHiveOverviewPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_overview_page_tag.hamlet")
+getRiotLocationListPageTagR :: Handler Html
+getRiotLocationListPageTagR = withUrlRenderer $(hamletFile "templates/riot/location_list_page_tag.hamlet")
 
 getRiotLocationDetailPageTagR :: Handler Html
 getRiotLocationDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/location_detail_page_tag.hamlet")
 
-getRiotLocationListPageTagR :: Handler Html
-getRiotLocationListPageTagR = withUrlRenderer $(hamletFile "templates/riot/location_list_page_tag.hamlet")
+getRiotHiveOverviewPageTagR :: Handler Html
+getRiotHiveOverviewPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_overview_page_tag.hamlet")
+
+getRiotHiveDetailPageTagR :: Handler Html
+getRiotHiveDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_detail_page_tag.hamlet")
 
 postLanguageDeR :: Text -> Handler Value
 postLanguageDeR dataUrlStr = do

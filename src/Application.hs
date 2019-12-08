@@ -37,6 +37,9 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
 
+import Text.Blaze.Html.Renderer.Utf8        (renderHtml)
+import System.Directory                     (createDirectoryIfMissing)
+
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Common
@@ -168,9 +171,32 @@ appMain = do
     -- Generate a WAI Application from the foundation
     app <- makeApplication foundation
 
+    genStaticRiotJsFiles settings
+
     -- Run the application with Warp
     runSettings (warpSettings foundation) app
 
+
+genStaticRiotJsFiles :: AppSettings -> IO ()
+genStaticRiotJsFiles settings = do
+  createDirectoryIfMissing True dir
+  writeRiotJsFile getRiotBodyTagR "body_tag.js"
+  writeRiotJsFile getRiotNavTagR "nav_tag.js"
+  writeRiotJsFile getRiotPaginationTagR "pagination_tag.js"
+  writeRiotJsFile getRiotHomePageTagR "home_page_tag.js"
+  writeRiotJsFile getRiotAdminPageTagR "admin_page_tag.js"
+  writeRiotJsFile getRiotLocationListPageTagR "location_list_page_tag.js"
+  writeRiotJsFile getRiotLocationDetailPageTagR "location_detail_page_tag.js"
+  writeRiotJsFile getRiotHiveOverviewPageTagR "hive_overview_page_tag.js"
+  writeRiotJsFile getRiotHiveDetailPageTagR "hive_detail_page_tag.js"
+  where
+    dir :: FilePath
+    dir = appStaticDir settings ++ "/js/riot/"
+    writeRiotJsFile :: Handler Html -> String -> IO ()
+    writeRiotJsFile handlerFunc jsFilename = do
+      h <- handler handlerFunc
+      withSinkFileCautious (dir ++ jsFilename) $ \sink ->
+        runConduit $ sourceLazy (renderHtml h) .| sink
 
 --------------------------------------------------------------
 -- Functions for DevelMain.hs (a way to run the app from GHCi)
