@@ -180,20 +180,20 @@ appMain = do
 genStaticRiotJsFiles :: AppSettings -> IO ()
 genStaticRiotJsFiles settings = do
   createDirectoryIfMissing True dir
-  writeRiotJsFile getRiotBodyTagR "body_tag.js"
-  writeRiotJsFile getRiotNavTagR "nav_tag.js"
-  writeRiotJsFile getRiotPaginationTagR "pagination_tag.js"
-  writeRiotJsFile getRiotHomePageTagR "home_page_tag.js"
-  writeRiotJsFile getRiotAdminPageTagR "admin_page_tag.js"
-  writeRiotJsFile getRiotLocationListPageTagR "location_list_page_tag.js"
-  writeRiotJsFile getRiotLocationDetailPageTagR "location_detail_page_tag.js"
-  writeRiotJsFile getRiotHiveOverviewPageTagR "hive_overview_page_tag.js"
-  writeRiotJsFile getRiotHiveDetailPageTagR "hive_detail_page_tag.js"
+  writeRiotFile getRiotBodyTagR "body_tag.riot"
+  writeRiotFile getRiotNavTagR "nav_tag.riot"
+  writeRiotFile getRiotPaginationTagR "pagination_tag.riot"
+  writeRiotFile getRiotHomePageTagR "home_page_tag.riot"
+  writeRiotFile getRiotAdminPageTagR "admin_page_tag.riot"
+  writeRiotFile getRiotLocationListPageTagR "location_list_page_tag.riot"
+  writeRiotFile getRiotLocationDetailPageTagR "location_detail_page_tag.riot"
+  writeRiotFile getRiotHiveOverviewPageTagR "hive_overview_page_tag.riot"
+  writeRiotFile getRiotHiveDetailPageTagR "hive_detail_page_tag.riot"
   where
     dir :: FilePath
     dir = appStaticDir settings ++ "/js/riot/"
-    writeRiotJsFile :: Handler Html -> String -> IO ()
-    writeRiotJsFile handlerFunc jsFilename = do
+    writeRiotFile :: Handler Html -> String -> IO ()
+    writeRiotFile handlerFunc jsFilename = do
       h <- handler handlerFunc
       withSinkFileCautious (dir ++ jsFilename) $ \sink ->
         runConduit $ sourceLazy (renderHtml h) .| sink
