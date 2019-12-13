@@ -50,7 +50,6 @@ echo "    sudo psql -U hiverec hiverec -c '\i $deploy_dir/docroot/postgresql_set
 echo "    sleep 1"
 echo "    sudo systemctl stop $local_app_name"
 echo "    sleep 3"
-echo "    sudo cd /var/lib/wwwhiverec/docroot/static/js/riot"
 echo "    sudo /root/node_modules/.bin/riot /var/lib/wwwhiverec/docroot/static/js/riot --output /var/lib/wwwhiverec/docroot/static/js/riot"
 echo "    sleep 1"
 echo "    sudo systemctl restart $local_app_name"
