@@ -74,7 +74,7 @@
     \   },
     \   editMyProfile(event) {
     \     event.preventDefault()
-    \     dataJsonUrl = window.history.state ? window.history.state.dataJsonUrl : "@{HiverecR HomePageDataJsonR}"
+    \     var dataJsonUrl = window.history.state ? window.history.state.dataJsonUrl : "@{HiverecR HomePageDataJsonR}"
     \     this.context.showModalForm("@{HiverecR EditMyprofileFormR}", dataJsonUrl)
     \   },
     \   changeLanguageDe(event) {
