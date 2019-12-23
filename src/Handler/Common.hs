@@ -104,7 +104,8 @@ instance ToJSON JData where
     ]
 
 data JDataNavItem = JDataNavItem
-  { jDataNavItemLabel :: Text
+  { jDataNavItemId :: Maybe Text
+  , jDataNavItemLabel :: Text
   , jDataNavItemIsActive :: Bool
   , jDataNavItemUrl :: Maybe Text
   , jDataNavItemDataUrl :: Maybe Text
@@ -113,7 +114,8 @@ data JDataNavItem = JDataNavItem
   }
 instance ToJSON JDataNavItem where
   toJSON o = object
-    [ "label" .= jDataNavItemLabel o
+    [ "id" .= jDataNavItemId o
+    , "label" .= jDataNavItemLabel o
     , "isActive" .= jDataNavItemIsActive o
     , "url" .= jDataNavItemUrl o
     , "dataUrl" .= jDataNavItemDataUrl o
@@ -425,9 +427,11 @@ mainNavData user mainNav = do
   msgLocations <- localizedMsg MsgGlobalLocations
   msgHives <- localizedMsg MsgGlobalHives
   hiveNavItems <- getHiveNavItems
+  hivesItemIdent <- newIdent
   return $
     [ JDataNavItem
-      { jDataNavItemLabel = msgHome
+      { jDataNavItemId = Nothing
+      , jDataNavItemLabel = msgHome
       , jDataNavItemIsActive = mainNav == MainNavHome
       , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiverecHomeR
       , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
@@ -437,7 +441,8 @@ mainNavData user mainNav = do
     ]
     ++
     [ JDataNavItem
-      { jDataNavItemLabel = msgAdmin
+      { jDataNavItemId = Nothing
+      , jDataNavItemLabel = msgAdmin
       , jDataNavItemIsActive = mainNav == MainNavAdmin
       , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
       , jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
@@ -447,7 +452,8 @@ mainNavData user mainNav = do
     | userIsAdmin user ]
     ++
     [ JDataNavItem
-      { jDataNavItemLabel = msgLocations
+      { jDataNavItemId = Nothing
+      , jDataNavItemLabel = msgLocations
       , jDataNavItemIsActive = mainNav == MainNavLocations
       , jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR
       , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
@@ -457,7 +463,8 @@ mainNavData user mainNav = do
     ]
     ++
     [ JDataNavItem
-      { jDataNavItemLabel = msgHives
+      { jDataNavItemId = Just hivesItemIdent
+      , jDataNavItemLabel = msgHives
       , jDataNavItemIsActive = mainNav == MainNavHives
       , jDataNavItemUrl = Nothing
       , jDataNavItemDataUrl = Nothing
@@ -494,7 +501,8 @@ getHiveNavItems = do
   urlRenderer <- getUrlRender
   let hiveOverviewItem =
         JDataNavItem
-        { jDataNavItemLabel = msgHiveOverview
+        { jDataNavItemId = Nothing
+        , jDataNavItemLabel = msgHiveOverview
         , jDataNavItemIsActive = False
         , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiveOverviewR
         , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HiveOverviewPageDataJsonR
@@ -504,7 +512,8 @@ getHiveNavItems = do
   let hiveItems =
         map ( \(Entity hiveId hive, Entity _ location) ->
                 JDataNavItem
-                { jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
+                { jDataNavItemId = Nothing
+                , jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
                 , jDataNavItemIsActive = False
                 , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
                 , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
