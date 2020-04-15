@@ -26,14 +26,14 @@ locationSelectField =
 
 getHiveOverviewR :: Handler Html
 getHiveOverviewR = do
-  let route = HiverecR HiveOverviewPageDataJsonR
+  let route = HiverecR HiveOverviewPageDataR
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getHiveOverviewPageDataJsonR :: Handler Value
-getHiveOverviewPageDataJsonR = do
+getHiveOverviewPageDataR :: Handler Value
+getHiveOverviewPageDataR = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -52,7 +52,7 @@ getHiveOverviewPageDataJsonR = do
   msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ HiverecR HiveOverviewPageDataJsonR
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR HiveOverviewPageDataR
   returnJson
     JData
       { jDataAppName = appName,
@@ -71,7 +71,7 @@ getHiveOverviewPageDataJsonR = do
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHome,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHiveOverview,
@@ -103,7 +103,7 @@ getHiveOverviewJDatas = do
               )
               inspectionTuples,
           jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId,
-          jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+          jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
         }
 
 -------------------------------------------------------
@@ -112,14 +112,14 @@ getHiveOverviewJDatas = do
 
 getHiveDetailR :: HiveId -> Handler Html
 getHiveDetailR hiveId = do
-  let route = HiverecR $ HiveDetailPageDataJsonR hiveId
+  let route = HiverecR $ HiveDetailPageDataR hiveId
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getHiveDetailPageDataJsonR :: HiveId -> Handler Value
-getHiveDetailPageDataJsonR hiveId = do
+getHiveDetailPageDataR :: HiveId -> Handler Value
+getHiveDetailPageDataR hiveId = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -146,7 +146,7 @@ getHiveDetailPageDataJsonR hiveId = do
   msgHive <- localizedMsg MsgGlobalHive
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
   returnJson
     JData
       { jDataAppName = appName,
@@ -165,15 +165,15 @@ getHiveDetailPageDataJsonR hiveId = do
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHome,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgLocations,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = locationName location,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = hiveName hive,
@@ -291,7 +291,7 @@ postAddHiveR locationId = do
       runDB $ do
         _ <- insert hive
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -434,8 +434,8 @@ postEditHiveR hiveId = do
             persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId}
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -579,7 +579,7 @@ postDeleteHiveR hiveId = do
   hive <- runDB $ get404 hiveId
   runDB $ delete hiveId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR $ hiveLocationId hive}
 
 -- gen post delete form - end
 

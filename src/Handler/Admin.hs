@@ -15,14 +15,14 @@ import Text.Hamlet (hamletFile)
 
 getAdminHomeR :: Handler Html
 getAdminHomeR = do
-  let route = AdminR AdminPageDataJsonR
+  let route = AdminR AdminPageDataR
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getAdminPageDataJsonR :: Handler Value
-getAdminPageDataJsonR = do
+getAdminPageDataR :: Handler Value
+getAdminPageDataR = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -49,7 +49,7 @@ getAdminPageDataJsonR = do
   msgAdmin <- localizedMsg MsgGlobalAdmin
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR
+  let currentPageDataJsonUrl = urlRenderer $ AdminR AdminPageDataR
   returnJson
     JData
       { jDataAppName = appName,
@@ -68,7 +68,7 @@ getAdminPageDataJsonR = do
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHome,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgAdmin,

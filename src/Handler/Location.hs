@@ -21,14 +21,14 @@ import Text.Hamlet (hamletFile)
 
 getLocationListR :: Handler Html
 getLocationListR = do
-  let route = HiverecR LocationListPageDataJsonR
+  let route = HiverecR LocationListPageDataR
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getLocationListPageDataJsonR :: Handler Value
-getLocationListPageDataJsonR = do
+getLocationListPageDataR :: Handler Value
+getLocationListPageDataR = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -44,7 +44,7 @@ getLocationListPageDataJsonR = do
   msgLocations <- localizedMsg MsgGlobalLocations
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR
   returnJson
     JData
       { jDataAppName = appName,
@@ -63,7 +63,7 @@ getLocationListPageDataJsonR = do
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHome,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgLocations,
@@ -86,7 +86,7 @@ locationListJDatas = do
               JDataLocation
                 { jDataLocationEnt = locationEnt,
                   jDataLocationDetailUrl = urlRenderer $ HiverecR $ LocationDetailR locationId,
-                  jDataLocationDetailDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId,
+                  jDataLocationDetailDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId,
                   jDataLocationDeleteFormUrl = urlRenderer $ HiverecR $ DeleteLocationFormR locationId
                 }
           )
@@ -102,14 +102,14 @@ loadLocationList = selectList ([] :: [Filter Location]) [Asc LocationName]
 
 getLocationDetailR :: LocationId -> Handler Html
 getLocationDetailR locationId = do
-  let route = HiverecR $ LocationDetailPageDataJsonR locationId
+  let route = HiverecR $ LocationDetailPageDataR locationId
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getLocationDetailPageDataJsonR :: LocationId -> Handler Value
-getLocationDetailPageDataJsonR locationId = do
+getLocationDetailPageDataR :: LocationId -> Handler Value
+getLocationDetailPageDataR locationId = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -133,7 +133,7 @@ getLocationDetailPageDataJsonR locationId = do
   msgLocation <- localizedMsg MsgGlobalLocation
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId
   returnJson
     JData
       { jDataAppName = appName,
@@ -152,11 +152,11 @@ getLocationDetailPageDataJsonR locationId = do
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgHome,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = msgLocations,
-                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataR
               },
             JDataBreadcrumbItem
               { jDataBreadcrumbItemLabel = locationName location,
@@ -183,7 +183,7 @@ locationDetailHiveJDatas locationId = do
             { jDataHiveDetailHiveEnt = hiveEnt,
               jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt,
               jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId,
-              jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId,
+              jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId,
               jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
             }
       )
@@ -237,7 +237,7 @@ postAddLocationR = do
       runDB $ do
         _ <- insert location
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -334,8 +334,8 @@ postEditLocationR locationId = do
             persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId}
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -418,7 +418,7 @@ postDeleteLocationR :: LocationId -> Handler Value
 postDeleteLocationR locationId = do
   runDB $ delete locationId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataJsonR}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR}
 
 -- gen post delete form - end
 

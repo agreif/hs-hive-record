@@ -61,7 +61,7 @@ postAddRunningTypeR = do
       runDB $ do
         _ <- insert runningType
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -180,8 +180,8 @@ postEditRunningTypeR runningTypeId = do
             persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -284,7 +284,7 @@ postDeleteRunningTypeR :: RunningTypeId -> Handler Value
 postDeleteRunningTypeR runningTypeId = do
   runDB $ delete runningTypeId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
 
 -- gen post delete form - end
 

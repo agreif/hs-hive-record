@@ -43,8 +43,8 @@ postEditMyprofileR = do
         user' <- runDB $ get404 userId
         sendPasswordResetMail user' passwd
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR}
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR HomePageDataR}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR HomePageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $

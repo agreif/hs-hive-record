@@ -242,8 +242,8 @@ postHiveOverviewAddInspectionR = postAddInspectionR
 getAddInspectionSuccessDataJsonUrl :: Inspection -> Maybe (Route App) -> Route App
 getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute =
   case maybeCurRoute of
-    Just (HiverecR (HiveOverviewAddInspectionR _)) -> HiverecR HiveOverviewPageDataJsonR
-    _ -> HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection
+    Just (HiverecR (HiveOverviewAddInspectionR _)) -> HiverecR HiveOverviewPageDataR
+    _ -> HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection
 
 -- gen add form - start
 vAddInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VAddInspection, Widget)
@@ -605,8 +605,8 @@ postHiveOverviewEditInspectionR = postEditInspectionR
 getEditInspectionSuccessDataJsonUrl :: HiveId -> Maybe (Route App) -> Route App
 getEditInspectionSuccessDataJsonUrl hiveId maybeCurRoute =
   case maybeCurRoute of
-    Just (HiverecR (HiveOverviewEditInspectionR _)) -> HiverecR HiveOverviewPageDataJsonR
-    _ -> HiverecR $ HiveDetailPageDataJsonR hiveId
+    Just (HiverecR (HiveOverviewEditInspectionR _)) -> HiverecR HiveOverviewPageDataR
+    _ -> HiverecR $ HiveDetailPageDataR hiveId
 
 -- gen edit form - start
 vEditInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VEditInspection, Widget)
@@ -902,7 +902,7 @@ postDeleteInspectionR inspectionId = do
   inspection <- runDB $ get404 inspectionId
   runDB $ delete inspectionId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
 
 -- gen post delete form - end
 

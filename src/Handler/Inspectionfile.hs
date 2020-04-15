@@ -75,7 +75,7 @@ postAddInspectionfileR inspectionId = do
               inspectionfileUpdatedAt = curTime,
               inspectionfileUpdatedBy = userIdent authUser
             }
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -207,8 +207,8 @@ postEditInspectionfileR inspectionfileId = do
             ]
             persistFieldsInspectionfile
         if updateCount == 1
-          then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection}
-          else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection}
+          then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
+          else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -289,7 +289,7 @@ postDeleteInspectionfileR inspectionfileId = do
     delete inspectionfileId
     delete $ inspectionfileRawdataId inspectionfile
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR $ inspectionHiveId inspection}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
 
 -- gen delete form - start
 vDeleteInspectionfileForm :: Html -> MForm Handler (FormResult (), Widget)

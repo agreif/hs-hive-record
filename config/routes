@@ -9,7 +9,7 @@
 
 /hiverec/admin AdminR:
   home AdminHomeR GET
-  adminPageDataJson AdminPageDataJsonR GET
+  adminPageDataJson AdminPageDataR GET
 
   addUserForm AddUserFormR GET
   addUser AddUserR POST
@@ -58,7 +58,7 @@
   riotLocationDetailPageTag RiotLocationDetailPageTagR GET
   riotLocationListPageTag RiotLocationListPageTagR GET
 
-  homePageDataJson HomePageDataJsonR GET
+  homePageDataJson HomePageDataR GET
 
   language/de/#Text LanguageDeR POST
   language/en/#Text LanguageEnR POST
@@ -67,7 +67,7 @@
   editMyProfile EditMyprofileR POST
 
   locationList LocationListR GET
-  locationListPageDataJsonR LocationListPageDataJsonR GET
+  locationListPageDataR LocationListPageDataR GET
   addLocationForm AddLocationFormR GET
   addLocation AddLocationR POST
   editLocationForm/#LocationId EditLocationFormR GET
@@ -76,10 +76,10 @@
   deleteLocation/#LocationId DeleteLocationR POST
 
   locationDetail/#LocationId LocationDetailR GET
-  locationDetailPageDataJsonR/#LocationId LocationDetailPageDataJsonR GET
+  locationDetailPageDataR/#LocationId LocationDetailPageDataR GET
 
   hiveOverview HiveOverviewR GET
-  hiveOverviewPageDataJson HiveOverviewPageDataJsonR GET
+  hiveOverviewPageDataJson HiveOverviewPageDataR GET
   hiveOverview/addInspectionForm/#HiveId HiveOverviewAddInspectionFormR GET
   hiveOverview/addInspection/#HiveId HiveOverviewAddInspectionR POST
   hiveOverview/editInspectionForm/#InspectionId HiveOverviewEditInspectionFormR GET
@@ -93,7 +93,7 @@
   deleteHive/#HiveId DeleteHiveR POST
 
   hiveDetail/#HiveId HiveDetailR GET
-  hiveDetailPageDataJsonR/#HiveId HiveDetailPageDataJsonR GET
+  hiveDetailPageDataR/#HiveId HiveDetailPageDataR GET
 
   addInspectionForm/#HiveId AddInspectionFormR GET
   addInspection/#HiveId AddInspectionR POST

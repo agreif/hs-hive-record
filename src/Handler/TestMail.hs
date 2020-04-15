@@ -22,7 +22,7 @@ postSendTestmailR = do
     FormSuccess vSendTestmail -> do
       urlRenderer <- getUrlRender
       sendTestMail $ vSendTestmailEmail vSendTestmail
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $

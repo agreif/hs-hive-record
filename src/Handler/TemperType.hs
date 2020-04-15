@@ -61,7 +61,7 @@ postAddTemperTypeR = do
       runDB $ do
         _ <- insert temperType
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -180,8 +180,8 @@ postEditTemperTypeR temperTypeId = do
             persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
       returnJson $
@@ -284,7 +284,7 @@ postDeleteTemperTypeR :: TemperTypeId -> Handler Value
 postDeleteTemperTypeR temperTypeId = do
   runDB $ delete temperTypeId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR}
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
 
 -- gen post delete form - end
 

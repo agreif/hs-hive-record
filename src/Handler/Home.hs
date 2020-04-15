@@ -18,14 +18,14 @@ getHomeR = redirect $ HiverecR HiverecHomeR
 
 getHiverecHomeR :: Handler Html
 getHiverecHomeR = do
-  let route = HiverecR HomePageDataJsonR
+  let route = HiverecR HomePageDataR
   master <- getYesod
   let isDev = appDev $ appSettings master
   dataUrl <- getUrlRender <*> pure route
   defaultLayout $ toWidget =<< withUrlRenderer $(hamletFile "templates/riot/generic_page.hamlet")
 
-getHomePageDataJsonR :: Handler Value
-getHomePageDataJsonR = do
+getHomePageDataR :: Handler Value
+getHomePageDataR = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
@@ -38,7 +38,7 @@ getHomePageDataJsonR = do
   msgHome <- localizedMsg MsgGlobalHome
   currentLanguage <- getLanguage
   translation <- getTranslation
-  let currentPageDataJsonUrl = urlRenderer $ HiverecR HomePageDataJsonR
+  let currentPageDataJsonUrl = urlRenderer $ HiverecR HomePageDataR
   returnJson
     JData
       { jDataAppName = appName,
