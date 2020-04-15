@@ -8,6 +8,7 @@
 module Handler.Hive where
 
 import qualified Data.CaseInsensitive as CI
+import qualified Data.Maybe as M
 import qualified Data.Text.Encoding as TE
 import qualified Database.Esqueleto as E
 import Database.Persist.Sql (updateWhereCount)
@@ -89,7 +90,7 @@ getHiveOverviewJDatas = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveIsDissolved ==. False] [Asc HiveName]
   forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
-    inspectionTuples <- hiveDetailInspectionJDatas hiveId
+    inspectionTuples <- hiveDetailInspectionJDatas hiveId (Just 2)
     return $
       JDataHiveOverviewHive
         { jDataHiveOverviewHiveEnt = hiveEnt,
@@ -128,7 +129,7 @@ getHiveDetailPageDataR hiveId = do
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
-  jDataInspections' <- hiveDetailInspectionJDatas hiveId
+  jDataInspections' <- hiveDetailInspectionJDatas hiveId Nothing
   let jDataInspections = map snd jDataInspections'
   let pages =
         defaultDataPages
@@ -186,10 +187,10 @@ getHiveDetailPageDataR hiveId = do
         jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
 
-hiveDetailInspectionJDatas :: HiveId -> Handler [(InspectionId, JDataInspection)]
-hiveDetailInspectionJDatas hiveId = do
+hiveDetailInspectionJDatas :: HiveId -> Maybe Int64 -> Handler [(InspectionId, JDataInspection)]
+hiveDetailInspectionJDatas hiveId maybeLimitCount = do
   urlRenderer <- getUrlRender
-  inspectionEntTuples <- runDB $ loadInspectionListTuples hiveId
+  inspectionEntTuples <- runDB loadInspectionListTuples
   return $
     map
       ( \(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
@@ -207,6 +208,25 @@ hiveDetailInspectionJDatas hiveId = do
           )
       )
       inspectionEntTuples
+  where
+    loadInspectionListTuples :: YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
+    loadInspectionListTuples = do
+      tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` rt `E.InnerJoin` st) -> do
+        E.on (i E.^. InspectionSwarmingTypeId E.==. st E.^. SwarmingTypeId)
+        E.on (i E.^. InspectionRunningTypeId E.==. rt E.^. RunningTypeId)
+        E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
+        E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
+        E.where_ (h E.^. HiveId E.==. E.val hiveId)
+        when (isJust maybeLimitCount) $ do
+          E.limit (M.fromJust maybeLimitCount)
+        E.orderBy [E.asc (i E.^. InspectionDate)]
+        return (i, tt, rt, st)
+      forM
+        tuples
+        ( \(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
+            inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
+            return (inspectionEnt, tt, rt, st, inspectionfileEnts)
+        )
 
 getInspectionfileJDatas :: [Entity Inspectionfile] -> (Route App -> Text) -> [JDataInspectionfile]
 getInspectionfileJDatas inspectionfileEnts urlRenderer =
@@ -220,23 +240,6 @@ getInspectionfileJDatas inspectionfileEnts urlRenderer =
           }
     )
     inspectionfileEnts
-
-loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
-loadInspectionListTuples hiveId = do
-  tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` rt `E.InnerJoin` st) -> do
-    E.on (i E.^. InspectionSwarmingTypeId E.==. st E.^. SwarmingTypeId)
-    E.on (i E.^. InspectionRunningTypeId E.==. rt E.^. RunningTypeId)
-    E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
-    E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
-    E.where_ (h E.^. HiveId E.==. E.val hiveId)
-    E.orderBy [E.asc (i E.^. InspectionDate)]
-    return (i, tt, rt, st)
-  forM
-    tuples
-    ( \(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
-        inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
-        return (inspectionEnt, tt, rt, st, inspectionfileEnts)
-    )
 
 -------------------------------------------------------
 -- add
