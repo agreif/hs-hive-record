@@ -26,7 +26,6 @@ import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Form.I18n.German
 import qualified Data.Maybe as M (fromJust)
 import I18n
-
 import System.Directory (doesDirectoryExist, createDirectory)
 import Network.Wai.Parse (tempFileBackEndOpts)
 
@@ -183,7 +182,7 @@ myTempDir :: IO String
 myTempDir = do
     let dirPathStr = "/tmp/hiverec-tmp"
     isdir <- doesDirectoryExist dirPathStr
-    when (not isdir) $ createDirectory dirPathStr
+    unless isdir $ createDirectory dirPathStr
     return dirPathStr
 
 -- How to run database actions.
