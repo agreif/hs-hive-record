@@ -1,20 +1,20 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude     #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Handler.Hive where
 
+import qualified Data.CaseInsensitive as CI
+import qualified Data.Text.Encoding as TE
+import qualified Database.Esqueleto as E
+import Database.Persist.Sql (updateWhereCount)
 import Handler.Common
 import Import
-import Text.Hamlet (hamletFile)
-import qualified Database.Esqueleto as E
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
-import Database.Persist.Sql (updateWhereCount)
-import qualified Data.Text.Encoding as TE
-import qualified Data.CaseInsensitive as CI
+import Text.Hamlet (hamletFile)
 
 locationSelectField :: Field Handler (Key Location)
 locationSelectField =
@@ -42,40 +42,47 @@ getHiveOverviewPageDataJsonR = do
   hiveOverviewJDatas <- getHiveOverviewJDatas
   let pages =
         defaultDataPages
-        { jDataPageHiveOverview =
-            Just $ JDataPageHiveOverview
-            { jDataPageHiveOverviewHives = hiveOverviewJDatas
-            }
-        }
+          { jDataPageHiveOverview =
+              Just $
+                JDataPageHiveOverview
+                  { jDataPageHiveOverviewHives = hiveOverviewJDatas
+                  }
+          }
   msgHome <- localizedMsg MsgGlobalHome
   msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR HiveOverviewPageDataJsonR
-  returnJson JData
-    { jDataAppName = appName
-    , jDataUserIdent = userIdent user
-    , jDataMainNavItems = mainNavItems
-    , jDataSubNavItems = []
-    , jDataPages = pages
-    , jDataHistoryState = Just JDataHistoryState
-      { jDataHistoryStateUrl = urlRenderer $ HiverecR HiveOverviewR
-      , jDataHistoryStateTitle = msgHiveOverview
+  returnJson
+    JData
+      { jDataAppName = appName,
+        jDataUserIdent = userIdent user,
+        jDataMainNavItems = mainNavItems,
+        jDataSubNavItems = [],
+        jDataPages = pages,
+        jDataHistoryState =
+          Just
+            JDataHistoryState
+              { jDataHistoryStateUrl = urlRenderer $ HiverecR HiveOverviewR,
+                jDataHistoryStateTitle = msgHiveOverview
+              },
+        jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfToken = reqToken req,
+        jDataBreadcrumbItems =
+          [ JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgHome,
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+              },
+            JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgHiveOverview,
+                jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl
+              }
+          ],
+        jDataCurrentLanguage = currentLanguage,
+        jDataTranslation = translation,
+        jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl,
+        jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
-    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
-    , jDataCsrfToken = reqToken req
-    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgHome
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
-                             , JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgHiveOverview
-                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
-                             ]
-    , jDataCurrentLanguage = currentLanguage
-    , jDataTranslation = translation
-    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
-    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
-    }
 
 getHiveOverviewJDatas :: Handler [JDataHiveOverviewHive]
 getHiveOverviewJDatas = do
@@ -85,17 +92,19 @@ getHiveOverviewJDatas = do
     inspectionTuples <- hiveDetailInspectionJDatas hiveId
     return $
       JDataHiveOverviewHive
-      { jDataHiveOverviewHiveEnt = hiveEnt
-      , jDataHiveOverviewHiveInspections =
-          map ( \(inspectionId, inspectionJdata) ->
+        { jDataHiveOverviewHiveEnt = hiveEnt,
+          jDataHiveOverviewHiveInspections =
+            map
+              ( \(inspectionId, inspectionJdata) ->
                   JDataHiveOverviewHiveInspection
-                  { jDataHiveOverviewHiveInspection = inspectionJdata
-                  , jDataHiveOverviewHiveInspectionEditFormUrl = urlRenderer $ HiverecR $ HiveOverviewEditInspectionFormR inspectionId
-                  }
-              ) inspectionTuples
-      , jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId
-      , jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
-      }
+                    { jDataHiveOverviewHiveInspection = inspectionJdata,
+                      jDataHiveOverviewHiveInspectionEditFormUrl = urlRenderer $ HiverecR $ HiveOverviewEditInspectionFormR inspectionId
+                    }
+              )
+              inspectionTuples,
+          jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId,
+          jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
+        }
 
 -------------------------------------------------------
 -- detail
@@ -123,82 +132,94 @@ getHiveDetailPageDataJsonR hiveId = do
   let jDataInspections = map snd jDataInspections'
   let pages =
         defaultDataPages
-        { jDataPageHiveDetail =
-            Just $ JDataPageHiveDetail
-            { jDataPageHiveDetailHiveEnt = Entity hiveId hive
-            , jDataPageHiveDetailHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR hiveId
-            , jDataPageHiveDetailInspections = jDataInspections
-            , jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId
-            }
-        }
+          { jDataPageHiveDetail =
+              Just $
+                JDataPageHiveDetail
+                  { jDataPageHiveDetailHiveEnt = Entity hiveId hive,
+                    jDataPageHiveDetailHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR hiveId,
+                    jDataPageHiveDetailInspections = jDataInspections,
+                    jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId
+                  }
+          }
   msgHome <- localizedMsg MsgGlobalHome
   msgLocations <- localizedMsg MsgGlobalLocations
   msgHive <- localizedMsg MsgGlobalHive
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
-  returnJson JData
-    { jDataAppName = appName
-    , jDataUserIdent = userIdent user
-    , jDataMainNavItems = mainNavItems
-    , jDataSubNavItems = []
-    , jDataPages = pages
-    , jDataHistoryState = Just JDataHistoryState
-      { jDataHistoryStateUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId
-      , jDataHistoryStateTitle = msgHive
+  returnJson
+    JData
+      { jDataAppName = appName,
+        jDataUserIdent = userIdent user,
+        jDataMainNavItems = mainNavItems,
+        jDataSubNavItems = [],
+        jDataPages = pages,
+        jDataHistoryState =
+          Just
+            JDataHistoryState
+              { jDataHistoryStateUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId,
+                jDataHistoryStateTitle = msgHive
+              },
+        jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfToken = reqToken req,
+        jDataBreadcrumbItems =
+          [ JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgHome,
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+              },
+            JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgLocations,
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR
+              },
+            JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = locationName location,
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId
+              },
+            JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = hiveName hive,
+                jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl
+              }
+          ],
+        jDataCurrentLanguage = currentLanguage,
+        jDataTranslation = translation,
+        jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl,
+        jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
-    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
-    , jDataCsrfToken = reqToken req
-    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgHome
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
-                             , JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgLocations
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR LocationListPageDataJsonR }
-                             , JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = locationName location
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
-                             , JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = hiveName hive
-                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
-                             ]
-    , jDataCurrentLanguage = currentLanguage
-    , jDataTranslation = translation
-    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
-    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
-    }
 
 hiveDetailInspectionJDatas :: HiveId -> Handler [(InspectionId, JDataInspection)]
 hiveDetailInspectionJDatas hiveId = do
   urlRenderer <- getUrlRender
   inspectionEntTuples <- runDB $ loadInspectionListTuples hiveId
-  return $ map
-    (\(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
-       ( inspectionId
-       , JDataInspection
-         { jDataInspectionEnt = inspectionEnt
-         , jDataInspectionTemperTypeEnt = temperTypeEnt
-         , jDataInspectionRunningTypeEnt = runningTypeEnt
-         , jDataInspectionSwarmingTypeEnt = swarmingTypeEnt
-         , jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId
-         , jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId
-         , jDataInspectionInspectionfileAddFormUrl = urlRenderer $ HiverecR $ AddInspectionfileFormR inspectionId
-         , jDataInspectionInspectionfiles = getInspectionfileJDatas inspectionfileEnts urlRenderer
-         })
-    )
-    inspectionEntTuples
+  return $
+    map
+      ( \(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
+          ( inspectionId,
+            JDataInspection
+              { jDataInspectionEnt = inspectionEnt,
+                jDataInspectionTemperTypeEnt = temperTypeEnt,
+                jDataInspectionRunningTypeEnt = runningTypeEnt,
+                jDataInspectionSwarmingTypeEnt = swarmingTypeEnt,
+                jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId,
+                jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId,
+                jDataInspectionInspectionfileAddFormUrl = urlRenderer $ HiverecR $ AddInspectionfileFormR inspectionId,
+                jDataInspectionInspectionfiles = getInspectionfileJDatas inspectionfileEnts urlRenderer
+              }
+          )
+      )
+      inspectionEntTuples
 
 getInspectionfileJDatas :: [Entity Inspectionfile] -> (Route App -> Text) -> [JDataInspectionfile]
 getInspectionfileJDatas inspectionfileEnts urlRenderer =
   map
-  (\inspectionfileEnt@(Entity inspectionfileId _) ->
-      JDataInspectionfile
-      { jDataInspectionfileEnt = inspectionfileEnt
-      , jDataInspectionfileEditFormUrl = urlRenderer $ HiverecR $ EditInspectionfileFormR inspectionfileId
-      , jDataInspectionfileDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionfileFormR inspectionfileId
-      , jDataInspectionfileDownloadUrl = urlRenderer $ HiverecR $ DownloadInspectionfileR inspectionfileId
-      })
-  inspectionfileEnts
+    ( \inspectionfileEnt@(Entity inspectionfileId _) ->
+        JDataInspectionfile
+          { jDataInspectionfileEnt = inspectionfileEnt,
+            jDataInspectionfileEditFormUrl = urlRenderer $ HiverecR $ EditInspectionfileFormR inspectionfileId,
+            jDataInspectionfileDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionfileFormR inspectionfileId,
+            jDataInspectionfileDownloadUrl = urlRenderer $ HiverecR $ DownloadInspectionfileR inspectionfileId
+          }
+    )
+    inspectionfileEnts
 
 loadInspectionListTuples :: HiveId -> YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
 loadInspectionListTuples hiveId = do
@@ -210,8 +231,9 @@ loadInspectionListTuples hiveId = do
     E.where_ (h E.^. HiveId E.==. E.val hiveId)
     E.orderBy [E.asc (i E.^. InspectionDate)]
     return (i, tt, rt, st)
-  forM tuples
-    (\(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
+  forM
+    tuples
+    ( \(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
         inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
         return (inspectionEnt, tt, rt, st, inspectionfileEnts)
     )
@@ -222,10 +244,11 @@ loadInspectionListTuples hiveId = do
 
 -- gen data add - start
 data VAddHive = VAddHive
-  { vAddHiveName :: Text
-  , vAddHiveDescription :: Maybe Textarea
-  , vAddHiveIsDissolved :: Bool
+  { vAddHiveName :: Text,
+    vAddHiveDescription :: Maybe Textarea,
+    vAddHiveIsDissolved :: Bool
   }
+
 -- gen data add - end
 
 -- gen get add form - start
@@ -233,12 +256,14 @@ getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
   (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalAddHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddHiveR locationId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get add form - end
 
 -- gen post add form - start
@@ -251,42 +276,53 @@ postAddHiveR locationId = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let hive = Hive
-            {
-            hiveLocationId = locationId
-            , hiveName = vAddHiveName vAddHive
-            , hiveDescription = vAddHiveDescription vAddHive
-            , hiveIsDissolved = vAddHiveIsDissolved vAddHive
-            , hiveVersion = 1
-            , hiveCreatedAt = curTime
-            , hiveCreatedBy = userIdent authUser
-            , hiveUpdatedAt = curTime
-            , hiveUpdatedBy = userIdent authUser
-            }
+      let hive =
+            Hive
+              { hiveLocationId = locationId,
+                hiveName = vAddHiveName vAddHive,
+                hiveDescription = vAddHiveDescription vAddHive,
+                hiveIsDissolved = vAddHiveIsDissolved vAddHive,
+                hiveVersion = 1,
+                hiveCreatedAt = curTime,
+                hiveCreatedBy = userIdent authUser,
+                hiveUpdatedAt = curTime,
+                hiveUpdatedBy = userIdent authUser
+              }
       runDB $ do
         _ <- insert hive
         return ()
-      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId }
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR locationId}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $ VFormSubmitInvalid
-        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
+      returnJson $
+        VFormSubmitInvalid
+          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
+          }
+
 -- gen post add form - end
 
 -- gen add form - start
 vAddHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VAddHive, Widget)
 vAddHiveForm maybeHive extra = do
-  (nameResult, nameView) <- mreq textField
-    nameFs
-    (hiveName <$> maybeHive)
-  (descriptionResult, descriptionView) <- mopt textareaField
-    descriptionFs
-    (hiveDescription <$> maybeHive)
-  (isDissolvedResult, isDissolvedView) <- mreq checkBoxField
-    isDissolvedFs
-    (hiveIsDissolved <$> maybeHive)
+  (nameResult, nameView) <-
+    mreq
+      textField
+      nameFs
+      (hiveName <$> maybeHive)
+  (descriptionResult, descriptionView) <-
+    mopt
+      textareaField
+      descriptionFs
+      (hiveDescription <$> maybeHive)
+  (isDissolvedResult, isDissolvedView) <-
+    mreq
+      checkBoxField
+      isDissolvedFs
+      (hiveIsDissolved <$> maybeHive)
   let vAddHiveResult = VAddHive <$> nameResult <*> descriptionResult <*> isDissolvedResult
-  let formWidget = toWidget [whamlet|
+  let formWidget =
+        toWidget
+          [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
@@ -310,29 +346,33 @@ vAddHiveForm maybeHive extra = do
   return (vAddHiveResult, formWidget)
   where
     nameFs :: FieldSettings App
-    nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveName
-      , fsTooltip = Nothing
-      , fsId = Just "name"
-      , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
-      }
+    nameFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveName,
+          fsTooltip = Nothing,
+          fsId = Just "name",
+          fsName = Just "name",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
     descriptionFs :: FieldSettings App
-    descriptionFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveDescription
-      , fsTooltip = Nothing
-      , fsId = Just "description"
-      , fsName = Just "description"
-      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
-      }
+    descriptionFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveDescription,
+          fsTooltip = Nothing,
+          fsId = Just "description",
+          fsName = Just "description",
+          fsAttrs = [("class", "uk-textarea uk-form-small uk-form-width-large"), ("rows", "5")]
+        }
     isDissolvedFs :: FieldSettings App
-    isDissolvedFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveIsDissolved
-      , fsTooltip = Nothing
-      , fsId = Just "isDissolved"
-      , fsName = Just "isDissolved"
-      , fsAttrs = [ ("class","uk-checkbox") ]
-      }
+    isDissolvedFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveIsDissolved,
+          fsTooltip = Nothing,
+          fsId = Just "isDissolved",
+          fsName = Just "isDissolved",
+          fsAttrs = [("class", "uk-checkbox")]
+        }
+
 -- gen add form - end
 
 -------------------------------------------------------
@@ -341,12 +381,13 @@ vAddHiveForm maybeHive extra = do
 
 -- gen data edit - start
 data VEditHive = VEditHive
-  { vEditHiveLocationId :: LocationId
-  , vEditHiveName :: Text
-  , vEditHiveDescription :: Maybe Textarea
-  , vEditHiveIsDissolved :: Bool
-  , vEditHiveVersion :: Int
+  { vEditHiveLocationId :: LocationId,
+    vEditHiveName :: Text,
+    vEditHiveDescription :: Maybe Textarea,
+    vEditHiveIsDissolved :: Bool,
+    vEditHiveVersion :: Int
   }
+
 -- gen data edit - end
 
 -- gen get edit form - start
@@ -355,12 +396,14 @@ getEditHiveFormR hiveId = do
   hive <- runDB $ get404 hiveId
   (formWidget, _) <- generateFormPost $ vEditHiveForm (Just hive)
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalEditHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditHiveR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get edit form - end
 
 -- gen post edit form - start
@@ -373,50 +416,67 @@ postEditHiveR hiveId = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let persistFields = [
-            HiveLocationId =. vEditHiveLocationId vEditHive
-            , HiveName =. vEditHiveName vEditHive
-            , HiveDescription =. vEditHiveDescription vEditHive
-            , HiveIsDissolved =. vEditHiveIsDissolved vEditHive
-            , HiveVersion =. vEditHiveVersion vEditHive + 1
-            , HiveUpdatedAt =. curTime
-            , HiveUpdatedBy =. userIdent authUser
+      let persistFields =
+            [ HiveLocationId =. vEditHiveLocationId vEditHive,
+              HiveName =. vEditHiveName vEditHive,
+              HiveDescription =. vEditHiveDescription vEditHive,
+              HiveIsDissolved =. vEditHiveIsDissolved vEditHive,
+              HiveVersion =. vEditHiveVersion vEditHive + 1,
+              HiveUpdatedAt =. curTime,
+              HiveUpdatedBy =. userIdent authUser
             ]
       updateCount <- runDB $ do
-        uc <- updateWhereCount [ HiveId ==. hiveId
-                               , HiveVersion ==. vEditHiveVersion vEditHive
-                               ] persistFields
+        uc <-
+          updateWhereCount
+            [ HiveId ==. hiveId,
+              HiveVersion ==. vEditHiveVersion vEditHive
+            ]
+            persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId }
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $ VFormSubmitInvalid
-        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
+      returnJson $
+        VFormSubmitInvalid
+          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
+          }
 
 -- gen post edit form - end
 
 -- gen edit form - start
 vEditHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VEditHive, Widget)
 vEditHiveForm maybeHive extra = do
-  (locationIdResult, locationIdView) <- mreq locationSelectField
-    locationIdFs
-    (hiveLocationId <$> maybeHive)
-  (nameResult, nameView) <- mreq textField
-    nameFs
-    (hiveName <$> maybeHive)
-  (descriptionResult, descriptionView) <- mopt textareaField
-    descriptionFs
-    (hiveDescription <$> maybeHive)
-  (isDissolvedResult, isDissolvedView) <- mreq checkBoxField
-    isDissolvedFs
-    (hiveIsDissolved <$> maybeHive)
-  (versionResult, versionView) <- mreq hiddenField
-    versionFs
-    (hiveVersion <$> maybeHive)
+  (locationIdResult, locationIdView) <-
+    mreq
+      locationSelectField
+      locationIdFs
+      (hiveLocationId <$> maybeHive)
+  (nameResult, nameView) <-
+    mreq
+      textField
+      nameFs
+      (hiveName <$> maybeHive)
+  (descriptionResult, descriptionView) <-
+    mopt
+      textareaField
+      descriptionFs
+      (hiveDescription <$> maybeHive)
+  (isDissolvedResult, isDissolvedView) <-
+    mreq
+      checkBoxField
+      isDissolvedFs
+      (hiveIsDissolved <$> maybeHive)
+  (versionResult, versionView) <-
+    mreq
+      hiddenField
+      versionFs
+      (hiveVersion <$> maybeHive)
   let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> descriptionResult <*> isDissolvedResult <*> versionResult
-  let formWidget = toWidget [whamlet|
+  let formWidget =
+        toWidget
+          [whamlet|
     #{extra}
     ^{fvInput versionView}
     <div .uk-margin-small :not $ null $ fvErrors locationIdView:.uk-form-danger>
@@ -447,45 +507,51 @@ vEditHiveForm maybeHive extra = do
   return (vEditHiveResult, formWidget)
   where
     locationIdFs :: FieldSettings App
-    locationIdFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveLocationId
-      , fsTooltip = Nothing
-      , fsId = Just "locationId"
-      , fsName = Just "locationId"
-      , fsAttrs = [  ]
-      }
+    locationIdFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveLocationId,
+          fsTooltip = Nothing,
+          fsId = Just "locationId",
+          fsName = Just "locationId",
+          fsAttrs = []
+        }
     nameFs :: FieldSettings App
-    nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveName
-      , fsTooltip = Nothing
-      , fsId = Just "name"
-      , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
-      }
+    nameFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveName,
+          fsTooltip = Nothing,
+          fsId = Just "name",
+          fsName = Just "name",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
     descriptionFs :: FieldSettings App
-    descriptionFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveDescription
-      , fsTooltip = Nothing
-      , fsId = Just "description"
-      , fsName = Just "description"
-      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-form-width-large"), ("rows","5") ]
-      }
+    descriptionFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveDescription,
+          fsTooltip = Nothing,
+          fsId = Just "description",
+          fsName = Just "description",
+          fsAttrs = [("class", "uk-textarea uk-form-small uk-form-width-large"), ("rows", "5")]
+        }
     isDissolvedFs :: FieldSettings App
-    isDissolvedFs = FieldSettings
-      { fsLabel = SomeMessage MsgHiveIsDissolved
-      , fsTooltip = Nothing
-      , fsId = Just "isDissolved"
-      , fsName = Just "isDissolved"
-      , fsAttrs = [ ("class","uk-checkbox") ]
-      }
+    isDissolvedFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveIsDissolved,
+          fsTooltip = Nothing,
+          fsId = Just "isDissolved",
+          fsName = Just "isDissolved",
+          fsAttrs = [("class", "uk-checkbox")]
+        }
     versionFs :: FieldSettings App
-    versionFs = FieldSettings
-      { fsLabel = ""
-      , fsTooltip = Nothing
-      , fsId = Just "version"
-      , fsName = Just "version"
-      , fsAttrs = []
-      }
+    versionFs =
+      FieldSettings
+        { fsLabel = "",
+          fsTooltip = Nothing,
+          fsId = Just "version",
+          fsName = Just "version",
+          fsAttrs = []
+        }
+
 -- gen edit form - end
 
 -------------------------------------------------------
@@ -497,12 +563,14 @@ getDeleteHiveFormR :: HiveId -> Handler Html
 getDeleteHiveFormR hiveId = do
   (formWidget, _) <- generateFormPost $ vDeleteHiveForm
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalDeleteHive}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteHiveR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get delete form - end
 
 -- gen post delete form - start
@@ -511,7 +579,8 @@ postDeleteHiveR hiveId = do
   hive <- runDB $ get404 hiveId
   runDB $ delete hiveId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive }
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataJsonR $ hiveLocationId hive}
+
 -- gen post delete form - end
 
 -- gen delete form - start

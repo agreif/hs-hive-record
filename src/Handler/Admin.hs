@@ -1,17 +1,17 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Handler.Admin where
 
+import qualified Data.CaseInsensitive as CI
+import qualified Data.Text.Encoding as TE
+import qualified Database.Esqueleto as E
 import Handler.Common
 import Import
 import Text.Hamlet (hamletFile)
-import qualified Database.Esqueleto as E
-import qualified Data.Text.Encoding as TE
-import qualified Data.CaseInsensitive as CI
 
 getAdminHomeR :: Handler Html
 getAdminHomeR = do
@@ -35,56 +35,66 @@ getAdminPageDataJsonR = do
   jDataSwarmingTypes <- swarmingTypeListJDataEnts
   let pages =
         defaultDataPages
-        { jDataPageAdmin =
-            Just $ JDataPageAdmin
-            { jDataPageAdminUsers = jDataUsers
-            , jDataPageAdminConfigs = jDataConfigs
-            , jDataPageAdminTemperTypes = jDataTemperTypes
-            , jDataPageAdminRunningTypes = jDataRunningTypes
-            , jDataPageAdminSwarmingTypes = jDataSwarmingTypes
-            }
-        }
+          { jDataPageAdmin =
+              Just $
+                JDataPageAdmin
+                  { jDataPageAdminUsers = jDataUsers,
+                    jDataPageAdminConfigs = jDataConfigs,
+                    jDataPageAdminTemperTypes = jDataTemperTypes,
+                    jDataPageAdminRunningTypes = jDataRunningTypes,
+                    jDataPageAdminSwarmingTypes = jDataSwarmingTypes
+                  }
+          }
   msgHome <- localizedMsg MsgGlobalHome
   msgAdmin <- localizedMsg MsgGlobalAdmin
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ AdminR AdminPageDataJsonR
-  returnJson JData
-    { jDataAppName = appName
-    , jDataUserIdent = userIdent user
-    , jDataMainNavItems = mainNavItems
-    , jDataSubNavItems = []
-    , jDataPages = pages
-    , jDataHistoryState = Just JDataHistoryState
-      { jDataHistoryStateUrl = urlRenderer $ AdminR AdminHomeR
-      , jDataHistoryStateTitle = msgAdmin
+  returnJson
+    JData
+      { jDataAppName = appName,
+        jDataUserIdent = userIdent user,
+        jDataMainNavItems = mainNavItems,
+        jDataSubNavItems = [],
+        jDataPages = pages,
+        jDataHistoryState =
+          Just
+            JDataHistoryState
+              { jDataHistoryStateUrl = urlRenderer $ AdminR AdminHomeR,
+                jDataHistoryStateTitle = msgAdmin
+              },
+        jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfToken = reqToken req,
+        jDataBreadcrumbItems =
+          [ JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgHome,
+                jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR
+              },
+            JDataBreadcrumbItem
+              { jDataBreadcrumbItemLabel = msgAdmin,
+                jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl
+              }
+          ],
+        jDataCurrentLanguage = currentLanguage,
+        jDataTranslation = translation,
+        jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl,
+        jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
-    , jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName
-    , jDataCsrfToken = reqToken req
-    , jDataBreadcrumbItems = [ JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgHome
-                               , jDataBreadcrumbItemDataUrl = urlRenderer $ HiverecR HomePageDataJsonR }
-                             , JDataBreadcrumbItem
-                               { jDataBreadcrumbItemLabel = msgAdmin
-                               , jDataBreadcrumbItemDataUrl = currentPageDataJsonUrl }
-                             ]
-    , jDataCurrentLanguage = currentLanguage
-    , jDataTranslation = translation
-    , jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl
-    , jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
-    }
 
 userListJDataEnts :: Handler [JDataUser]
 userListJDataEnts = do
   urlRenderer <- getUrlRender
   userTuples <- runDB loadUserListTuples
-  let jUserList = map (\userEnt@(Entity userId _) ->
-                           JDataUser
-                           { jDataUserEnt = userEnt
-                           , jDataUserEditFormUrl = urlRenderer $ AdminR $ EditUserFormR userId
-                           , jDataUserDeleteFormUrl = urlRenderer $ AdminR $ DeleteUserFormR userId
-                           }
-                        ) userTuples
+  let jUserList =
+        map
+          ( \userEnt@(Entity userId _) ->
+              JDataUser
+                { jDataUserEnt = userEnt,
+                  jDataUserEditFormUrl = urlRenderer $ AdminR $ EditUserFormR userId,
+                  jDataUserDeleteFormUrl = urlRenderer $ AdminR $ DeleteUserFormR userId
+                }
+          )
+          userTuples
   return jUserList
 
 loadUserListTuples :: YesodDB App [Entity User]
@@ -97,12 +107,15 @@ configListJDataEnts :: Handler [JDataConfig]
 configListJDataEnts = do
   urlRenderer <- getUrlRender
   configTuples <- runDB loadConfigListTuples
-  let jConfigList = map (\configEnt@(Entity configId _) ->
-                           JDataConfig
-                           { jDataConfigEnt = configEnt
-                           , jDataConfigEditFormUrl = urlRenderer $ AdminR $ EditConfigFormR configId
-                           }
-                        ) configTuples
+  let jConfigList =
+        map
+          ( \configEnt@(Entity configId _) ->
+              JDataConfig
+                { jDataConfigEnt = configEnt,
+                  jDataConfigEditFormUrl = urlRenderer $ AdminR $ EditConfigFormR configId
+                }
+          )
+          configTuples
   return jConfigList
 
 loadConfigListTuples :: YesodDB App [Entity Config]
@@ -115,13 +128,16 @@ temperTypeListJDataEnts :: Handler [JDataTemperType]
 temperTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   temperTypeTuples <- runDB loadTemperTypeListTuples
-  let jTemperTypeList = map (\temperTypeEnt@(Entity temperTypeId _) ->
-                                JDataTemperType
-                                { jDataTemperTypeEnt = temperTypeEnt
-                                , jDataTemperTypeEditFormUrl = urlRenderer $ AdminR $ EditTemperTypeFormR temperTypeId
-                                , jDataTemperTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteTemperTypeFormR temperTypeId
-                                }
-                              ) temperTypeTuples
+  let jTemperTypeList =
+        map
+          ( \temperTypeEnt@(Entity temperTypeId _) ->
+              JDataTemperType
+                { jDataTemperTypeEnt = temperTypeEnt,
+                  jDataTemperTypeEditFormUrl = urlRenderer $ AdminR $ EditTemperTypeFormR temperTypeId,
+                  jDataTemperTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteTemperTypeFormR temperTypeId
+                }
+          )
+          temperTypeTuples
   return jTemperTypeList
 
 loadTemperTypeListTuples :: YesodDB App [Entity TemperType]
@@ -134,13 +150,16 @@ runningTypeListJDataEnts :: Handler [JDataRunningType]
 runningTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   runningTypeTuples <- runDB loadRunningTypeListTuples
-  let jRunningTypeList = map (\runningTypeEnt@(Entity runningTypeId _) ->
-                                JDataRunningType
-                                { jDataRunningTypeEnt = runningTypeEnt
-                                , jDataRunningTypeEditFormUrl = urlRenderer $ AdminR $ EditRunningTypeFormR runningTypeId
-                                , jDataRunningTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteRunningTypeFormR runningTypeId
-                                }
-                              ) runningTypeTuples
+  let jRunningTypeList =
+        map
+          ( \runningTypeEnt@(Entity runningTypeId _) ->
+              JDataRunningType
+                { jDataRunningTypeEnt = runningTypeEnt,
+                  jDataRunningTypeEditFormUrl = urlRenderer $ AdminR $ EditRunningTypeFormR runningTypeId,
+                  jDataRunningTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteRunningTypeFormR runningTypeId
+                }
+          )
+          runningTypeTuples
   return jRunningTypeList
 
 loadRunningTypeListTuples :: YesodDB App [Entity RunningType]
@@ -153,13 +172,16 @@ swarmingTypeListJDataEnts :: Handler [JDataSwarmingType]
 swarmingTypeListJDataEnts = do
   urlRenderer <- getUrlRender
   swarmingTypeTuples <- runDB loadSwarmingTypeListTuples
-  let jSwarmingTypeList = map (\swarmingTypeEnt@(Entity swarmingTypeId _) ->
-                                  JDataSwarmingType
-                                  { jDataSwarmingTypeEnt = swarmingTypeEnt
-                                  , jDataSwarmingTypeEditFormUrl = urlRenderer $ AdminR $ EditSwarmingTypeFormR swarmingTypeId
-                                  , jDataSwarmingTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteSwarmingTypeFormR swarmingTypeId
-                                  }
-                              ) swarmingTypeTuples
+  let jSwarmingTypeList =
+        map
+          ( \swarmingTypeEnt@(Entity swarmingTypeId _) ->
+              JDataSwarmingType
+                { jDataSwarmingTypeEnt = swarmingTypeEnt,
+                  jDataSwarmingTypeEditFormUrl = urlRenderer $ AdminR $ EditSwarmingTypeFormR swarmingTypeId,
+                  jDataSwarmingTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteSwarmingTypeFormR swarmingTypeId
+                }
+          )
+          swarmingTypeTuples
   return jSwarmingTypeList
 
 loadSwarmingTypeListTuples :: YesodDB App [Entity SwarmingType]

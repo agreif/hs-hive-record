@@ -1,412 +1,452 @@
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude     #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE QuasiQuotes           #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE DeriveGeneric         #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Handler.Common where
 
-import Data.FileEmbed (embedFile)
-import Import
-import qualified Crypto.PasswordStore as Crypto
-import qualified Data.ByteString.Char8 as BSC
 import Control.Monad.Random
+import qualified Crypto.PasswordStore as Crypto
+import qualified Data.ByteString as B
+import qualified Data.ByteString.Char8 as BSC
 import qualified Data.Char as C
+import qualified Data.Conduit.Binary as CB
+import Data.FileEmbed (embedFile)
 import qualified Data.List as L
 import qualified Data.Text as T
-import Text.Printf
-import qualified Data.Conduit.Binary as CB
-import qualified Data.ByteString as B
 import Data.Time
 import qualified Database.Esqueleto as E
+import Import
+import Text.Printf
 
 -- These handlers embed files in the executable at compile time to avoid a
 -- runtime dependency, and for efficiency.
 
 getFaviconR :: Handler TypedContent
-getFaviconR = do cacheSeconds $ 60 * 60 * 24 * 30 -- cache for a month
-                 return $ TypedContent "image/x-icon"
-                        $ toContent $(embedFile "config/favicon.ico")
+getFaviconR = do
+  cacheSeconds $ 60 * 60 * 24 * 30 -- cache for a month
+  return $ TypedContent "image/x-icon" $
+    toContent $(embedFile "config/favicon.ico")
 
 getRobotsR :: Handler TypedContent
-getRobotsR = return $ TypedContent typePlain
-                    $ toContent $(embedFile "config/robots.txt")
-
+getRobotsR =
+  return $ TypedContent typePlain $
+    toContent $(embedFile "config/robots.txt")
 
 data VPostSubmitSuccess = VPostSubmitSuccess
   { fsPostSuccessDataJsonUrl :: Text
   }
+
 instance ToJSON VPostSubmitSuccess where
-  toJSON o = object
-    [ "dataJsonUrl" .= fsPostSuccessDataJsonUrl o
-    ]
+  toJSON o =
+    object
+      [ "dataJsonUrl" .= fsPostSuccessDataJsonUrl o
+      ]
 
 data VFormSubmitSuccess = VFormSubmitSuccess
   { fsSuccessDataJsonUrl :: Text
   }
+
 instance ToJSON VFormSubmitSuccess where
-  toJSON o = object
-    [ "isFormValid" .= True
-    , "dataJsonUrl" .= fsSuccessDataJsonUrl o
-    ]
+  toJSON o =
+    object
+      [ "isFormValid" .= True,
+        "dataJsonUrl" .= fsSuccessDataJsonUrl o
+      ]
 
 data VFormSubmitInvalid = VFormSubmitInvalid
   { fsInvalidModalWidgetHtml :: Text
   }
+
 instance ToJSON VFormSubmitInvalid where
-  toJSON o = object
-    [ "modalWidgetHtml" .= fsInvalidModalWidgetHtml o
-    ]
+  toJSON o =
+    object
+      [ "modalWidgetHtml" .= fsInvalidModalWidgetHtml o
+      ]
 
 data VFormSubmitStale = VFormSubmitStale
   { fsStaleDataJsonUrl :: Text
   }
-instance ToJSON VFormSubmitStale where
-  toJSON o = object
-    [ "isStaleObjectState" .= True
-    , "dataJsonUrl" .= fsStaleDataJsonUrl o
-    ]
 
+instance ToJSON VFormSubmitStale where
+  toJSON o =
+    object
+      [ "isStaleObjectState" .= True,
+        "dataJsonUrl" .= fsStaleDataJsonUrl o
+      ]
 
 data JData = JData
-  { jDataAppName :: Text
-  , jDataUserIdent :: Text
-  , jDataMainNavItems :: [JDataNavItem]
-  , jDataSubNavItems :: [JDataNavItem]
-  , jDataPages :: JDataPages
-  , jDataHistoryState :: Maybe JDataHistoryState
-  , jDataCsrfToken :: Maybe Text
-  , jDataCsrfHeaderName :: Text
-  , jDataBreadcrumbItems :: [JDataBreadcrumbItem]
-  , jDataCurrentLanguage :: Language
-  , jDataTranslation :: Translation
-  , jDataLanguageDeUrl :: Text
-  , jDataLanguageEnUrl :: Text
+  { jDataAppName :: Text,
+    jDataUserIdent :: Text,
+    jDataMainNavItems :: [JDataNavItem],
+    jDataSubNavItems :: [JDataNavItem],
+    jDataPages :: JDataPages,
+    jDataHistoryState :: Maybe JDataHistoryState,
+    jDataCsrfToken :: Maybe Text,
+    jDataCsrfHeaderName :: Text,
+    jDataBreadcrumbItems :: [JDataBreadcrumbItem],
+    jDataCurrentLanguage :: Language,
+    jDataTranslation :: Translation,
+    jDataLanguageDeUrl :: Text,
+    jDataLanguageEnUrl :: Text
   }
+
 instance ToJSON JData where
-  toJSON o = object
-    [ "appName" .= jDataAppName o
-    , "userIdent" .= jDataUserIdent o
-    , "mainNavItems" .= jDataMainNavItems o
-    , "subNavItems" .= jDataSubNavItems o
-    , "pages" .= jDataPages o
-    , "historyState" .= jDataHistoryState o
-    , "csrfHeaderName" .= jDataCsrfHeaderName o
-    , "csrfToken" .= jDataCsrfToken o
-    , "breadcrumbItems" .= jDataBreadcrumbItems o
-    , "currentLanguage" .= jDataCurrentLanguage o
-    , "translation" .= jDataTranslation o
-    , "languageDeUrl" .= jDataLanguageDeUrl o
-    , "languageEnUrl" .= jDataLanguageEnUrl o
-    ]
+  toJSON o =
+    object
+      [ "appName" .= jDataAppName o,
+        "userIdent" .= jDataUserIdent o,
+        "mainNavItems" .= jDataMainNavItems o,
+        "subNavItems" .= jDataSubNavItems o,
+        "pages" .= jDataPages o,
+        "historyState" .= jDataHistoryState o,
+        "csrfHeaderName" .= jDataCsrfHeaderName o,
+        "csrfToken" .= jDataCsrfToken o,
+        "breadcrumbItems" .= jDataBreadcrumbItems o,
+        "currentLanguage" .= jDataCurrentLanguage o,
+        "translation" .= jDataTranslation o,
+        "languageDeUrl" .= jDataLanguageDeUrl o,
+        "languageEnUrl" .= jDataLanguageEnUrl o
+      ]
 
 data JDataNavItem = JDataNavItem
-  { jDataNavItemId :: Maybe Text
-  , jDataNavItemLabel :: Text
-  , jDataNavItemIsActive :: Bool
-  , jDataNavItemUrl :: Maybe Text
-  , jDataNavItemDataUrl :: Maybe Text
-  , jDataNavItemBadge :: Maybe Text
-  , jDataNavItemDropdownItems :: Maybe [JDataNavItem]
+  { jDataNavItemId :: Maybe Text,
+    jDataNavItemLabel :: Text,
+    jDataNavItemIsActive :: Bool,
+    jDataNavItemUrl :: Maybe Text,
+    jDataNavItemDataUrl :: Maybe Text,
+    jDataNavItemBadge :: Maybe Text,
+    jDataNavItemDropdownItems :: Maybe [JDataNavItem]
   }
-instance ToJSON JDataNavItem where
-  toJSON o = object
-    [ "id" .= jDataNavItemId o
-    , "label" .= jDataNavItemLabel o
-    , "isActive" .= jDataNavItemIsActive o
-    , "url" .= jDataNavItemUrl o
-    , "dataUrl" .= jDataNavItemDataUrl o
-    , "badge" .= jDataNavItemBadge o
-    , "dropdownItems" .= jDataNavItemDropdownItems o
-    ]
 
+instance ToJSON JDataNavItem where
+  toJSON o =
+    object
+      [ "id" .= jDataNavItemId o,
+        "label" .= jDataNavItemLabel o,
+        "isActive" .= jDataNavItemIsActive o,
+        "url" .= jDataNavItemUrl o,
+        "dataUrl" .= jDataNavItemDataUrl o,
+        "badge" .= jDataNavItemBadge o,
+        "dropdownItems" .= jDataNavItemDropdownItems o
+      ]
 
 data JDataBreadcrumbItem = JDataBreadcrumbItem
-  { jDataBreadcrumbItemLabel :: Text
-  , jDataBreadcrumbItemDataUrl :: Text
+  { jDataBreadcrumbItemLabel :: Text,
+    jDataBreadcrumbItemDataUrl :: Text
   }
-instance ToJSON JDataBreadcrumbItem where
-  toJSON o = object
-    [ "label" .= jDataBreadcrumbItemLabel o
-    , "dataUrl" .= jDataBreadcrumbItemDataUrl o
-    ]
 
+instance ToJSON JDataBreadcrumbItem where
+  toJSON o =
+    object
+      [ "label" .= jDataBreadcrumbItemLabel o,
+        "dataUrl" .= jDataBreadcrumbItemDataUrl o
+      ]
 
 data JDataHistoryState = JDataHistoryState
-  { jDataHistoryStateUrl :: Text
-  , jDataHistoryStateTitle :: Text
+  { jDataHistoryStateUrl :: Text,
+    jDataHistoryStateTitle :: Text
   }
+
 instance ToJSON JDataHistoryState where
-  toJSON o = object
-    [ "url" .= jDataHistoryStateUrl o
-    , "title" .= jDataHistoryStateTitle o
-    ]
+  toJSON o =
+    object
+      [ "url" .= jDataHistoryStateUrl o,
+        "title" .= jDataHistoryStateTitle o
+      ]
 
 instance ToJSON User where
-  toJSON o = object
-    [ "ident" .= userIdent o
-    , "email" .= userEmail o
-    , "isAdmin" .= userIsAdmin o
-    ]
+  toJSON o =
+    object
+      [ "ident" .= userIdent o,
+        "email" .= userEmail o,
+        "isAdmin" .= userIsAdmin o
+      ]
 
 data JDataPages = JDataPages
-  { jDataPageHome :: Maybe JDataPageHome
-  , jDataPageAdmin :: Maybe JDataPageAdmin
-  , jDataPageLocationList :: Maybe JDataPageLocationList
-  , jDataPageLocationDetail :: Maybe JDataPageLocationDetail
-  , jDataPageHiveOverview :: Maybe JDataPageHiveOverview
-  , jDataPageHiveDetail :: Maybe JDataPageHiveDetail
+  { jDataPageHome :: Maybe JDataPageHome,
+    jDataPageAdmin :: Maybe JDataPageAdmin,
+    jDataPageLocationList :: Maybe JDataPageLocationList,
+    jDataPageLocationDetail :: Maybe JDataPageLocationDetail,
+    jDataPageHiveOverview :: Maybe JDataPageHiveOverview,
+    jDataPageHiveDetail :: Maybe JDataPageHiveDetail
   }
+
 instance ToJSON JDataPages where
-  toJSON o = object
-    [ "home" .= jDataPageHome o
-    , "admin" .= jDataPageAdmin o
-    , "locationList" .= jDataPageLocationList o
-    , "locationDetail" .= jDataPageLocationDetail o
-    , "hiveOverview" .= jDataPageHiveOverview o
-    , "hiveDetail" .= jDataPageHiveDetail o
-    ]
+  toJSON o =
+    object
+      [ "home" .= jDataPageHome o,
+        "admin" .= jDataPageAdmin o,
+        "locationList" .= jDataPageLocationList o,
+        "locationDetail" .= jDataPageLocationDetail o,
+        "hiveOverview" .= jDataPageHiveOverview o,
+        "hiveDetail" .= jDataPageHiveDetail o
+      ]
 
 defaultDataPages :: JDataPages
-defaultDataPages = JDataPages
-  { jDataPageHome = Nothing
-  , jDataPageAdmin = Nothing
-  , jDataPageLocationList = Nothing
-  , jDataPageLocationDetail = Nothing
-  , jDataPageHiveOverview = Nothing
-  , jDataPageHiveDetail = Nothing
-  }
-
+defaultDataPages =
+  JDataPages
+    { jDataPageHome = Nothing,
+      jDataPageAdmin = Nothing,
+      jDataPageLocationList = Nothing,
+      jDataPageLocationDetail = Nothing,
+      jDataPageHiveOverview = Nothing,
+      jDataPageHiveDetail = Nothing
+    }
 
 data JDataPageHome = JDataPageHome
   { jDataPageHomeContent :: Text
   }
-instance ToJSON JDataPageHome where
-  toJSON o = object
-    [ "content" .= jDataPageHomeContent o
-    ]
 
+instance ToJSON JDataPageHome where
+  toJSON o =
+    object
+      [ "content" .= jDataPageHomeContent o
+      ]
 
 data JDataPageAdmin = JDataPageAdmin
-  { jDataPageAdminUsers :: [JDataUser]
-  , jDataPageAdminConfigs :: [JDataConfig]
-  , jDataPageAdminTemperTypes :: [JDataTemperType]
-  , jDataPageAdminRunningTypes :: [JDataRunningType]
-  , jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
+  { jDataPageAdminUsers :: [JDataUser],
+    jDataPageAdminConfigs :: [JDataConfig],
+    jDataPageAdminTemperTypes :: [JDataTemperType],
+    jDataPageAdminRunningTypes :: [JDataRunningType],
+    jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
   }
-instance ToJSON JDataPageAdmin where
-  toJSON o = object
-    [ "users" .= jDataPageAdminUsers o
-    , "configs" .= jDataPageAdminConfigs o
-    , "temperTypes" .= jDataPageAdminTemperTypes o
-    , "runningTypes" .= jDataPageAdminRunningTypes o
-    , "swarmingTypes" .= jDataPageAdminSwarmingTypes o
-    ]
 
+instance ToJSON JDataPageAdmin where
+  toJSON o =
+    object
+      [ "users" .= jDataPageAdminUsers o,
+        "configs" .= jDataPageAdminConfigs o,
+        "temperTypes" .= jDataPageAdminTemperTypes o,
+        "runningTypes" .= jDataPageAdminRunningTypes o,
+        "swarmingTypes" .= jDataPageAdminSwarmingTypes o
+      ]
 
 data JDataUser = JDataUser
-  { jDataUserEnt :: Entity User
-  , jDataUserEditFormUrl :: Text
-  , jDataUserDeleteFormUrl :: Text
+  { jDataUserEnt :: Entity User,
+    jDataUserEditFormUrl :: Text,
+    jDataUserDeleteFormUrl :: Text
   }
-instance ToJSON JDataUser where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataUserEnt o)
-    , "editFormUrl" .= jDataUserEditFormUrl o
-    , "deleteFormUrl" .= jDataUserDeleteFormUrl o
-    ]
 
+instance ToJSON JDataUser where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataUserEnt o),
+        "editFormUrl" .= jDataUserEditFormUrl o,
+        "deleteFormUrl" .= jDataUserDeleteFormUrl o
+      ]
 
 data JDataConfig = JDataConfig
-  { jDataConfigEnt :: Entity Config
-  , jDataConfigEditFormUrl :: Text
+  { jDataConfigEnt :: Entity Config,
+    jDataConfigEditFormUrl :: Text
   }
+
 instance ToJSON JDataConfig where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataConfigEnt o)
-    , "editFormUrl" .= jDataConfigEditFormUrl o
-    ]
-
-
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataConfigEnt o),
+        "editFormUrl" .= jDataConfigEditFormUrl o
+      ]
 
 data JDataPageLocationList = JDataPageLocationList
   { jDataPageLocationListLocations :: [JDataLocation]
   }
+
 instance ToJSON JDataPageLocationList where
-  toJSON o = object
-    [ "locations" .= jDataPageLocationListLocations o
-    ]
+  toJSON o =
+    object
+      [ "locations" .= jDataPageLocationListLocations o
+      ]
+
 data JDataLocation = JDataLocation
-  { jDataLocationEnt :: Entity Location
-  , jDataLocationDetailUrl :: Text
-  , jDataLocationDetailDataUrl :: Text
-  , jDataLocationDeleteFormUrl :: Text
+  { jDataLocationEnt :: Entity Location,
+    jDataLocationDetailUrl :: Text,
+    jDataLocationDetailDataUrl :: Text,
+    jDataLocationDeleteFormUrl :: Text
   }
+
 instance ToJSON JDataLocation where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataLocationEnt o)
-    , "detailUrl" .= jDataLocationDetailUrl o
-    , "detailDataUrl" .= jDataLocationDetailDataUrl o
-    , "deleteFormUrl" .= jDataLocationDeleteFormUrl o
-    ]
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataLocationEnt o),
+        "detailUrl" .= jDataLocationDetailUrl o,
+        "detailDataUrl" .= jDataLocationDetailDataUrl o,
+        "deleteFormUrl" .= jDataLocationDeleteFormUrl o
+      ]
 
 data JDataPageLocationDetail = JDataPageLocationDetail
-  { jDataPageLocationDetailLocationEnt :: Entity Location
-  , jDataPageLocationDetailLocationEditFormUrl :: Text
-  , jDataPageCustomerDetailHives :: [JDataHiveDetail]
-  , jDataPageCustomerDetailHiveAddFormUrl :: Text
+  { jDataPageLocationDetailLocationEnt :: Entity Location,
+    jDataPageLocationDetailLocationEditFormUrl :: Text,
+    jDataPageCustomerDetailHives :: [JDataHiveDetail],
+    jDataPageCustomerDetailHiveAddFormUrl :: Text
   }
+
 instance ToJSON JDataPageLocationDetail where
-  toJSON o = object
-    [ "locationEnt" .= jDataPageLocationDetailLocationEnt o
-    , "locationEditFormUrl" .= jDataPageLocationDetailLocationEditFormUrl o
-    , "hives" .= jDataPageCustomerDetailHives o
-    , "hiveAddFormUrl" .= jDataPageCustomerDetailHiveAddFormUrl o
-    ]
+  toJSON o =
+    object
+      [ "locationEnt" .= jDataPageLocationDetailLocationEnt o,
+        "locationEditFormUrl" .= jDataPageLocationDetailLocationEditFormUrl o,
+        "hives" .= jDataPageCustomerDetailHives o,
+        "hiveAddFormUrl" .= jDataPageCustomerDetailHiveAddFormUrl o
+      ]
 
 data JDataHiveDetail = JDataHiveDetail
-  { jDataHiveDetailHiveEnt :: Entity Hive
-  , jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection)
-  , jDataHiveDetailUrl :: Text
-  , jDataHiveDetailDataUrl :: Text
-  , jDataHiveDeleteFormUrl :: Text
+  { jDataHiveDetailHiveEnt :: Entity Hive,
+    jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection),
+    jDataHiveDetailUrl :: Text,
+    jDataHiveDetailDataUrl :: Text,
+    jDataHiveDeleteFormUrl :: Text
   }
-instance ToJSON JDataHiveDetail where
-  toJSON o = object
-    [ "hiveEnt" .= entityIdToJSON (jDataHiveDetailHiveEnt o)
-    , "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o
-    , "detailUrl" .= jDataHiveDetailUrl o
-    , "detailDataUrl" .= jDataHiveDetailDataUrl o
-    , "deleteFormUrl" .= jDataHiveDeleteFormUrl o
-    ]
 
+instance ToJSON JDataHiveDetail where
+  toJSON o =
+    object
+      [ "hiveEnt" .= entityIdToJSON (jDataHiveDetailHiveEnt o),
+        "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o,
+        "detailUrl" .= jDataHiveDetailUrl o,
+        "detailDataUrl" .= jDataHiveDetailDataUrl o,
+        "deleteFormUrl" .= jDataHiveDeleteFormUrl o
+      ]
 
 data JDataPageHiveDetail = JDataPageHiveDetail
-  { jDataPageHiveDetailHiveEnt :: Entity Hive
-  , jDataPageHiveDetailHiveEditFormUrl :: Text
-  , jDataPageHiveDetailInspections :: [JDataInspection]
-  , jDataPageHiveDetailInspectionAddFormUrl :: Text
+  { jDataPageHiveDetailHiveEnt :: Entity Hive,
+    jDataPageHiveDetailHiveEditFormUrl :: Text,
+    jDataPageHiveDetailInspections :: [JDataInspection],
+    jDataPageHiveDetailInspectionAddFormUrl :: Text
   }
+
 instance ToJSON JDataPageHiveDetail where
-  toJSON o = object
-    [ "hiveEnt" .= jDataPageHiveDetailHiveEnt o
-    , "hiveEditFormUrl" .= jDataPageHiveDetailHiveEditFormUrl o
-    , "inspections" .= jDataPageHiveDetailInspections o
-    , "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o
-    ]
+  toJSON o =
+    object
+      [ "hiveEnt" .= jDataPageHiveDetailHiveEnt o,
+        "hiveEditFormUrl" .= jDataPageHiveDetailHiveEditFormUrl o,
+        "inspections" .= jDataPageHiveDetailInspections o,
+        "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o
+      ]
 
 data JDataInspection = JDataInspection
-  { jDataInspectionEnt :: Entity Inspection
-  , jDataInspectionTemperTypeEnt :: Entity TemperType
-  , jDataInspectionRunningTypeEnt :: Entity RunningType
-  , jDataInspectionSwarmingTypeEnt :: Entity SwarmingType
-  , jDataInspectionEditFormUrl :: Text
-  , jDataInspectionDeleteFormUrl :: Text
-  , jDataInspectionInspectionfileAddFormUrl :: Text
-  , jDataInspectionInspectionfiles :: [JDataInspectionfile]
+  { jDataInspectionEnt :: Entity Inspection,
+    jDataInspectionTemperTypeEnt :: Entity TemperType,
+    jDataInspectionRunningTypeEnt :: Entity RunningType,
+    jDataInspectionSwarmingTypeEnt :: Entity SwarmingType,
+    jDataInspectionEditFormUrl :: Text,
+    jDataInspectionDeleteFormUrl :: Text,
+    jDataInspectionInspectionfileAddFormUrl :: Text,
+    jDataInspectionInspectionfiles :: [JDataInspectionfile]
   }
-instance ToJSON JDataInspection where
-  toJSON o = object
-    [ "inspectionEnt" .= entityIdToJSON (jDataInspectionEnt o)
-    , "temperTypeEnt" .= entityIdToJSON (jDataInspectionTemperTypeEnt o)
-    , "runningTypeEnt" .= entityIdToJSON (jDataInspectionRunningTypeEnt o)
-    , "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o)
-    , "editFormUrl" .= jDataInspectionEditFormUrl o
-    , "deleteFormUrl" .= jDataInspectionDeleteFormUrl o
-    , "inspectionfileAddFormUrl" .= jDataInspectionInspectionfileAddFormUrl o
-    , "inspectionfiles" .= jDataInspectionInspectionfiles o
-    ]
-data JDataInspectionfile = JDataInspectionfile
-  { jDataInspectionfileEnt :: Entity Inspectionfile
-  , jDataInspectionfileEditFormUrl :: Text
-  , jDataInspectionfileDeleteFormUrl :: Text
-  , jDataInspectionfileDownloadUrl :: Text
-  }
-instance ToJSON JDataInspectionfile where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataInspectionfileEnt o)
-    , "editFormUrl" .= jDataInspectionfileEditFormUrl o
-    , "deleteFormUrl" .= jDataInspectionfileDeleteFormUrl o
-    , "downloadUrl" .= jDataInspectionfileDownloadUrl o
-    ]
 
+instance ToJSON JDataInspection where
+  toJSON o =
+    object
+      [ "inspectionEnt" .= entityIdToJSON (jDataInspectionEnt o),
+        "temperTypeEnt" .= entityIdToJSON (jDataInspectionTemperTypeEnt o),
+        "runningTypeEnt" .= entityIdToJSON (jDataInspectionRunningTypeEnt o),
+        "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o),
+        "editFormUrl" .= jDataInspectionEditFormUrl o,
+        "deleteFormUrl" .= jDataInspectionDeleteFormUrl o,
+        "inspectionfileAddFormUrl" .= jDataInspectionInspectionfileAddFormUrl o,
+        "inspectionfiles" .= jDataInspectionInspectionfiles o
+      ]
+
+data JDataInspectionfile = JDataInspectionfile
+  { jDataInspectionfileEnt :: Entity Inspectionfile,
+    jDataInspectionfileEditFormUrl :: Text,
+    jDataInspectionfileDeleteFormUrl :: Text,
+    jDataInspectionfileDownloadUrl :: Text
+  }
+
+instance ToJSON JDataInspectionfile where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataInspectionfileEnt o),
+        "editFormUrl" .= jDataInspectionfileEditFormUrl o,
+        "deleteFormUrl" .= jDataInspectionfileDeleteFormUrl o,
+        "downloadUrl" .= jDataInspectionfileDownloadUrl o
+      ]
 
 newtype JDataPageHiveOverview = JDataPageHiveOverview
   { jDataPageHiveOverviewHives :: [JDataHiveOverviewHive]
   }
+
 instance ToJSON JDataPageHiveOverview where
-  toJSON o = object
-    [ "hives" .= jDataPageHiveOverviewHives o
-    ]
+  toJSON o =
+    object
+      [ "hives" .= jDataPageHiveOverviewHives o
+      ]
 
 data JDataHiveOverviewHive = JDataHiveOverviewHive
-  { jDataHiveOverviewHiveEnt :: Entity Hive
-  , jDataHiveOverviewHiveInspections :: [JDataHiveOverviewHiveInspection]
-  , jDataHiveOverviewInspectionAddFormUrl :: Text
-  , jDataHiveOverviewHiveDetailDataUrl :: Text
+  { jDataHiveOverviewHiveEnt :: Entity Hive,
+    jDataHiveOverviewHiveInspections :: [JDataHiveOverviewHiveInspection],
+    jDataHiveOverviewInspectionAddFormUrl :: Text,
+    jDataHiveOverviewHiveDetailDataUrl :: Text
   }
+
 instance ToJSON JDataHiveOverviewHive where
-  toJSON o = object
-    [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o)
-    , "inspections" .= jDataHiveOverviewHiveInspections o
-    , "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o
-    , "hiveDetailDataUrl" .= jDataHiveOverviewHiveDetailDataUrl o
-    ]
+  toJSON o =
+    object
+      [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o),
+        "inspections" .= jDataHiveOverviewHiveInspections o,
+        "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o,
+        "hiveDetailDataUrl" .= jDataHiveOverviewHiveDetailDataUrl o
+      ]
 
 data JDataHiveOverviewHiveInspection = JDataHiveOverviewHiveInspection
-  { jDataHiveOverviewHiveInspection :: JDataInspection
-  , jDataHiveOverviewHiveInspectionEditFormUrl :: Text
+  { jDataHiveOverviewHiveInspection :: JDataInspection,
+    jDataHiveOverviewHiveInspectionEditFormUrl :: Text
   }
-instance ToJSON JDataHiveOverviewHiveInspection where
-  toJSON o = object
-    [ "inspectionEditFormUrl" .= jDataHiveOverviewHiveInspectionEditFormUrl o
-    , "inspection" .= jDataHiveOverviewHiveInspection o
-    ]
 
+instance ToJSON JDataHiveOverviewHiveInspection where
+  toJSON o =
+    object
+      [ "inspectionEditFormUrl" .= jDataHiveOverviewHiveInspectionEditFormUrl o,
+        "inspection" .= jDataHiveOverviewHiveInspection o
+      ]
 
 data JDataTemperType = JDataTemperType
-  { jDataTemperTypeEnt :: Entity TemperType
-  , jDataTemperTypeEditFormUrl :: Text
-  , jDataTemperTypeDeleteFormUrl :: Text
+  { jDataTemperTypeEnt :: Entity TemperType,
+    jDataTemperTypeEditFormUrl :: Text,
+    jDataTemperTypeDeleteFormUrl :: Text
   }
-instance ToJSON JDataTemperType where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o)
-    , "editFormUrl" .= jDataTemperTypeEditFormUrl o
-    , "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
-    ]
 
+instance ToJSON JDataTemperType where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o),
+        "editFormUrl" .= jDataTemperTypeEditFormUrl o,
+        "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
+      ]
 
 data JDataRunningType = JDataRunningType
-  { jDataRunningTypeEnt :: Entity RunningType
-  , jDataRunningTypeEditFormUrl :: Text
-  , jDataRunningTypeDeleteFormUrl :: Text
+  { jDataRunningTypeEnt :: Entity RunningType,
+    jDataRunningTypeEditFormUrl :: Text,
+    jDataRunningTypeDeleteFormUrl :: Text
   }
-instance ToJSON JDataRunningType where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataRunningTypeEnt o)
-    , "editFormUrl" .= jDataRunningTypeEditFormUrl o
-    , "deleteFormUrl" .= jDataRunningTypeDeleteFormUrl o
-    ]
 
+instance ToJSON JDataRunningType where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataRunningTypeEnt o),
+        "editFormUrl" .= jDataRunningTypeEditFormUrl o,
+        "deleteFormUrl" .= jDataRunningTypeDeleteFormUrl o
+      ]
 
 data JDataSwarmingType = JDataSwarmingType
-  { jDataSwarmingTypeEnt :: Entity SwarmingType
-  , jDataSwarmingTypeEditFormUrl :: Text
-  , jDataSwarmingTypeDeleteFormUrl :: Text
+  { jDataSwarmingTypeEnt :: Entity SwarmingType,
+    jDataSwarmingTypeEditFormUrl :: Text,
+    jDataSwarmingTypeDeleteFormUrl :: Text
   }
+
 instance ToJSON JDataSwarmingType where
-  toJSON o = object
-    [ "entity" .= entityIdToJSON (jDataSwarmingTypeEnt o)
-    , "editFormUrl" .= jDataSwarmingTypeEditFormUrl o
-    , "deleteFormUrl" .= jDataSwarmingTypeDeleteFormUrl o
-    ]
-
-
-
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataSwarmingTypeEnt o),
+        "editFormUrl" .= jDataSwarmingTypeEditFormUrl o,
+        "deleteFormUrl" .= jDataSwarmingTypeDeleteFormUrl o
+      ]
 
 --------------------------------------------------------------------------------
 -- navigation helpers
@@ -430,48 +470,47 @@ mainNavData user mainNav = do
   hivesItemIdent <- newIdent
   return $
     [ JDataNavItem
-      { jDataNavItemId = Nothing
-      , jDataNavItemLabel = msgHome
-      , jDataNavItemIsActive = mainNav == MainNavHome
-      , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiverecHomeR
-      , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR
-      , jDataNavItemBadge = Nothing
-      , jDataNavItemDropdownItems = Nothing
-      }
+        { jDataNavItemId = Nothing,
+          jDataNavItemLabel = msgHome,
+          jDataNavItemIsActive = mainNav == MainNavHome,
+          jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiverecHomeR,
+          jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HomePageDataJsonR,
+          jDataNavItemBadge = Nothing,
+          jDataNavItemDropdownItems = Nothing
+        }
     ]
-    ++
-    [ JDataNavItem
-      { jDataNavItemId = Nothing
-      , jDataNavItemLabel = msgAdmin
-      , jDataNavItemIsActive = mainNav == MainNavAdmin
-      , jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR
-      , jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR
-      , jDataNavItemBadge = Nothing
-      , jDataNavItemDropdownItems = Nothing
-      }
-    | userIsAdmin user ]
-    ++
-    [ JDataNavItem
-      { jDataNavItemId = Nothing
-      , jDataNavItemLabel = msgLocations
-      , jDataNavItemIsActive = mainNav == MainNavLocations
-      , jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR
-      , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR
-      , jDataNavItemBadge = Nothing
-      , jDataNavItemDropdownItems = Nothing
-      }
-    ]
-    ++
-    [ JDataNavItem
-      { jDataNavItemId = Just hivesItemIdent
-      , jDataNavItemLabel = msgHives
-      , jDataNavItemIsActive = mainNav == MainNavHives
-      , jDataNavItemUrl = Nothing
-      , jDataNavItemDataUrl = Nothing
-      , jDataNavItemBadge = Nothing
-      , jDataNavItemDropdownItems = Just hiveNavItems
-      }
-    | not $ null hiveNavItems ]
+      ++ [ JDataNavItem
+             { jDataNavItemId = Nothing,
+               jDataNavItemLabel = msgAdmin,
+               jDataNavItemIsActive = mainNav == MainNavAdmin,
+               jDataNavItemUrl = Just $ urlRenderer $ AdminR AdminHomeR,
+               jDataNavItemDataUrl = Just $ urlRenderer $ AdminR AdminPageDataJsonR,
+               jDataNavItemBadge = Nothing,
+               jDataNavItemDropdownItems = Nothing
+             }
+           | userIsAdmin user
+         ]
+      ++ [ JDataNavItem
+             { jDataNavItemId = Nothing,
+               jDataNavItemLabel = msgLocations,
+               jDataNavItemIsActive = mainNav == MainNavLocations,
+               jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR,
+               jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataJsonR,
+               jDataNavItemBadge = Nothing,
+               jDataNavItemDropdownItems = Nothing
+             }
+         ]
+      ++ [ JDataNavItem
+             { jDataNavItemId = Just hivesItemIdent,
+               jDataNavItemLabel = msgHives,
+               jDataNavItemIsActive = mainNav == MainNavHives,
+               jDataNavItemUrl = Nothing,
+               jDataNavItemDataUrl = Nothing,
+               jDataNavItemBadge = Nothing,
+               jDataNavItemDropdownItems = Just hiveNavItems
+             }
+           | not $ null hiveNavItems
+         ]
 
 --------------------------------------------------------------------------------
 -- app specific helpers
@@ -492,8 +531,10 @@ getLastInspectionEnt hiveId = do
 getHiveNavItems :: Handler [JDataNavItem]
 getHiveNavItems = do
   msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
-  tuples <- runDB $
-    E.select $ E.from $ \(h `E.InnerJoin` l) -> do
+  tuples <- runDB
+    $ E.select
+    $ E.from
+    $ \(h `E.InnerJoin` l) -> do
       E.on (h E.^. HiveLocationId E.==. l E.^. LocationId)
       E.orderBy [E.asc (l E.^. LocationName), E.asc (h E.^. HiveName)]
       E.where_ $ (h E.^. HiveIsDissolved) E.==. E.val False
@@ -501,28 +542,29 @@ getHiveNavItems = do
   urlRenderer <- getUrlRender
   let hiveOverviewItem =
         JDataNavItem
-        { jDataNavItemId = Nothing
-        , jDataNavItemLabel = msgHiveOverview
-        , jDataNavItemIsActive = False
-        , jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiveOverviewR
-        , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HiveOverviewPageDataJsonR
-        , jDataNavItemBadge = Nothing
-        , jDataNavItemDropdownItems = Nothing
-        }
+          { jDataNavItemId = Nothing,
+            jDataNavItemLabel = msgHiveOverview,
+            jDataNavItemIsActive = False,
+            jDataNavItemUrl = Just $ urlRenderer $ HiverecR HiveOverviewR,
+            jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR HiveOverviewPageDataJsonR,
+            jDataNavItemBadge = Nothing,
+            jDataNavItemDropdownItems = Nothing
+          }
   let hiveItems =
-        map ( \(Entity hiveId hive, Entity _ location) ->
-                JDataNavItem
-                { jDataNavItemId = Nothing
-                , jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")"
-                , jDataNavItemIsActive = False
-                , jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId
-                , jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId
-                , jDataNavItemBadge = Nothing
-                , jDataNavItemDropdownItems = Nothing
+        map
+          ( \(Entity hiveId hive, Entity _ location) ->
+              JDataNavItem
+                { jDataNavItemId = Nothing,
+                  jDataNavItemLabel = hiveName hive ++ " (" ++ locationName location ++ ")",
+                  jDataNavItemIsActive = False,
+                  jDataNavItemUrl = Just $ urlRenderer $ HiverecR $ HiveDetailR hiveId,
+                  jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR $ HiveDetailPageDataJsonR hiveId,
+                  jDataNavItemBadge = Nothing,
+                  jDataNavItemDropdownItems = Nothing
                 }
-            )
-        tuples
-  return $ hiveOverviewItem:hiveItems
+          )
+          tuples
+  return $ hiveOverviewItem : hiveItems
 
 --------------------------------------------------------------------------------
 -- generic helpers
@@ -540,12 +582,12 @@ randomMixedCaseString len = do
   where
     upcaseChars :: Int -> String -> IO String
     upcaseChars countChars str =
-      if countChars == 0 then
-        return str
-      else do
-        p <- evalRandIO $ rnd 0 (length str - 2)
-        let (prefix, c:suffix) = splitAt p str
-        upcaseChars (countChars-1) (prefix ++ toUpper [c] ++ suffix)
+      if countChars == 0
+        then return str
+        else do
+          p <- evalRandIO $ rnd 0 (length str - 2)
+          let (prefix, c : suffix) = splitAt p str
+          upcaseChars (countChars -1) (prefix ++ toUpper [c] ++ suffix)
 
 randomMixedCaseText :: Int -> IO Text
 randomMixedCaseText len = do
@@ -570,13 +612,16 @@ renderUrlToText route = do
   return $ renderUrl route
 
 constTextField :: (Monad m, RenderMessage (HandlerSite m) FormMessage) => Text -> Field m Text
-constTextField myText = Field
-    { fieldParse = parseHelper $ \_ -> Right myText
-    , fieldView = \theId name attrs _ isReq -> toWidget [hamlet|
+constTextField myText =
+  Field
+    { fieldParse = parseHelper $ \_ -> Right myText,
+      fieldView = \theId name attrs _ isReq ->
+        toWidget
+          [hamlet|
 $newline never
 <input id="#{theId}" name="#{name}" *{attrs} type="text" step=1 :isReq:required="" value="#{myText}">
-|]
-    , fieldEnctype = UrlEncoded
+|],
+      fieldEnctype = UrlEncoded
     }
 
 dbSystemUser :: Text
@@ -599,14 +644,16 @@ fileBytes fileInfo = do
 
 humanReadableBytes :: Integer -> String
 humanReadableBytes size
-  | null pairs = printf "%.0fZiB" (size'/1024^(7::Integer))
-  | otherwise  = if unit == "" then printf "%dB" size
-                 else printf "%.1f%sB" n unit
+  | null pairs = printf "%.0fZiB" (size' / 1024 ^ (7 :: Integer))
+  | otherwise =
+    if unit == ""
+      then printf "%dB" size
+      else printf "%.1f%sB" n unit
   where
-    (n, unit):_ = pairs
-    pairs = zip (L.iterate (/1024) size') units
+    (n, unit) : _ = pairs
+    pairs = zip (L.iterate (/ 1024) size') units
     size' = fromIntegral size :: Double
-    units = ["","KB","MB","GB","TB","PB","EB","ZB"] :: [String]
+    units = ["", "KB", "MB", "GB", "TB", "PB", "EB", "ZB"] :: [String]
 
 getCurrentDay :: IO Day
 getCurrentDay = utctDay <$> getCurrentTime
@@ -675,11 +722,12 @@ formatInt4Digits :: Int -> String
 formatInt4Digits = printf "%04d"
 
 formatMinuteValue :: Int -> Text
-formatMinuteValue minVal = pack $ h1:h2:':':m1:m2
-    where (h1:h2:m1:m2) = formatInt4Digits minVal
+formatMinuteValue minVal = pack $ h1 : h2 : ':' : m1 : m2
+  where
+    (h1 : h2 : m1 : m2) = formatInt4Digits minVal
 
 data Language = DE | EN
-  deriving Generic
+  deriving (Generic)
 
 instance ToJSON Language
 
@@ -688,9 +736,9 @@ lookupSessionLanguage = do
   session <- getSession
   case lookup "_LANG" session of
     Just sessionLanguage -> case sessionLanguage of
-                              "en" -> return $ Just EN
-                              "en-US" -> return $ Just EN
-                              _ -> return $ Just DE
+      "en" -> return $ Just EN
+      "en-US" -> return $ Just EN
+      _ -> return $ Just DE
     _ -> return Nothing
 
 getLanguage :: Handler Language
@@ -701,16 +749,16 @@ getLanguage = do
     _ -> do
       langs <- languages
       return $ case langs of
-                 "en":_ -> EN
-                 "en-US":_ -> EN
-                 _ -> DE
+        "en" : _ -> EN
+        "en-US" : _ -> EN
+        _ -> DE
 
 getTranslation :: Handler Translation
 getTranslation = do
   lang <- getLanguage
   return $ case lang of
-             EN -> translationEn
-             DE -> translationDe
+    EN -> translationEn
+    DE -> translationDe
 
 -- localizedMsg :: MsgGlobal -> Handler Text
 -- localizedMsg message = do
@@ -723,6 +771,6 @@ localizedMsg message = do
   master <- getYesod
   language <- getLanguage
   let langs = case language of
-                EN -> ["en-US"]
-                DE -> ["de"]
+        EN -> ["en-US"]
+        DE -> ["de"]
   return $ renderMessage master langs message
