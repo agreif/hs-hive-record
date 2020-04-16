@@ -76,7 +76,7 @@
   deleteLocation/#LocationId DeleteLocationR POST
 
   locationDetail/#LocationId LocationDetailR GET
-  locationDetailPageDataR/#LocationId LocationDetailPageDataR GET
+  locationDetailPageData/#LocationId LocationDetailPageDataR GET
 
   hiveOverview HiveOverviewR GET
   hiveOverviewPageDataJson HiveOverviewPageDataR GET
@@ -93,7 +93,10 @@
   deleteHive/#HiveId DeleteHiveR POST
 
   hiveDetail/#HiveId HiveDetailR GET
-  hiveDetailPageDataR/#HiveId HiveDetailPageDataR GET
+  hiveDetailPageData/#HiveId HiveDetailPageDataR GET
+  hiveDetailShowMoreInspections/#HiveId HiveDetailPageShowMoreInspectionsR POST
+  hiveDetailShowLessInspections/#HiveId HiveDetailPageShowLessInspectionsR POST
+  hiveDetailShowAllInspections/#HiveId HiveDetailPageShowAllInspectionsR POST
 
   addInspectionForm/#HiveId AddInspectionFormR GET
   addInspection/#HiveId AddInspectionR POST

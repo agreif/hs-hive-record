@@ -18,11 +18,10 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 
 -- gen data add - start
 data VAddUser = VAddUser
-  { vAddUserIdent :: Text,
-    vAddUserEmail :: Text,
-    vAddUserIsAdmin :: Bool
+  { vAddUserIdent :: Text
+  , vAddUserEmail :: Text
+  , vAddUserIsAdmin :: Bool
   }
-
 -- gen data add - end
 
 -- gen get add form - start
@@ -30,14 +29,12 @@ getAddUserFormR :: Handler Html
 getAddUserFormR = do
   (formWidget, _) <- generateFormPost $ vAddUserForm Nothing
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalAddUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddUserR}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get add form - end
 
 postAddUserR :: Handler Value
@@ -74,25 +71,17 @@ postAddUserR = do
 -- gen add form - start
 vAddUserForm :: Maybe User -> Html -> MForm Handler (FormResult VAddUser, Widget)
 vAddUserForm maybeUser extra = do
-  (identResult, identView) <-
-    mreq
-      textField
-      identFs
-      (userIdent <$> maybeUser)
-  (emailResult, emailView) <-
-    mreq
-      textField
-      emailFs
-      (userEmail <$> maybeUser)
-  (isAdminResult, isAdminView) <-
-    mreq
-      checkBoxField
-      isAdminFs
-      (userIsAdmin <$> maybeUser)
+  (identResult, identView) <- mreq textField
+    identFs
+    (userIdent <$> maybeUser)
+  (emailResult, emailView) <- mreq textField
+    emailFs
+    (userEmail <$> maybeUser)
+  (isAdminResult, isAdminView) <- mreq checkBoxField
+    isAdminFs
+    (userIsAdmin <$> maybeUser)
   let vAddUserResult = VAddUser <$> identResult <*> emailResult <*> isAdminResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors identView:.uk-text-danger for=#{fvId identView}>#{fvLabel identView}
@@ -116,33 +105,29 @@ vAddUserForm maybeUser extra = do
   return (vAddUserResult, formWidget)
   where
     identFs :: FieldSettings App
-    identFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserIdent,
-          fsTooltip = Nothing,
-          fsId = Just "ident",
-          fsName = Just "ident",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    identFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserIdent
+      , fsTooltip = Nothing
+      , fsId = Just "ident"
+      , fsName = Just "ident"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     emailFs :: FieldSettings App
-    emailFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserEmail,
-          fsTooltip = Nothing,
-          fsId = Just "email",
-          fsName = Just "email",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    emailFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserEmail
+      , fsTooltip = Nothing
+      , fsId = Just "email"
+      , fsName = Just "email"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     isAdminFs :: FieldSettings App
-    isAdminFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserIsAdmin,
-          fsTooltip = Nothing,
-          fsId = Just "isAdmin",
-          fsName = Just "isAdmin",
-          fsAttrs = [("class", "uk-checkbox")]
-        }
-
+    isAdminFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserIsAdmin
+      , fsTooltip = Nothing
+      , fsId = Just "isAdmin"
+      , fsName = Just "isAdmin"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
 -- gen add form - end
 
 -------------------------------------------------------
@@ -151,13 +136,12 @@ vAddUserForm maybeUser extra = do
 
 -- gen data edit - start
 data VEditUser = VEditUser
-  { vEditUserIdent :: Text,
-    vEditUserEmail :: Text,
-    vEditUserIsAdmin :: Bool,
-    vEditUserIsResetPassword :: Bool,
-    vEditUserVersion :: Int
+  { vEditUserIdent :: Text
+  , vEditUserEmail :: Text
+  , vEditUserIsAdmin :: Bool
+  , vEditUserIsResetPassword :: Bool
+  , vEditUserVersion :: Int
   }
-
 -- gen data edit - end
 
 -- gen get edit form - start
@@ -166,14 +150,12 @@ getEditUserFormR userId = do
   user <- runDB $ get404 userId
   (formWidget, _) <- generateFormPost $ vEditUserForm (Just user)
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalEditUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditUserR userId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get edit form - end
 
 postEditUserR :: UserId -> Handler Value
@@ -221,35 +203,23 @@ postEditUserR userId = do
 -- gen edit form - start
 vEditUserForm :: Maybe User -> Html -> MForm Handler (FormResult VEditUser, Widget)
 vEditUserForm maybeUser extra = do
-  (identResult, identView) <-
-    mreq
-      textField
-      identFs
-      (userIdent <$> maybeUser)
-  (emailResult, emailView) <-
-    mreq
-      textField
-      emailFs
-      (userEmail <$> maybeUser)
-  (isAdminResult, isAdminView) <-
-    mreq
-      checkBoxField
-      isAdminFs
-      (userIsAdmin <$> maybeUser)
-  (isResetPasswordResult, isResetPasswordView) <-
-    mreq
-      checkBoxField
-      isResetPasswordFs
-      (Nothing)
-  (versionResult, versionView) <-
-    mreq
-      hiddenField
-      versionFs
-      (userVersion <$> maybeUser)
+  (identResult, identView) <- mreq textField
+    identFs
+    (userIdent <$> maybeUser)
+  (emailResult, emailView) <- mreq textField
+    emailFs
+    (userEmail <$> maybeUser)
+  (isAdminResult, isAdminView) <- mreq checkBoxField
+    isAdminFs
+    (userIsAdmin <$> maybeUser)
+  (isResetPasswordResult, isResetPasswordView) <- mreq checkBoxField
+    isResetPasswordFs
+    (Nothing)
+  (versionResult, versionView) <- mreq hiddenField
+    versionFs
+    (userVersion <$> maybeUser)
   let vEditUserResult = VEditUser <$> identResult <*> emailResult <*> isAdminResult <*> isResetPasswordResult <*> versionResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
     <div .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
@@ -280,51 +250,45 @@ vEditUserForm maybeUser extra = do
   return (vEditUserResult, formWidget)
   where
     identFs :: FieldSettings App
-    identFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserIdent,
-          fsTooltip = Nothing,
-          fsId = Just "ident",
-          fsName = Just "ident",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    identFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserIdent
+      , fsTooltip = Nothing
+      , fsId = Just "ident"
+      , fsName = Just "ident"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     emailFs :: FieldSettings App
-    emailFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserEmail,
-          fsTooltip = Nothing,
-          fsId = Just "email",
-          fsName = Just "email",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    emailFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserEmail
+      , fsTooltip = Nothing
+      , fsId = Just "email"
+      , fsName = Just "email"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     isAdminFs :: FieldSettings App
-    isAdminFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserIsAdmin,
-          fsTooltip = Nothing,
-          fsId = Just "isAdmin",
-          fsName = Just "isAdmin",
-          fsAttrs = [("class", "uk-checkbox")]
-        }
+    isAdminFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserIsAdmin
+      , fsTooltip = Nothing
+      , fsId = Just "isAdmin"
+      , fsName = Just "isAdmin"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
     isResetPasswordFs :: FieldSettings App
-    isResetPasswordFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgUserIsResetPassword,
-          fsTooltip = Nothing,
-          fsId = Just "isResetPassword",
-          fsName = Just "isResetPassword",
-          fsAttrs = [("class", "uk-checkbox")]
-        }
+    isResetPasswordFs = FieldSettings
+      { fsLabel = SomeMessage MsgUserIsResetPassword
+      , fsTooltip = Nothing
+      , fsId = Just "isResetPassword"
+      , fsName = Just "isResetPassword"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
     versionFs :: FieldSettings App
-    versionFs =
-      FieldSettings
-        { fsLabel = "",
-          fsTooltip = Nothing,
-          fsId = Just "version",
-          fsName = Just "version",
-          fsAttrs = []
-        }
-
+    versionFs = FieldSettings
+      { fsLabel = ""
+      , fsTooltip = Nothing
+      , fsId = Just "version"
+      , fsName = Just "version"
+      , fsAttrs = []
+      }
 -- gen edit form - end
 
 -------------------------------------------------------
@@ -337,7 +301,6 @@ vDeleteUserForm extra = do
   let formResult = mempty
   let formWidget = [whamlet|#{extra} _{MsgGlobalReallyDelete}|]
   return (formResult, formWidget)
-
 -- gen delete form - end
 
 -- gen get delete form - start
@@ -345,14 +308,12 @@ getDeleteUserFormR :: UserId -> Handler Html
 getDeleteUserFormR userId = do
   (formWidget, _) <- generateFormPost $ vDeleteUserForm
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalDeleteUser}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteUserR userId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get delete form - end
 
 -- gen post delete form - start
@@ -360,5 +321,5 @@ postDeleteUserR :: UserId -> Handler Value
 postDeleteUserR userId = do
   runDB $ delete userId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
+  returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR }
 -- gen post delete form - end

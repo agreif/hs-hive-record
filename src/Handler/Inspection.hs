@@ -128,20 +128,19 @@ defaultAddInspection hiveId = do
 
 -- gen data add - start
 data VAddInspection = VAddInspection
-  { vAddInspectionDate :: Day,
-    vAddInspectionTemperTypeId :: TemperTypeId,
-    vAddInspectionRunningTypeId :: RunningTypeId,
-    vAddInspectionSwarmingTypeId :: SwarmingTypeId,
-    vAddInspectionQueenSeen :: Bool,
-    vAddInspectionTotalFrames :: Int,
-    vAddInspectionBeeCoveredFrames :: Int,
-    vAddInspectionBroodFrames :: Int,
-    vAddInspectionHoneyFrames :: Int,
-    vAddInspectionTreatment :: Maybe Text,
-    vAddInspectionFeeding :: Maybe Text,
-    vAddInspectionNotes :: Maybe Textarea
+  { vAddInspectionDate :: Day
+  , vAddInspectionTemperTypeId :: TemperTypeId
+  , vAddInspectionRunningTypeId :: RunningTypeId
+  , vAddInspectionSwarmingTypeId :: SwarmingTypeId
+  , vAddInspectionQueenSeen :: Bool
+  , vAddInspectionTotalFrames :: Int
+  , vAddInspectionBeeCoveredFrames :: Int
+  , vAddInspectionBroodFrames :: Int
+  , vAddInspectionHoneyFrames :: Int
+  , vAddInspectionTreatment :: Maybe Text
+  , vAddInspectionFeeding :: Maybe Text
+  , vAddInspectionNotes :: Maybe Textarea
   }
-
 -- gen data add - end
 
 -- gen get add form - start
@@ -150,14 +149,12 @@ getAddInspectionFormR hiveId = do
   defaultMaybeAddModel <- defaultAddInspection hiveId
   (formWidget, _) <- generateFormPost $ vAddInspectionForm defaultMaybeAddModel
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalAddInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get add form - end
 
 getHiveOverviewAddInspectionFormR :: HiveId -> Handler Html
@@ -201,39 +198,36 @@ postAddInspectionR hiveId = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let inspection =
-            Inspection
-              { inspectionHiveId = hiveId,
-                inspectionDate = vAddInspectionDate vAddInspection,
-                inspectionTemperTypeId = vAddInspectionTemperTypeId vAddInspection,
-                inspectionRunningTypeId = vAddInspectionRunningTypeId vAddInspection,
-                inspectionSwarmingTypeId = vAddInspectionSwarmingTypeId vAddInspection,
-                inspectionQueenSeen = vAddInspectionQueenSeen vAddInspection,
-                inspectionTotalFrames = vAddInspectionTotalFrames vAddInspection,
-                inspectionBeeCoveredFrames = vAddInspectionBeeCoveredFrames vAddInspection,
-                inspectionBroodFrames = vAddInspectionBroodFrames vAddInspection,
-                inspectionHoneyFrames = vAddInspectionHoneyFrames vAddInspection,
-                inspectionTreatment = vAddInspectionTreatment vAddInspection,
-                inspectionFeeding = vAddInspectionFeeding vAddInspection,
-                inspectionNotes = vAddInspectionNotes vAddInspection,
-                inspectionVersion = 1,
-                inspectionCreatedAt = curTime,
-                inspectionCreatedBy = userIdent authUser,
-                inspectionUpdatedAt = curTime,
-                inspectionUpdatedBy = userIdent authUser
-              }
+      let inspection = Inspection
+            {
+            inspectionHiveId = hiveId
+            , inspectionDate = vAddInspectionDate vAddInspection
+            , inspectionTemperTypeId = vAddInspectionTemperTypeId vAddInspection
+            , inspectionRunningTypeId = vAddInspectionRunningTypeId vAddInspection
+            , inspectionSwarmingTypeId = vAddInspectionSwarmingTypeId vAddInspection
+            , inspectionQueenSeen = vAddInspectionQueenSeen vAddInspection
+            , inspectionTotalFrames = vAddInspectionTotalFrames vAddInspection
+            , inspectionBeeCoveredFrames = vAddInspectionBeeCoveredFrames vAddInspection
+            , inspectionBroodFrames = vAddInspectionBroodFrames vAddInspection
+            , inspectionHoneyFrames = vAddInspectionHoneyFrames vAddInspection
+            , inspectionTreatment = vAddInspectionTreatment vAddInspection
+            , inspectionFeeding = vAddInspectionFeeding vAddInspection
+            , inspectionNotes = vAddInspectionNotes vAddInspection
+            , inspectionVersion = 1
+            , inspectionCreatedAt = curTime
+            , inspectionCreatedBy = userIdent authUser
+            , inspectionUpdatedAt = curTime
+            , inspectionUpdatedBy = userIdent authUser
+            }
       runDB $ do
         inspectionId <- insert inspection
         storeInspectionDateToSession vAddInspection
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute}
+      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $
-        VFormSubmitInvalid
-          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
-          }
-
+      returnJson $ VFormSubmitInvalid
+        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 -- gen post add form - end
 
 postHiveOverviewAddInspectionR :: HiveId -> Handler Value
@@ -248,70 +242,44 @@ getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute =
 -- gen add form - start
 vAddInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VAddInspection, Widget)
 vAddInspectionForm maybeInspection extra = do
-  (dateResult, dateView) <-
-    mreq
-      dayField
-      dateFs
-      (inspectionDate <$> maybeInspection)
-  (temperTypeIdResult, temperTypeIdView) <-
-    mreq
-      temperTypeSelectField
-      temperTypeIdFs
-      (inspectionTemperTypeId <$> maybeInspection)
-  (runningTypeIdResult, runningTypeIdView) <-
-    mreq
-      runningTypeSelectField
-      runningTypeIdFs
-      (inspectionRunningTypeId <$> maybeInspection)
-  (swarmingTypeIdResult, swarmingTypeIdView) <-
-    mreq
-      swarmingTypeSelectField
-      swarmingTypeIdFs
-      (inspectionSwarmingTypeId <$> maybeInspection)
-  (queenSeenResult, queenSeenView) <-
-    mreq
-      checkBoxField
-      queenSeenFs
-      (inspectionQueenSeen <$> maybeInspection)
-  (totalFramesResult, totalFramesView) <-
-    mreq
-      intField
-      totalFramesFs
-      (inspectionTotalFrames <$> maybeInspection)
-  (beeCoveredFramesResult, beeCoveredFramesView) <-
-    mreq
-      intField
-      beeCoveredFramesFs
-      (inspectionBeeCoveredFrames <$> maybeInspection)
-  (broodFramesResult, broodFramesView) <-
-    mreq
-      intField
-      broodFramesFs
-      (inspectionBroodFrames <$> maybeInspection)
-  (honeyFramesResult, honeyFramesView) <-
-    mreq
-      intField
-      honeyFramesFs
-      (inspectionHoneyFrames <$> maybeInspection)
-  (treatmentResult, treatmentView) <-
-    mopt
-      textField
-      treatmentFs
-      (inspectionTreatment <$> maybeInspection)
-  (feedingResult, feedingView) <-
-    mopt
-      textField
-      feedingFs
-      (inspectionFeeding <$> maybeInspection)
-  (notesResult, notesView) <-
-    mopt
-      textareaField
-      notesFs
-      (inspectionNotes <$> maybeInspection)
+  (dateResult, dateView) <- mreq dayField
+    dateFs
+    (inspectionDate <$> maybeInspection)
+  (temperTypeIdResult, temperTypeIdView) <- mreq temperTypeSelectField
+    temperTypeIdFs
+    (inspectionTemperTypeId <$> maybeInspection)
+  (runningTypeIdResult, runningTypeIdView) <- mreq runningTypeSelectField
+    runningTypeIdFs
+    (inspectionRunningTypeId <$> maybeInspection)
+  (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
+    swarmingTypeIdFs
+    (inspectionSwarmingTypeId <$> maybeInspection)
+  (queenSeenResult, queenSeenView) <- mreq checkBoxField
+    queenSeenFs
+    (inspectionQueenSeen <$> maybeInspection)
+  (totalFramesResult, totalFramesView) <- mreq intField
+    totalFramesFs
+    (inspectionTotalFrames <$> maybeInspection)
+  (beeCoveredFramesResult, beeCoveredFramesView) <- mreq intField
+    beeCoveredFramesFs
+    (inspectionBeeCoveredFrames <$> maybeInspection)
+  (broodFramesResult, broodFramesView) <- mreq intField
+    broodFramesFs
+    (inspectionBroodFrames <$> maybeInspection)
+  (honeyFramesResult, honeyFramesView) <- mreq intField
+    honeyFramesFs
+    (inspectionHoneyFrames <$> maybeInspection)
+  (treatmentResult, treatmentView) <- mopt textField
+    treatmentFs
+    (inspectionTreatment <$> maybeInspection)
+  (feedingResult, feedingView) <- mopt textField
+    feedingFs
+    (inspectionFeeding <$> maybeInspection)
+  (notesResult, notesView) <- mopt textareaField
+    notesFs
+    (inspectionNotes <$> maybeInspection)
   let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors dateView:.uk-text-danger for=#{fvId dateView}>#{fvLabel dateView}
@@ -389,114 +357,101 @@ vAddInspectionForm maybeInspection extra = do
   return (vAddInspectionResult, formWidget)
   where
     dateFs :: FieldSettings App
-    dateFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionDate,
-          fsTooltip = Nothing,
-          fsId = Just "date",
-          fsName = Just "date",
-          fsAttrs = []
-        }
+    dateFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionDate
+      , fsTooltip = Nothing
+      , fsId = Just "date"
+      , fsName = Just "date"
+      , fsAttrs = [  ]
+      }
     temperTypeIdFs :: FieldSettings App
-    temperTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTemperTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "temperTypeId",
-          fsName = Just "temperTypeId",
-          fsAttrs = []
-        }
+    temperTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTemperTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "temperTypeId"
+      , fsName = Just "temperTypeId"
+      , fsAttrs = [  ]
+      }
     runningTypeIdFs :: FieldSettings App
-    runningTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionRunningTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "runningTypeId",
-          fsName = Just "runningTypeId",
-          fsAttrs = []
-        }
+    runningTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionRunningTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "runningTypeId"
+      , fsName = Just "runningTypeId"
+      , fsAttrs = [  ]
+      }
     swarmingTypeIdFs :: FieldSettings App
-    swarmingTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionSwarmingTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "swarmingTypeId",
-          fsName = Just "swarmingTypeId",
-          fsAttrs = []
-        }
+    swarmingTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionSwarmingTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "swarmingTypeId"
+      , fsName = Just "swarmingTypeId"
+      , fsAttrs = [  ]
+      }
     queenSeenFs :: FieldSettings App
-    queenSeenFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionQueenSeen,
-          fsTooltip = Nothing,
-          fsId = Just "queenSeen",
-          fsName = Just "queenSeen",
-          fsAttrs = [("class", "uk-checkbox")]
-        }
+    queenSeenFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionQueenSeen
+      , fsTooltip = Nothing
+      , fsId = Just "queenSeen"
+      , fsName = Just "queenSeen"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
     totalFramesFs :: FieldSettings App
-    totalFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTotalFrames,
-          fsTooltip = Nothing,
-          fsId = Just "totalFrames",
-          fsName = Just "totalFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    totalFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTotalFrames
+      , fsTooltip = Nothing
+      , fsId = Just "totalFrames"
+      , fsName = Just "totalFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     beeCoveredFramesFs :: FieldSettings App
-    beeCoveredFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames,
-          fsTooltip = Nothing,
-          fsId = Just "beeCoveredFrames",
-          fsName = Just "beeCoveredFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    beeCoveredFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames
+      , fsTooltip = Nothing
+      , fsId = Just "beeCoveredFrames"
+      , fsName = Just "beeCoveredFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     broodFramesFs :: FieldSettings App
-    broodFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionBroodFrames,
-          fsTooltip = Nothing,
-          fsId = Just "broodFrames",
-          fsName = Just "broodFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    broodFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionBroodFrames
+      , fsTooltip = Nothing
+      , fsId = Just "broodFrames"
+      , fsName = Just "broodFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     honeyFramesFs :: FieldSettings App
-    honeyFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionHoneyFrames,
-          fsTooltip = Nothing,
-          fsId = Just "honeyFrames",
-          fsName = Just "honeyFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    honeyFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionHoneyFrames
+      , fsTooltip = Nothing
+      , fsId = Just "honeyFrames"
+      , fsName = Just "honeyFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     treatmentFs :: FieldSettings App
-    treatmentFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTreatment,
-          fsTooltip = Nothing,
-          fsId = Just "treatment",
-          fsName = Just "treatment",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    treatmentFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTreatment
+      , fsTooltip = Nothing
+      , fsId = Just "treatment"
+      , fsName = Just "treatment"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     feedingFs :: FieldSettings App
-    feedingFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionFeeding,
-          fsTooltip = Nothing,
-          fsId = Just "feeding",
-          fsName = Just "feeding",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    feedingFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionFeeding
+      , fsTooltip = Nothing
+      , fsId = Just "feeding"
+      , fsName = Just "feeding"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     notesFs :: FieldSettings App
-    notesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionNotes,
-          fsTooltip = Nothing,
-          fsId = Just "notes",
-          fsName = Just "notes",
-          fsAttrs = [("class", "uk-textarea uk-form-small uk-width-5-6"), ("rows", "10")]
-        }
-
+    notesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionNotes
+      , fsTooltip = Nothing
+      , fsId = Just "notes"
+      , fsName = Just "notes"
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
+      }
 -- gen add form - end
 
 -------------------------------------------------------
@@ -505,21 +460,20 @@ vAddInspectionForm maybeInspection extra = do
 
 -- gen data edit - start
 data VEditInspection = VEditInspection
-  { vEditInspectionDate :: Day,
-    vEditInspectionTemperTypeId :: TemperTypeId,
-    vEditInspectionRunningTypeId :: RunningTypeId,
-    vEditInspectionSwarmingTypeId :: SwarmingTypeId,
-    vEditInspectionQueenSeen :: Bool,
-    vEditInspectionTotalFrames :: Int,
-    vEditInspectionBeeCoveredFrames :: Int,
-    vEditInspectionBroodFrames :: Int,
-    vEditInspectionHoneyFrames :: Int,
-    vEditInspectionTreatment :: Maybe Text,
-    vEditInspectionFeeding :: Maybe Text,
-    vEditInspectionNotes :: Maybe Textarea,
-    vEditInspectionVersion :: Int
+  { vEditInspectionDate :: Day
+  , vEditInspectionTemperTypeId :: TemperTypeId
+  , vEditInspectionRunningTypeId :: RunningTypeId
+  , vEditInspectionSwarmingTypeId :: SwarmingTypeId
+  , vEditInspectionQueenSeen :: Bool
+  , vEditInspectionTotalFrames :: Int
+  , vEditInspectionBeeCoveredFrames :: Int
+  , vEditInspectionBroodFrames :: Int
+  , vEditInspectionHoneyFrames :: Int
+  , vEditInspectionTreatment :: Maybe Text
+  , vEditInspectionFeeding :: Maybe Text
+  , vEditInspectionNotes :: Maybe Textarea
+  , vEditInspectionVersion :: Int
   }
-
 -- gen data edit - end
 
 -- gen get edit form - start
@@ -528,14 +482,12 @@ getEditInspectionFormR inspectionId = do
   inspection <- runDB $ get404 inspectionId
   (formWidget, _) <- generateFormPost $ vEditInspectionForm (Just inspection)
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalEditInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditInspectionR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get edit form - end
 
 getHiveOverviewEditInspectionFormR :: InspectionId -> Handler Html
@@ -562,40 +514,35 @@ postEditInspectionR inspectionId = do
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       inspection <- runDB $ get404 inspectionId
-      let persistFields =
-            [ InspectionDate =. vEditInspectionDate vEditInspection,
-              InspectionTemperTypeId =. vEditInspectionTemperTypeId vEditInspection,
-              InspectionRunningTypeId =. vEditInspectionRunningTypeId vEditInspection,
-              InspectionSwarmingTypeId =. vEditInspectionSwarmingTypeId vEditInspection,
-              InspectionQueenSeen =. vEditInspectionQueenSeen vEditInspection,
-              InspectionTotalFrames =. vEditInspectionTotalFrames vEditInspection,
-              InspectionBeeCoveredFrames =. vEditInspectionBeeCoveredFrames vEditInspection,
-              InspectionBroodFrames =. vEditInspectionBroodFrames vEditInspection,
-              InspectionHoneyFrames =. vEditInspectionHoneyFrames vEditInspection,
-              InspectionTreatment =. vEditInspectionTreatment vEditInspection,
-              InspectionFeeding =. vEditInspectionFeeding vEditInspection,
-              InspectionNotes =. vEditInspectionNotes vEditInspection,
-              InspectionVersion =. vEditInspectionVersion vEditInspection + 1,
-              InspectionUpdatedAt =. curTime,
-              InspectionUpdatedBy =. userIdent authUser
+      let persistFields = [
+            InspectionDate =. vEditInspectionDate vEditInspection
+            , InspectionTemperTypeId =. vEditInspectionTemperTypeId vEditInspection
+            , InspectionRunningTypeId =. vEditInspectionRunningTypeId vEditInspection
+            , InspectionSwarmingTypeId =. vEditInspectionSwarmingTypeId vEditInspection
+            , InspectionQueenSeen =. vEditInspectionQueenSeen vEditInspection
+            , InspectionTotalFrames =. vEditInspectionTotalFrames vEditInspection
+            , InspectionBeeCoveredFrames =. vEditInspectionBeeCoveredFrames vEditInspection
+            , InspectionBroodFrames =. vEditInspectionBroodFrames vEditInspection
+            , InspectionHoneyFrames =. vEditInspectionHoneyFrames vEditInspection
+            , InspectionTreatment =. vEditInspectionTreatment vEditInspection
+            , InspectionFeeding =. vEditInspectionFeeding vEditInspection
+            , InspectionNotes =. vEditInspectionNotes vEditInspection
+            , InspectionVersion =. vEditInspectionVersion vEditInspection + 1
+            , InspectionUpdatedAt =. curTime
+            , InspectionUpdatedBy =. userIdent authUser
             ]
       updateCount <- runDB $ do
-        uc <-
-          updateWhereCount
-            [ InspectionId ==. inspectionId,
-              InspectionVersion ==. vEditInspectionVersion vEditInspection
-            ]
-            persistFields
+        uc <- updateWhereCount [ InspectionId ==. inspectionId
+                               , InspectionVersion ==. vEditInspectionVersion vEditInspection
+                               ] persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute}
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ getEditInspectionSuccessDataJsonUrl (inspectionHiveId inspection) maybeCurRoute }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $
-        VFormSubmitInvalid
-          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
-          }
+      returnJson $ VFormSubmitInvalid
+        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 
 -- gen post edit form - end
 
@@ -611,75 +558,47 @@ getEditInspectionSuccessDataJsonUrl hiveId maybeCurRoute =
 -- gen edit form - start
 vEditInspectionForm :: Maybe Inspection -> Html -> MForm Handler (FormResult VEditInspection, Widget)
 vEditInspectionForm maybeInspection extra = do
-  (dateResult, dateView) <-
-    mreq
-      dayField
-      dateFs
-      (inspectionDate <$> maybeInspection)
-  (temperTypeIdResult, temperTypeIdView) <-
-    mreq
-      temperTypeSelectField
-      temperTypeIdFs
-      (inspectionTemperTypeId <$> maybeInspection)
-  (runningTypeIdResult, runningTypeIdView) <-
-    mreq
-      runningTypeSelectField
-      runningTypeIdFs
-      (inspectionRunningTypeId <$> maybeInspection)
-  (swarmingTypeIdResult, swarmingTypeIdView) <-
-    mreq
-      swarmingTypeSelectField
-      swarmingTypeIdFs
-      (inspectionSwarmingTypeId <$> maybeInspection)
-  (queenSeenResult, queenSeenView) <-
-    mreq
-      checkBoxField
-      queenSeenFs
-      (inspectionQueenSeen <$> maybeInspection)
-  (totalFramesResult, totalFramesView) <-
-    mreq
-      intField
-      totalFramesFs
-      (inspectionTotalFrames <$> maybeInspection)
-  (beeCoveredFramesResult, beeCoveredFramesView) <-
-    mreq
-      intField
-      beeCoveredFramesFs
-      (inspectionBeeCoveredFrames <$> maybeInspection)
-  (broodFramesResult, broodFramesView) <-
-    mreq
-      intField
-      broodFramesFs
-      (inspectionBroodFrames <$> maybeInspection)
-  (honeyFramesResult, honeyFramesView) <-
-    mreq
-      intField
-      honeyFramesFs
-      (inspectionHoneyFrames <$> maybeInspection)
-  (treatmentResult, treatmentView) <-
-    mopt
-      textField
-      treatmentFs
-      (inspectionTreatment <$> maybeInspection)
-  (feedingResult, feedingView) <-
-    mopt
-      textField
-      feedingFs
-      (inspectionFeeding <$> maybeInspection)
-  (notesResult, notesView) <-
-    mopt
-      textareaField
-      notesFs
-      (inspectionNotes <$> maybeInspection)
-  (versionResult, versionView) <-
-    mreq
-      hiddenField
-      versionFs
-      (inspectionVersion <$> maybeInspection)
+  (dateResult, dateView) <- mreq dayField
+    dateFs
+    (inspectionDate <$> maybeInspection)
+  (temperTypeIdResult, temperTypeIdView) <- mreq temperTypeSelectField
+    temperTypeIdFs
+    (inspectionTemperTypeId <$> maybeInspection)
+  (runningTypeIdResult, runningTypeIdView) <- mreq runningTypeSelectField
+    runningTypeIdFs
+    (inspectionRunningTypeId <$> maybeInspection)
+  (swarmingTypeIdResult, swarmingTypeIdView) <- mreq swarmingTypeSelectField
+    swarmingTypeIdFs
+    (inspectionSwarmingTypeId <$> maybeInspection)
+  (queenSeenResult, queenSeenView) <- mreq checkBoxField
+    queenSeenFs
+    (inspectionQueenSeen <$> maybeInspection)
+  (totalFramesResult, totalFramesView) <- mreq intField
+    totalFramesFs
+    (inspectionTotalFrames <$> maybeInspection)
+  (beeCoveredFramesResult, beeCoveredFramesView) <- mreq intField
+    beeCoveredFramesFs
+    (inspectionBeeCoveredFrames <$> maybeInspection)
+  (broodFramesResult, broodFramesView) <- mreq intField
+    broodFramesFs
+    (inspectionBroodFrames <$> maybeInspection)
+  (honeyFramesResult, honeyFramesView) <- mreq intField
+    honeyFramesFs
+    (inspectionHoneyFrames <$> maybeInspection)
+  (treatmentResult, treatmentView) <- mopt textField
+    treatmentFs
+    (inspectionTreatment <$> maybeInspection)
+  (feedingResult, feedingView) <- mopt textField
+    feedingFs
+    (inspectionFeeding <$> maybeInspection)
+  (notesResult, notesView) <- mopt textareaField
+    notesFs
+    (inspectionNotes <$> maybeInspection)
+  (versionResult, versionView) <- mreq hiddenField
+    versionFs
+    (inspectionVersion <$> maybeInspection)
   let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> runningTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> totalFramesResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult <*> versionResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
     <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
@@ -758,123 +677,109 @@ vEditInspectionForm maybeInspection extra = do
   return (vEditInspectionResult, formWidget)
   where
     dateFs :: FieldSettings App
-    dateFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionDate,
-          fsTooltip = Nothing,
-          fsId = Just "date",
-          fsName = Just "date",
-          fsAttrs = []
-        }
+    dateFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionDate
+      , fsTooltip = Nothing
+      , fsId = Just "date"
+      , fsName = Just "date"
+      , fsAttrs = [  ]
+      }
     temperTypeIdFs :: FieldSettings App
-    temperTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTemperTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "temperTypeId",
-          fsName = Just "temperTypeId",
-          fsAttrs = []
-        }
+    temperTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTemperTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "temperTypeId"
+      , fsName = Just "temperTypeId"
+      , fsAttrs = [  ]
+      }
     runningTypeIdFs :: FieldSettings App
-    runningTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionRunningTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "runningTypeId",
-          fsName = Just "runningTypeId",
-          fsAttrs = []
-        }
+    runningTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionRunningTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "runningTypeId"
+      , fsName = Just "runningTypeId"
+      , fsAttrs = [  ]
+      }
     swarmingTypeIdFs :: FieldSettings App
-    swarmingTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionSwarmingTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "swarmingTypeId",
-          fsName = Just "swarmingTypeId",
-          fsAttrs = []
-        }
+    swarmingTypeIdFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionSwarmingTypeId
+      , fsTooltip = Nothing
+      , fsId = Just "swarmingTypeId"
+      , fsName = Just "swarmingTypeId"
+      , fsAttrs = [  ]
+      }
     queenSeenFs :: FieldSettings App
-    queenSeenFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionQueenSeen,
-          fsTooltip = Nothing,
-          fsId = Just "queenSeen",
-          fsName = Just "queenSeen",
-          fsAttrs = [("class", "uk-checkbox")]
-        }
+    queenSeenFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionQueenSeen
+      , fsTooltip = Nothing
+      , fsId = Just "queenSeen"
+      , fsName = Just "queenSeen"
+      , fsAttrs = [ ("class","uk-checkbox") ]
+      }
     totalFramesFs :: FieldSettings App
-    totalFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTotalFrames,
-          fsTooltip = Nothing,
-          fsId = Just "totalFrames",
-          fsName = Just "totalFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    totalFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTotalFrames
+      , fsTooltip = Nothing
+      , fsId = Just "totalFrames"
+      , fsName = Just "totalFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     beeCoveredFramesFs :: FieldSettings App
-    beeCoveredFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames,
-          fsTooltip = Nothing,
-          fsId = Just "beeCoveredFrames",
-          fsName = Just "beeCoveredFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    beeCoveredFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionBeeCoveredFrames
+      , fsTooltip = Nothing
+      , fsId = Just "beeCoveredFrames"
+      , fsName = Just "beeCoveredFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     broodFramesFs :: FieldSettings App
-    broodFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionBroodFrames,
-          fsTooltip = Nothing,
-          fsId = Just "broodFrames",
-          fsName = Just "broodFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    broodFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionBroodFrames
+      , fsTooltip = Nothing
+      , fsId = Just "broodFrames"
+      , fsName = Just "broodFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     honeyFramesFs :: FieldSettings App
-    honeyFramesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionHoneyFrames,
-          fsTooltip = Nothing,
-          fsId = Just "honeyFrames",
-          fsName = Just "honeyFrames",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
-        }
+    honeyFramesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionHoneyFrames
+      , fsTooltip = Nothing
+      , fsId = Just "honeyFrames"
+      , fsName = Just "honeyFrames"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
+      }
     treatmentFs :: FieldSettings App
-    treatmentFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTreatment,
-          fsTooltip = Nothing,
-          fsId = Just "treatment",
-          fsName = Just "treatment",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    treatmentFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionTreatment
+      , fsTooltip = Nothing
+      , fsId = Just "treatment"
+      , fsName = Just "treatment"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     feedingFs :: FieldSettings App
-    feedingFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionFeeding,
-          fsTooltip = Nothing,
-          fsId = Just "feeding",
-          fsName = Just "feeding",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    feedingFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionFeeding
+      , fsTooltip = Nothing
+      , fsId = Just "feeding"
+      , fsName = Just "feeding"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     notesFs :: FieldSettings App
-    notesFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionNotes,
-          fsTooltip = Nothing,
-          fsId = Just "notes",
-          fsName = Just "notes",
-          fsAttrs = [("class", "uk-textarea uk-form-small uk-width-5-6"), ("rows", "10")]
-        }
+    notesFs = FieldSettings
+      { fsLabel = SomeMessage MsgInspectionNotes
+      , fsTooltip = Nothing
+      , fsId = Just "notes"
+      , fsName = Just "notes"
+      , fsAttrs = [ ("class","uk-textarea uk-form-small uk-width-5-6"), ("rows","10") ]
+      }
     versionFs :: FieldSettings App
-    versionFs =
-      FieldSettings
-        { fsLabel = "",
-          fsTooltip = Nothing,
-          fsId = Just "version",
-          fsName = Just "version",
-          fsAttrs = []
-        }
-
+    versionFs = FieldSettings
+      { fsLabel = ""
+      , fsTooltip = Nothing
+      , fsId = Just "version"
+      , fsName = Just "version"
+      , fsAttrs = []
+      }
 -- gen edit form - end
 
 -------------------------------------------------------
@@ -886,14 +791,12 @@ getDeleteInspectionFormR :: InspectionId -> Handler Html
 getDeleteInspectionFormR inspectionId = do
   (formWidget, _) <- generateFormPost $ vDeleteInspectionForm
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalDeleteInspection}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get delete form - end
 
 -- gen post delete form - start
@@ -902,8 +805,7 @@ postDeleteInspectionR inspectionId = do
   inspection <- runDB $ get404 inspectionId
   runDB $ delete inspectionId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection}
-
+  returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR $ inspectionHiveId inspection }
 -- gen post delete form - end
 
 -- gen delete form - start

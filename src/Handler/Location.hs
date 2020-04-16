@@ -197,7 +197,6 @@ locationDetailHiveJDatas locationId = do
 data VAddLocation = VAddLocation
   { vAddLocationName :: Text
   }
-
 -- gen data add - end
 
 -- gen get add form - start
@@ -205,14 +204,12 @@ getAddLocationFormR :: Handler Html
 getAddLocationFormR = do
   (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalAddLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddLocationR}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get add form - end
 
 -- gen post add form - start
@@ -225,40 +222,33 @@ postAddLocationR = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let location =
-            Location
-              { locationName = vAddLocationName vAddLocation,
-                locationVersion = 1,
-                locationCreatedAt = curTime,
-                locationCreatedBy = userIdent authUser,
-                locationUpdatedAt = curTime,
-                locationUpdatedBy = userIdent authUser
-              }
+      let location = Location
+            {
+            locationName = vAddLocationName vAddLocation
+            , locationVersion = 1
+            , locationCreatedAt = curTime
+            , locationCreatedBy = userIdent authUser
+            , locationUpdatedAt = curTime
+            , locationUpdatedBy = userIdent authUser
+            }
       runDB $ do
         _ <- insert location
         return ()
-      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR}
+      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $
-        VFormSubmitInvalid
-          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
-          }
-
+      returnJson $ VFormSubmitInvalid
+        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 -- gen post add form - end
 
 -- gen add form - start
 vAddLocationForm :: Maybe Location -> Html -> MForm Handler (FormResult VAddLocation, Widget)
 vAddLocationForm maybeLocation extra = do
-  (nameResult, nameView) <-
-    mreq
-      textField
-      nameFs
-      (locationName <$> maybeLocation)
+  (nameResult, nameView) <- mreq textField
+    nameFs
+    (locationName <$> maybeLocation)
   let vAddLocationResult = VAddLocation <$> nameResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
@@ -270,15 +260,13 @@ vAddLocationForm maybeLocation extra = do
   return (vAddLocationResult, formWidget)
   where
     nameFs :: FieldSettings App
-    nameFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgLocationName,
-          fsTooltip = Nothing,
-          fsId = Just "name",
-          fsName = Just "name",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
-
+    nameFs = FieldSettings
+      { fsLabel = SomeMessage MsgLocationName
+      , fsTooltip = Nothing
+      , fsId = Just "name"
+      , fsName = Just "name"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
 -- gen add form - end
 
 -------------------------------------------------------
@@ -287,10 +275,9 @@ vAddLocationForm maybeLocation extra = do
 
 -- gen data edit - start
 data VEditLocation = VEditLocation
-  { vEditLocationName :: Text,
-    vEditLocationVersion :: Int
+  { vEditLocationName :: Text
+  , vEditLocationVersion :: Int
   }
-
 -- gen data edit - end
 
 -- gen get edit form - start
@@ -299,14 +286,12 @@ getEditLocationFormR locationId = do
   location <- runDB $ get404 locationId
   (formWidget, _) <- generateFormPost $ vEditLocationForm (Just location)
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalEditLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditLocationR locationId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get edit form - end
 
 -- gen post edit form - start
@@ -319,49 +304,38 @@ postEditLocationR locationId = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let persistFields =
-            [ LocationName =. vEditLocationName vEditLocation,
-              LocationVersion =. vEditLocationVersion vEditLocation + 1,
-              LocationUpdatedAt =. curTime,
-              LocationUpdatedBy =. userIdent authUser
+      let persistFields = [
+            LocationName =. vEditLocationName vEditLocation
+            , LocationVersion =. vEditLocationVersion vEditLocation + 1
+            , LocationUpdatedAt =. curTime
+            , LocationUpdatedBy =. userIdent authUser
             ]
       updateCount <- runDB $ do
-        uc <-
-          updateWhereCount
-            [ LocationId ==. locationId,
-              LocationVersion ==. vEditLocationVersion vEditLocation
-            ]
-            persistFields
+        uc <- updateWhereCount [ LocationId ==. locationId
+                               , LocationVersion ==. vEditLocationVersion vEditLocation
+                               ] persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId}
-        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId}
+        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId }
+        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId }
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $
-        VFormSubmitInvalid
-          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
-          }
+      returnJson $ VFormSubmitInvalid
+        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
 
 -- gen post edit form - end
 
 -- gen edit form - start
 vEditLocationForm :: Maybe Location -> Html -> MForm Handler (FormResult VEditLocation, Widget)
 vEditLocationForm maybeLocation extra = do
-  (nameResult, nameView) <-
-    mreq
-      textField
-      nameFs
-      (locationName <$> maybeLocation)
-  (versionResult, versionView) <-
-    mreq
-      hiddenField
-      versionFs
-      (locationVersion <$> maybeLocation)
+  (nameResult, nameView) <- mreq textField
+    nameFs
+    (locationName <$> maybeLocation)
+  (versionResult, versionView) <- mreq hiddenField
+    versionFs
+    (locationVersion <$> maybeLocation)
   let vEditLocationResult = VEditLocation <$> nameResult <*> versionResult
-  let formWidget =
-        toWidget
-          [whamlet|
+  let formWidget = toWidget [whamlet|
     #{extra}
     ^{fvInput versionView}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
@@ -374,24 +348,21 @@ vEditLocationForm maybeLocation extra = do
   return (vEditLocationResult, formWidget)
   where
     nameFs :: FieldSettings App
-    nameFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgLocationName,
-          fsTooltip = Nothing,
-          fsId = Just "name",
-          fsName = Just "name",
-          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
-        }
+    nameFs = FieldSettings
+      { fsLabel = SomeMessage MsgLocationName
+      , fsTooltip = Nothing
+      , fsId = Just "name"
+      , fsName = Just "name"
+      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
+      }
     versionFs :: FieldSettings App
-    versionFs =
-      FieldSettings
-        { fsLabel = "",
-          fsTooltip = Nothing,
-          fsId = Just "version",
-          fsName = Just "version",
-          fsAttrs = []
-        }
-
+    versionFs = FieldSettings
+      { fsLabel = ""
+      , fsTooltip = Nothing
+      , fsId = Just "version"
+      , fsName = Just "version"
+      , fsAttrs = []
+      }
 -- gen edit form - end
 
 -------------------------------------------------------
@@ -403,14 +374,12 @@ getDeleteLocationFormR :: LocationId -> Handler Html
 getDeleteLocationFormR locationId = do
   (formWidget, _) <- generateFormPost $ vDeleteLocationForm
   formLayout $
-    toWidget
-      [whamlet|
+    toWidget [whamlet|
       <h1>_{MsgGlobalDeleteLocation}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteLocationR locationId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
-
 -- gen get delete form - end
 
 -- gen post delete form - start
@@ -418,8 +387,7 @@ postDeleteLocationR :: LocationId -> Handler Value
 postDeleteLocationR locationId = do
   runDB $ delete locationId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR}
-
+  returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR }
 -- gen post delete form - end
 
 -- gen delete form - start

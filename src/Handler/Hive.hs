@@ -7,15 +7,17 @@
 
 module Handler.Hive where
 
+import Basement.IntegralConv
 import qualified Data.CaseInsensitive as CI
-import qualified Data.Maybe as M
+import qualified Data.List as L
 import qualified Data.Text.Encoding as TE
 import qualified Database.Esqueleto as E
-import Database.Persist.Sql (updateWhereCount)
+import Database.Persist.Sql (fromSqlKey, updateWhereCount)
 import Handler.Common
 import Import
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 import Text.Hamlet (hamletFile)
+import Prelude (read)
 
 locationSelectField :: Field Handler (Key Location)
 locationSelectField =
@@ -90,7 +92,7 @@ getHiveOverviewJDatas = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveIsDissolved ==. False] [Asc HiveName]
   forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
-    inspectionTuples <- hiveDetailInspectionJDatas hiveId (Just 2)
+    inspectionTuples <- hiveDetailInspectionJDatas hiveId 2
     return $
       JDataHiveOverviewHive
         { jDataHiveOverviewHiveEnt = hiveEnt,
@@ -129,7 +131,11 @@ getHiveDetailPageDataR hiveId = do
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
-  jDataInspections' <- hiveDetailInspectionJDatas hiveId Nothing
+  visiblePagesCount <- inspectionVisiblePagesCount hiveId
+  dbPagesCount <- runDB $ inspectionDbPagesCount hiveId
+  jDataInspections' <-
+    hiveDetailInspectionJDatas hiveId $
+      visiblePagesCount * hiveDetailPageInspectionPageSize
   let jDataInspections = map snd jDataInspections'
   let pages =
         defaultDataPages
@@ -139,6 +145,9 @@ getHiveDetailPageDataR hiveId = do
                   { jDataPageHiveDetailHiveEnt = Entity hiveId hive,
                     jDataPageHiveDetailHiveEditFormUrl = urlRenderer $ HiverecR $ EditHiveFormR hiveId,
                     jDataPageHiveDetailInspections = jDataInspections,
+                    jDataPageHiveDetailShowLessInspectionsUrl = if visiblePagesCount > 1 then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowLessInspectionsR hiveId else Nothing,
+                    jDataPageHiveDetailShowMoreInspectionsUrl = if visiblePagesCount < dbPagesCount then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowMoreInspectionsR hiveId else Nothing,
+                    jDataPageHiveDetailShowAllInspectionsUrl = if visiblePagesCount /= dbPagesCount then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowAllInspectionsR hiveId else Nothing,
                     jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId
                   }
           }
@@ -187,7 +196,59 @@ getHiveDetailPageDataR hiveId = do
         jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
 
-hiveDetailInspectionJDatas :: HiveId -> Maybe Int64 -> Handler [(InspectionId, JDataInspection)]
+postHiveDetailPageShowLessInspectionsR :: HiveId -> Handler Value
+postHiveDetailPageShowLessInspectionsR hiveId = do
+  urlRenderer <- getUrlRender
+  pagesCount <- inspectionVisiblePagesCount hiveId
+  when (pagesCount > 1)
+    $ setSession (sessionKeyHiveDetailPageInspectionPages hiveId)
+    $ (pack . show . pred) pagesCount
+  returnJson $
+    VPostSubmitSuccess
+      { fsPostSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
+      }
+
+postHiveDetailPageShowMoreInspectionsR :: HiveId -> Handler Value
+postHiveDetailPageShowMoreInspectionsR hiveId = do
+  urlRenderer <- getUrlRender
+  pagesCount <- inspectionVisiblePagesCount hiveId
+  setSession (sessionKeyHiveDetailPageInspectionPages hiveId) $ (pack . show . succ) pagesCount
+  returnJson $
+    VPostSubmitSuccess
+      { fsPostSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
+      }
+
+postHiveDetailPageShowAllInspectionsR :: HiveId -> Handler Value
+postHiveDetailPageShowAllInspectionsR hiveId = do
+  urlRenderer <- getUrlRender
+  pagesCount <- runDB $ inspectionDbPagesCount hiveId
+  setSession (sessionKeyHiveDetailPageInspectionPages hiveId) $
+    (pack . show) pagesCount
+  returnJson $
+    VPostSubmitSuccess
+      { fsPostSuccessDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
+      }
+
+inspectionVisiblePagesCount :: HiveId -> Handler Int
+inspectionVisiblePagesCount hiveId = do
+  maybePagesCount <- lookupSession $ sessionKeyHiveDetailPageInspectionPages hiveId
+  return $
+    case maybePagesCount of
+      Nothing -> 1
+      Just pageCountStr -> read $ unpack pageCountStr
+
+inspectionDbPagesCount :: HiveId -> YesodDB App Int
+inspectionDbPagesCount hiveId = do
+  c <- count [InspectionHiveId ==. hiveId]
+  return $ paginationPagesCount c hiveDetailPageInspectionPageSize
+
+sessionKeyHiveDetailPageInspectionPages :: HiveId -> Text
+sessionKeyHiveDetailPageInspectionPages hiveId = concat ["hiveDetailPageInspectionPages-", pack $ show $ fromSqlKey hiveId]
+
+hiveDetailPageInspectionPageSize :: Int
+hiveDetailPageInspectionPageSize = 10
+
+hiveDetailInspectionJDatas :: HiveId -> Int -> Handler [(InspectionId, JDataInspection)]
 hiveDetailInspectionJDatas hiveId maybeLimitCount = do
   urlRenderer <- getUrlRender
   inspectionEntTuples <- runDB loadInspectionListTuples
@@ -217,12 +278,11 @@ hiveDetailInspectionJDatas hiveId maybeLimitCount = do
         E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
         E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
         E.where_ (h E.^. HiveId E.==. E.val hiveId)
-        when (isJust maybeLimitCount) $ do
-          E.limit (M.fromJust maybeLimitCount)
-        E.orderBy [E.asc (i E.^. InspectionDate)]
+        E.limit $ intToInt64 maybeLimitCount
+        E.orderBy [E.desc (i E.^. InspectionDate)]
         return (i, tt, rt, st)
       forM
-        tuples
+        (L.reverse tuples)
         ( \(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
             inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
             return (inspectionEnt, tt, rt, st, inspectionfileEnts)

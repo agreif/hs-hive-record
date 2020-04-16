@@ -21,7 +21,7 @@ import qualified Data.Text as T
 import Data.Time
 import qualified Database.Esqueleto as E
 import Import
-import Text.Printf
+import qualified Text.Printf as PF
 
 -- These handlers embed files in the executable at compile time to avoid a
 -- runtime dependency, and for efficiency.
@@ -157,6 +157,26 @@ instance ToJSON JDataHistoryState where
     object
       [ "url" .= jDataHistoryStateUrl o,
         "title" .= jDataHistoryStateTitle o
+      ]
+
+data JDataPaginationItem = JDataPaginationItem
+  { jDataPaginationItemLabel :: Maybe Text,
+    jDataPaginationItemDataUrl :: Maybe Text,
+    jDataPaginationItemIsActive :: Bool,
+    jDataPaginationItemIsDisabled :: Bool,
+    jDataPaginationItemIsPrevious :: Bool,
+    jDataPaginationItemIsNext :: Bool
+  }
+
+instance ToJSON JDataPaginationItem where
+  toJSON o =
+    object
+      [ "label" .= jDataPaginationItemLabel o,
+        "dataUrl" .= jDataPaginationItemDataUrl o,
+        "isActive" .= jDataPaginationItemIsActive o,
+        "isDisabled" .= jDataPaginationItemIsDisabled o,
+        "isPrevious" .= jDataPaginationItemIsPrevious o,
+        "isNext" .= jDataPaginationItemIsNext o
       ]
 
 instance ToJSON User where
@@ -316,6 +336,9 @@ data JDataPageHiveDetail = JDataPageHiveDetail
   { jDataPageHiveDetailHiveEnt :: Entity Hive,
     jDataPageHiveDetailHiveEditFormUrl :: Text,
     jDataPageHiveDetailInspections :: [JDataInspection],
+    jDataPageHiveDetailShowLessInspectionsUrl :: Maybe Text,
+    jDataPageHiveDetailShowMoreInspectionsUrl :: Maybe Text,
+    jDataPageHiveDetailShowAllInspectionsUrl :: Maybe Text,
     jDataPageHiveDetailInspectionAddFormUrl :: Text
   }
 
@@ -325,6 +348,9 @@ instance ToJSON JDataPageHiveDetail where
       [ "hiveEnt" .= jDataPageHiveDetailHiveEnt o,
         "hiveEditFormUrl" .= jDataPageHiveDetailHiveEditFormUrl o,
         "inspections" .= jDataPageHiveDetailInspections o,
+        "showLessInspectionsUrl" .= jDataPageHiveDetailShowLessInspectionsUrl o,
+        "showMoreInspectionsUrl" .= jDataPageHiveDetailShowMoreInspectionsUrl o,
+        "showAllInspectionsUrl" .= jDataPageHiveDetailShowAllInspectionsUrl o,
         "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o
       ]
 
@@ -513,6 +539,131 @@ mainNavData user mainNav = do
          ]
 
 --------------------------------------------------------------------------------
+-- pagination helpers
+--------------------------------------------------------------------------------
+
+paginationPagesCount :: Int -> Int -> Int
+paginationPagesCount allCount pageSize =
+  if mod allCount pageSize == 0 then pageCount' else pageCount' + 1
+  where
+    pageCount' = div allCount pageSize
+
+getPaginationJDatas :: Int -> Int -> Int -> Int -> (Int -> Route App) -> Handler (Maybe [JDataPaginationItem])
+getPaginationJDatas allCount pageSize curPageNum visibleNumsCount' routeFunc = do
+  urlRenderer <- getUrlRender
+  let visibleNumsCount = if mod visibleNumsCount' 2 == 0 then visibleNumsCount' + 1 else visibleNumsCount'
+  let pageCount = paginationPagesCount allCount pageSize
+  (firstPageNum, lastPageNum) <-
+    if visibleNumsCount >= pageCount
+      then return (1, pageCount) -- show all
+      else do
+        let (firstNum, lastNum) =
+              ( curPageNum - div visibleNumsCount 2,
+                curPageNum + div visibleNumsCount 2
+              )
+        let (firstNum', lastNum') = if firstNum < 1 then (1, visibleNumsCount) else (firstNum, lastNum)
+        let (firstNum'', lastNum'') =
+              if lastNum > pageCount
+                then (pageCount - visibleNumsCount + 1, pageCount)
+                else (firstNum', lastNum')
+        return (firstNum'', lastNum'')
+  let pageNums = [firstPageNum .. lastPageNum]
+  case pageCount of
+    1 -> return Nothing
+    _ ->
+      return
+        $ Just
+        $ ( if curPageNum == 1
+              then []
+              else
+                [ JDataPaginationItem
+                    { jDataPaginationItemLabel = Nothing,
+                      jDataPaginationItemDataUrl = Just $ urlRenderer $ routeFunc $ curPageNum - 1,
+                      jDataPaginationItemIsActive = False,
+                      jDataPaginationItemIsDisabled = False,
+                      jDataPaginationItemIsPrevious = True,
+                      jDataPaginationItemIsNext = False
+                    }
+                ]
+                  ++ ( if firstPageNum == 1
+                         then []
+                         else
+                           [ JDataPaginationItem
+                               { jDataPaginationItemLabel = Just "1",
+                                 jDataPaginationItemDataUrl = Just $ urlRenderer $ routeFunc 1,
+                                 jDataPaginationItemIsActive = False,
+                                 jDataPaginationItemIsDisabled = False,
+                                 jDataPaginationItemIsPrevious = False,
+                                 jDataPaginationItemIsNext = False
+                               }
+                           ]
+                     )
+                  ++ ( if firstPageNum <= 2
+                         then []
+                         else
+                           [ JDataPaginationItem
+                               { jDataPaginationItemLabel = Just "...",
+                                 jDataPaginationItemDataUrl = Nothing,
+                                 jDataPaginationItemIsActive = False,
+                                 jDataPaginationItemIsDisabled = True,
+                                 jDataPaginationItemIsPrevious = False,
+                                 jDataPaginationItemIsNext = False
+                               }
+                           ]
+                     )
+          )
+          ++ map
+            ( \i ->
+                JDataPaginationItem
+                  { jDataPaginationItemLabel = Just $ formatInt i,
+                    jDataPaginationItemDataUrl = Just $ urlRenderer $ routeFunc $ fromIntegral i,
+                    jDataPaginationItemIsActive = i == curPageNum,
+                    jDataPaginationItemIsDisabled = False,
+                    jDataPaginationItemIsPrevious = False,
+                    jDataPaginationItemIsNext = False
+                  }
+            )
+            pageNums
+          ++ ( if lastPageNum >= pageCount -1
+                 then []
+                 else
+                   [ JDataPaginationItem
+                       { jDataPaginationItemLabel = Just "...",
+                         jDataPaginationItemDataUrl = Nothing,
+                         jDataPaginationItemIsActive = False,
+                         jDataPaginationItemIsDisabled = True,
+                         jDataPaginationItemIsPrevious = False,
+                         jDataPaginationItemIsNext = False
+                       }
+                   ]
+             )
+          ++ ( if lastPageNum == pageCount
+                 then []
+                 else
+                   [ JDataPaginationItem
+                       { jDataPaginationItemLabel = Just $ formatInt pageCount,
+                         jDataPaginationItemDataUrl = Just $ urlRenderer $ routeFunc pageCount,
+                         jDataPaginationItemIsActive = False,
+                         jDataPaginationItemIsDisabled = False,
+                         jDataPaginationItemIsPrevious = False,
+                         jDataPaginationItemIsNext = False
+                       }
+                   ]
+             )
+          ++ if curPageNum == pageCount
+            then []
+            else
+              [ JDataPaginationItem
+                  { jDataPaginationItemLabel = Nothing,
+                    jDataPaginationItemDataUrl = Just $ urlRenderer $ routeFunc $ curPageNum + 1,
+                    jDataPaginationItemIsActive = False,
+                    jDataPaginationItemIsDisabled = False,
+                    jDataPaginationItemIsPrevious = False,
+                    jDataPaginationItemIsNext = True
+                  }
+              ]
+
+--------------------------------------------------------------------------------
 -- app specific helpers
 --------------------------------------------------------------------------------
 
@@ -644,11 +795,11 @@ fileBytes fileInfo = do
 
 humanReadableBytes :: Integer -> String
 humanReadableBytes size
-  | null pairs = printf "%.0fZiB" (size' / 1024 ^ (7 :: Integer))
+  | null pairs = PF.printf "%.0fZiB" (size' / 1024 ^ (7 :: Integer))
   | otherwise =
     if unit == ""
-      then printf "%dB" size
-      else printf "%.1f%sB" n unit
+      then PF.printf "%dB" size
+      else PF.printf "%.1f%sB" n unit
   where
     (n, unit) : _ = pairs
     pairs = zip (L.iterate (/ 1024) size') units
@@ -695,7 +846,7 @@ formatLocalTimeDayPart :: TimeZone -> UTCTime -> String
 formatLocalTimeDayPart timeZone utcTime = formatTime defaultTimeLocale "%d.%m.%Y" $ utcToLocalTime timeZone utcTime
 
 formatDouble :: Double -> Text
-formatDouble x = T.replace "." "," (pack $ printf "%.2f" x)
+formatDouble x = T.replace "." "," (pack $ PF.printf "%.2f" x)
 
 formatMaybeDouble :: Maybe Double -> Text
 formatMaybeDouble (Just x) = formatDouble x
@@ -719,7 +870,7 @@ formatInt :: Int -> Text
 formatInt = pack . show
 
 formatInt4Digits :: Int -> String
-formatInt4Digits = printf "%04d"
+formatInt4Digits = PF.printf "%04d"
 
 formatMinuteValue :: Int -> Text
 formatMinuteValue minVal = pack $ h1 : h2 : ':' : m1 : m2
