@@ -34,6 +34,7 @@ postSendTestmailR = do
 data VSendTestmail = VSendTestmail
   { vSendTestmailEmail :: Text
   }
+
 -- gen data action - end
 
 -- gen get action form - start
@@ -41,22 +42,28 @@ getSendTestmailFormR :: Handler Html
 getSendTestmailFormR = do
   (formWidget, _) <- generateFormPost $ vSendTestmailForm Nothing
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgTestmailSendTestMail}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ SendTestmailR}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get action form - end
 
 -- gen action form - start
 vSendTestmailForm :: Maybe Testmail -> Html -> MForm Handler (FormResult VSendTestmail, Widget)
 vSendTestmailForm maybeTestmail extra = do
-  (emailResult, emailView) <- mreq textField
-    emailFs
-    (testmailEmail <$> maybeTestmail)
+  (emailResult, emailView) <-
+    mreq
+      textField
+      emailFs
+      (testmailEmail <$> maybeTestmail)
   let vSendTestmailResult = VSendTestmail <$> emailResult
-  let formWidget = toWidget [whamlet|
+  let formWidget =
+        toWidget
+          [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
@@ -68,11 +75,12 @@ vSendTestmailForm maybeTestmail extra = do
   return (vSendTestmailResult, formWidget)
   where
     emailFs :: FieldSettings App
-    emailFs = FieldSettings
-      { fsLabel = SomeMessage MsgTestmailEmail
-      , fsTooltip = Nothing
-      , fsId = Just "email"
-      , fsName = Just "email"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
-      }
+    emailFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgTestmailEmail,
+          fsTooltip = Nothing,
+          fsId = Just "email",
+          fsName = Just "email",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
 -- gen action form - end

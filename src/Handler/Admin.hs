@@ -31,7 +31,6 @@ getAdminPageDataR = do
   jDataUsers <- userListJDataEnts
   jDataConfigs <- configListJDataEnts
   jDataTemperTypes <- temperTypeListJDataEnts
-  jDataRunningTypes <- runningTypeListJDataEnts
   jDataSwarmingTypes <- swarmingTypeListJDataEnts
   let pages =
         defaultDataPages
@@ -41,7 +40,6 @@ getAdminPageDataR = do
                   { jDataPageAdminUsers = jDataUsers,
                     jDataPageAdminConfigs = jDataConfigs,
                     jDataPageAdminTemperTypes = jDataTemperTypes,
-                    jDataPageAdminRunningTypes = jDataRunningTypes,
                     jDataPageAdminSwarmingTypes = jDataSwarmingTypes
                   }
           }
@@ -145,28 +143,6 @@ loadTemperTypeListTuples =
   E.select $ E.from $ \temperType -> do
     E.orderBy [E.asc (temperType E.^. TemperTypeSortIndex)]
     return temperType
-
-runningTypeListJDataEnts :: Handler [JDataRunningType]
-runningTypeListJDataEnts = do
-  urlRenderer <- getUrlRender
-  runningTypeTuples <- runDB loadRunningTypeListTuples
-  let jRunningTypeList =
-        map
-          ( \runningTypeEnt@(Entity runningTypeId _) ->
-              JDataRunningType
-                { jDataRunningTypeEnt = runningTypeEnt,
-                  jDataRunningTypeEditFormUrl = urlRenderer $ AdminR $ EditRunningTypeFormR runningTypeId,
-                  jDataRunningTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteRunningTypeFormR runningTypeId
-                }
-          )
-          runningTypeTuples
-  return jRunningTypeList
-
-loadRunningTypeListTuples :: YesodDB App [Entity RunningType]
-loadRunningTypeListTuples =
-  E.select $ E.from $ \runningType -> do
-    E.orderBy [E.asc (runningType E.^. RunningTypeSortIndex)]
-    return runningType
 
 swarmingTypeListJDataEnts :: Handler [JDataSwarmingType]
 swarmingTypeListJDataEnts = do

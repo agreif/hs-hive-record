@@ -31,13 +31,6 @@
   deleteTemperTypeForm/#TemperTypeId DeleteTemperTypeFormR GET
   deleteTemperType/#TemperTypeId DeleteTemperTypeR POST
 
-  addRunningTypeForm AddRunningTypeFormR GET
-  addRunningType AddRunningTypeR POST
-  editRunningTypeForm/#RunningTypeId EditRunningTypeFormR GET
-  editRunningType/#RunningTypeId EditRunningTypeR POST
-  deleteRunningTypeForm/#RunningTypeId DeleteRunningTypeFormR GET
-  deleteRunningType/#RunningTypeId DeleteRunningTypeR POST
-
   addSwarmingTypeForm AddSwarmingTypeFormR GET
   addSwarmingType AddSwarmingTypeR POST
   editSwarmingTypeForm/#SwarmingTypeId EditSwarmingTypeFormR GET

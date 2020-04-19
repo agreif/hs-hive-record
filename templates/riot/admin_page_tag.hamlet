@@ -14,9 +14,6 @@
           {context.data.translation.msgGlobalTemperTypes}
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalRunningTypes}
-      <li>
-        <a href="#">
           {context.data.translation.msgGlobalSwarmingTypes}
       <li>
         <a href="#">
@@ -113,31 +110,6 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditTemperType}" uk-tooltip onclick="{editTemperType}">
                   <span uk-icon="icon: pencil">
       <li>
-        <!-- runningType list -->
-        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
-          <thead>
-            <tr>
-              <th>
-                {context.data.translation.msgRunningTypeName}
-              <th>
-                {context.data.translation.msgRunningTypeSortIndex}
-              <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddRunningType}" uk-tooltip onclick="{addRunningType}">
-                  <span uk-icon="icon: plus">
-          <tbody>
-            <tr each="{type in context.data.pages.admin.runningTypes}">
-              <td .uk-table-link>
-                <a onclick="{(e)=>editRunningType(e,type)}" .uk-link-reset>
-                  {type.entity.name}
-              <td .uk-table-link>
-                <a onclick="{(e)=>editRunningType(e,type)}" .uk-link-reset>
-                  {type.entity.sortIndex}
-              <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteRunningType}" uk-tooltip onclick="{(e)=>deleteRunningType(e,type)}">
-                  <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditRunningType}" uk-tooltip onclick="{(e)=>editRunningType(e,type)}">
-                  <span uk-icon="icon: pencil">
-      <li>
         <!-- swarmingType list -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
           <thead>
@@ -203,21 +175,6 @@
     \     event.currentTarget.blur()
     \   },
     \   deleteTemperType(event, item) {
-    \     event.preventDefault()
-    \     this.context.showModalForm(item.deleteFormUrl)
-    \     event.currentTarget.blur()
-    \   },
-    \   addRunningType(event) {
-    \     event.preventDefault()
-    \     this.context.showModalForm("@{AdminR AddRunningTypeFormR}")
-    \     event.currentTarget.blur()
-    \   },
-    \   editRunningType(event, item) {
-    \     event.preventDefault()
-    \     this.context.showModalForm(item.editFormUrl)
-    \     event.currentTarget.blur()
-    \   },
-    \   deleteRunningType(event, item) {
     \     event.preventDefault()
     \     this.context.showModalForm(item.deleteFormUrl)
     \     event.currentTarget.blur()

@@ -17,9 +17,10 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 
 -- gen data add - start
 data VAddTemperType = VAddTemperType
-  { vAddTemperTypeName :: Text
-  , vAddTemperTypeSortIndex :: Int
+  { vAddTemperTypeName :: Text,
+    vAddTemperTypeSortIndex :: Int
   }
+
 -- gen data add - end
 
 -- gen get add form - start
@@ -27,12 +28,14 @@ getAddTemperTypeFormR :: Handler Html
 getAddTemperTypeFormR = do
   (formWidget, _) <- generateFormPost $ vAddTemperTypeForm Nothing
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalAddTemperType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddTemperTypeR}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get add form - end
 
 -- gen post add form - start
@@ -45,37 +48,46 @@ postAddTemperTypeR = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let temperType = TemperType
-            {
-            temperTypeName = vAddTemperTypeName vAddTemperType
-            , temperTypeSortIndex = vAddTemperTypeSortIndex vAddTemperType
-            , temperTypeVersion = 1
-            , temperTypeCreatedAt = curTime
-            , temperTypeCreatedBy = userIdent authUser
-            , temperTypeUpdatedAt = curTime
-            , temperTypeUpdatedBy = userIdent authUser
-            }
+      let temperType =
+            TemperType
+              { temperTypeName = vAddTemperTypeName vAddTemperType,
+                temperTypeSortIndex = vAddTemperTypeSortIndex vAddTemperType,
+                temperTypeVersion = 1,
+                temperTypeCreatedAt = curTime,
+                temperTypeCreatedBy = userIdent authUser,
+                temperTypeUpdatedAt = curTime,
+                temperTypeUpdatedBy = userIdent authUser
+              }
       runDB $ do
         _ <- insert temperType
         return ()
-      returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR }
+      returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $ VFormSubmitInvalid
-        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
+      returnJson $
+        VFormSubmitInvalid
+          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
+          }
+
 -- gen post add form - end
 
 -- gen add form - start
 vAddTemperTypeForm :: Maybe TemperType -> Html -> MForm Handler (FormResult VAddTemperType, Widget)
 vAddTemperTypeForm maybeTemperType extra = do
-  (nameResult, nameView) <- mreq textField
-    nameFs
-    (temperTypeName <$> maybeTemperType)
-  (sortIndexResult, sortIndexView) <- mreq intField
-    sortIndexFs
-    (temperTypeSortIndex <$> maybeTemperType)
+  (nameResult, nameView) <-
+    mreq
+      textField
+      nameFs
+      (temperTypeName <$> maybeTemperType)
+  (sortIndexResult, sortIndexView) <-
+    mreq
+      intField
+      sortIndexFs
+      (temperTypeSortIndex <$> maybeTemperType)
   let vAddTemperTypeResult = VAddTemperType <$> nameResult <*> sortIndexResult
-  let formWidget = toWidget [whamlet|
+  let formWidget =
+        toWidget
+          [whamlet|
     #{extra}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
       <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
@@ -93,21 +105,24 @@ vAddTemperTypeForm maybeTemperType extra = do
   return (vAddTemperTypeResult, formWidget)
   where
     nameFs :: FieldSettings App
-    nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgTemperTypeName
-      , fsTooltip = Nothing
-      , fsId = Just "name"
-      , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
-      }
+    nameFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgTemperTypeName,
+          fsTooltip = Nothing,
+          fsId = Just "name",
+          fsName = Just "name",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
     sortIndexFs :: FieldSettings App
-    sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgTemperTypeSortIndex
-      , fsTooltip = Nothing
-      , fsId = Just "sortIndex"
-      , fsName = Just "sortIndex"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
-      }
+    sortIndexFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgTemperTypeSortIndex,
+          fsTooltip = Nothing,
+          fsId = Just "sortIndex",
+          fsName = Just "sortIndex",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
+        }
+
 -- gen add form - end
 
 -------------------------------------------------------
@@ -116,10 +131,11 @@ vAddTemperTypeForm maybeTemperType extra = do
 
 -- gen data edit - start
 data VEditTemperType = VEditTemperType
-  { vEditTemperTypeName :: Text
-  , vEditTemperTypeSortIndex :: Int
-  , vEditTemperTypeVersion :: Int
+  { vEditTemperTypeName :: Text,
+    vEditTemperTypeSortIndex :: Int,
+    vEditTemperTypeVersion :: Int
   }
+
 -- gen data edit - end
 
 -- gen get edit form - start
@@ -128,12 +144,14 @@ getEditTemperTypeFormR temperTypeId = do
   temperType <- runDB $ get404 temperTypeId
   (formWidget, _) <- generateFormPost $ vEditTemperTypeForm (Just temperType)
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalEditTemperType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditTemperTypeR temperTypeId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get edit form - end
 
 -- gen post edit form - start
@@ -146,42 +164,55 @@ postEditTemperTypeR temperTypeId = do
       maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
-      let persistFields = [
-            TemperTypeName =. vEditTemperTypeName vEditTemperType
-            , TemperTypeSortIndex =. vEditTemperTypeSortIndex vEditTemperType
-            , TemperTypeVersion =. vEditTemperTypeVersion vEditTemperType + 1
-            , TemperTypeUpdatedAt =. curTime
-            , TemperTypeUpdatedBy =. userIdent authUser
+      let persistFields =
+            [ TemperTypeName =. vEditTemperTypeName vEditTemperType,
+              TemperTypeSortIndex =. vEditTemperTypeSortIndex vEditTemperType,
+              TemperTypeVersion =. vEditTemperTypeVersion vEditTemperType + 1,
+              TemperTypeUpdatedAt =. curTime,
+              TemperTypeUpdatedBy =. userIdent authUser
             ]
       updateCount <- runDB $ do
-        uc <- updateWhereCount [ TemperTypeId ==. temperTypeId
-                               , TemperTypeVersion ==. vEditTemperTypeVersion vEditTemperType
-                               ] persistFields
+        uc <-
+          updateWhereCount
+            [ TemperTypeId ==. temperTypeId,
+              TemperTypeVersion ==. vEditTemperTypeVersion vEditTemperType
+            ]
+            persistFields
         return uc
       if updateCount == 1
-        then returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR }
-        else returnJson $ VFormSubmitStale { fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataR }
+        then returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
+        else returnJson $ VFormSubmitStale {fsStaleDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
     _ -> do
       resultHtml <- formLayout [whamlet|^{formWidget}|]
-      returnJson $ VFormSubmitInvalid
-        { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml }
+      returnJson $
+        VFormSubmitInvalid
+          { fsInvalidModalWidgetHtml = toStrict $ Blaze.renderHtml resultHtml
+          }
 
 -- gen post edit form - end
 
 -- gen edit form - start
 vEditTemperTypeForm :: Maybe TemperType -> Html -> MForm Handler (FormResult VEditTemperType, Widget)
 vEditTemperTypeForm maybeTemperType extra = do
-  (nameResult, nameView) <- mreq textField
-    nameFs
-    (temperTypeName <$> maybeTemperType)
-  (sortIndexResult, sortIndexView) <- mreq intField
-    sortIndexFs
-    (temperTypeSortIndex <$> maybeTemperType)
-  (versionResult, versionView) <- mreq hiddenField
-    versionFs
-    (temperTypeVersion <$> maybeTemperType)
+  (nameResult, nameView) <-
+    mreq
+      textField
+      nameFs
+      (temperTypeName <$> maybeTemperType)
+  (sortIndexResult, sortIndexView) <-
+    mreq
+      intField
+      sortIndexFs
+      (temperTypeSortIndex <$> maybeTemperType)
+  (versionResult, versionView) <-
+    mreq
+      hiddenField
+      versionFs
+      (temperTypeVersion <$> maybeTemperType)
   let vEditTemperTypeResult = VEditTemperType <$> nameResult <*> sortIndexResult <*> versionResult
-  let formWidget = toWidget [whamlet|
+  let formWidget =
+        toWidget
+          [whamlet|
     #{extra}
     ^{fvInput versionView}
     <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
@@ -200,29 +231,33 @@ vEditTemperTypeForm maybeTemperType extra = do
   return (vEditTemperTypeResult, formWidget)
   where
     nameFs :: FieldSettings App
-    nameFs = FieldSettings
-      { fsLabel = SomeMessage MsgTemperTypeName
-      , fsTooltip = Nothing
-      , fsId = Just "name"
-      , fsName = Just "name"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-large") ]
-      }
+    nameFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgTemperTypeName,
+          fsTooltip = Nothing,
+          fsId = Just "name",
+          fsName = Just "name",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
     sortIndexFs :: FieldSettings App
-    sortIndexFs = FieldSettings
-      { fsLabel = SomeMessage MsgTemperTypeSortIndex
-      , fsTooltip = Nothing
-      , fsId = Just "sortIndex"
-      , fsName = Just "sortIndex"
-      , fsAttrs = [ ("class","uk-input uk-form-small uk-form-width-medium") ]
-      }
+    sortIndexFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgTemperTypeSortIndex,
+          fsTooltip = Nothing,
+          fsId = Just "sortIndex",
+          fsName = Just "sortIndex",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
+        }
     versionFs :: FieldSettings App
-    versionFs = FieldSettings
-      { fsLabel = ""
-      , fsTooltip = Nothing
-      , fsId = Just "version"
-      , fsName = Just "version"
-      , fsAttrs = []
-      }
+    versionFs =
+      FieldSettings
+        { fsLabel = "",
+          fsTooltip = Nothing,
+          fsId = Just "version",
+          fsName = Just "version",
+          fsAttrs = []
+        }
+
 -- gen edit form - end
 
 -------------------------------------------------------
@@ -234,12 +269,14 @@ getDeleteTemperTypeFormR :: TemperTypeId -> Handler Html
 getDeleteTemperTypeFormR temperTypeId = do
   (formWidget, _) <- generateFormPost $ vDeleteTemperTypeForm
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalDeleteTemperType}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteTemperTypeR temperTypeId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get delete form - end
 
 -- gen post delete form - start
@@ -247,7 +284,8 @@ postDeleteTemperTypeR :: TemperTypeId -> Handler Value
 postDeleteTemperTypeR temperTypeId = do
   runDB $ delete temperTypeId
   urlRenderer <- getUrlRender
-  returnJson $ VFormSubmitSuccess { fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR }
+  returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
+
 -- gen post delete form - end
 
 -- gen delete form - start

@@ -22,6 +22,7 @@ import qualified Text.Blaze.Html.Renderer.Text as Blaze
 data VAddInspectionfile = VAddInspectionfile
   { vAddInspectionfileFile :: FileInfo
   }
+
 -- gen data add - end
 
 -- gen get add form - start
@@ -29,13 +30,15 @@ getAddInspectionfileFormR :: InspectionId -> Handler Html
 getAddInspectionfileFormR inspectionId = do
   (formWidget, _) <- generateFormPost $ vAddInspectionfileForm Nothing
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalAddInspectionfile}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionfileR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
       <progress id="modal-form-progressbar" class="uk-progress" value="0" max="0">
       |]
+
 -- gen get add form - end
 
 postAddInspectionfileR :: InspectionId -> Handler Value
@@ -147,9 +150,10 @@ vAddInspectionfileForm maybeVAddInspectionfile extra = do
 
 -- gen data edit - start
 data VEditInspectionfile = VEditInspectionfile
-  { vEditInspectionfileFile :: FileInfo
-  , vEditInspectionfileVersion :: Int
+  { vEditInspectionfileFile :: FileInfo,
+    vEditInspectionfileVersion :: Int
   }
+
 -- gen data edit - end
 
 getEditInspectionfileFormR :: InspectionfileId -> Handler Html
@@ -267,12 +271,14 @@ getDeleteInspectionfileFormR :: InspectionfileId -> Handler Html
 getDeleteInspectionfileFormR inspectionfileId = do
   (formWidget, _) <- generateFormPost $ vDeleteInspectionfileForm
   formLayout $
-    toWidget [whamlet|
+    toWidget
+      [whamlet|
       <h1>_{MsgGlobalDeleteInspectionfile}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionfileR inspectionfileId}>
         <div #modal-form-widget>
           ^{formWidget}
       |]
+
 -- gen get delete form - end
 
 postDeleteInspectionfileR :: InspectionfileId -> Handler Value

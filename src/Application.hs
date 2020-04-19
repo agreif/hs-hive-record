@@ -45,7 +45,6 @@ import Handler.Inspection
 import Handler.Inspectionfile
 import Handler.Location
 import Handler.MyProfile
-import Handler.RunningType
 import Handler.SwarmingType
 import Handler.TemperType
 import Handler.TestMail

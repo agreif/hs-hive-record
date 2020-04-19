@@ -820,36 +820,6 @@ context =
                               }
                       },
                     BCrudField
-                      { bCrudFieldName = "runningTypeId",
-                        bCrudFieldLabelDe = Just "Wabensitz",
-                        bCrudFieldLabelEn = Just "Running Beh.",
-                        bCrudFieldHsType = "RunningTypeId",
-                        bCrudFieldDb =
-                          Just $
-                            BCrudFieldDb
-                              { bCrudFieldDbIsNullable = False,
-                                bCrudFieldDbDefault = Nothing,
-                                bCrudFieldDbCanUpdate = True
-                              },
-                        bCrudFieldFormFieldType = Just "runningTypeSelectField",
-                        bCrudFieldAddView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs = [],
-                                bFieldViewDefault = Nothing
-                              },
-                        bCrudFieldEditView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs = [],
-                                bFieldViewDefault = Nothing
-                              }
-                      },
-                    BCrudField
                       { bCrudFieldName = "swarmingTypeId",
                         bCrudFieldLabelDe = Just "Schwarmtrieb",
                         bCrudFieldLabelEn = Just "swarming Mood",
@@ -1469,118 +1439,6 @@ context =
                 bCrudModelTranslations = Nothing
               },
             BCrudModel
-              { bCrudModelName = "runningType",
-                bCrudModelIsJson = True,
-                bCrudModelDbUniquenesses = [],
-                bCrudModelDbHasHistoryTable = True,
-                bCrudModelHsDerivings = [],
-                bCrudModelAddFormArgs = Nothing,
-                bCrudModelEditFormArgs = Nothing,
-                bCrudModelAddFormEntityLoader = Nothing,
-                bCrudModelEditFormEntityLoader = Nothing,
-                bCrudModelDeleteFormEntityLoader = Nothing,
-                bCrudModelAddFormDataJsonUrl = Just "AdminR AdminPageDataR",
-                bCrudModelEditFormDataJsonUrl = Just "AdminR AdminPageDataR",
-                bCrudModelDeleteFormDataJsonUrl = Just "AdminR AdminPageDataR",
-                bCrudModelAddFormHasDefaultModel = False,
-                bCrudModelEditPostLoadsModel = False,
-                bCrudModelDeletePostLoadsModel = False,
-                bCrudModelAddPostExtraStoreFunc = Nothing,
-                bCrudModelEditPostExtraStoreFunc = Nothing,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddRunningType",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditRunningType",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteRunningType",
-                bCrudModelParentHsType = Nothing,
-                bCrudModelFormRouteHsType = "AdminR",
-                bCrudModelFields =
-                  [ BCrudField
-                      { bCrudFieldName = "name",
-                        bCrudFieldLabelDe = Just "Name",
-                        bCrudFieldLabelEn = Just "Name",
-                        bCrudFieldHsType = "Text",
-                        bCrudFieldDb =
-                          Just $
-                            BCrudFieldDb
-                              { bCrudFieldDbIsNullable = False,
-                                bCrudFieldDbDefault = Nothing,
-                                bCrudFieldDbCanUpdate = True
-                              },
-                        bCrudFieldFormFieldType = Just "textField",
-                        bCrudFieldAddView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-large"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              },
-                        bCrudFieldEditView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-large"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              }
-                      },
-                    BCrudField
-                      { bCrudFieldName = "sortIndex",
-                        bCrudFieldLabelDe = Just "Sortierungs-Index",
-                        bCrudFieldLabelEn = Just "Sort Index",
-                        bCrudFieldHsType = "Int",
-                        bCrudFieldDb =
-                          Just $
-                            BCrudFieldDb
-                              { bCrudFieldDbIsNullable = False,
-                                bCrudFieldDbDefault = Nothing,
-                                bCrudFieldDbCanUpdate = True
-                              },
-                        bCrudFieldFormFieldType = Just "intField",
-                        bCrudFieldAddView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-medium"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              },
-                        bCrudFieldEditView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-medium"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              }
-                      }
-                  ],
-                bCrudModelTranslations = Nothing
-              },
-            BCrudModel
               { bCrudModelName = "swarmingType",
                 bCrudModelIsJson = True,
                 bCrudModelDbUniquenesses = [],
@@ -1781,11 +1639,6 @@ context =
             BTranslation {bTranslationKey = "addTemperType", bTranslationDe = "Sanftmut Typ hinzufügen", bTranslationEn = "Add temper type"},
             BTranslation {bTranslationKey = "deleteTemperType", bTranslationDe = "Sanftmut Typ löschen", bTranslationEn = "Delete temper type"},
             BTranslation {bTranslationKey = "editTemperType", bTranslationDe = "Sanftmut Typ bearbeiten", bTranslationEn = "Edit temper type"},
-            BTranslation {bTranslationKey = "running", bTranslationDe = "Wabensitz", bTranslationEn = "Running beh."},
-            BTranslation {bTranslationKey = "runningTypes", bTranslationDe = "Wabensitz Typen", bTranslationEn = "Running types"},
-            BTranslation {bTranslationKey = "addRunningType", bTranslationDe = "Wabensitz Typ hinzufügen", bTranslationEn = "Add running type"},
-            BTranslation {bTranslationKey = "deleteRunningType", bTranslationDe = "Wabensitz Typ löschen", bTranslationEn = "Delete running type"},
-            BTranslation {bTranslationKey = "editRunningType", bTranslationDe = "Wabensitz Typ bearbeiten", bTranslationEn = "Edit running type"},
             BTranslation {bTranslationKey = "swarming", bTranslationDe = "Schwarmtrieb", bTranslationEn = "Swarming mood"},
             BTranslation {bTranslationKey = "swarmingTypes", bTranslationDe = "Schwarmtrieb Typen", bTranslationEn = "Swarming types"},
             BTranslation {bTranslationKey = "addSwarmingType", bTranslationDe = "Schwarmtrieb Typ hinzufügen", bTranslationEn = "Add swarming type"},

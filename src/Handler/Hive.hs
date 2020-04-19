@@ -254,12 +254,11 @@ hiveDetailInspectionJDatas hiveId maybeLimitCount = do
   inspectionEntTuples <- runDB loadInspectionListTuples
   return $
     map
-      ( \(inspectionEnt@(Entity inspectionId _), temperTypeEnt, runningTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
+      ( \(inspectionEnt@(Entity inspectionId _), temperTypeEnt, swarmingTypeEnt, inspectionfileEnts) ->
           ( inspectionId,
             JDataInspection
               { jDataInspectionEnt = inspectionEnt,
                 jDataInspectionTemperTypeEnt = temperTypeEnt,
-                jDataInspectionRunningTypeEnt = runningTypeEnt,
                 jDataInspectionSwarmingTypeEnt = swarmingTypeEnt,
                 jDataInspectionEditFormUrl = urlRenderer $ HiverecR $ EditInspectionFormR inspectionId,
                 jDataInspectionDeleteFormUrl = urlRenderer $ HiverecR $ DeleteInspectionFormR inspectionId,
@@ -270,22 +269,21 @@ hiveDetailInspectionJDatas hiveId maybeLimitCount = do
       )
       inspectionEntTuples
   where
-    loadInspectionListTuples :: YesodDB App [(Entity Inspection, Entity TemperType, Entity RunningType, Entity SwarmingType, [Entity Inspectionfile])]
+    loadInspectionListTuples :: YesodDB App [(Entity Inspection, Entity TemperType, Entity SwarmingType, [Entity Inspectionfile])]
     loadInspectionListTuples = do
-      tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` rt `E.InnerJoin` st) -> do
+      tuples <- E.select $ E.from $ \(h `E.InnerJoin` i `E.InnerJoin` tt `E.InnerJoin` st) -> do
         E.on (i E.^. InspectionSwarmingTypeId E.==. st E.^. SwarmingTypeId)
-        E.on (i E.^. InspectionRunningTypeId E.==. rt E.^. RunningTypeId)
         E.on (i E.^. InspectionTemperTypeId E.==. tt E.^. TemperTypeId)
         E.on (h E.^. HiveId E.==. i E.^. InspectionHiveId)
         E.where_ (h E.^. HiveId E.==. E.val hiveId)
         E.limit $ intToInt64 maybeLimitCount
         E.orderBy [E.desc (i E.^. InspectionDate)]
-        return (i, tt, rt, st)
+        return (i, tt, st)
       forM
         (L.reverse tuples)
-        ( \(inspectionEnt@(Entity inspectionId _), tt, rt, st) -> do
+        ( \(inspectionEnt@(Entity inspectionId _), tt, st) -> do
             inspectionfileEnts <- selectList [InspectionfileInspectionId ==. inspectionId] []
-            return (inspectionEnt, tt, rt, st, inspectionfileEnts)
+            return (inspectionEnt, tt, st, inspectionfileEnts)
         )
 
 getInspectionfileJDatas :: [Entity Inspectionfile] -> (Route App -> Text) -> [JDataInspectionfile]

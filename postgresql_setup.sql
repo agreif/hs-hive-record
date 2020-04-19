@@ -106,9 +106,9 @@ as $function$
        if to_regclass('inspection_history') is not null then
            if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
                 insert into inspection_history
-                       (id, hive_id, date, temper_type_id, running_type_id, swarming_type_id, queen_seen, total_frames, bee_covered_frames, brood_frames, honey_frames, treatment, feeding, notes, version, created_at, created_by, updated_at, updated_by)
+                       (id, hive_id, date, temper_type_id, swarming_type_id, queen_seen, total_frames, bee_covered_frames, brood_frames, honey_frames, treatment, feeding, notes, version, created_at, created_by, updated_at, updated_by)
                        values
-                       (new.id, new.hive_id, new.date, new.temper_type_id, new.running_type_id, new.swarming_type_id, new.queen_seen, new.total_frames, new.bee_covered_frames, new.brood_frames, new.honey_frames, new.treatment, new.feeding, new.notes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
+                       (new.id, new.hive_id, new.date, new.temper_type_id, new.swarming_type_id, new.queen_seen, new.total_frames, new.bee_covered_frames, new.brood_frames, new.honey_frames, new.treatment, new.feeding, new.notes, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
                 return new;
             end if;
        end if;
@@ -163,29 +163,6 @@ as $function$
 $function$;
 
 create trigger audit_temper_type after insert or update on public.temper_type for each row execute procedure public.process_audit_temper_type();
-
-
-
-drop function public.process_audit_running_type() cascade;
-create or replace function public.process_audit_running_type()
- returns trigger
- language plpgsql
-as $function$
-   begin
-       if to_regclass('running_type_history') is not null then
-           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
-                insert into running_type_history
-                       (id, name, sort_index, version, created_at, created_by, updated_at, updated_by)
-                       values
-                       (new.id, new.name, new.sort_index, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by);
-                return new;
-            end if;
-       end if;
-       return null; -- result is ignored since this is an after trigger
-    end;
-$function$;
-
-create trigger audit_running_type after insert or update on public.running_type for each row execute procedure public.process_audit_running_type();
 
 
 

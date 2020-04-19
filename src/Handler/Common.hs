@@ -232,7 +232,6 @@ data JDataPageAdmin = JDataPageAdmin
   { jDataPageAdminUsers :: [JDataUser],
     jDataPageAdminConfigs :: [JDataConfig],
     jDataPageAdminTemperTypes :: [JDataTemperType],
-    jDataPageAdminRunningTypes :: [JDataRunningType],
     jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
   }
 
@@ -242,7 +241,6 @@ instance ToJSON JDataPageAdmin where
       [ "users" .= jDataPageAdminUsers o,
         "configs" .= jDataPageAdminConfigs o,
         "temperTypes" .= jDataPageAdminTemperTypes o,
-        "runningTypes" .= jDataPageAdminRunningTypes o,
         "swarmingTypes" .= jDataPageAdminSwarmingTypes o
       ]
 
@@ -357,7 +355,6 @@ instance ToJSON JDataPageHiveDetail where
 data JDataInspection = JDataInspection
   { jDataInspectionEnt :: Entity Inspection,
     jDataInspectionTemperTypeEnt :: Entity TemperType,
-    jDataInspectionRunningTypeEnt :: Entity RunningType,
     jDataInspectionSwarmingTypeEnt :: Entity SwarmingType,
     jDataInspectionEditFormUrl :: Text,
     jDataInspectionDeleteFormUrl :: Text,
@@ -370,7 +367,6 @@ instance ToJSON JDataInspection where
     object
       [ "inspectionEnt" .= entityIdToJSON (jDataInspectionEnt o),
         "temperTypeEnt" .= entityIdToJSON (jDataInspectionTemperTypeEnt o),
-        "runningTypeEnt" .= entityIdToJSON (jDataInspectionRunningTypeEnt o),
         "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o),
         "editFormUrl" .= jDataInspectionEditFormUrl o,
         "deleteFormUrl" .= jDataInspectionDeleteFormUrl o,
@@ -444,20 +440,6 @@ instance ToJSON JDataTemperType where
       [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o),
         "editFormUrl" .= jDataTemperTypeEditFormUrl o,
         "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
-      ]
-
-data JDataRunningType = JDataRunningType
-  { jDataRunningTypeEnt :: Entity RunningType,
-    jDataRunningTypeEditFormUrl :: Text,
-    jDataRunningTypeDeleteFormUrl :: Text
-  }
-
-instance ToJSON JDataRunningType where
-  toJSON o =
-    object
-      [ "entity" .= entityIdToJSON (jDataRunningTypeEnt o),
-        "editFormUrl" .= jDataRunningTypeEditFormUrl o,
-        "deleteFormUrl" .= jDataRunningTypeDeleteFormUrl o
       ]
 
 data JDataSwarmingType = JDataSwarmingType

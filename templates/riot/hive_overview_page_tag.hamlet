@@ -17,8 +17,6 @@
                 <th>
                   {context.data.translation.msgGlobalTemper}
                 <th>
-                  {context.data.translation.msgGlobalRunning}
-                <th>
                   {context.data.translation.msgGlobalSwarming}
                 <th>
                   {context.data.translation.msgInspectionQueenSeen}
@@ -47,9 +45,6 @@
                 <td .uk-table-link>
                   <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
                     {insp.inspection.temperTypeEnt.name}
-                <td .uk-table-link>
-                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
-                    {insp.inspection.runningTypeEnt.name}
                 <td .uk-table-link>
                   <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
                     {insp.inspection.swarmingTypeEnt.name}
