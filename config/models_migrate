@@ -116,7 +116,6 @@ Inspection json
     temperTypeId TemperTypeId
     swarmingTypeId SwarmingTypeId
     queenSeen Bool
-    totalFrames Int
     beeCoveredFrames Int
     broodFrames Int
     honeyFrames Int
@@ -139,7 +138,6 @@ InspectionHistory
     temperTypeId Int
     swarmingTypeId Int
     queenSeen Bool
-    totalFrames Int
     beeCoveredFrames Int
     broodFrames Int
     honeyFrames Int

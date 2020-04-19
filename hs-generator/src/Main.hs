@@ -890,48 +890,6 @@ context =
                               }
                       },
                     BCrudField
-                      { bCrudFieldName = "totalFrames",
-                        bCrudFieldLabelDe = Just "Ges. Waben",
-                        bCrudFieldLabelEn = Just "Total frames",
-                        bCrudFieldHsType = "Int",
-                        bCrudFieldDb =
-                          Just $
-                            BCrudFieldDb
-                              { bCrudFieldDbIsNullable = False,
-                                bCrudFieldDbDefault = Nothing,
-                                bCrudFieldDbCanUpdate = True
-                              },
-                        bCrudFieldFormFieldType = Just "intField",
-                        bCrudFieldAddView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-medium"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              },
-                        bCrudFieldEditView =
-                          Just $
-                            BFieldView
-                              { bFieldViewIsRequired = True,
-                                bFieldViewIsDisabled = False,
-                                bFieldViewAttrs =
-                                  [ BFieldAttr
-                                      { bFieldAttrKey = "class",
-                                        bFieldAttrValue =
-                                          "uk-input uk-form-small uk-form-width-medium"
-                                      }
-                                  ],
-                                bFieldViewDefault = Nothing
-                              }
-                      },
-                    BCrudField
                       { bCrudFieldName = "beeCoveredFrames",
                         bCrudFieldLabelDe = Just "Bel. Waben",
                         bCrudFieldLabelEn = Just "Bee covered frames",

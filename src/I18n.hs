@@ -79,7 +79,6 @@ data AppMessage
   | MsgInspectionTemperTypeId
   | MsgInspectionSwarmingTypeId
   | MsgInspectionQueenSeen
-  | MsgInspectionTotalFrames
   | MsgInspectionBeeCoveredFrames
   | MsgInspectionBroodFrames
   | MsgInspectionHoneyFrames
@@ -173,7 +172,6 @@ renderMessageGerman MsgInspectionDate = "Datum"
 renderMessageGerman MsgInspectionTemperTypeId = "Sanftmut"
 renderMessageGerman MsgInspectionSwarmingTypeId = "Schwarmtrieb"
 renderMessageGerman MsgInspectionQueenSeen = "Kö ges."
-renderMessageGerman MsgInspectionTotalFrames = "Ges. Waben"
 renderMessageGerman MsgInspectionBeeCoveredFrames = "Bel. Waben"
 renderMessageGerman MsgInspectionBroodFrames = "Brutwaben"
 renderMessageGerman MsgInspectionHoneyFrames = "Honigwaben"
@@ -267,7 +265,6 @@ renderMessageEnglish MsgInspectionDate = "Date"
 renderMessageEnglish MsgInspectionTemperTypeId = "Temper"
 renderMessageEnglish MsgInspectionSwarmingTypeId = "swarming Mood"
 renderMessageEnglish MsgInspectionQueenSeen = "Queen seen"
-renderMessageEnglish MsgInspectionTotalFrames = "Total frames"
 renderMessageEnglish MsgInspectionBeeCoveredFrames = "Bee covered frames"
 renderMessageEnglish MsgInspectionBroodFrames = "Brood frames"
 renderMessageEnglish MsgInspectionHoneyFrames = "Honey frames"
@@ -361,7 +358,6 @@ data Translation = Translation
     msgInspectionTemperTypeId :: Text,
     msgInspectionSwarmingTypeId :: Text,
     msgInspectionQueenSeen :: Text,
-    msgInspectionTotalFrames :: Text,
     msgInspectionBeeCoveredFrames :: Text,
     msgInspectionBroodFrames :: Text,
     msgInspectionHoneyFrames :: Text,
@@ -461,7 +457,6 @@ translationDe =
       msgInspectionTemperTypeId = "Sanftmut",
       msgInspectionSwarmingTypeId = "Schwarmtrieb",
       msgInspectionQueenSeen = "Kö ges.",
-      msgInspectionTotalFrames = "Ges. Waben",
       msgInspectionBeeCoveredFrames = "Bel. Waben",
       msgInspectionBroodFrames = "Brutwaben",
       msgInspectionHoneyFrames = "Honigwaben",
@@ -558,7 +553,6 @@ translationEn =
       msgInspectionTemperTypeId = "Temper",
       msgInspectionSwarmingTypeId = "swarming Mood",
       msgInspectionQueenSeen = "Queen seen",
-      msgInspectionTotalFrames = "Total frames",
       msgInspectionBeeCoveredFrames = "Bee covered frames",
       msgInspectionBroodFrames = "Brood frames",
       msgInspectionHoneyFrames = "Honey frames",

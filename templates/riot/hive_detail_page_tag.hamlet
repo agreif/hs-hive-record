@@ -58,8 +58,6 @@
               <th>
                 {context.data.translation.msgInspectionQueenSeen}
               <th>
-                {context.data.translation.msgInspectionTotalFrames}
-              <th>
                 {context.data.translation.msgInspectionBeeCoveredFrames}
               <th>
                 {context.data.translation.msgInspectionBroodFrames}
@@ -90,9 +88,6 @@
               <td .uk-table-link>
                 <a onclick="{(e)=>editInspection(e,inspection)}" .uk-link-reset>
                   <span uk-icon="icon: check" if="{inspection.inspectionEnt.queenSeen}">
-              <td .uk-table-link>
-                <a onclick="{(e)=>editInspection(e,inspection)}" .uk-link-reset>
-                  {inspection.inspectionEnt.totalFrames}
               <td .uk-table-link>
                 <a onclick="{(e)=>editInspection(e,inspection)}" .uk-link-reset>
                   {inspection.inspectionEnt.beeCoveredFrames}
