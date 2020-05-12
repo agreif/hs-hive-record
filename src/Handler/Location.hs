@@ -116,7 +116,7 @@ getLocationDetailPageDataR locationId = do
   mainNavItems <- mainNavData user MainNavLocations
   location <- runDB $ get404 locationId
   urlRenderer <- getUrlRender
-  jDataHives <- locationDetailHiveJDatas locationId
+  jDataHives <- locationDetailHiveJDatas
   let pages =
         defaultDataPages
           { jDataPageLocationDetail =
@@ -168,26 +168,26 @@ getLocationDetailPageDataR locationId = do
         jDataLanguageDeUrl = urlRenderer $ HiverecR $ LanguageDeR currentPageDataJsonUrl,
         jDataLanguageEnUrl = urlRenderer $ HiverecR $ LanguageEnR currentPageDataJsonUrl
       }
-
-locationDetailHiveJDatas :: LocationId -> Handler [JDataHiveDetail]
-locationDetailHiveJDatas locationId = do
-  urlRenderer <- getUrlRender
-  hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveName]
-  hiveDetailTuples <- forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
-    maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
-    return (hiveEnt, maybeLastInspectionEnt)
-  return $
-    map
-      ( \(hiveEnt@(Entity hiveId _), maybeLastInspectionEnt) ->
-          JDataHiveDetail
-            { jDataHiveDetailHiveEnt = hiveEnt,
-              jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt,
-              jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId,
-              jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId,
-              jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
-            }
-      )
-      hiveDetailTuples
+  where
+    locationDetailHiveJDatas :: Handler [JDataHiveDetail]
+    locationDetailHiveJDatas = do
+      urlRenderer <- getUrlRender
+      hiveEnts <- runDB $ selectList [HiveLocationId ==. locationId] [Asc HiveIsDissolved, Asc HiveName]
+      hiveDetailTuples <- forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
+        maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
+        return (hiveEnt, maybeLastInspectionEnt)
+      forM
+        hiveDetailTuples
+        ( \(hiveEnt@(Entity hiveId _), maybeLastInspectionEnt) ->
+            return
+              JDataHiveDetail
+                { jDataHiveDetailHiveEnt = hiveEnt,
+                  jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt,
+                  jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId,
+                  jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId,
+                  jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
+                }
+        )
 
 -------------------------------------------------------
 -- add
