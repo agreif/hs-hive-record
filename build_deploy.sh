@@ -44,7 +44,7 @@ echo "copy files to ${docroot_new_dir} ..."
 cp -r \
      static \
      config \
-     $dist_dir/hiverec-* \
+     $dist_dir/hiverec* \
      postgresql_setup.sql \
      ${docroot_new_dir}
 
