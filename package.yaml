@@ -84,6 +84,32 @@ executables:
     when:
     - condition: flag(library-only)
       buildable: false
+  hiverec-hash-passwd:
+    main: passwd.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    dependencies:
+    - hiverec
+    when:
+    - condition: flag(static)
+      ld-options:
+      - -static
+      - -pthread
+  hiverec-gen-riot-files:
+    main: genRiotFiles.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    dependencies:
+    - hiverec
+    when:
+    - condition: flag(static)
+      ld-options:
+      - -static
+      - -pthread
 
 # Test suite
 tests:

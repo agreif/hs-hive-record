@@ -11,6 +11,11 @@ fi
 
 git pull
 
+# force new timestamp tag later
+for f in static/js/riot/*.js; do
+    echo "`date`" > $f
+done
+
 stack clean
 stack install
 if test $? -ne 0; then
@@ -20,36 +25,57 @@ fi
 docroot_dir=$deploy_dir/docroot
 docroot_new_dir=${docroot_dir}_new
 
-if sudo test ! -L $docroot_dir; then
-    sudo mkdir ${docroot_dir}_0
-    sudo ln -s ${docroot_dir}_0 $docroot_dir
+echo
+echo "DEPLOY ... "
+echo
+
+sudo -s <<EOF
+if test ! -L $docroot_dir; then
+    mkdir ${docroot_dir}_0
+    ln -s ${docroot_dir}_0 $docroot_dir
 fi
 
 if test -d ${docroot_new_dir}; then
-    sudo rm -rf ${docroot_new_dir}
+    rm -rf ${docroot_new_dir}
 fi
-sudo mkdir -p ${docroot_new_dir}
-sudo cp -r \
+mkdir -p ${docroot_new_dir}
+
+echo "copy files to ${docroot_new_dir} ..."
+cp -r \
      static \
      config \
-     $dist_dir/$local_app_name \
+     $dist_dir/hiverec-* \
      postgresql_setup.sql \
      ${docroot_new_dir}
-sudo chown -R $app_user:$app_user ${docroot_new_dir}
-sudo chmod -R u+w ${docroot_new_dir}
 
-echo "to restart..."
-echo "    sudo pg_dump -U postgres --file=$deploy_dir/docroot/db_hiverec_$(date +%Y%m%d_%H%M%S)_dropdbifexists_createdb_filldata.dump --if-exists --clean --create hiverec"
-echo "    sleep 2"
-echo "    sudo su -c 'chmod 440 $deploy_dir/docroot/db_*.dump'"
-echo "    sudo systemctl restart $local_app_name"
-echo "    sleep 5"
-echo "    sudo ls -la $deploy_dir"
-echo "    sleep 5"
-echo "    sudo psql -U hiverec hiverec -c '\i $deploy_dir/docroot/postgresql_setup.sql'"
-echo "    sleep 1"
-echo "    sudo systemctl stop $local_app_name"
-echo "    sleep 3"
-echo "    sudo /root/node_modules/.bin/riot /var/lib/wwwhiverec/docroot/static/js/riot --output /var/lib/wwwhiverec/docroot/static/js/riot"
-echo "    sleep 1"
-echo "    sudo systemctl restart $local_app_name"
+dump_file=$docroot_dir/db_hiverec_$(date +%Y%m%d_%H%M%S)_dropdbifexists_createdb_filldata.dump
+echo "pg_dump to \$dump_file ..."
+pg_dump -U postgres --file=\$dump_file --if-exists --clean --create hiverec
+chmod 440 $docroot_dir/db_*.dump
+
+echo "exec postgresql_setup.sql ..."
+psql -U hiverec hiverec -c '\i $docroot_new_dir/postgresql_setup.sql'
+sleep 1
+if test ! -e /var/lib/$app_user/node_modules/.bin/riot; then
+    npm --prefix /var/lib/$app_user install @riotjs/cli
+fi
+
+echo "hiverec-gen-riot-files ..."
+approot=`systemctl show $local_app_name | grep APPROOT | sed -e 's|.*APPROOT=\([^ ]*\) .*|\1|'`
+echo "APPROOT: \$approot"
+sleep 1
+(cd ${docroot_new_dir}; APPROOT=\$approot ./hiverec-gen-riot-files)
+
+sleep 1
+/var/lib/$app_user/node_modules/.bin/riot \
+    $docroot_new_dir/static/js/riot \
+    --output $docroot_new_dir/static/js/riot
+
+sleep 1
+chown -R $app_user:$app_user ${docroot_new_dir}
+chmod -R u+w ${docroot_new_dir}
+
+echo "restart ..."
+systemctl restart $local_app_name
+systemctl status $local_app_name
+EOF
