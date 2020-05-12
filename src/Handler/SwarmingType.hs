@@ -45,7 +45,6 @@ postAddSwarmingTypeR = do
   case result of
     FormSuccess vAddSwarmingType -> do
       curTime <- liftIO getCurrentTime
-      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let swarmingType =
@@ -89,18 +88,20 @@ vAddSwarmingTypeForm maybeSwarmingType extra = do
         toWidget
           [whamlet|
     #{extra}
-    <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
+    <div #nameInputWidget .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
+      <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        $maybe err <- fvErrors nameView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
+        <span #nameInputError>
+          $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #sortIndexInputWidget .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
+      <label #sortIndexInputLabel .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
       <div .uk-form-controls>
         ^{fvInput sortIndexView}
-        $maybe err <- fvErrors sortIndexView
-          &nbsp;#{err}
+        <span #sortIndexInputError>
+          $maybe err <- fvErrors sortIndexView
+            &nbsp;#{err}
     |]
   return (vAddSwarmingTypeResult, formWidget)
   where
@@ -161,7 +162,6 @@ postEditSwarmingTypeR swarmingTypeId = do
   case result of
     FormSuccess vEditSwarmingType -> do
       curTime <- liftIO getCurrentTime
-      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields =
@@ -215,18 +215,20 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
           [whamlet|
     #{extra}
     ^{fvInput versionView}
-    <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
+    <div #nameInputWidget .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
+      <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        $maybe err <- fvErrors nameView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
+        <span #nameInputError>
+          $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #sortIndexInputWidget .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
+      <label #sortIndexInputLabel .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
       <div .uk-form-controls>
         ^{fvInput sortIndexView}
-        $maybe err <- fvErrors sortIndexView
-          &nbsp;#{err}
+        <span #sortIndexInputError>
+          $maybe err <- fvErrors sortIndexView
+            &nbsp;#{err}
     |]
   return (vEditSwarmingTypeResult, formWidget)
   where

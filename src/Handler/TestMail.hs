@@ -65,12 +65,13 @@ vSendTestmailForm maybeTestmail extra = do
         toWidget
           [whamlet|
     #{extra}
-    <div .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
+    <div #emailInputWidget .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
+      <label #emailInputLabel .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
       <div .uk-form-controls>
         ^{fvInput emailView}
-        $maybe err <- fvErrors emailView
-          &nbsp;#{err}
+        <span #emailInputError>
+          $maybe err <- fvErrors emailView
+            &nbsp;#{err}
     |]
   return (vSendTestmailResult, formWidget)
   where

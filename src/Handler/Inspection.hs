@@ -278,66 +278,76 @@ vAddInspectionForm maybeInspection extra = do
         toWidget
           [whamlet|
     #{extra}
-    <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors dateView:.uk-text-danger for=#{fvId dateView}>#{fvLabel dateView}
+    <div #dateInputWidget .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
+      <label #dateInputLabel .uk-form-label :not $ null $ fvErrors dateView:.uk-text-danger for=#{fvId dateView}>#{fvLabel dateView}
       <div .uk-form-controls>
         ^{fvInput dateView}
-        $maybe err <- fvErrors dateView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
+        <span #dateInputError>
+          $maybe err <- fvErrors dateView
+            &nbsp;#{err}
+    <div #temperTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
+      <label #temperTypeIdInputLabel .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
       <div .uk-form-controls>
         ^{fvInput temperTypeIdView}
-        $maybe err <- fvErrors temperTypeIdView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
+        <span #temperTypeIdInputError>
+          $maybe err <- fvErrors temperTypeIdView
+            &nbsp;#{err}
+    <div #swarmingTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
+      <label #swarmingTypeIdInputLabel .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
       <div .uk-form-controls>
         ^{fvInput swarmingTypeIdView}
-        $maybe err <- fvErrors swarmingTypeIdView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
+        <span #swarmingTypeIdInputError>
+          $maybe err <- fvErrors swarmingTypeIdView
+            &nbsp;#{err}
+    <div #queenSeenInputWidget .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
+      <label #queenSeenInputLabel .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
       <div .uk-form-controls>
         ^{fvInput queenSeenView}
-        $maybe err <- fvErrors queenSeenView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
+        <span #queenSeenInputError>
+          $maybe err <- fvErrors queenSeenView
+            &nbsp;#{err}
+    <div #beeCoveredFramesInputWidget .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
+      <label #beeCoveredFramesInputLabel .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
       <div .uk-form-controls>
         ^{fvInput beeCoveredFramesView}
-        $maybe err <- fvErrors beeCoveredFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
+        <span #beeCoveredFramesInputError>
+          $maybe err <- fvErrors beeCoveredFramesView
+            &nbsp;#{err}
+    <div #broodFramesInputWidget .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
+      <label #broodFramesInputLabel .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
       <div .uk-form-controls>
         ^{fvInput broodFramesView}
-        $maybe err <- fvErrors broodFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
+        <span #broodFramesInputError>
+          $maybe err <- fvErrors broodFramesView
+            &nbsp;#{err}
+    <div #honeyFramesInputWidget .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
+      <label #honeyFramesInputLabel .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
       <div .uk-form-controls>
         ^{fvInput honeyFramesView}
-        $maybe err <- fvErrors honeyFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors treatmentView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors treatmentView:.uk-text-danger for=#{fvId treatmentView}>#{fvLabel treatmentView}
+        <span #honeyFramesInputError>
+          $maybe err <- fvErrors honeyFramesView
+            &nbsp;#{err}
+    <div #treatmentInputWidget .uk-margin-small :not $ null $ fvErrors treatmentView:.uk-form-danger>
+      <label #treatmentInputLabel .uk-form-label :not $ null $ fvErrors treatmentView:.uk-text-danger for=#{fvId treatmentView}>#{fvLabel treatmentView}
       <div .uk-form-controls>
         ^{fvInput treatmentView}
-        $maybe err <- fvErrors treatmentView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
+        <span #treatmentInputError>
+          $maybe err <- fvErrors treatmentView
+            &nbsp;#{err}
+    <div #feedingInputWidget .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
+      <label #feedingInputLabel .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
       <div .uk-form-controls>
         ^{fvInput feedingView}
-        $maybe err <- fvErrors feedingView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
+        <span #feedingInputError>
+          $maybe err <- fvErrors feedingView
+            &nbsp;#{err}
+    <div #notesInputWidget .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
+      <label #notesInputLabel .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
       <div .uk-form-controls>
         ^{fvInput notesView}
-        $maybe err <- fvErrors notesView
-          &nbsp;#{err}
+        <span #notesInputError>
+          $maybe err <- fvErrors notesView
+            &nbsp;#{err}
     |]
   return (vAddInspectionResult, formWidget)
   where
@@ -603,66 +613,76 @@ vEditInspectionForm maybeInspection extra = do
           [whamlet|
     #{extra}
     ^{fvInput versionView}
-    <div .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors dateView:.uk-text-danger for=#{fvId dateView}>#{fvLabel dateView}
+    <div #dateInputWidget .uk-margin-small :not $ null $ fvErrors dateView:.uk-form-danger>
+      <label #dateInputLabel .uk-form-label :not $ null $ fvErrors dateView:.uk-text-danger for=#{fvId dateView}>#{fvLabel dateView}
       <div .uk-form-controls>
         ^{fvInput dateView}
-        $maybe err <- fvErrors dateView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
+        <span #dateInputError>
+          $maybe err <- fvErrors dateView
+            &nbsp;#{err}
+    <div #temperTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
+      <label #temperTypeIdInputLabel .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
       <div .uk-form-controls>
         ^{fvInput temperTypeIdView}
-        $maybe err <- fvErrors temperTypeIdView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
+        <span #temperTypeIdInputError>
+          $maybe err <- fvErrors temperTypeIdView
+            &nbsp;#{err}
+    <div #swarmingTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
+      <label #swarmingTypeIdInputLabel .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
       <div .uk-form-controls>
         ^{fvInput swarmingTypeIdView}
-        $maybe err <- fvErrors swarmingTypeIdView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
+        <span #swarmingTypeIdInputError>
+          $maybe err <- fvErrors swarmingTypeIdView
+            &nbsp;#{err}
+    <div #queenSeenInputWidget .uk-margin-small :not $ null $ fvErrors queenSeenView:.uk-form-danger>
+      <label #queenSeenInputLabel .uk-form-label :not $ null $ fvErrors queenSeenView:.uk-text-danger for=#{fvId queenSeenView}>#{fvLabel queenSeenView}
       <div .uk-form-controls>
         ^{fvInput queenSeenView}
-        $maybe err <- fvErrors queenSeenView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
+        <span #queenSeenInputError>
+          $maybe err <- fvErrors queenSeenView
+            &nbsp;#{err}
+    <div #beeCoveredFramesInputWidget .uk-margin-small :not $ null $ fvErrors beeCoveredFramesView:.uk-form-danger>
+      <label #beeCoveredFramesInputLabel .uk-form-label :not $ null $ fvErrors beeCoveredFramesView:.uk-text-danger for=#{fvId beeCoveredFramesView}>#{fvLabel beeCoveredFramesView}
       <div .uk-form-controls>
         ^{fvInput beeCoveredFramesView}
-        $maybe err <- fvErrors beeCoveredFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
+        <span #beeCoveredFramesInputError>
+          $maybe err <- fvErrors beeCoveredFramesView
+            &nbsp;#{err}
+    <div #broodFramesInputWidget .uk-margin-small :not $ null $ fvErrors broodFramesView:.uk-form-danger>
+      <label #broodFramesInputLabel .uk-form-label :not $ null $ fvErrors broodFramesView:.uk-text-danger for=#{fvId broodFramesView}>#{fvLabel broodFramesView}
       <div .uk-form-controls>
         ^{fvInput broodFramesView}
-        $maybe err <- fvErrors broodFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
+        <span #broodFramesInputError>
+          $maybe err <- fvErrors broodFramesView
+            &nbsp;#{err}
+    <div #honeyFramesInputWidget .uk-margin-small :not $ null $ fvErrors honeyFramesView:.uk-form-danger>
+      <label #honeyFramesInputLabel .uk-form-label :not $ null $ fvErrors honeyFramesView:.uk-text-danger for=#{fvId honeyFramesView}>#{fvLabel honeyFramesView}
       <div .uk-form-controls>
         ^{fvInput honeyFramesView}
-        $maybe err <- fvErrors honeyFramesView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors treatmentView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors treatmentView:.uk-text-danger for=#{fvId treatmentView}>#{fvLabel treatmentView}
+        <span #honeyFramesInputError>
+          $maybe err <- fvErrors honeyFramesView
+            &nbsp;#{err}
+    <div #treatmentInputWidget .uk-margin-small :not $ null $ fvErrors treatmentView:.uk-form-danger>
+      <label #treatmentInputLabel .uk-form-label :not $ null $ fvErrors treatmentView:.uk-text-danger for=#{fvId treatmentView}>#{fvLabel treatmentView}
       <div .uk-form-controls>
         ^{fvInput treatmentView}
-        $maybe err <- fvErrors treatmentView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
+        <span #treatmentInputError>
+          $maybe err <- fvErrors treatmentView
+            &nbsp;#{err}
+    <div #feedingInputWidget .uk-margin-small :not $ null $ fvErrors feedingView:.uk-form-danger>
+      <label #feedingInputLabel .uk-form-label :not $ null $ fvErrors feedingView:.uk-text-danger for=#{fvId feedingView}>#{fvLabel feedingView}
       <div .uk-form-controls>
         ^{fvInput feedingView}
-        $maybe err <- fvErrors feedingView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
+        <span #feedingInputError>
+          $maybe err <- fvErrors feedingView
+            &nbsp;#{err}
+    <div #notesInputWidget .uk-margin-small :not $ null $ fvErrors notesView:.uk-form-danger>
+      <label #notesInputLabel .uk-form-label :not $ null $ fvErrors notesView:.uk-text-danger for=#{fvId notesView}>#{fvLabel notesView}
       <div .uk-form-controls>
         ^{fvInput notesView}
-        $maybe err <- fvErrors notesView
-          &nbsp;#{err}
+        <span #notesInputError>
+          $maybe err <- fvErrors notesView
+            &nbsp;#{err}
     |]
   return (vEditInspectionResult, formWidget)
   where

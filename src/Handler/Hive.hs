@@ -334,7 +334,6 @@ postAddHiveR locationId = do
   case result of
     FormSuccess vAddHive -> do
       curTime <- liftIO getCurrentTime
-      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let hive =
@@ -385,24 +384,27 @@ vAddHiveForm maybeHive extra = do
         toWidget
           [whamlet|
     #{extra}
-    <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
+    <div #nameInputWidget .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
+      <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        $maybe err <- fvErrors nameView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
+        <span #nameInputError>
+          $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
+      <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
       <div .uk-form-controls>
         ^{fvInput descriptionView}
-        $maybe err <- fvErrors descriptionView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
+        <span #descriptionInputError>
+          $maybe err <- fvErrors descriptionView
+            &nbsp;#{err}
+    <div #isDissolvedInputWidget .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
+      <label #isDissolvedInputLabel .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
       <div .uk-form-controls>
         ^{fvInput isDissolvedView}
-        $maybe err <- fvErrors isDissolvedView
-          &nbsp;#{err}
+        <span #isDissolvedInputError>
+          $maybe err <- fvErrors isDissolvedView
+            &nbsp;#{err}
     |]
   return (vAddHiveResult, formWidget)
   where
@@ -474,7 +476,6 @@ postEditHiveR hiveId = do
   case result of
     FormSuccess vEditHive -> do
       curTime <- liftIO getCurrentTime
-      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields =
@@ -540,30 +541,34 @@ vEditHiveForm maybeHive extra = do
           [whamlet|
     #{extra}
     ^{fvInput versionView}
-    <div .uk-margin-small :not $ null $ fvErrors locationIdView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors locationIdView:.uk-text-danger for=#{fvId locationIdView}>#{fvLabel locationIdView}
+    <div #locationIdInputWidget .uk-margin-small :not $ null $ fvErrors locationIdView:.uk-form-danger>
+      <label #locationIdInputLabel .uk-form-label :not $ null $ fvErrors locationIdView:.uk-text-danger for=#{fvId locationIdView}>#{fvLabel locationIdView}
       <div .uk-form-controls>
         ^{fvInput locationIdView}
-        $maybe err <- fvErrors locationIdView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
+        <span #locationIdInputError>
+          $maybe err <- fvErrors locationIdView
+            &nbsp;#{err}
+    <div #nameInputWidget .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
+      <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        $maybe err <- fvErrors nameView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
+        <span #nameInputError>
+          $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
+      <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
       <div .uk-form-controls>
         ^{fvInput descriptionView}
-        $maybe err <- fvErrors descriptionView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
+        <span #descriptionInputError>
+          $maybe err <- fvErrors descriptionView
+            &nbsp;#{err}
+    <div #isDissolvedInputWidget .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
+      <label #isDissolvedInputLabel .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
       <div .uk-form-controls>
         ^{fvInput isDissolvedView}
-        $maybe err <- fvErrors isDissolvedView
-          &nbsp;#{err}
+        <span #isDissolvedInputError>
+          $maybe err <- fvErrors isDissolvedView
+            &nbsp;#{err}
     |]
   return (vEditHiveResult, formWidget)
   where

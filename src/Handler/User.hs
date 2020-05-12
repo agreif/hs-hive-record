@@ -94,24 +94,27 @@ vAddUserForm maybeUser extra = do
         toWidget
           [whamlet|
     #{extra}
-    <div .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors identView:.uk-text-danger for=#{fvId identView}>#{fvLabel identView}
+    <div #identInputWidget .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
+      <label #identInputLabel .uk-form-label :not $ null $ fvErrors identView:.uk-text-danger for=#{fvId identView}>#{fvLabel identView}
       <div .uk-form-controls>
         ^{fvInput identView}
-        $maybe err <- fvErrors identView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
+        <span #identInputError>
+          $maybe err <- fvErrors identView
+            &nbsp;#{err}
+    <div #emailInputWidget .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
+      <label #emailInputLabel .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
       <div .uk-form-controls>
         ^{fvInput emailView}
-        $maybe err <- fvErrors emailView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors isAdminView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors isAdminView:.uk-text-danger for=#{fvId isAdminView}>#{fvLabel isAdminView}
+        <span #emailInputError>
+          $maybe err <- fvErrors emailView
+            &nbsp;#{err}
+    <div #isAdminInputWidget .uk-margin-small :not $ null $ fvErrors isAdminView:.uk-form-danger>
+      <label #isAdminInputLabel .uk-form-label :not $ null $ fvErrors isAdminView:.uk-text-danger for=#{fvId isAdminView}>#{fvLabel isAdminView}
       <div .uk-form-controls>
         ^{fvInput isAdminView}
-        $maybe err <- fvErrors isAdminView
-          &nbsp;#{err}
+        <span #isAdminInputError>
+          $maybe err <- fvErrors isAdminView
+            &nbsp;#{err}
     |]
   return (vAddUserResult, formWidget)
   where
@@ -252,30 +255,34 @@ vEditUserForm maybeUser extra = do
           [whamlet|
     #{extra}
     ^{fvInput versionView}
-    <div .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors identView:.uk-text-danger for=#{fvId identView}>#{fvLabel identView}
+    <div #identInputWidget .uk-margin-small :not $ null $ fvErrors identView:.uk-form-danger>
+      <label #identInputLabel .uk-form-label :not $ null $ fvErrors identView:.uk-text-danger for=#{fvId identView}>#{fvLabel identView}
       <div .uk-form-controls>
         ^{fvInput identView}
-        $maybe err <- fvErrors identView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
+        <span #identInputError>
+          $maybe err <- fvErrors identView
+            &nbsp;#{err}
+    <div #emailInputWidget .uk-margin-small :not $ null $ fvErrors emailView:.uk-form-danger>
+      <label #emailInputLabel .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
       <div .uk-form-controls>
         ^{fvInput emailView}
-        $maybe err <- fvErrors emailView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors isAdminView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors isAdminView:.uk-text-danger for=#{fvId isAdminView}>#{fvLabel isAdminView}
+        <span #emailInputError>
+          $maybe err <- fvErrors emailView
+            &nbsp;#{err}
+    <div #isAdminInputWidget .uk-margin-small :not $ null $ fvErrors isAdminView:.uk-form-danger>
+      <label #isAdminInputLabel .uk-form-label :not $ null $ fvErrors isAdminView:.uk-text-danger for=#{fvId isAdminView}>#{fvLabel isAdminView}
       <div .uk-form-controls>
         ^{fvInput isAdminView}
-        $maybe err <- fvErrors isAdminView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors isResetPasswordView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors isResetPasswordView:.uk-text-danger for=#{fvId isResetPasswordView}>#{fvLabel isResetPasswordView}
+        <span #isAdminInputError>
+          $maybe err <- fvErrors isAdminView
+            &nbsp;#{err}
+    <div #isResetPasswordInputWidget .uk-margin-small :not $ null $ fvErrors isResetPasswordView:.uk-form-danger>
+      <label #isResetPasswordInputLabel .uk-form-label :not $ null $ fvErrors isResetPasswordView:.uk-text-danger for=#{fvId isResetPasswordView}>#{fvLabel isResetPasswordView}
       <div .uk-form-controls>
         ^{fvInput isResetPasswordView}
-        $maybe err <- fvErrors isResetPasswordView
-          &nbsp;#{err}
+        <span #isResetPasswordInputError>
+          $maybe err <- fvErrors isResetPasswordView
+            &nbsp;#{err}
     |]
   return (vEditUserResult, formWidget)
   where

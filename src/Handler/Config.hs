@@ -50,7 +50,6 @@ postEditConfigR configId = do
   case result of
     FormSuccess vEditConfig -> do
       curTime <- liftIO getCurrentTime
-      maybeCurRoute <- getCurrentRoute
       Entity _ authUser <- requireAuth
       urlRenderer <- getUrlRender
       let persistFields =
@@ -121,36 +120,41 @@ vEditConfigForm maybeConfig extra = do
           [whamlet|
     #{extra}
     ^{fvInput versionView}
-    <div .uk-margin-small :not $ null $ fvErrors codeView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors codeView:.uk-text-danger for=#{fvId codeView}>#{fvLabel codeView}
+    <div #codeInputWidget .uk-margin-small :not $ null $ fvErrors codeView:.uk-form-danger>
+      <label #codeInputLabel .uk-form-label :not $ null $ fvErrors codeView:.uk-text-danger for=#{fvId codeView}>#{fvLabel codeView}
       <div .uk-form-controls>
         ^{fvInput codeView}
-        $maybe err <- fvErrors codeView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors stringValueView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors stringValueView:.uk-text-danger for=#{fvId stringValueView}>#{fvLabel stringValueView}
+        <span #codeInputError>
+          $maybe err <- fvErrors codeView
+            &nbsp;#{err}
+    <div #stringValueInputWidget .uk-margin-small :not $ null $ fvErrors stringValueView:.uk-form-danger>
+      <label #stringValueInputLabel .uk-form-label :not $ null $ fvErrors stringValueView:.uk-text-danger for=#{fvId stringValueView}>#{fvLabel stringValueView}
       <div .uk-form-controls>
         ^{fvInput stringValueView}
-        $maybe err <- fvErrors stringValueView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors intValueView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors intValueView:.uk-text-danger for=#{fvId intValueView}>#{fvLabel intValueView}
+        <span #stringValueInputError>
+          $maybe err <- fvErrors stringValueView
+            &nbsp;#{err}
+    <div #intValueInputWidget .uk-margin-small :not $ null $ fvErrors intValueView:.uk-form-danger>
+      <label #intValueInputLabel .uk-form-label :not $ null $ fvErrors intValueView:.uk-text-danger for=#{fvId intValueView}>#{fvLabel intValueView}
       <div .uk-form-controls>
         ^{fvInput intValueView}
-        $maybe err <- fvErrors intValueView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors doubleValueView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors doubleValueView:.uk-text-danger for=#{fvId doubleValueView}>#{fvLabel doubleValueView}
+        <span #intValueInputError>
+          $maybe err <- fvErrors intValueView
+            &nbsp;#{err}
+    <div #doubleValueInputWidget .uk-margin-small :not $ null $ fvErrors doubleValueView:.uk-form-danger>
+      <label #doubleValueInputLabel .uk-form-label :not $ null $ fvErrors doubleValueView:.uk-text-danger for=#{fvId doubleValueView}>#{fvLabel doubleValueView}
       <div .uk-form-controls>
         ^{fvInput doubleValueView}
-        $maybe err <- fvErrors doubleValueView
-          &nbsp;#{err}
-    <div .uk-margin-small :not $ null $ fvErrors boolValueView:.uk-form-danger>
-      <label .uk-form-label :not $ null $ fvErrors boolValueView:.uk-text-danger for=#{fvId boolValueView}>#{fvLabel boolValueView}
+        <span #doubleValueInputError>
+          $maybe err <- fvErrors doubleValueView
+            &nbsp;#{err}
+    <div #boolValueInputWidget .uk-margin-small :not $ null $ fvErrors boolValueView:.uk-form-danger>
+      <label #boolValueInputLabel .uk-form-label :not $ null $ fvErrors boolValueView:.uk-text-danger for=#{fvId boolValueView}>#{fvLabel boolValueView}
       <div .uk-form-controls>
         ^{fvInput boolValueView}
-        $maybe err <- fvErrors boolValueView
-          &nbsp;#{err}
+        <span #boolValueInputError>
+          $maybe err <- fvErrors boolValueView
+            &nbsp;#{err}
     |]
   return (vEditConfigResult, formWidget)
   where
