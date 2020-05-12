@@ -153,8 +153,8 @@ getHiveOverviewAddInspectionFormR hiveId = do
 inspectionDateSessionKey :: Text
 inspectionDateSessionKey = "inspectionDate"
 
-storeInspectionDateToSession :: VAddInspection -> YesodDB App ()
-storeInspectionDateToSession vAddInspection = do
+storeInspectionDateToSession :: VAddInspection -> InspectionId -> YesodDB App ()
+storeInspectionDateToSession vAddInspection _ = do
   let dateStr = formatDay $ vAddInspectionDate vAddInspection
   setSession inspectionDateSessionKey dateStr
   return ()
@@ -199,7 +199,7 @@ postAddInspectionR hiveId = do
               }
       runDB $ do
         inspectionId <- insert inspection
-        storeInspectionDateToSession vAddInspection
+        storeInspectionDateToSession vAddInspection inspectionId
         return ()
       returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ getAddInspectionSuccessDataJsonUrl inspection maybeCurRoute}
     _ -> do
