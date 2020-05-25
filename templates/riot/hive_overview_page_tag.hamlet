@@ -15,8 +15,6 @@
                 <th>
                   {context.data.translation.msgInspectionDate}
                 <th>
-                  {context.data.translation.msgGlobalTemper}
-                <th>
                   {context.data.translation.msgGlobalSwarming}
                 <th>
                   {context.data.translation.msgInspectionQueenSeen}
@@ -40,9 +38,6 @@
                 <td .uk-table-link .uk-text-nowrap>
                   <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
                     {context.formatDateStrWithWeekday(insp.inspection.inspectionEnt.date)}
-                <td .uk-table-link>
-                  <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
-                    {insp.inspection.temperTypeEnt.name}
                 <td .uk-table-link>
                   <a onclick="{(e)=>editInspection(e,insp)}" .uk-link-reset>
                     {insp.inspection.swarmingTypeEnt.name}

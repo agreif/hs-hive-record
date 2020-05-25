@@ -231,7 +231,6 @@ instance ToJSON JDataPageHome where
 data JDataPageAdmin = JDataPageAdmin
   { jDataPageAdminUsers :: [JDataUser],
     jDataPageAdminConfigs :: [JDataConfig],
-    jDataPageAdminTemperTypes :: [JDataTemperType],
     jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
   }
 
@@ -240,7 +239,6 @@ instance ToJSON JDataPageAdmin where
     object
       [ "users" .= jDataPageAdminUsers o,
         "configs" .= jDataPageAdminConfigs o,
-        "temperTypes" .= jDataPageAdminTemperTypes o,
         "swarmingTypes" .= jDataPageAdminSwarmingTypes o
       ]
 
@@ -354,7 +352,6 @@ instance ToJSON JDataPageHiveDetail where
 
 data JDataInspection = JDataInspection
   { jDataInspectionEnt :: Entity Inspection,
-    jDataInspectionTemperTypeEnt :: Entity TemperType,
     jDataInspectionSwarmingTypeEnt :: Entity SwarmingType,
     jDataInspectionEditFormUrl :: Text,
     jDataInspectionDeleteFormUrl :: Text,
@@ -366,7 +363,6 @@ instance ToJSON JDataInspection where
   toJSON o =
     object
       [ "inspectionEnt" .= entityIdToJSON (jDataInspectionEnt o),
-        "temperTypeEnt" .= entityIdToJSON (jDataInspectionTemperTypeEnt o),
         "swarmingTypeEnt" .= entityIdToJSON (jDataInspectionSwarmingTypeEnt o),
         "editFormUrl" .= jDataInspectionEditFormUrl o,
         "deleteFormUrl" .= jDataInspectionDeleteFormUrl o,
@@ -426,20 +422,6 @@ instance ToJSON JDataHiveOverviewHiveInspection where
     object
       [ "inspectionEditFormUrl" .= jDataHiveOverviewHiveInspectionEditFormUrl o,
         "inspection" .= jDataHiveOverviewHiveInspection o
-      ]
-
-data JDataTemperType = JDataTemperType
-  { jDataTemperTypeEnt :: Entity TemperType,
-    jDataTemperTypeEditFormUrl :: Text,
-    jDataTemperTypeDeleteFormUrl :: Text
-  }
-
-instance ToJSON JDataTemperType where
-  toJSON o =
-    object
-      [ "entity" .= entityIdToJSON (jDataTemperTypeEnt o),
-        "editFormUrl" .= jDataTemperTypeEditFormUrl o,
-        "deleteFormUrl" .= jDataTemperTypeDeleteFormUrl o
       ]
 
 data JDataSwarmingType = JDataSwarmingType

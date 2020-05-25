@@ -113,7 +113,6 @@ HiveHistory
 Inspection json
     hiveId HiveId
     date Day
-    temperTypeId TemperTypeId
     swarmingTypeId SwarmingTypeId
     queenSeen Bool
     beeCoveredFrames Int
@@ -135,7 +134,6 @@ InspectionHistory
     id Int MigrationOnly
     hiveId Int
     date Day
-    temperTypeId Int
     swarmingTypeId Int
     queenSeen Bool
     beeCoveredFrames Int
@@ -171,27 +169,6 @@ InspectionfileHistory
     filename Text
     mimetype Text
     size Int
-    version Int
-    createdAt UTCTime
-    createdBy Text
-    updatedAt UTCTime
-    updatedBy Text
-
-TemperType json
-    name Text
-    sortIndex Int
-    version Int
-    createdAt UTCTime
-    createdBy Text
-    updatedAt UTCTime
-    updatedBy Text
-
-
-TemperTypeHistory
-    Id sql=vid
-    id Int MigrationOnly
-    name Text
-    sortIndex Int
     version Int
     createdAt UTCTime
     createdBy Text

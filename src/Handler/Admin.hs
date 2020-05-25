@@ -30,7 +30,6 @@ getAdminPageDataR = do
   mainNavItems <- mainNavData user MainNavAdmin
   jDataUsers <- userListJDataEnts
   jDataConfigs <- configListJDataEnts
-  jDataTemperTypes <- temperTypeListJDataEnts
   jDataSwarmingTypes <- swarmingTypeListJDataEnts
   let pages =
         defaultDataPages
@@ -39,7 +38,6 @@ getAdminPageDataR = do
                 JDataPageAdmin
                   { jDataPageAdminUsers = jDataUsers,
                     jDataPageAdminConfigs = jDataConfigs,
-                    jDataPageAdminTemperTypes = jDataTemperTypes,
                     jDataPageAdminSwarmingTypes = jDataSwarmingTypes
                   }
           }
@@ -121,28 +119,6 @@ loadConfigListTuples =
   E.select $ E.from $ \config -> do
     E.orderBy [E.asc (config E.^. ConfigId)]
     return config
-
-temperTypeListJDataEnts :: Handler [JDataTemperType]
-temperTypeListJDataEnts = do
-  urlRenderer <- getUrlRender
-  temperTypeTuples <- runDB loadTemperTypeListTuples
-  let jTemperTypeList =
-        map
-          ( \temperTypeEnt@(Entity temperTypeId _) ->
-              JDataTemperType
-                { jDataTemperTypeEnt = temperTypeEnt,
-                  jDataTemperTypeEditFormUrl = urlRenderer $ AdminR $ EditTemperTypeFormR temperTypeId,
-                  jDataTemperTypeDeleteFormUrl = urlRenderer $ AdminR $ DeleteTemperTypeFormR temperTypeId
-                }
-          )
-          temperTypeTuples
-  return jTemperTypeList
-
-loadTemperTypeListTuples :: YesodDB App [Entity TemperType]
-loadTemperTypeListTuples =
-  E.select $ E.from $ \temperType -> do
-    E.orderBy [E.asc (temperType E.^. TemperTypeSortIndex)]
-    return temperType
 
 swarmingTypeListJDataEnts :: Handler [JDataSwarmingType]
 swarmingTypeListJDataEnts = do

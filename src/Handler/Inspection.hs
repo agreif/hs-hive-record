@@ -12,10 +12,6 @@ import Handler.Common
 import Import
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 
-temperTypeSelectField :: Field Handler (Key TemperType)
-temperTypeSelectField =
-  selectField $ optionsPersistKey [] [Asc TemperTypeSortIndex] temperTypeName
-
 swarmingTypeSelectField :: Field Handler (Key SwarmingType)
 swarmingTypeSelectField =
   selectField $ optionsPersistKey [] [Asc SwarmingTypeSortIndex] swarmingTypeName
@@ -31,7 +27,6 @@ defaultAddInspection hiveId = do
   today <- case maybeToday of
     Just today' -> return today'
     _ -> liftIO getCurrentDay
-  maybeTemperTypeId <- runDB defaultTemperTypeId
   maybeSwarmingTypeId <- runDB defaultSwarmingTypeId
   maybeLastInspectionEnt <- runDB $ getLastInspectionEnt hiveId
   case maybeLastInspectionEnt of
@@ -40,7 +35,6 @@ defaultAddInspection hiveId = do
         Inspection
           { inspectionHiveId = hiveId,
             inspectionDate = today,
-            inspectionTemperTypeId = inspectionTemperTypeId inspection,
             inspectionSwarmingTypeId = inspectionSwarmingTypeId inspection,
             inspectionQueenSeen = False,
             inspectionBeeCoveredFrames = inspectionBeeCoveredFrames inspection,
@@ -57,14 +51,13 @@ defaultAddInspection hiveId = do
           }
     _ ->
       return $
-        if M.isNothing maybeTemperTypeId || M.isNothing maybeSwarmingTypeId
+        if M.isNothing maybeSwarmingTypeId
           then Nothing
           else
             Just $
               Inspection
                 { inspectionHiveId = hiveId,
                   inspectionDate = today,
-                  inspectionTemperTypeId = M.fromJust maybeTemperTypeId,
                   inspectionSwarmingTypeId = M.fromJust maybeSwarmingTypeId,
                   inspectionQueenSeen = False,
                   inspectionBeeCoveredFrames = 0,
@@ -80,18 +73,6 @@ defaultAddInspection hiveId = do
                   inspectionUpdatedBy = dbSystemUser
                 }
   where
-    defaultTemperTypeId :: YesodDB App (Maybe TemperTypeId)
-    defaultTemperTypeId = do
-      temperTypeEnts <- selectList ([] :: [Filter TemperType]) []
-      if L.null temperTypeEnts
-        then return Nothing
-        else
-          return
-            $ Just
-            $ snd
-            $ L.head
-            $ L.sort
-            $ L.map (\(Entity ttId tt) -> (temperTypeSortIndex tt, ttId)) temperTypeEnts
     defaultSwarmingTypeId :: YesodDB App (Maybe SwarmingTypeId)
     defaultSwarmingTypeId = do
       swarmingTypeEnts <- selectList ([] :: [Filter SwarmingType]) []
@@ -108,7 +89,6 @@ defaultAddInspection hiveId = do
 -- gen data add - start
 data VAddInspection = VAddInspection
   { vAddInspectionDate :: Day,
-    vAddInspectionTemperTypeId :: TemperTypeId,
     vAddInspectionSwarmingTypeId :: SwarmingTypeId,
     vAddInspectionQueenSeen :: Bool,
     vAddInspectionBeeCoveredFrames :: Int,
@@ -182,7 +162,6 @@ postAddInspectionR hiveId = do
             Inspection
               { inspectionHiveId = hiveId,
                 inspectionDate = vAddInspectionDate vAddInspection,
-                inspectionTemperTypeId = vAddInspectionTemperTypeId vAddInspection,
                 inspectionSwarmingTypeId = vAddInspectionSwarmingTypeId vAddInspection,
                 inspectionQueenSeen = vAddInspectionQueenSeen vAddInspection,
                 inspectionBeeCoveredFrames = vAddInspectionBeeCoveredFrames vAddInspection,
@@ -228,11 +207,6 @@ vAddInspectionForm maybeInspection extra = do
       dayField
       dateFs
       (inspectionDate <$> maybeInspection)
-  (temperTypeIdResult, temperTypeIdView) <-
-    mreq
-      temperTypeSelectField
-      temperTypeIdFs
-      (inspectionTemperTypeId <$> maybeInspection)
   (swarmingTypeIdResult, swarmingTypeIdView) <-
     mreq
       swarmingTypeSelectField
@@ -273,7 +247,7 @@ vAddInspectionForm maybeInspection extra = do
       textareaField
       notesFs
       (inspectionNotes <$> maybeInspection)
-  let vAddInspectionResult = VAddInspection <$> dateResult <*> temperTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult
+  let vAddInspectionResult = VAddInspection <$> dateResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult
   let formWidget =
         toWidget
           [whamlet|
@@ -284,13 +258,6 @@ vAddInspectionForm maybeInspection extra = do
         ^{fvInput dateView}
         <span #dateInputError>
           $maybe err <- fvErrors dateView
-            &nbsp;#{err}
-    <div #temperTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
-      <label #temperTypeIdInputLabel .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
-      <div .uk-form-controls>
-        ^{fvInput temperTypeIdView}
-        <span #temperTypeIdInputError>
-          $maybe err <- fvErrors temperTypeIdView
             &nbsp;#{err}
     <div #swarmingTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
       <label #swarmingTypeIdInputLabel .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
@@ -358,15 +325,6 @@ vAddInspectionForm maybeInspection extra = do
           fsTooltip = Nothing,
           fsId = Just "date",
           fsName = Just "date",
-          fsAttrs = []
-        }
-    temperTypeIdFs :: FieldSettings App
-    temperTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTemperTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "temperTypeId",
-          fsName = Just "temperTypeId",
           fsAttrs = []
         }
     swarmingTypeIdFs :: FieldSettings App
@@ -451,7 +409,6 @@ vAddInspectionForm maybeInspection extra = do
 -- gen data edit - start
 data VEditInspection = VEditInspection
   { vEditInspectionDate :: Day,
-    vEditInspectionTemperTypeId :: TemperTypeId,
     vEditInspectionSwarmingTypeId :: SwarmingTypeId,
     vEditInspectionQueenSeen :: Bool,
     vEditInspectionBeeCoveredFrames :: Int,
@@ -507,7 +464,6 @@ postEditInspectionR inspectionId = do
       inspection <- runDB $ get404 inspectionId
       let persistFields =
             [ InspectionDate =. vEditInspectionDate vEditInspection,
-              InspectionTemperTypeId =. vEditInspectionTemperTypeId vEditInspection,
               InspectionSwarmingTypeId =. vEditInspectionSwarmingTypeId vEditInspection,
               InspectionQueenSeen =. vEditInspectionQueenSeen vEditInspection,
               InspectionBeeCoveredFrames =. vEditInspectionBeeCoveredFrames vEditInspection,
@@ -557,11 +513,6 @@ vEditInspectionForm maybeInspection extra = do
       dayField
       dateFs
       (inspectionDate <$> maybeInspection)
-  (temperTypeIdResult, temperTypeIdView) <-
-    mreq
-      temperTypeSelectField
-      temperTypeIdFs
-      (inspectionTemperTypeId <$> maybeInspection)
   (swarmingTypeIdResult, swarmingTypeIdView) <-
     mreq
       swarmingTypeSelectField
@@ -607,7 +558,7 @@ vEditInspectionForm maybeInspection extra = do
       hiddenField
       versionFs
       (inspectionVersion <$> maybeInspection)
-  let vEditInspectionResult = VEditInspection <$> dateResult <*> temperTypeIdResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult <*> versionResult
+  let vEditInspectionResult = VEditInspection <$> dateResult <*> swarmingTypeIdResult <*> queenSeenResult <*> beeCoveredFramesResult <*> broodFramesResult <*> honeyFramesResult <*> treatmentResult <*> feedingResult <*> notesResult <*> versionResult
   let formWidget =
         toWidget
           [whamlet|
@@ -619,13 +570,6 @@ vEditInspectionForm maybeInspection extra = do
         ^{fvInput dateView}
         <span #dateInputError>
           $maybe err <- fvErrors dateView
-            &nbsp;#{err}
-    <div #temperTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors temperTypeIdView:.uk-form-danger>
-      <label #temperTypeIdInputLabel .uk-form-label :not $ null $ fvErrors temperTypeIdView:.uk-text-danger for=#{fvId temperTypeIdView}>#{fvLabel temperTypeIdView}
-      <div .uk-form-controls>
-        ^{fvInput temperTypeIdView}
-        <span #temperTypeIdInputError>
-          $maybe err <- fvErrors temperTypeIdView
             &nbsp;#{err}
     <div #swarmingTypeIdInputWidget .uk-margin-small :not $ null $ fvErrors swarmingTypeIdView:.uk-form-danger>
       <label #swarmingTypeIdInputLabel .uk-form-label :not $ null $ fvErrors swarmingTypeIdView:.uk-text-danger for=#{fvId swarmingTypeIdView}>#{fvLabel swarmingTypeIdView}
@@ -693,15 +637,6 @@ vEditInspectionForm maybeInspection extra = do
           fsTooltip = Nothing,
           fsId = Just "date",
           fsName = Just "date",
-          fsAttrs = []
-        }
-    temperTypeIdFs :: FieldSettings App
-    temperTypeIdFs =
-      FieldSettings
-        { fsLabel = SomeMessage MsgInspectionTemperTypeId,
-          fsTooltip = Nothing,
-          fsId = Just "temperTypeId",
-          fsName = Just "temperTypeId",
           fsAttrs = []
         }
     swarmingTypeIdFs :: FieldSettings App

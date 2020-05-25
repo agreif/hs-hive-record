@@ -11,9 +11,6 @@
           {context.data.translation.msgGlobalConfigurations}
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalTemperTypes}
-      <li>
-        <a href="#">
           {context.data.translation.msgGlobalSwarmingTypes}
       <li>
         <a href="#">
@@ -85,31 +82,6 @@
                 <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditConfig}" uk-tooltip onclick="{(e)=>editConfig(e,config)}">
                   <span uk-icon="icon: pencil">
       <li>
-        <!-- temperType list -->
-        <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
-          <thead>
-            <tr>
-              <th>
-                {context.data.translation.msgTemperTypeName}
-              <th>
-                {context.data.translation.msgTemperTypeSortIndex}
-              <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddTemperType}" uk-tooltip onclick="{addTemperType}">
-                  <span uk-icon="icon: plus">
-          <tbody>
-            <tr each="{type in context.data.pages.admin.temperTypes}">
-              <td .uk-table-link>
-                <a onclick="{(e)=>editTemperType(e,type)}" .uk-link-reset>
-                  {type.entity.name}
-              <td .uk-table-link>
-                <a onclick="{(e)=>editTemperType(e,type)}" .uk-link-reset>
-                  {type.entity.sortIndex}
-              <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteTemperType}" uk-tooltip onclick="{(e)=>deleteTemperType(e,type)}">
-                  <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditTemperType}" uk-tooltip onclick="{editTemperType}">
-                  <span uk-icon="icon: pencil">
-      <li>
         <!-- swarmingType list -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
           <thead>
@@ -162,21 +134,6 @@
     \   editConfig(event, item) {
     \     event.preventDefault()
     \     this.context.showModalForm(item.editFormUrl)
-    \     event.currentTarget.blur()
-    \   },
-    \   addTemperType(event) {
-    \     event.preventDefault()
-    \     this.context.showModalForm("@{AdminR AddTemperTypeFormR}")
-    \     event.currentTarget.blur()
-    \   },
-    \   editTemperType(event, item) {
-    \     event.preventDefault()
-    \     this.context.showModalForm(item.editFormUrl)
-    \     event.currentTarget.blur()
-    \   },
-    \   deleteTemperType(event, item) {
-    \     event.preventDefault()
-    \     this.context.showModalForm(item.deleteFormUrl)
     \     event.currentTarget.blur()
     \   },
     \   addSwarmingType(event) {

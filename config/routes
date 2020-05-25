@@ -24,13 +24,6 @@
   sendTestMailForm SendTestmailFormR GET
   sendTestMail SendTestmailR POST
 
-  addTemperTypeForm AddTemperTypeFormR GET
-  addTemperType AddTemperTypeR POST
-  editTemperTypeForm/#TemperTypeId EditTemperTypeFormR GET
-  editTemperType/#TemperTypeId EditTemperTypeR POST
-  deleteTemperTypeForm/#TemperTypeId DeleteTemperTypeFormR GET
-  deleteTemperType/#TemperTypeId DeleteTemperTypeR POST
-
   addSwarmingTypeForm AddSwarmingTypeFormR GET
   addSwarmingType AddSwarmingTypeR POST
   editSwarmingTypeForm/#SwarmingTypeId EditSwarmingTypeFormR GET

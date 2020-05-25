@@ -48,11 +48,6 @@ data AppMessage
   | MsgGlobalAddInspectionfile
   | MsgGlobalDeleteInspectionfile
   | MsgGlobalEditInspectionfile
-  | MsgGlobalTemper
-  | MsgGlobalTemperTypes
-  | MsgGlobalAddTemperType
-  | MsgGlobalDeleteTemperType
-  | MsgGlobalEditTemperType
   | MsgGlobalSwarming
   | MsgGlobalSwarmingTypes
   | MsgGlobalAddSwarmingType
@@ -76,7 +71,6 @@ data AppMessage
   | MsgHiveIsDissolved
   | MsgInspectionHiveId
   | MsgInspectionDate
-  | MsgInspectionTemperTypeId
   | MsgInspectionSwarmingTypeId
   | MsgInspectionQueenSeen
   | MsgInspectionBeeCoveredFrames
@@ -91,8 +85,6 @@ data AppMessage
   | MsgInspectionfileMimetype
   | MsgInspectionfileSize
   | MsgInspectionfileFile
-  | MsgTemperTypeName
-  | MsgTemperTypeSortIndex
   | MsgSwarmingTypeName
   | MsgSwarmingTypeSortIndex
   | MsgTestmailEmail
@@ -141,11 +133,6 @@ renderMessageGerman MsgGlobalInspectionfiles = "Dateien"
 renderMessageGerman MsgGlobalAddInspectionfile = "Durchsicht-Datei hinzufügen"
 renderMessageGerman MsgGlobalDeleteInspectionfile = "Durchsicht-Datei löschen"
 renderMessageGerman MsgGlobalEditInspectionfile = "Durchsicht-Datei bearbeiten"
-renderMessageGerman MsgGlobalTemper = "Sanftmut"
-renderMessageGerman MsgGlobalTemperTypes = "Sanftmut Typen"
-renderMessageGerman MsgGlobalAddTemperType = "Sanftmut Typ hinzufügen"
-renderMessageGerman MsgGlobalDeleteTemperType = "Sanftmut Typ löschen"
-renderMessageGerman MsgGlobalEditTemperType = "Sanftmut Typ bearbeiten"
 renderMessageGerman MsgGlobalSwarming = "Schwarmtrieb"
 renderMessageGerman MsgGlobalSwarmingTypes = "Schwarmtrieb Typen"
 renderMessageGerman MsgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen"
@@ -169,7 +156,6 @@ renderMessageGerman MsgHiveDescription = "Beschreibung"
 renderMessageGerman MsgHiveIsDissolved = "Ist aufgelöst?"
 renderMessageGerman MsgInspectionHiveId = ""
 renderMessageGerman MsgInspectionDate = "Datum"
-renderMessageGerman MsgInspectionTemperTypeId = "Sanftmut"
 renderMessageGerman MsgInspectionSwarmingTypeId = "Schwarmtrieb"
 renderMessageGerman MsgInspectionQueenSeen = "Kö ges."
 renderMessageGerman MsgInspectionBeeCoveredFrames = "Bel. Waben"
@@ -184,8 +170,6 @@ renderMessageGerman MsgInspectionfileFilename = "Dateiname"
 renderMessageGerman MsgInspectionfileMimetype = "MIME Type"
 renderMessageGerman MsgInspectionfileSize = "Groesse"
 renderMessageGerman MsgInspectionfileFile = "Datei"
-renderMessageGerman MsgTemperTypeName = "Name"
-renderMessageGerman MsgTemperTypeSortIndex = "Sortierungs-Index"
 renderMessageGerman MsgSwarmingTypeName = "Name"
 renderMessageGerman MsgSwarmingTypeSortIndex = "Sortierungs-Index"
 renderMessageGerman MsgTestmailEmail = "Email"
@@ -234,11 +218,6 @@ renderMessageEnglish MsgGlobalInspectionfiles = "Files"
 renderMessageEnglish MsgGlobalAddInspectionfile = "Add inspection-file"
 renderMessageEnglish MsgGlobalDeleteInspectionfile = "Delete inspection-file"
 renderMessageEnglish MsgGlobalEditInspectionfile = "Edit inspection-file"
-renderMessageEnglish MsgGlobalTemper = "Temper"
-renderMessageEnglish MsgGlobalTemperTypes = "Temper types"
-renderMessageEnglish MsgGlobalAddTemperType = "Add temper type"
-renderMessageEnglish MsgGlobalDeleteTemperType = "Delete temper type"
-renderMessageEnglish MsgGlobalEditTemperType = "Edit temper type"
 renderMessageEnglish MsgGlobalSwarming = "Swarming mood"
 renderMessageEnglish MsgGlobalSwarmingTypes = "Swarming types"
 renderMessageEnglish MsgGlobalAddSwarmingType = "Add swarming type"
@@ -262,7 +241,6 @@ renderMessageEnglish MsgHiveDescription = "Description"
 renderMessageEnglish MsgHiveIsDissolved = "Is dissolved?"
 renderMessageEnglish MsgInspectionHiveId = ""
 renderMessageEnglish MsgInspectionDate = "Date"
-renderMessageEnglish MsgInspectionTemperTypeId = "Temper"
 renderMessageEnglish MsgInspectionSwarmingTypeId = "swarming Mood"
 renderMessageEnglish MsgInspectionQueenSeen = "Queen seen"
 renderMessageEnglish MsgInspectionBeeCoveredFrames = "Bee covered frames"
@@ -277,8 +255,6 @@ renderMessageEnglish MsgInspectionfileFilename = "Filename"
 renderMessageEnglish MsgInspectionfileMimetype = "MIME Type"
 renderMessageEnglish MsgInspectionfileSize = "Size"
 renderMessageEnglish MsgInspectionfileFile = "File"
-renderMessageEnglish MsgTemperTypeName = "Name"
-renderMessageEnglish MsgTemperTypeSortIndex = "Sort Index"
 renderMessageEnglish MsgSwarmingTypeName = "Name"
 renderMessageEnglish MsgSwarmingTypeSortIndex = "Sort Index"
 renderMessageEnglish MsgTestmailEmail = "Email"
@@ -327,11 +303,6 @@ data Translation = Translation
     msgGlobalAddInspectionfile :: Text,
     msgGlobalDeleteInspectionfile :: Text,
     msgGlobalEditInspectionfile :: Text,
-    msgGlobalTemper :: Text,
-    msgGlobalTemperTypes :: Text,
-    msgGlobalAddTemperType :: Text,
-    msgGlobalDeleteTemperType :: Text,
-    msgGlobalEditTemperType :: Text,
     msgGlobalSwarming :: Text,
     msgGlobalSwarmingTypes :: Text,
     msgGlobalAddSwarmingType :: Text,
@@ -355,7 +326,6 @@ data Translation = Translation
     msgHiveIsDissolved :: Text,
     msgInspectionHiveId :: Text,
     msgInspectionDate :: Text,
-    msgInspectionTemperTypeId :: Text,
     msgInspectionSwarmingTypeId :: Text,
     msgInspectionQueenSeen :: Text,
     msgInspectionBeeCoveredFrames :: Text,
@@ -370,8 +340,6 @@ data Translation = Translation
     msgInspectionfileMimetype :: Text,
     msgInspectionfileSize :: Text,
     msgInspectionfileFile :: Text,
-    msgTemperTypeName :: Text,
-    msgTemperTypeSortIndex :: Text,
     msgSwarmingTypeName :: Text,
     msgSwarmingTypeSortIndex :: Text,
     msgTestmailEmail :: Text,
@@ -426,11 +394,6 @@ translationDe =
       msgGlobalAddInspectionfile = "Durchsicht-Datei hinzufügen",
       msgGlobalDeleteInspectionfile = "Durchsicht-Datei löschen",
       msgGlobalEditInspectionfile = "Durchsicht-Datei bearbeiten",
-      msgGlobalTemper = "Sanftmut",
-      msgGlobalTemperTypes = "Sanftmut Typen",
-      msgGlobalAddTemperType = "Sanftmut Typ hinzufügen",
-      msgGlobalDeleteTemperType = "Sanftmut Typ löschen",
-      msgGlobalEditTemperType = "Sanftmut Typ bearbeiten",
       msgGlobalSwarming = "Schwarmtrieb",
       msgGlobalSwarmingTypes = "Schwarmtrieb Typen",
       msgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen",
@@ -454,7 +417,6 @@ translationDe =
       msgHiveIsDissolved = "Ist aufgelöst?",
       msgInspectionHiveId = "",
       msgInspectionDate = "Datum",
-      msgInspectionTemperTypeId = "Sanftmut",
       msgInspectionSwarmingTypeId = "Schwarmtrieb",
       msgInspectionQueenSeen = "Kö ges.",
       msgInspectionBeeCoveredFrames = "Bel. Waben",
@@ -469,8 +431,6 @@ translationDe =
       msgInspectionfileMimetype = "MIME Type",
       msgInspectionfileSize = "Groesse",
       msgInspectionfileFile = "Datei",
-      msgTemperTypeName = "Name",
-      msgTemperTypeSortIndex = "Sortierungs-Index",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sortierungs-Index",
       msgTestmailEmail = "Email",
@@ -522,11 +482,6 @@ translationEn =
       msgGlobalAddInspectionfile = "Add inspection-file",
       msgGlobalDeleteInspectionfile = "Delete inspection-file",
       msgGlobalEditInspectionfile = "Edit inspection-file",
-      msgGlobalTemper = "Temper",
-      msgGlobalTemperTypes = "Temper types",
-      msgGlobalAddTemperType = "Add temper type",
-      msgGlobalDeleteTemperType = "Delete temper type",
-      msgGlobalEditTemperType = "Edit temper type",
       msgGlobalSwarming = "Swarming mood",
       msgGlobalSwarmingTypes = "Swarming types",
       msgGlobalAddSwarmingType = "Add swarming type",
@@ -550,7 +505,6 @@ translationEn =
       msgHiveIsDissolved = "Is dissolved?",
       msgInspectionHiveId = "",
       msgInspectionDate = "Date",
-      msgInspectionTemperTypeId = "Temper",
       msgInspectionSwarmingTypeId = "swarming Mood",
       msgInspectionQueenSeen = "Queen seen",
       msgInspectionBeeCoveredFrames = "Bee covered frames",
@@ -565,8 +519,6 @@ translationEn =
       msgInspectionfileMimetype = "MIME Type",
       msgInspectionfileSize = "Size",
       msgInspectionfileFile = "File",
-      msgTemperTypeName = "Name",
-      msgTemperTypeSortIndex = "Sort Index",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sort Index",
       msgTestmailEmail = "Email",
