@@ -6,7 +6,7 @@
       <li>
         <a href="#">
           {context.data.translation.msgGlobalHiveMasterData}
-      <li>
+      <li .uk-active>
         <a href="#">
           {context.data.translation.msgGlobalInspections}
     <ul .uk-switcher .uk-margin>
@@ -37,7 +37,7 @@
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">
-      <li .uk-active>
+      <li>
         <!-- inspection list -->
         <div .uk-flex .uk-flex-center>
           <button .uk-button .uk-button-primary .uk-margin-right onclick="{showLessInspections}" if="{context.data.pages.hiveDetail.showLessInspectionsUrl}">
@@ -118,6 +118,7 @@
                   <span uk-icon="icon: upload">
                 <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{(e)=>editInspection(e,inspection)}">
                   <span uk-icon="icon: pencil">
+
   <script>
     \ export default {
     \   onBeforeMount(props, state) {

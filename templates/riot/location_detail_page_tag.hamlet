@@ -6,7 +6,7 @@
       <li>
         <a href="#">
           {context.data.translation.msgGlobalLocationMasterData}
-      <li>
+      <li .uk-active>
         <a href="#">
           {context.data.translation.msgGlobalHives}
     <ul .uk-switcher .uk-margin>
@@ -26,7 +26,7 @@
               <td .uk-width-small>
                 <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{editLocation}">
                   <span uk-icon="icon: pencil">
-      <li .uk-active>
+      <li>
         <!-- hive list -->
         <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
           <thead>
