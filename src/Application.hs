@@ -205,6 +205,7 @@ genRiotFilesMain = do
   writeRiotFile dir getRiotBodyTagR "body_tag.riot"
   writeRiotFile dir getRiotNavTagR "nav_tag.riot"
   writeRiotFile dir getRiotPaginationTagR "pagination_tag.riot"
+  writeRiotFile dir getRiotQueenDotTagR "queen_dot_tag.riot"
   writeRiotFile dir getRiotHomePageTagR "home_page_tag.riot"
   writeRiotFile dir getRiotAdminPageTagR "admin_page_tag.riot"
   writeRiotFile dir getRiotLocationListPageTagR "location_list_page_tag.riot"
