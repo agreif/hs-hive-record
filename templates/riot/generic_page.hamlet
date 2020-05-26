@@ -17,6 +17,8 @@
       \ riot.register('nav-tag', NavTag)
       \ import PaginationTag from '@{StaticR js_riot_pagination_tag_js}'
       \ riot.register('pagination-tag', PaginationTag)
+      \ import QueenDotTag from '@{StaticR js_riot_queen_dot_tag_js}'
+      \ riot.register('queen-dot-tag', QueenDotTag)
       \ import HomePageTag from '@{StaticR js_riot_home_page_tag_js}'
       \ riot.register('home-page-tag', HomePageTag)
       \
