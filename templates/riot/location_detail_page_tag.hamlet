@@ -38,6 +38,8 @@
               <th>
                 {context.data.translation.msgHiveDescription}
               <th>
+                {context.data.translation.msgHiveQueenYear}
+              <th>
                 {context.data.translation.msgGlobalLastInspection}
               <th .uk-align-right>
                 <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
@@ -54,6 +56,11 @@
                 <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
                   <span .textarea-wrap>
                     {hive.hiveEnt.description}
+              <td .uk-table-link>
+                <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
+                  <queen-dot-tag .uk-margin-small-right color="{hive.queenColor}">
+                  <span .textarea-wrap>
+                    {hive.hiveEnt.queenYear}
               <td .uk-table-link>
                 <a href="{hive.detailUrl}" onclick="{(e)=>detailHive(e,hive)}" .uk-link-reset>
                   <span .textarea-wrap if="{hive.lastInspectionEnt}">

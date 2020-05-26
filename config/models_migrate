@@ -88,6 +88,7 @@ LocationHistory
 Hive json
     locationId LocationId
     name Text
+    queenYear Int Maybe
     description Textarea Maybe
     isDissolved Bool
     version Int
@@ -102,6 +103,7 @@ HiveHistory
     id Int MigrationOnly
     locationId Int
     name Text
+    queenYear Int Maybe
     description Textarea Maybe
     isDissolved Bool
     version Int

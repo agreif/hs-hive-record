@@ -1,6 +1,7 @@
 <hive-detail-page-tag>
   <div if="{context.data.pages.hiveDetail}">
     <h1>
+      <queen-dot-tag .uk-margin-small-right color="{context.data.pages.hiveDetail.queenColor}">
       {context.data.translation.msgGlobalHive}: {context.data.pages.hiveDetail.hiveEnt.name}
     <ul uk-tab>
       <li>
@@ -18,6 +19,8 @@
               <th>
                 {context.data.translation.msgHiveName}
               <th>
+                {context.data.translation.msgHiveQueenYear}
+              <th>
                 {context.data.translation.msgHiveDescription}
               <th>
                 {context.data.translation.msgHiveIsDissolved}
@@ -27,6 +30,10 @@
               <td .uk-table-link>
                 <a onclick="{editHive}" .uk-link-reset>
                   {context.data.pages.hiveDetail.hiveEnt.name}
+              <td .uk-table-link>
+                <a onclick="{editHive}" .uk-link-reset>
+                  <queen-dot-tag .uk-margin-small-right color="{context.data.pages.hiveDetail.queenColor}">
+                  {context.data.pages.hiveDetail.hiveEnt.queenYear}
               <td .uk-table-link>
                 <a onclick="{editHive}" .uk-link-reset>
                   <span .textarea-wrap>

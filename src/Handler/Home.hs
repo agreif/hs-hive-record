@@ -75,6 +75,9 @@ getRiotNavTagR = withUrlRenderer $(hamletFile "templates/riot/nav_tag.hamlet")
 getRiotPaginationTagR :: Handler Html
 getRiotPaginationTagR = withUrlRenderer $(hamletFile "templates/riot/pagination_tag.hamlet")
 
+getRiotQueenDotTagR :: Handler Html
+getRiotQueenDotTagR = withUrlRenderer $(hamletFile "templates/riot/queen_dot_tag.hamlet")
+
 getRiotHomePageTagR :: Handler Html
 getRiotHomePageTagR = withUrlRenderer $(hamletFile "templates/riot/home_page_tag.hamlet")
 

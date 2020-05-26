@@ -67,6 +67,7 @@ data AppMessage
   | MsgLocationName
   | MsgHiveLocationId
   | MsgHiveName
+  | MsgHiveQueenYear
   | MsgHiveDescription
   | MsgHiveIsDissolved
   | MsgInspectionHiveId
@@ -152,6 +153,7 @@ renderMessageGerman MsgRawdataBytes = "Bytes"
 renderMessageGerman MsgLocationName = "Name"
 renderMessageGerman MsgHiveLocationId = "Standort"
 renderMessageGerman MsgHiveName = "Name"
+renderMessageGerman MsgHiveQueenYear = "Königin Jahr"
 renderMessageGerman MsgHiveDescription = "Beschreibung"
 renderMessageGerman MsgHiveIsDissolved = "Ist aufgelöst?"
 renderMessageGerman MsgInspectionHiveId = ""
@@ -237,6 +239,7 @@ renderMessageEnglish MsgRawdataBytes = "Bytes"
 renderMessageEnglish MsgLocationName = "Name"
 renderMessageEnglish MsgHiveLocationId = "Location"
 renderMessageEnglish MsgHiveName = "Name"
+renderMessageEnglish MsgHiveQueenYear = "Queen Year"
 renderMessageEnglish MsgHiveDescription = "Description"
 renderMessageEnglish MsgHiveIsDissolved = "Is dissolved?"
 renderMessageEnglish MsgInspectionHiveId = ""
@@ -322,6 +325,7 @@ data Translation = Translation
     msgLocationName :: Text,
     msgHiveLocationId :: Text,
     msgHiveName :: Text,
+    msgHiveQueenYear :: Text,
     msgHiveDescription :: Text,
     msgHiveIsDissolved :: Text,
     msgInspectionHiveId :: Text,
@@ -413,6 +417,7 @@ translationDe =
       msgLocationName = "Name",
       msgHiveLocationId = "Standort",
       msgHiveName = "Name",
+      msgHiveQueenYear = "Königin Jahr",
       msgHiveDescription = "Beschreibung",
       msgHiveIsDissolved = "Ist aufgelöst?",
       msgInspectionHiveId = "",
@@ -501,6 +506,7 @@ translationEn =
       msgLocationName = "Name",
       msgHiveLocationId = "Location",
       msgHiveName = "Name",
+      msgHiveQueenYear = "Queen Year",
       msgHiveDescription = "Description",
       msgHiveIsDissolved = "Is dissolved?",
       msgInspectionHiveId = "",

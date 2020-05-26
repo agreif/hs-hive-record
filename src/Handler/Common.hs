@@ -315,7 +315,8 @@ data JDataHiveDetail = JDataHiveDetail
     jDataHiveDetailLastInspectionEnt :: Maybe (Entity Inspection),
     jDataHiveDetailUrl :: Text,
     jDataHiveDetailDataUrl :: Text,
-    jDataHiveDeleteFormUrl :: Text
+    jDataHiveDeleteFormUrl :: Text,
+    jDataHiveQueenColor :: Maybe QueenColor
   }
 
 instance ToJSON JDataHiveDetail where
@@ -325,7 +326,8 @@ instance ToJSON JDataHiveDetail where
         "lastInspectionEnt" .= jDataHiveDetailLastInspectionEnt o,
         "detailUrl" .= jDataHiveDetailUrl o,
         "detailDataUrl" .= jDataHiveDetailDataUrl o,
-        "deleteFormUrl" .= jDataHiveDeleteFormUrl o
+        "deleteFormUrl" .= jDataHiveDeleteFormUrl o,
+        "queenColor" .= jDataHiveQueenColor o
       ]
 
 data JDataPageHiveDetail = JDataPageHiveDetail
@@ -335,7 +337,8 @@ data JDataPageHiveDetail = JDataPageHiveDetail
     jDataPageHiveDetailShowLessInspectionsUrl :: Maybe Text,
     jDataPageHiveDetailShowMoreInspectionsUrl :: Maybe Text,
     jDataPageHiveDetailShowAllInspectionsUrl :: Maybe Text,
-    jDataPageHiveDetailInspectionAddFormUrl :: Text
+    jDataPageHiveDetailInspectionAddFormUrl :: Text,
+    jDataPageHiveDetailQueenColor :: Maybe QueenColor
   }
 
 instance ToJSON JDataPageHiveDetail where
@@ -347,7 +350,8 @@ instance ToJSON JDataPageHiveDetail where
         "showLessInspectionsUrl" .= jDataPageHiveDetailShowLessInspectionsUrl o,
         "showMoreInspectionsUrl" .= jDataPageHiveDetailShowMoreInspectionsUrl o,
         "showAllInspectionsUrl" .= jDataPageHiveDetailShowAllInspectionsUrl o,
-        "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o
+        "inspectionAddFormUrl" .= jDataPageHiveDetailInspectionAddFormUrl o,
+        "queenColor" .= jDataPageHiveDetailQueenColor o
       ]
 
 data JDataInspection = JDataInspection
@@ -400,7 +404,8 @@ data JDataHiveOverviewHive = JDataHiveOverviewHive
   { jDataHiveOverviewHiveEnt :: Entity Hive,
     jDataHiveOverviewHiveInspections :: [JDataHiveOverviewHiveInspection],
     jDataHiveOverviewInspectionAddFormUrl :: Text,
-    jDataHiveOverviewHiveDetailDataUrl :: Text
+    jDataHiveOverviewHiveDetailDataUrl :: Text,
+    jDataHiveOverviewQueenColor :: Maybe QueenColor
   }
 
 instance ToJSON JDataHiveOverviewHive where
@@ -409,7 +414,8 @@ instance ToJSON JDataHiveOverviewHive where
       [ "hiveEnt" .= entityIdToJSON (jDataHiveOverviewHiveEnt o),
         "inspections" .= jDataHiveOverviewHiveInspections o,
         "inspectionAddFormUrl" .= jDataHiveOverviewInspectionAddFormUrl o,
-        "hiveDetailDataUrl" .= jDataHiveOverviewHiveDetailDataUrl o
+        "hiveDetailDataUrl" .= jDataHiveOverviewHiveDetailDataUrl o,
+        "queenColor" .= jDataHiveOverviewQueenColor o
       ]
 
 data JDataHiveOverviewHiveInspection = JDataHiveOverviewHiveInspection
@@ -630,6 +636,22 @@ getPaginationJDatas allCount pageSize curPageNum visibleNumsCount' routeFunc = d
 --------------------------------------------------------------------------------
 -- app specific helpers
 --------------------------------------------------------------------------------
+
+data QueenColor = White | Yellow | Red | Green | Blue
+  deriving (Generic)
+
+instance ToJSON QueenColor
+
+calcQueenColor :: Maybe Int -> Maybe QueenColor
+calcQueenColor Nothing = Nothing
+calcQueenColor (Just year) =
+  Just $
+    case (year - 2016) `mod` 5 of
+      0 -> White
+      1 -> Yellow
+      2 -> Red
+      3 -> Green
+      _ -> Blue
 
 getLastInspectionEnt :: HiveId -> YesodDB App (Maybe (Entity Inspection))
 getLastInspectionEnt hiveId = do

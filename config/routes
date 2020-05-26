@@ -37,6 +37,7 @@
   riotBodyTag RiotBodyTagR GET
   riotNavTag RiotNavTagR GET
   riotPaginationTag RiotPaginationTagR GET
+  riotQueenDotTag RiotQueenDotTagR GET
   riotHomePageTag RiotHomePageTagR GET
   riotAdminPageTag RiotAdminPageTagR GET
   riotHiveDetailPageTag RiotHiveDetailPageTagR GET

@@ -91,7 +91,7 @@ getHiveOverviewJDatas :: Handler [JDataHiveOverviewHive]
 getHiveOverviewJDatas = do
   urlRenderer <- getUrlRender
   hiveEnts <- runDB $ selectList [HiveIsDissolved ==. False] [Asc HiveName]
-  forM hiveEnts $ \hiveEnt@(Entity hiveId _) -> do
+  forM hiveEnts $ \hiveEnt@(Entity hiveId hive) -> do
     inspectionTuples <- hiveDetailInspectionJDatas hiveId 2
     return $
       JDataHiveOverviewHive
@@ -106,7 +106,8 @@ getHiveOverviewJDatas = do
               )
               inspectionTuples,
           jDataHiveOverviewInspectionAddFormUrl = urlRenderer $ HiverecR $ HiveOverviewAddInspectionFormR hiveId,
-          jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
+          jDataHiveOverviewHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId,
+          jDataHiveOverviewQueenColor = calcQueenColor $ hiveQueenYear hive
         }
 
 -------------------------------------------------------
@@ -148,7 +149,8 @@ getHiveDetailPageDataR hiveId = do
                     jDataPageHiveDetailShowLessInspectionsUrl = if visiblePagesCount > 1 then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowLessInspectionsR hiveId else Nothing,
                     jDataPageHiveDetailShowMoreInspectionsUrl = if visiblePagesCount < dbPagesCount then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowMoreInspectionsR hiveId else Nothing,
                     jDataPageHiveDetailShowAllInspectionsUrl = if visiblePagesCount /= dbPagesCount then Just $ urlRenderer $ HiverecR $ HiveDetailPageShowAllInspectionsR hiveId else Nothing,
-                    jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId
+                    jDataPageHiveDetailInspectionAddFormUrl = urlRenderer $ HiverecR $ AddInspectionFormR hiveId,
+                    jDataPageHiveDetailQueenColor = calcQueenColor $ hiveQueenYear hive
                   }
           }
   msgHome <- localizedMsg MsgGlobalHome
@@ -304,6 +306,7 @@ getInspectionfileJDatas inspectionfileEnts urlRenderer =
 -- gen data add - start
 data VAddHive = VAddHive
   { vAddHiveName :: Text,
+    vAddHiveQueenYear :: Maybe Int,
     vAddHiveDescription :: Maybe Textarea,
     vAddHiveIsDissolved :: Bool
   }
@@ -338,6 +341,7 @@ postAddHiveR locationId = do
             Hive
               { hiveLocationId = locationId,
                 hiveName = vAddHiveName vAddHive,
+                hiveQueenYear = vAddHiveQueenYear vAddHive,
                 hiveDescription = vAddHiveDescription vAddHive,
                 hiveIsDissolved = vAddHiveIsDissolved vAddHive,
                 hiveVersion = 1,
@@ -367,6 +371,11 @@ vAddHiveForm maybeHive extra = do
       textField
       nameFs
       (hiveName <$> maybeHive)
+  (queenYearResult, queenYearView) <-
+    mopt
+      intField
+      queenYearFs
+      (hiveQueenYear <$> maybeHive)
   (descriptionResult, descriptionView) <-
     mopt
       textareaField
@@ -377,7 +386,7 @@ vAddHiveForm maybeHive extra = do
       checkBoxField
       isDissolvedFs
       (hiveIsDissolved <$> maybeHive)
-  let vAddHiveResult = VAddHive <$> nameResult <*> descriptionResult <*> isDissolvedResult
+  let vAddHiveResult = VAddHive <$> nameResult <*> queenYearResult <*> descriptionResult <*> isDissolvedResult
   let formWidget =
         toWidget
           [whamlet|
@@ -388,6 +397,13 @@ vAddHiveForm maybeHive extra = do
         ^{fvInput nameView}
         <span #nameInputError>
           $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #queenYearInputWidget .uk-margin-small :not $ null $ fvErrors queenYearView:.uk-form-danger>
+      <label #queenYearInputLabel .uk-form-label :not $ null $ fvErrors queenYearView:.uk-text-danger for=#{fvId queenYearView}>#{fvLabel queenYearView}
+      <div .uk-form-controls>
+        ^{fvInput queenYearView}
+        <span #queenYearInputError>
+          $maybe err <- fvErrors queenYearView
             &nbsp;#{err}
     <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
       <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
@@ -414,6 +430,15 @@ vAddHiveForm maybeHive extra = do
           fsId = Just "name",
           fsName = Just "name",
           fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
+    queenYearFs :: FieldSettings App
+    queenYearFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveQueenYear,
+          fsTooltip = Nothing,
+          fsId = Just "queenYear",
+          fsName = Just "queenYear",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
         }
     descriptionFs :: FieldSettings App
     descriptionFs =
@@ -444,6 +469,7 @@ vAddHiveForm maybeHive extra = do
 data VEditHive = VEditHive
   { vEditHiveLocationId :: LocationId,
     vEditHiveName :: Text,
+    vEditHiveQueenYear :: Maybe Int,
     vEditHiveDescription :: Maybe Textarea,
     vEditHiveIsDissolved :: Bool,
     vEditHiveVersion :: Int
@@ -479,6 +505,7 @@ postEditHiveR hiveId = do
       let persistFields =
             [ HiveLocationId =. vEditHiveLocationId vEditHive,
               HiveName =. vEditHiveName vEditHive,
+              HiveQueenYear =. vEditHiveQueenYear vEditHive,
               HiveDescription =. vEditHiveDescription vEditHive,
               HiveIsDissolved =. vEditHiveIsDissolved vEditHive,
               HiveVersion =. vEditHiveVersion vEditHive + 1,
@@ -518,6 +545,11 @@ vEditHiveForm maybeHive extra = do
       textField
       nameFs
       (hiveName <$> maybeHive)
+  (queenYearResult, queenYearView) <-
+    mopt
+      intField
+      queenYearFs
+      (hiveQueenYear <$> maybeHive)
   (descriptionResult, descriptionView) <-
     mopt
       textareaField
@@ -533,7 +565,7 @@ vEditHiveForm maybeHive extra = do
       hiddenField
       versionFs
       (hiveVersion <$> maybeHive)
-  let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> descriptionResult <*> isDissolvedResult <*> versionResult
+  let vEditHiveResult = VEditHive <$> locationIdResult <*> nameResult <*> queenYearResult <*> descriptionResult <*> isDissolvedResult <*> versionResult
   let formWidget =
         toWidget
           [whamlet|
@@ -552,6 +584,13 @@ vEditHiveForm maybeHive extra = do
         ^{fvInput nameView}
         <span #nameInputError>
           $maybe err <- fvErrors nameView
+            &nbsp;#{err}
+    <div #queenYearInputWidget .uk-margin-small :not $ null $ fvErrors queenYearView:.uk-form-danger>
+      <label #queenYearInputLabel .uk-form-label :not $ null $ fvErrors queenYearView:.uk-text-danger for=#{fvId queenYearView}>#{fvLabel queenYearView}
+      <div .uk-form-controls>
+        ^{fvInput queenYearView}
+        <span #queenYearInputError>
+          $maybe err <- fvErrors queenYearView
             &nbsp;#{err}
     <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
       <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
@@ -587,6 +626,15 @@ vEditHiveForm maybeHive extra = do
           fsId = Just "name",
           fsName = Just "name",
           fsAttrs = [("class", "uk-input uk-form-small uk-form-width-large")]
+        }
+    queenYearFs :: FieldSettings App
+    queenYearFs =
+      FieldSettings
+        { fsLabel = SomeMessage MsgHiveQueenYear,
+          fsTooltip = Nothing,
+          fsId = Just "queenYear",
+          fsName = Just "queenYear",
+          fsAttrs = [("class", "uk-input uk-form-small uk-form-width-medium")]
         }
     descriptionFs :: FieldSettings App
     descriptionFs =

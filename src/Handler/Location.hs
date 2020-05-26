@@ -178,14 +178,15 @@ getLocationDetailPageDataR locationId = do
         return (hiveEnt, maybeLastInspectionEnt)
       forM
         hiveDetailTuples
-        ( \(hiveEnt@(Entity hiveId _), maybeLastInspectionEnt) ->
+        ( \(hiveEnt@(Entity hiveId hive), maybeLastInspectionEnt) ->
             return
               JDataHiveDetail
                 { jDataHiveDetailHiveEnt = hiveEnt,
                   jDataHiveDetailLastInspectionEnt = maybeLastInspectionEnt,
                   jDataHiveDetailUrl = urlRenderer $ HiverecR $ HiveDetailR hiveId,
                   jDataHiveDetailDataUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId,
-                  jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId
+                  jDataHiveDeleteFormUrl = urlRenderer $ HiverecR $ DeleteHiveFormR hiveId,
+                  jDataHiveQueenColor = calcQueenColor $ hiveQueenYear hive
                 }
         )
 

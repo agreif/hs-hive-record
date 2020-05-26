@@ -646,6 +646,48 @@ context =
                               }
                       },
                     BCrudField
+                      { bCrudFieldName = "queenYear",
+                        bCrudFieldLabelDe = Just "Königin Jahr",
+                        bCrudFieldLabelEn = Just "Queen Year",
+                        bCrudFieldHsType = "Int",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = True,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = True
+                              },
+                        bCrudFieldFormFieldType = Just "intField",
+                        bCrudFieldAddView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = False,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs =
+                                  [ BFieldAttr
+                                      { bFieldAttrKey = "class",
+                                        bFieldAttrValue =
+                                          "uk-input uk-form-small uk-form-width-medium"
+                                      }
+                                  ],
+                                bFieldViewDefault = Nothing
+                              },
+                        bCrudFieldEditView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = False,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs =
+                                  [ BFieldAttr
+                                      { bFieldAttrKey = "class",
+                                        bFieldAttrValue =
+                                          "uk-input uk-form-small uk-form-width-medium"
+                                      }
+                                  ],
+                                bFieldViewDefault = Nothing
+                              }
+                      },
+                    BCrudField
                       { bCrudFieldName = "description",
                         bCrudFieldLabelDe = Just "Beschreibung",
                         bCrudFieldLabelEn = Just "Description",

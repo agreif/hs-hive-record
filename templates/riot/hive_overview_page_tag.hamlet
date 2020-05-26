@@ -5,6 +5,7 @@
     <ul uk-accordion="multiple: true">
       <li class="uk-open" each="{hive in context.data.pages.hiveOverview.hives}">
         <a class="uk-accordion-title" href="#">
+          <queen-dot-tag .uk-margin-small-right color="{hive.queenColor}">
           {hive.hiveEnt.name}
           <button .uk-button .uk-button-link title="{context.data.translation.msgGlobalHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
             <span uk-icon="icon: link">

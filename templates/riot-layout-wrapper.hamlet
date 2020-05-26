@@ -18,6 +18,7 @@
       <script data-src="@{HiverecR RiotBodyTagR}" type="riot">
       <script data-src="@{HiverecR RiotNavTagR}" type="riot">
       <script data-src="@{HiverecR RiotPaginationTagR}" type="riot">
+      <script data-src="@{HiverecR RiotQueenDotTagR}" type="riot">
       <script data-src="@{HiverecR RiotHomePageTagR}" type="riot">
       <script data-src="@{HiverecR RiotAdminPageTagR}" type="riot">
       <script data-src="@{HiverecR RiotHiveDetailPageTagR}" type="riot">

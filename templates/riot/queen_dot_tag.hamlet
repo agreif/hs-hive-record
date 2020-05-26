@@ -1,0 +1,16 @@
+<queen-dot-tag>
+  <svg height="22" width="20" if="{props.color}">
+    <circle cx="10" cy="10" r="8" stroke="black" stroke-width="2" fill="{calcFill(props.color)}">
+  <svg height="22" width="20" if="{!props.color}">
+    <circle cx="10" cy="10" r="8" stroke="red" stroke-width="5" fill="transparent" stroke-dasharray="1 2"/>
+
+  <script>
+    \ export default {
+    \   calcFill(color) {
+    \     if (color == "White") return "white"
+    \     if (color == "Yellow") return "yellow"
+    \     if (color == "Red") return "red"
+    \     if (color == "Green") return "lime"
+    \     if (color == "Blue") return "#0099ff"
+    \   }
+    \ }
