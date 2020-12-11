@@ -26,6 +26,7 @@ UserHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 Config json
     code Text
@@ -54,6 +55,7 @@ ConfigHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 Rawdata
     bytes ByteString
@@ -84,6 +86,7 @@ LocationHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 Hive json
     locationId LocationId
@@ -111,6 +114,7 @@ HiveHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 Inspection json
     hiveId HiveId
@@ -149,6 +153,7 @@ InspectionHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 Inspectionfile json
     inspectionId InspectionId
@@ -176,6 +181,7 @@ InspectionfileHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 SwarmingType json
     name Text
@@ -197,5 +203,6 @@ SwarmingTypeHistory
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
 
 -- gen models - end

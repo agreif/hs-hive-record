@@ -88,7 +88,43 @@ data AppMessage
   | MsgInspectionfileFile
   | MsgSwarmingTypeName
   | MsgSwarmingTypeSortIndex
+  | MsgUserIdentInputInfo
+  | MsgUserPasswordInputInfo
+  | MsgUserEmailInputInfo
+  | MsgUserIsAdminInputInfo
+  | MsgUserIsResetPasswordInputInfo
+  | MsgConfigCodeInputInfo
+  | MsgConfigStringValueInputInfo
+  | MsgConfigIntValueInputInfo
+  | MsgConfigDoubleValueInputInfo
+  | MsgConfigBoolValueInputInfo
+  | MsgRawdataBytesInputInfo
+  | MsgLocationNameInputInfo
+  | MsgHiveLocationIdInputInfo
+  | MsgHiveNameInputInfo
+  | MsgHiveQueenYearInputInfo
+  | MsgHiveDescriptionInputInfo
+  | MsgHiveIsDissolvedInputInfo
+  | MsgInspectionHiveIdInputInfo
+  | MsgInspectionDateInputInfo
+  | MsgInspectionSwarmingTypeIdInputInfo
+  | MsgInspectionQueenSeenInputInfo
+  | MsgInspectionBeeCoveredFramesInputInfo
+  | MsgInspectionBroodFramesInputInfo
+  | MsgInspectionHoneyFramesInputInfo
+  | MsgInspectionTreatmentInputInfo
+  | MsgInspectionFeedingInputInfo
+  | MsgInspectionNotesInputInfo
+  | MsgInspectionfileInspectionIdInputInfo
+  | MsgInspectionfileRawdataIdInputInfo
+  | MsgInspectionfileFilenameInputInfo
+  | MsgInspectionfileMimetypeInputInfo
+  | MsgInspectionfileSizeInputInfo
+  | MsgInspectionfileFileInputInfo
+  | MsgSwarmingTypeNameInputInfo
+  | MsgSwarmingTypeSortIndexInputInfo
   | MsgTestmailEmail
+  | MsgTestmailEmailInputInfo
   | MsgTestmailTestMail
   | MsgTestmailSendTestMail
 
@@ -174,7 +210,43 @@ renderMessageGerman MsgInspectionfileSize = "Groesse"
 renderMessageGerman MsgInspectionfileFile = "Datei"
 renderMessageGerman MsgSwarmingTypeName = "Name"
 renderMessageGerman MsgSwarmingTypeSortIndex = "Sortierungs-Index"
+renderMessageGerman MsgUserIdentInputInfo = ""
+renderMessageGerman MsgUserPasswordInputInfo = ""
+renderMessageGerman MsgUserEmailInputInfo = ""
+renderMessageGerman MsgUserIsAdminInputInfo = ""
+renderMessageGerman MsgUserIsResetPasswordInputInfo = ""
+renderMessageGerman MsgConfigCodeInputInfo = ""
+renderMessageGerman MsgConfigStringValueInputInfo = ""
+renderMessageGerman MsgConfigIntValueInputInfo = ""
+renderMessageGerman MsgConfigDoubleValueInputInfo = ""
+renderMessageGerman MsgConfigBoolValueInputInfo = ""
+renderMessageGerman MsgRawdataBytesInputInfo = ""
+renderMessageGerman MsgLocationNameInputInfo = ""
+renderMessageGerman MsgHiveLocationIdInputInfo = ""
+renderMessageGerman MsgHiveNameInputInfo = ""
+renderMessageGerman MsgHiveQueenYearInputInfo = ""
+renderMessageGerman MsgHiveDescriptionInputInfo = ""
+renderMessageGerman MsgHiveIsDissolvedInputInfo = ""
+renderMessageGerman MsgInspectionHiveIdInputInfo = ""
+renderMessageGerman MsgInspectionDateInputInfo = ""
+renderMessageGerman MsgInspectionSwarmingTypeIdInputInfo = ""
+renderMessageGerman MsgInspectionQueenSeenInputInfo = ""
+renderMessageGerman MsgInspectionBeeCoveredFramesInputInfo = ""
+renderMessageGerman MsgInspectionBroodFramesInputInfo = ""
+renderMessageGerman MsgInspectionHoneyFramesInputInfo = ""
+renderMessageGerman MsgInspectionTreatmentInputInfo = ""
+renderMessageGerman MsgInspectionFeedingInputInfo = ""
+renderMessageGerman MsgInspectionNotesInputInfo = ""
+renderMessageGerman MsgInspectionfileInspectionIdInputInfo = ""
+renderMessageGerman MsgInspectionfileRawdataIdInputInfo = ""
+renderMessageGerman MsgInspectionfileFilenameInputInfo = ""
+renderMessageGerman MsgInspectionfileMimetypeInputInfo = ""
+renderMessageGerman MsgInspectionfileSizeInputInfo = ""
+renderMessageGerman MsgInspectionfileFileInputInfo = ""
+renderMessageGerman MsgSwarmingTypeNameInputInfo = ""
+renderMessageGerman MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageGerman MsgTestmailEmail = "Email"
+renderMessageGerman MsgTestmailEmailInputInfo = ""
 renderMessageGerman MsgTestmailTestMail = "Test-Mail"
 renderMessageGerman MsgTestmailSendTestMail = "Test-Mail senden..."
 
@@ -260,7 +332,43 @@ renderMessageEnglish MsgInspectionfileSize = "Size"
 renderMessageEnglish MsgInspectionfileFile = "File"
 renderMessageEnglish MsgSwarmingTypeName = "Name"
 renderMessageEnglish MsgSwarmingTypeSortIndex = "Sort Index"
+renderMessageEnglish MsgUserIdentInputInfo = ""
+renderMessageEnglish MsgUserPasswordInputInfo = ""
+renderMessageEnglish MsgUserEmailInputInfo = ""
+renderMessageEnglish MsgUserIsAdminInputInfo = ""
+renderMessageEnglish MsgUserIsResetPasswordInputInfo = ""
+renderMessageEnglish MsgConfigCodeInputInfo = ""
+renderMessageEnglish MsgConfigStringValueInputInfo = ""
+renderMessageEnglish MsgConfigIntValueInputInfo = ""
+renderMessageEnglish MsgConfigDoubleValueInputInfo = ""
+renderMessageEnglish MsgConfigBoolValueInputInfo = ""
+renderMessageEnglish MsgRawdataBytesInputInfo = ""
+renderMessageEnglish MsgLocationNameInputInfo = ""
+renderMessageEnglish MsgHiveLocationIdInputInfo = ""
+renderMessageEnglish MsgHiveNameInputInfo = ""
+renderMessageEnglish MsgHiveQueenYearInputInfo = ""
+renderMessageEnglish MsgHiveDescriptionInputInfo = ""
+renderMessageEnglish MsgHiveIsDissolvedInputInfo = ""
+renderMessageEnglish MsgInspectionHiveIdInputInfo = ""
+renderMessageEnglish MsgInspectionDateInputInfo = ""
+renderMessageEnglish MsgInspectionSwarmingTypeIdInputInfo = ""
+renderMessageEnglish MsgInspectionQueenSeenInputInfo = ""
+renderMessageEnglish MsgInspectionBeeCoveredFramesInputInfo = ""
+renderMessageEnglish MsgInspectionBroodFramesInputInfo = ""
+renderMessageEnglish MsgInspectionHoneyFramesInputInfo = ""
+renderMessageEnglish MsgInspectionTreatmentInputInfo = ""
+renderMessageEnglish MsgInspectionFeedingInputInfo = ""
+renderMessageEnglish MsgInspectionNotesInputInfo = ""
+renderMessageEnglish MsgInspectionfileInspectionIdInputInfo = ""
+renderMessageEnglish MsgInspectionfileRawdataIdInputInfo = ""
+renderMessageEnglish MsgInspectionfileFilenameInputInfo = ""
+renderMessageEnglish MsgInspectionfileMimetypeInputInfo = ""
+renderMessageEnglish MsgInspectionfileSizeInputInfo = ""
+renderMessageEnglish MsgInspectionfileFileInputInfo = ""
+renderMessageEnglish MsgSwarmingTypeNameInputInfo = ""
+renderMessageEnglish MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageEnglish MsgTestmailEmail = "Email"
+renderMessageEnglish MsgTestmailEmailInputInfo = ""
 renderMessageEnglish MsgTestmailTestMail = "Test-Mail"
 renderMessageEnglish MsgTestmailSendTestMail = "Send Test-Mail..."
 
@@ -346,7 +454,43 @@ data Translation = Translation
     msgInspectionfileFile :: Text,
     msgSwarmingTypeName :: Text,
     msgSwarmingTypeSortIndex :: Text,
+    msgUserIdentInputInfo :: Text,
+    msgUserPasswordInputInfo :: Text,
+    msgUserEmailInputInfo :: Text,
+    msgUserIsAdminInputInfo :: Text,
+    msgUserIsResetPasswordInputInfo :: Text,
+    msgConfigCodeInputInfo :: Text,
+    msgConfigStringValueInputInfo :: Text,
+    msgConfigIntValueInputInfo :: Text,
+    msgConfigDoubleValueInputInfo :: Text,
+    msgConfigBoolValueInputInfo :: Text,
+    msgRawdataBytesInputInfo :: Text,
+    msgLocationNameInputInfo :: Text,
+    msgHiveLocationIdInputInfo :: Text,
+    msgHiveNameInputInfo :: Text,
+    msgHiveQueenYearInputInfo :: Text,
+    msgHiveDescriptionInputInfo :: Text,
+    msgHiveIsDissolvedInputInfo :: Text,
+    msgInspectionHiveIdInputInfo :: Text,
+    msgInspectionDateInputInfo :: Text,
+    msgInspectionSwarmingTypeIdInputInfo :: Text,
+    msgInspectionQueenSeenInputInfo :: Text,
+    msgInspectionBeeCoveredFramesInputInfo :: Text,
+    msgInspectionBroodFramesInputInfo :: Text,
+    msgInspectionHoneyFramesInputInfo :: Text,
+    msgInspectionTreatmentInputInfo :: Text,
+    msgInspectionFeedingInputInfo :: Text,
+    msgInspectionNotesInputInfo :: Text,
+    msgInspectionfileInspectionIdInputInfo :: Text,
+    msgInspectionfileRawdataIdInputInfo :: Text,
+    msgInspectionfileFilenameInputInfo :: Text,
+    msgInspectionfileMimetypeInputInfo :: Text,
+    msgInspectionfileSizeInputInfo :: Text,
+    msgInspectionfileFileInputInfo :: Text,
+    msgSwarmingTypeNameInputInfo :: Text,
+    msgSwarmingTypeSortIndexInputInfo :: Text,
     msgTestmailEmail :: Text,
+    msgTestmailEmailInputInfo :: Text,
     msgTestmailTestMail :: Text,
     msgTestmailSendTestMail :: Text
   }
@@ -438,7 +582,43 @@ translationDe =
       msgInspectionfileFile = "Datei",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sortierungs-Index",
+      msgUserIdentInputInfo = "",
+      msgUserPasswordInputInfo = "",
+      msgUserEmailInputInfo = "",
+      msgUserIsAdminInputInfo = "",
+      msgUserIsResetPasswordInputInfo = "",
+      msgConfigCodeInputInfo = "",
+      msgConfigStringValueInputInfo = "",
+      msgConfigIntValueInputInfo = "",
+      msgConfigDoubleValueInputInfo = "",
+      msgConfigBoolValueInputInfo = "",
+      msgRawdataBytesInputInfo = "",
+      msgLocationNameInputInfo = "",
+      msgHiveLocationIdInputInfo = "",
+      msgHiveNameInputInfo = "",
+      msgHiveQueenYearInputInfo = "",
+      msgHiveDescriptionInputInfo = "",
+      msgHiveIsDissolvedInputInfo = "",
+      msgInspectionHiveIdInputInfo = "",
+      msgInspectionDateInputInfo = "",
+      msgInspectionSwarmingTypeIdInputInfo = "",
+      msgInspectionQueenSeenInputInfo = "",
+      msgInspectionBeeCoveredFramesInputInfo = "",
+      msgInspectionBroodFramesInputInfo = "",
+      msgInspectionHoneyFramesInputInfo = "",
+      msgInspectionTreatmentInputInfo = "",
+      msgInspectionFeedingInputInfo = "",
+      msgInspectionNotesInputInfo = "",
+      msgInspectionfileInspectionIdInputInfo = "",
+      msgInspectionfileRawdataIdInputInfo = "",
+      msgInspectionfileFilenameInputInfo = "",
+      msgInspectionfileMimetypeInputInfo = "",
+      msgInspectionfileSizeInputInfo = "",
+      msgInspectionfileFileInputInfo = "",
+      msgSwarmingTypeNameInputInfo = "",
+      msgSwarmingTypeSortIndexInputInfo = "",
       msgTestmailEmail = "Email",
+      msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",
       msgTestmailSendTestMail = "Test-Mail senden..."
     }
@@ -527,7 +707,43 @@ translationEn =
       msgInspectionfileFile = "File",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sort Index",
+      msgUserIdentInputInfo = "",
+      msgUserPasswordInputInfo = "",
+      msgUserEmailInputInfo = "",
+      msgUserIsAdminInputInfo = "",
+      msgUserIsResetPasswordInputInfo = "",
+      msgConfigCodeInputInfo = "",
+      msgConfigStringValueInputInfo = "",
+      msgConfigIntValueInputInfo = "",
+      msgConfigDoubleValueInputInfo = "",
+      msgConfigBoolValueInputInfo = "",
+      msgRawdataBytesInputInfo = "",
+      msgLocationNameInputInfo = "",
+      msgHiveLocationIdInputInfo = "",
+      msgHiveNameInputInfo = "",
+      msgHiveQueenYearInputInfo = "",
+      msgHiveDescriptionInputInfo = "",
+      msgHiveIsDissolvedInputInfo = "",
+      msgInspectionHiveIdInputInfo = "",
+      msgInspectionDateInputInfo = "",
+      msgInspectionSwarmingTypeIdInputInfo = "",
+      msgInspectionQueenSeenInputInfo = "",
+      msgInspectionBeeCoveredFramesInputInfo = "",
+      msgInspectionBroodFramesInputInfo = "",
+      msgInspectionHoneyFramesInputInfo = "",
+      msgInspectionTreatmentInputInfo = "",
+      msgInspectionFeedingInputInfo = "",
+      msgInspectionNotesInputInfo = "",
+      msgInspectionfileInspectionIdInputInfo = "",
+      msgInspectionfileRawdataIdInputInfo = "",
+      msgInspectionfileFilenameInputInfo = "",
+      msgInspectionfileMimetypeInputInfo = "",
+      msgInspectionfileSizeInputInfo = "",
+      msgInspectionfileFileInputInfo = "",
+      msgSwarmingTypeNameInputInfo = "",
+      msgSwarmingTypeSortIndexInputInfo = "",
       msgTestmailEmail = "Email",
+      msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",
       msgTestmailSendTestMail = "Send Test-Mail..."
     }

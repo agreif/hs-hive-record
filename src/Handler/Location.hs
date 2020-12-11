@@ -204,7 +204,7 @@ data VAddLocation = VAddLocation
 -- gen get add form - start
 getAddLocationFormR :: Handler Html
 getAddLocationFormR = do
-  (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddLocationForm Nothing Nothing
   formLayout $
     toWidget
       [whamlet|
@@ -219,7 +219,7 @@ getAddLocationFormR = do
 -- gen post add form - start
 postAddLocationR :: Handler Value
 postAddLocationR = do
-  ((result, formWidget), _) <- runFormPost $ vAddLocationForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vAddLocationForm Nothing Nothing
   case result of
     FormSuccess vAddLocation -> do
       curTime <- liftIO getCurrentTime
@@ -248,8 +248,8 @@ postAddLocationR = do
 -- gen post add form - end
 
 -- gen add form - start
-vAddLocationForm :: Maybe Location -> Html -> MForm Handler (FormResult VAddLocation, Widget)
-vAddLocationForm maybeLocation extra = do
+vAddLocationForm :: Maybe LocationId -> Maybe Location -> Html -> MForm Handler (FormResult VAddLocation, Widget)
+vAddLocationForm maybeLocationId maybeLocation extra = do
   (nameResult, nameView) <-
     mreq
       textField
@@ -264,8 +264,11 @@ vAddLocationForm maybeLocation extra = do
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgLocationNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vAddLocationResult, formWidget)
@@ -298,7 +301,7 @@ data VEditLocation = VEditLocation
 getEditLocationFormR :: LocationId -> Handler Html
 getEditLocationFormR locationId = do
   location <- runDB $ get404 locationId
-  (formWidget, _) <- generateFormPost $ vEditLocationForm (Just location)
+  (formWidget, _) <- generateFormPost $ vEditLocationForm (Just locationId) (Just location)
   formLayout $
     toWidget
       [whamlet|
@@ -313,7 +316,7 @@ getEditLocationFormR locationId = do
 -- gen post edit form - start
 postEditLocationR :: LocationId -> Handler Value
 postEditLocationR locationId = do
-  ((result, formWidget), _) <- runFormPost $ vEditLocationForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vEditLocationForm (Just locationId) Nothing
   case result of
     FormSuccess vEditLocation -> do
       curTime <- liftIO getCurrentTime
@@ -346,8 +349,8 @@ postEditLocationR locationId = do
 -- gen post edit form - end
 
 -- gen edit form - start
-vEditLocationForm :: Maybe Location -> Html -> MForm Handler (FormResult VEditLocation, Widget)
-vEditLocationForm maybeLocation extra = do
+vEditLocationForm :: Maybe LocationId -> Maybe Location -> Html -> MForm Handler (FormResult VEditLocation, Widget)
+vEditLocationForm maybeLocationId maybeLocation extra = do
   (nameResult, nameView) <-
     mreq
       textField
@@ -368,8 +371,11 @@ vEditLocationForm maybeLocation extra = do
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgLocationNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vEditLocationResult, formWidget)
@@ -417,7 +423,16 @@ getDeleteLocationFormR locationId = do
 -- gen post delete form - start
 postDeleteLocationR :: LocationId -> Handler Value
 postDeleteLocationR locationId = do
-  runDB $ delete locationId
+  curTime <- liftIO getCurrentTime
+  Entity _ authUser <- requireAuth
+  runDB $ do
+    -- trick to record the user deleting the entity
+    updateWhere
+      [LocationId ==. locationId]
+      [ LocationUpdatedAt =. curTime,
+        LocationUpdatedBy =. userIdent authUser
+      ]
+    delete locationId
   urlRenderer <- getUrlRender
   returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR}
 

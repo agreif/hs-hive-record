@@ -46,6 +46,8 @@ context =
                       { bCrudFieldName = "ident",
                         bCrudFieldLabelDe = Just "Login",
                         bCrudFieldLabelEn = Just "Login",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -88,6 +90,8 @@ context =
                       { bCrudFieldName = "password",
                         bCrudFieldLabelDe = Just "Passwort",
                         bCrudFieldLabelEn = Just "Password",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -104,6 +108,8 @@ context =
                       { bCrudFieldName = "email",
                         bCrudFieldLabelDe = Just "Email",
                         bCrudFieldLabelEn = Just "Email",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -146,6 +152,8 @@ context =
                       { bCrudFieldName = "isAdmin",
                         bCrudFieldLabelDe = Just "Ist Admin?",
                         bCrudFieldLabelEn = Just "Is admin?",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Bool",
                         bCrudFieldDb =
                           Just $
@@ -186,6 +194,8 @@ context =
                       { bCrudFieldName = "isResetPassword",
                         bCrudFieldLabelDe = Just "Neues Passwort generieren? (Wird per Email zugesendet)",
                         bCrudFieldLabelEn = Just "Generate new password? (Will be sent by email)",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Bool",
                         bCrudFieldDb = Nothing,
                         bCrudFieldFormFieldType = Just "checkBoxField",
@@ -240,6 +250,8 @@ context =
                       { bCrudFieldName = "code",
                         bCrudFieldLabelDe = Just "Code",
                         bCrudFieldLabelEn = Just "Code",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -269,6 +281,8 @@ context =
                       { bCrudFieldName = "stringValue",
                         bCrudFieldLabelDe = Just "String-Wert",
                         bCrudFieldLabelEn = Just "String-Value",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -311,6 +325,8 @@ context =
                       { bCrudFieldName = "intValue",
                         bCrudFieldLabelDe = Just "Integer-Wert",
                         bCrudFieldLabelEn = Just "Integer-Value",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -353,6 +369,8 @@ context =
                       { bCrudFieldName = "doubleValue",
                         bCrudFieldLabelDe = Just "Double-Wert",
                         bCrudFieldLabelEn = Just "Double-Value",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Double",
                         bCrudFieldDb =
                           Just $
@@ -395,6 +413,8 @@ context =
                       { bCrudFieldName = "boolValue",
                         bCrudFieldLabelDe = Just "Boolean-Wert",
                         bCrudFieldLabelEn = Just "Boolean-Value",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Bool",
                         bCrudFieldDb =
                           Just $
@@ -462,6 +482,8 @@ context =
                       { bCrudFieldName = "bytes",
                         bCrudFieldLabelDe = Just "Bytes",
                         bCrudFieldLabelEn = Just "Bytes",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "ByteString",
                         bCrudFieldDb =
                           Just $
@@ -510,6 +532,8 @@ context =
                       { bCrudFieldName = "name",
                         bCrudFieldLabelDe = Just "Name",
                         bCrudFieldLabelEn = Just "Name",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -584,6 +608,8 @@ context =
                       { bCrudFieldName = "locationId",
                         bCrudFieldLabelDe = Just "Standort",
                         bCrudFieldLabelEn = Just "Location",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "LocationId",
                         bCrudFieldDb =
                           Just $
@@ -607,6 +633,8 @@ context =
                       { bCrudFieldName = "name",
                         bCrudFieldLabelDe = Just "Name",
                         bCrudFieldLabelEn = Just "Name",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -649,6 +677,8 @@ context =
                       { bCrudFieldName = "queenYear",
                         bCrudFieldLabelDe = Just "Königin Jahr",
                         bCrudFieldLabelEn = Just "Queen Year",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -691,6 +721,8 @@ context =
                       { bCrudFieldName = "description",
                         bCrudFieldLabelDe = Just "Beschreibung",
                         bCrudFieldLabelEn = Just "Description",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Textarea",
                         bCrudFieldDb =
                           Just $
@@ -741,6 +773,8 @@ context =
                       { bCrudFieldName = "isDissolved",
                         bCrudFieldLabelDe = Just "Ist aufgelöst?",
                         bCrudFieldLabelEn = Just "Is dissolved?",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Bool",
                         bCrudFieldDb =
                           Just $
@@ -813,6 +847,8 @@ context =
                       { bCrudFieldName = "hiveId",
                         bCrudFieldLabelDe = Nothing,
                         bCrudFieldLabelEn = Nothing,
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "HiveId",
                         bCrudFieldDb =
                           Just $
@@ -829,6 +865,8 @@ context =
                       { bCrudFieldName = "date",
                         bCrudFieldLabelDe = Just "Datum",
                         bCrudFieldLabelEn = Just "Date",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Day",
                         bCrudFieldDb =
                           Just $
@@ -859,6 +897,8 @@ context =
                       { bCrudFieldName = "swarmingTypeId",
                         bCrudFieldLabelDe = Just "Schwarmtrieb",
                         bCrudFieldLabelEn = Just "swarming Mood",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "SwarmingTypeId",
                         bCrudFieldDb =
                           Just $
@@ -889,6 +929,8 @@ context =
                       { bCrudFieldName = "queenSeen",
                         bCrudFieldLabelDe = Just "Kö ges.",
                         bCrudFieldLabelEn = Just "Queen seen",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Bool",
                         bCrudFieldDb =
                           Just $
@@ -929,6 +971,8 @@ context =
                       { bCrudFieldName = "beeCoveredFrames",
                         bCrudFieldLabelDe = Just "Bel. Waben",
                         bCrudFieldLabelEn = Just "Bee covered frames",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -971,6 +1015,8 @@ context =
                       { bCrudFieldName = "broodFrames",
                         bCrudFieldLabelDe = Just "Brutwaben",
                         bCrudFieldLabelEn = Just "Brood frames",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -1013,6 +1059,8 @@ context =
                       { bCrudFieldName = "honeyFrames",
                         bCrudFieldLabelDe = Just "Honigwaben",
                         bCrudFieldLabelEn = Just "Honey frames",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -1055,6 +1103,8 @@ context =
                       { bCrudFieldName = "treatment",
                         bCrudFieldLabelDe = Just "Behandlung",
                         bCrudFieldLabelEn = Just "Treatment",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -1097,6 +1147,8 @@ context =
                       { bCrudFieldName = "feeding",
                         bCrudFieldLabelDe = Just "Fütterung",
                         bCrudFieldLabelEn = Just "Feeding",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -1139,6 +1191,8 @@ context =
                       { bCrudFieldName = "notes",
                         bCrudFieldLabelDe = Just "Notizen",
                         bCrudFieldLabelEn = Just "Notes",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Textarea",
                         bCrudFieldDb =
                           Just $
@@ -1221,6 +1275,8 @@ context =
                       { bCrudFieldName = "inspectionId",
                         bCrudFieldLabelDe = Nothing,
                         bCrudFieldLabelEn = Nothing,
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "InspectionId",
                         bCrudFieldDb =
                           Just $
@@ -1237,6 +1293,8 @@ context =
                       { bCrudFieldName = "rawdataId",
                         bCrudFieldLabelDe = Nothing,
                         bCrudFieldLabelEn = Nothing,
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "RawdataId",
                         bCrudFieldDb =
                           Just $
@@ -1253,6 +1311,8 @@ context =
                       { bCrudFieldName = "filename",
                         bCrudFieldLabelDe = Just "Dateiname",
                         bCrudFieldLabelEn = Just "Filename",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -1269,6 +1329,8 @@ context =
                       { bCrudFieldName = "mimetype",
                         bCrudFieldLabelDe = Just "MIME Type",
                         bCrudFieldLabelEn = Just "MIME Type",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -1285,6 +1347,8 @@ context =
                       { bCrudFieldName = "size",
                         bCrudFieldLabelDe = Just "Groesse",
                         bCrudFieldLabelEn = Just "Size",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -1301,6 +1365,8 @@ context =
                       { bCrudFieldName = "file",
                         bCrudFieldLabelDe = Just "Datei",
                         bCrudFieldLabelEn = Just "File",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "FileInfo",
                         bCrudFieldDb = Nothing,
                         bCrudFieldFormFieldType = Just "fileField",
@@ -1357,6 +1423,8 @@ context =
                       { bCrudFieldName = "name",
                         bCrudFieldLabelDe = Just "Name",
                         bCrudFieldLabelEn = Just "Name",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Text",
                         bCrudFieldDb =
                           Just $
@@ -1399,6 +1467,8 @@ context =
                       { bCrudFieldName = "sortIndex",
                         bCrudFieldLabelDe = Just "Sortierungs-Index",
                         bCrudFieldLabelEn = Just "Sort Index",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
                         bCrudFieldHsType = "Int",
                         bCrudFieldDb =
                           Just $
@@ -1445,6 +1515,7 @@ context =
           [ BActionModel
               { bActionModelName = "testmail",
                 bActionModelAction = "send",
+                bActionModelHandlerArgs = Nothing,
                 bActionModelFormArgs = Nothing,
                 bActionModelFormEntityLoader = Nothing,
                 bActionModelFormDataJsonUrl = Nothing,
@@ -1457,6 +1528,8 @@ context =
                       { bActionFieldName = "email",
                         bActionFieldLabelDe = Just "Email",
                         bActionFieldLabelEn = Just "Email",
+                        bActionFieldInfoDe = Nothing,
+                        bActionFieldInfoEn = Nothing,
                         bActionFieldHsType = "Text",
                         bActionFieldFormFieldType = Just "textField",
                         bActionFieldView =

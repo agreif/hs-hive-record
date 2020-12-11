@@ -316,7 +316,7 @@ data VAddHive = VAddHive
 -- gen get add form - start
 getAddHiveFormR :: LocationId -> Handler Html
 getAddHiveFormR locationId = do
-  (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddHiveForm Nothing Nothing
   formLayout $
     toWidget
       [whamlet|
@@ -331,7 +331,7 @@ getAddHiveFormR locationId = do
 -- gen post add form - start
 postAddHiveR :: LocationId -> Handler Value
 postAddHiveR locationId = do
-  ((result, formWidget), _) <- runFormPost $ vAddHiveForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vAddHiveForm Nothing Nothing
   case result of
     FormSuccess vAddHive -> do
       curTime <- liftIO getCurrentTime
@@ -364,8 +364,8 @@ postAddHiveR locationId = do
 -- gen post add form - end
 
 -- gen add form - start
-vAddHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VAddHive, Widget)
-vAddHiveForm maybeHive extra = do
+vAddHiveForm :: Maybe HiveId -> Maybe Hive -> Html -> MForm Handler (FormResult VAddHive, Widget)
+vAddHiveForm maybeHiveId maybeHive extra = do
   (nameResult, nameView) <-
     mreq
       textField
@@ -395,29 +395,41 @@ vAddHiveForm maybeHive extra = do
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #queenYearInputWidget .uk-margin-small :not $ null $ fvErrors queenYearView:.uk-form-danger>
       <label #queenYearInputLabel .uk-form-label :not $ null $ fvErrors queenYearView:.uk-text-danger for=#{fvId queenYearView}>#{fvLabel queenYearView}
       <div .uk-form-controls>
         ^{fvInput queenYearView}
-        <span #queenYearInputError>
-          $maybe err <- fvErrors queenYearView
+        <span #queenYearInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveQueenYearInputInfo}
+        $maybe err <- fvErrors queenYearView
+          <br>
+          <span #queenYearInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
       <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
       <div .uk-form-controls>
         ^{fvInput descriptionView}
-        <span #descriptionInputError>
-          $maybe err <- fvErrors descriptionView
+        <span #descriptionInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveDescriptionInputInfo}
+        $maybe err <- fvErrors descriptionView
+          <br>
+          <span #descriptionInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #isDissolvedInputWidget .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
       <label #isDissolvedInputLabel .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
       <div .uk-form-controls>
         ^{fvInput isDissolvedView}
-        <span #isDissolvedInputError>
-          $maybe err <- fvErrors isDissolvedView
+        <span #isDissolvedInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveIsDissolvedInputInfo}
+        $maybe err <- fvErrors isDissolvedView
+          <br>
+          <span #isDissolvedInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vAddHiveResult, formWidget)
@@ -481,7 +493,7 @@ data VEditHive = VEditHive
 getEditHiveFormR :: HiveId -> Handler Html
 getEditHiveFormR hiveId = do
   hive <- runDB $ get404 hiveId
-  (formWidget, _) <- generateFormPost $ vEditHiveForm (Just hive)
+  (formWidget, _) <- generateFormPost $ vEditHiveForm (Just hiveId) (Just hive)
   formLayout $
     toWidget
       [whamlet|
@@ -496,7 +508,7 @@ getEditHiveFormR hiveId = do
 -- gen post edit form - start
 postEditHiveR :: HiveId -> Handler Value
 postEditHiveR hiveId = do
-  ((result, formWidget), _) <- runFormPost $ vEditHiveForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vEditHiveForm (Just hiveId) Nothing
   case result of
     FormSuccess vEditHive -> do
       curTime <- liftIO getCurrentTime
@@ -533,8 +545,8 @@ postEditHiveR hiveId = do
 -- gen post edit form - end
 
 -- gen edit form - start
-vEditHiveForm :: Maybe Hive -> Html -> MForm Handler (FormResult VEditHive, Widget)
-vEditHiveForm maybeHive extra = do
+vEditHiveForm :: Maybe HiveId -> Maybe Hive -> Html -> MForm Handler (FormResult VEditHive, Widget)
+vEditHiveForm maybeHiveId maybeHive extra = do
   (locationIdResult, locationIdView) <-
     mreq
       locationSelectField
@@ -575,36 +587,51 @@ vEditHiveForm maybeHive extra = do
       <label #locationIdInputLabel .uk-form-label :not $ null $ fvErrors locationIdView:.uk-text-danger for=#{fvId locationIdView}>#{fvLabel locationIdView}
       <div .uk-form-controls>
         ^{fvInput locationIdView}
-        <span #locationIdInputError>
-          $maybe err <- fvErrors locationIdView
+        <span #locationIdInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveLocationIdInputInfo}
+        $maybe err <- fvErrors locationIdView
+          <br>
+          <span #locationIdInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #nameInputWidget .uk-margin-small :not $ null $ fvErrors nameView:.uk-form-danger>
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #queenYearInputWidget .uk-margin-small :not $ null $ fvErrors queenYearView:.uk-form-danger>
       <label #queenYearInputLabel .uk-form-label :not $ null $ fvErrors queenYearView:.uk-text-danger for=#{fvId queenYearView}>#{fvLabel queenYearView}
       <div .uk-form-controls>
         ^{fvInput queenYearView}
-        <span #queenYearInputError>
-          $maybe err <- fvErrors queenYearView
+        <span #queenYearInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveQueenYearInputInfo}
+        $maybe err <- fvErrors queenYearView
+          <br>
+          <span #queenYearInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #descriptionInputWidget .uk-margin-small :not $ null $ fvErrors descriptionView:.uk-form-danger>
       <label #descriptionInputLabel .uk-form-label :not $ null $ fvErrors descriptionView:.uk-text-danger for=#{fvId descriptionView}>#{fvLabel descriptionView}
       <div .uk-form-controls>
         ^{fvInput descriptionView}
-        <span #descriptionInputError>
-          $maybe err <- fvErrors descriptionView
+        <span #descriptionInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveDescriptionInputInfo}
+        $maybe err <- fvErrors descriptionView
+          <br>
+          <span #descriptionInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #isDissolvedInputWidget .uk-margin-small :not $ null $ fvErrors isDissolvedView:.uk-form-danger>
       <label #isDissolvedInputLabel .uk-form-label :not $ null $ fvErrors isDissolvedView:.uk-text-danger for=#{fvId isDissolvedView}>#{fvLabel isDissolvedView}
       <div .uk-form-controls>
         ^{fvInput isDissolvedView}
-        <span #isDissolvedInputError>
-          $maybe err <- fvErrors isDissolvedView
+        <span #isDissolvedInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgHiveIsDissolvedInputInfo}
+        $maybe err <- fvErrors isDissolvedView
+          <br>
+          <span #isDissolvedInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vEditHiveResult, formWidget)
@@ -688,8 +715,17 @@ getDeleteHiveFormR hiveId = do
 -- gen post delete form - start
 postDeleteHiveR :: HiveId -> Handler Value
 postDeleteHiveR hiveId = do
+  curTime <- liftIO getCurrentTime
+  Entity _ authUser <- requireAuth
   hive <- runDB $ get404 hiveId
-  runDB $ delete hiveId
+  runDB $ do
+    -- trick to record the user deleting the entity
+    updateWhere
+      [HiveId ==. hiveId]
+      [ HiveUpdatedAt =. curTime,
+        HiveUpdatedBy =. userIdent authUser
+      ]
+    delete hiveId
   urlRenderer <- getUrlRender
   returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR $ hiveLocationId hive}
 

@@ -28,7 +28,7 @@ data VAddInspectionfile = VAddInspectionfile
 -- gen get add form - start
 getAddInspectionfileFormR :: InspectionId -> Handler Html
 getAddInspectionfileFormR inspectionId = do
-  (formWidget, _) <- generateFormPost $ vAddInspectionfileForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddInspectionfileForm Nothing Nothing
   formLayout $
     toWidget
       [whamlet|
@@ -43,7 +43,7 @@ getAddInspectionfileFormR inspectionId = do
 
 postAddInspectionfileR :: InspectionId -> Handler Value
 postAddInspectionfileR inspectionId = do
-  ((result, formWidget), _) <- runFormPost $ vAddInspectionfileForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vAddInspectionfileForm (Just inspectionId) Nothing
   case result of
     FormSuccess VAddInspectionfile {vAddInspectionfileFile = fileInfo} -> do
       curTime <- liftIO getCurrentTime
@@ -113,8 +113,8 @@ getDownloadInspectionfileR inspectionfileId = do
       sendChunkBS bytes
       sendFlush
 
-vAddInspectionfileForm :: Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
-vAddInspectionfileForm maybeVAddInspectionfile extra = do
+vAddInspectionfileForm :: Maybe InspectionId -> Maybe VAddInspectionfile -> Html -> MForm Handler (FormResult VAddInspectionfile, Widget)
+vAddInspectionfileForm _ maybeVAddInspectionfile extra = do
   (fileResult, fileView) <-
     mreq
       fileField

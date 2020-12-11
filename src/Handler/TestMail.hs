@@ -45,7 +45,7 @@ getSendTestmailFormR = do
     toWidget
       [whamlet|
       <h1>_{MsgTestmailSendTestMail}
-      <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ SendTestmailR}>
+      <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ SendTestmailR }>
         <div #modal-form-widget>
           ^{formWidget}
       |]
@@ -69,8 +69,11 @@ vSendTestmailForm maybeTestmail extra = do
       <label #emailInputLabel .uk-form-label :not $ null $ fvErrors emailView:.uk-text-danger for=#{fvId emailView}>#{fvLabel emailView}
       <div .uk-form-controls>
         ^{fvInput emailView}
-        <span #emailInputError>
-          $maybe err <- fvErrors emailView
+        <span #emailInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgTestmailEmailInputInfo}
+        $maybe err <- fvErrors emailView
+          <br>
+          <span #emailInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vSendTestmailResult, formWidget)

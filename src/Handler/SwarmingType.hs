@@ -26,7 +26,7 @@ data VAddSwarmingType = VAddSwarmingType
 -- gen get add form - start
 getAddSwarmingTypeFormR :: Handler Html
 getAddSwarmingTypeFormR = do
-  (formWidget, _) <- generateFormPost $ vAddSwarmingTypeForm Nothing
+  (formWidget, _) <- generateFormPost $ vAddSwarmingTypeForm Nothing Nothing
   formLayout $
     toWidget
       [whamlet|
@@ -41,7 +41,7 @@ getAddSwarmingTypeFormR = do
 -- gen post add form - start
 postAddSwarmingTypeR :: Handler Value
 postAddSwarmingTypeR = do
-  ((result, formWidget), _) <- runFormPost $ vAddSwarmingTypeForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vAddSwarmingTypeForm Nothing Nothing
   case result of
     FormSuccess vAddSwarmingType -> do
       curTime <- liftIO getCurrentTime
@@ -71,8 +71,8 @@ postAddSwarmingTypeR = do
 -- gen post add form - end
 
 -- gen add form - start
-vAddSwarmingTypeForm :: Maybe SwarmingType -> Html -> MForm Handler (FormResult VAddSwarmingType, Widget)
-vAddSwarmingTypeForm maybeSwarmingType extra = do
+vAddSwarmingTypeForm :: Maybe SwarmingTypeId -> Maybe SwarmingType -> Html -> MForm Handler (FormResult VAddSwarmingType, Widget)
+vAddSwarmingTypeForm maybeSwarmingTypeId maybeSwarmingType extra = do
   (nameResult, nameView) <-
     mreq
       textField
@@ -92,15 +92,21 @@ vAddSwarmingTypeForm maybeSwarmingType extra = do
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgSwarmingTypeNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #sortIndexInputWidget .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
       <label #sortIndexInputLabel .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
       <div .uk-form-controls>
         ^{fvInput sortIndexView}
-        <span #sortIndexInputError>
-          $maybe err <- fvErrors sortIndexView
+        <span #sortIndexInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgSwarmingTypeSortIndexInputInfo}
+        $maybe err <- fvErrors sortIndexView
+          <br>
+          <span #sortIndexInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vAddSwarmingTypeResult, formWidget)
@@ -143,7 +149,7 @@ data VEditSwarmingType = VEditSwarmingType
 getEditSwarmingTypeFormR :: SwarmingTypeId -> Handler Html
 getEditSwarmingTypeFormR swarmingTypeId = do
   swarmingType <- runDB $ get404 swarmingTypeId
-  (formWidget, _) <- generateFormPost $ vEditSwarmingTypeForm (Just swarmingType)
+  (formWidget, _) <- generateFormPost $ vEditSwarmingTypeForm (Just swarmingTypeId) (Just swarmingType)
   formLayout $
     toWidget
       [whamlet|
@@ -158,7 +164,7 @@ getEditSwarmingTypeFormR swarmingTypeId = do
 -- gen post edit form - start
 postEditSwarmingTypeR :: SwarmingTypeId -> Handler Value
 postEditSwarmingTypeR swarmingTypeId = do
-  ((result, formWidget), _) <- runFormPost $ vEditSwarmingTypeForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vEditSwarmingTypeForm (Just swarmingTypeId) Nothing
   case result of
     FormSuccess vEditSwarmingType -> do
       curTime <- liftIO getCurrentTime
@@ -192,8 +198,8 @@ postEditSwarmingTypeR swarmingTypeId = do
 -- gen post edit form - end
 
 -- gen edit form - start
-vEditSwarmingTypeForm :: Maybe SwarmingType -> Html -> MForm Handler (FormResult VEditSwarmingType, Widget)
-vEditSwarmingTypeForm maybeSwarmingType extra = do
+vEditSwarmingTypeForm :: Maybe SwarmingTypeId -> Maybe SwarmingType -> Html -> MForm Handler (FormResult VEditSwarmingType, Widget)
+vEditSwarmingTypeForm maybeSwarmingTypeId maybeSwarmingType extra = do
   (nameResult, nameView) <-
     mreq
       textField
@@ -219,15 +225,21 @@ vEditSwarmingTypeForm maybeSwarmingType extra = do
       <label #nameInputLabel .uk-form-label :not $ null $ fvErrors nameView:.uk-text-danger for=#{fvId nameView}>#{fvLabel nameView}
       <div .uk-form-controls>
         ^{fvInput nameView}
-        <span #nameInputError>
-          $maybe err <- fvErrors nameView
+        <span #nameInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgSwarmingTypeNameInputInfo}
+        $maybe err <- fvErrors nameView
+          <br>
+          <span #nameInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #sortIndexInputWidget .uk-margin-small :not $ null $ fvErrors sortIndexView:.uk-form-danger>
       <label #sortIndexInputLabel .uk-form-label :not $ null $ fvErrors sortIndexView:.uk-text-danger for=#{fvId sortIndexView}>#{fvLabel sortIndexView}
       <div .uk-form-controls>
         ^{fvInput sortIndexView}
-        <span #sortIndexInputError>
-          $maybe err <- fvErrors sortIndexView
+        <span #sortIndexInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgSwarmingTypeSortIndexInputInfo}
+        $maybe err <- fvErrors sortIndexView
+          <br>
+          <span #sortIndexInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vEditSwarmingTypeResult, formWidget)
@@ -284,7 +296,16 @@ getDeleteSwarmingTypeFormR swarmingTypeId = do
 -- gen post delete form - start
 postDeleteSwarmingTypeR :: SwarmingTypeId -> Handler Value
 postDeleteSwarmingTypeR swarmingTypeId = do
-  runDB $ delete swarmingTypeId
+  curTime <- liftIO getCurrentTime
+  Entity _ authUser <- requireAuth
+  runDB $ do
+    -- trick to record the user deleting the entity
+    updateWhere
+      [SwarmingTypeId ==. swarmingTypeId]
+      [ SwarmingTypeUpdatedAt =. curTime,
+        SwarmingTypeUpdatedBy =. userIdent authUser
+      ]
+    delete swarmingTypeId
   urlRenderer <- getUrlRender
   returnJson $ VFormSubmitSuccess {fsSuccessDataJsonUrl = urlRenderer $ AdminR AdminPageDataR}
 

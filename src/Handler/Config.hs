@@ -31,7 +31,7 @@ data VEditConfig = VEditConfig
 getEditConfigFormR :: ConfigId -> Handler Html
 getEditConfigFormR configId = do
   config <- runDB $ get404 configId
-  (formWidget, _) <- generateFormPost $ vEditConfigForm (Just config)
+  (formWidget, _) <- generateFormPost $ vEditConfigForm (Just configId) (Just config)
   formLayout $
     toWidget
       [whamlet|
@@ -46,7 +46,7 @@ getEditConfigFormR configId = do
 -- gen post edit form - start
 postEditConfigR :: ConfigId -> Handler Value
 postEditConfigR configId = do
-  ((result, formWidget), _) <- runFormPost $ vEditConfigForm Nothing
+  ((result, formWidget), _) <- runFormPost $ vEditConfigForm (Just configId) Nothing
   case result of
     FormSuccess vEditConfig -> do
       curTime <- liftIO getCurrentTime
@@ -82,8 +82,8 @@ postEditConfigR configId = do
 -- gen post edit form - end
 
 -- gen edit form - start
-vEditConfigForm :: Maybe Config -> Html -> MForm Handler (FormResult VEditConfig, Widget)
-vEditConfigForm maybeConfig extra = do
+vEditConfigForm :: Maybe ConfigId -> Maybe Config -> Html -> MForm Handler (FormResult VEditConfig, Widget)
+vEditConfigForm maybeConfigId maybeConfig extra = do
   (codeResult, codeView) <-
     mopt
       textField
@@ -124,36 +124,51 @@ vEditConfigForm maybeConfig extra = do
       <label #codeInputLabel .uk-form-label :not $ null $ fvErrors codeView:.uk-text-danger for=#{fvId codeView}>#{fvLabel codeView}
       <div .uk-form-controls>
         ^{fvInput codeView}
-        <span #codeInputError>
-          $maybe err <- fvErrors codeView
+        <span #codeInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgConfigCodeInputInfo}
+        $maybe err <- fvErrors codeView
+          <br>
+          <span #codeInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #stringValueInputWidget .uk-margin-small :not $ null $ fvErrors stringValueView:.uk-form-danger>
       <label #stringValueInputLabel .uk-form-label :not $ null $ fvErrors stringValueView:.uk-text-danger for=#{fvId stringValueView}>#{fvLabel stringValueView}
       <div .uk-form-controls>
         ^{fvInput stringValueView}
-        <span #stringValueInputError>
-          $maybe err <- fvErrors stringValueView
+        <span #stringValueInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgConfigStringValueInputInfo}
+        $maybe err <- fvErrors stringValueView
+          <br>
+          <span #stringValueInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #intValueInputWidget .uk-margin-small :not $ null $ fvErrors intValueView:.uk-form-danger>
       <label #intValueInputLabel .uk-form-label :not $ null $ fvErrors intValueView:.uk-text-danger for=#{fvId intValueView}>#{fvLabel intValueView}
       <div .uk-form-controls>
         ^{fvInput intValueView}
-        <span #intValueInputError>
-          $maybe err <- fvErrors intValueView
+        <span #intValueInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgConfigIntValueInputInfo}
+        $maybe err <- fvErrors intValueView
+          <br>
+          <span #intValueInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #doubleValueInputWidget .uk-margin-small :not $ null $ fvErrors doubleValueView:.uk-form-danger>
       <label #doubleValueInputLabel .uk-form-label :not $ null $ fvErrors doubleValueView:.uk-text-danger for=#{fvId doubleValueView}>#{fvLabel doubleValueView}
       <div .uk-form-controls>
         ^{fvInput doubleValueView}
-        <span #doubleValueInputError>
-          $maybe err <- fvErrors doubleValueView
+        <span #doubleValueInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgConfigDoubleValueInputInfo}
+        $maybe err <- fvErrors doubleValueView
+          <br>
+          <span #doubleValueInputError .uk-text-small .input-error>
             &nbsp;#{err}
     <div #boolValueInputWidget .uk-margin-small :not $ null $ fvErrors boolValueView:.uk-form-danger>
       <label #boolValueInputLabel .uk-form-label :not $ null $ fvErrors boolValueView:.uk-text-danger for=#{fvId boolValueView}>#{fvLabel boolValueView}
       <div .uk-form-controls>
         ^{fvInput boolValueView}
-        <span #boolValueInputError>
-          $maybe err <- fvErrors boolValueView
+        <span #boolValueInputInfo .uk-margin-left .uk-text-small .input-info>
+          _{MsgConfigBoolValueInputInfo}
+        $maybe err <- fvErrors boolValueView
+          <br>
+          <span #boolValueInputError .uk-text-small .input-error>
             &nbsp;#{err}
     |]
   return (vEditConfigResult, formWidget)
