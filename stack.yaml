@@ -9,7 +9,7 @@ extra-deps:
   commit: 9e6b03ab791d64450d8b38913570bd6959e304ef
 - pwstore-fast-2.4.4@sha256:9b6a37510d8b9f37f409a8ab3babac9181afcaaa3fce8ba1c131a7ed3de30698,1351
 
-allow-newer: true
+# allow-newer: true
 
 nix:
   enable: true
