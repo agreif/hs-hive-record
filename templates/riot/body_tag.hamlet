@@ -139,6 +139,9 @@
     \   getUikit() {
     \     return UIkit
     \   },
+    \   getRiotjs() {
+    \     return riot
+    \   },
     \   formatDouble(value) {
     \     return formatDouble(value, this.data.currentLanguage)
     \   },

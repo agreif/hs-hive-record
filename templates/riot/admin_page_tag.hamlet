@@ -132,6 +132,9 @@
             <tr>
               <th>UIkit version:
               <td>{context.getUikit().version}
+            <tr>
+              <th>Riot.js version:
+              <td>{context.getRiotjs().version}
 
   <script>
     \ export default {
