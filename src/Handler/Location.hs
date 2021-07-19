@@ -59,6 +59,7 @@ getLocationListPageDataR = do
                 jDataHistoryStateTitle = msgLocations
               },
         jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfParamName = defaultCsrfParamName,
         jDataCsrfToken = reqToken req,
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
@@ -148,6 +149,7 @@ getLocationDetailPageDataR locationId = do
                 jDataHistoryStateTitle = msgLocation
               },
         jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfParamName = defaultCsrfParamName,
         jDataCsrfToken = reqToken req,
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem

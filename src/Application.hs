@@ -61,6 +61,7 @@ import Network.Wai.Handler.Warp
     setHost,
     setOnException,
     setPort,
+    setServerName,
   )
 import Network.Wai.Middleware.RequestLogger
   ( Destination (Logger),
@@ -148,6 +149,7 @@ warpSettings :: App -> Settings
 warpSettings foundation =
   setPort (appPort $ appSettings foundation)
     $ setHost (appHost $ appSettings foundation)
+    $ setServerName ""
     $ setOnException
       ( \_req e ->
           when (defaultShouldDisplayException e) $

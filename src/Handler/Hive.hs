@@ -70,6 +70,7 @@ getHiveOverviewPageDataR = do
                 jDataHistoryStateTitle = msgHiveOverview
               },
         jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfParamName = defaultCsrfParamName,
         jDataCsrfToken = reqToken req,
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
@@ -173,6 +174,7 @@ getHiveDetailPageDataR hiveId = do
                 jDataHistoryStateTitle = msgHive
               },
         jDataCsrfHeaderName = TE.decodeUtf8 $ CI.original defaultCsrfHeaderName,
+        jDataCsrfParamName = defaultCsrfParamName,
         jDataCsrfToken = reqToken req,
         jDataBreadcrumbItems =
           [ JDataBreadcrumbItem
