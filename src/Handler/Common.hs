@@ -88,6 +88,7 @@ data JData = JData
     jDataHistoryState :: Maybe JDataHistoryState,
     jDataCsrfToken :: Maybe Text,
     jDataCsrfHeaderName :: Text,
+    jDataCsrfParamName :: Text,
     jDataBreadcrumbItems :: [JDataBreadcrumbItem],
     jDataCurrentLanguage :: Language,
     jDataTranslation :: Translation,
