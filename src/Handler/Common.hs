@@ -232,7 +232,11 @@ instance ToJSON JDataPageHome where
 data JDataPageAdmin = JDataPageAdmin
   { jDataPageAdminUsers :: [JDataUser],
     jDataPageAdminConfigs :: [JDataConfig],
-    jDataPageAdminSwarmingTypes :: [JDataSwarmingType]
+    jDataPageAdminSwarmingTypes :: [JDataSwarmingType],
+    jDataPageAdminGitCommitDate :: String,
+    jDataPageAdminGitCommitMessage :: String,
+    jDataPageAdminGitCommitHash :: String,
+    jDataPageAdminGitCommitBranch :: String
   }
 
 instance ToJSON JDataPageAdmin where
@@ -240,7 +244,11 @@ instance ToJSON JDataPageAdmin where
     object
       [ "users" .= jDataPageAdminUsers o,
         "configs" .= jDataPageAdminConfigs o,
-        "swarmingTypes" .= jDataPageAdminSwarmingTypes o
+        "swarmingTypes" .= jDataPageAdminSwarmingTypes o,
+        "gitCommitDate" .= jDataPageAdminGitCommitDate o,
+        "gitCommitMessage" .= jDataPageAdminGitCommitMessage o,
+        "gitCommitHash" .= jDataPageAdminGitCommitHash o,
+        "gitCommitBranch" .= jDataPageAdminGitCommitBranch o
       ]
 
 data JDataUser = JDataUser

@@ -24,6 +24,7 @@ data AppMessage
   | MsgGlobalConfigurations
   | MsgGlobalEditConfig
   | MsgGlobalCancel
+  | MsgGlobalInfo
   | MsgGlobalLocation
   | MsgGlobalLocations
   | MsgGlobalAddLocation
@@ -146,6 +147,7 @@ renderMessageGerman MsgGlobalDeleteUser = "Nutzer löschen"
 renderMessageGerman MsgGlobalConfigurations = "Konfigurationen"
 renderMessageGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderMessageGerman MsgGlobalCancel = "Abbrechen"
+renderMessageGerman MsgGlobalInfo = "Info"
 renderMessageGerman MsgGlobalLocation = "Standort"
 renderMessageGerman MsgGlobalLocations = "Standorte"
 renderMessageGerman MsgGlobalAddLocation = "Standort hinzufügen"
@@ -268,6 +270,7 @@ renderMessageEnglish MsgGlobalDeleteUser = "Delete user"
 renderMessageEnglish MsgGlobalConfigurations = "Configurations"
 renderMessageEnglish MsgGlobalEditConfig = "Edit config"
 renderMessageEnglish MsgGlobalCancel = "Cancel"
+renderMessageEnglish MsgGlobalInfo = "Info"
 renderMessageEnglish MsgGlobalLocation = "Location"
 renderMessageEnglish MsgGlobalLocations = "Locations"
 renderMessageEnglish MsgGlobalAddLocation = "Add location"
@@ -390,6 +393,7 @@ data Translation = Translation
     msgGlobalConfigurations :: Text,
     msgGlobalEditConfig :: Text,
     msgGlobalCancel :: Text,
+    msgGlobalInfo :: Text,
     msgGlobalLocation :: Text,
     msgGlobalLocations :: Text,
     msgGlobalAddLocation :: Text,
@@ -518,6 +522,7 @@ translationDe =
       msgGlobalConfigurations = "Konfigurationen",
       msgGlobalEditConfig = "Konfiguration bearbeiten",
       msgGlobalCancel = "Abbrechen",
+      msgGlobalInfo = "Info",
       msgGlobalLocation = "Standort",
       msgGlobalLocations = "Standorte",
       msgGlobalAddLocation = "Standort hinzufügen",
@@ -643,6 +648,7 @@ translationEn =
       msgGlobalConfigurations = "Configurations",
       msgGlobalEditConfig = "Edit config",
       msgGlobalCancel = "Cancel",
+      msgGlobalInfo = "Info",
       msgGlobalLocation = "Location",
       msgGlobalLocations = "Locations",
       msgGlobalAddLocation = "Add location",
