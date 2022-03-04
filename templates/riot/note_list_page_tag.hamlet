@@ -10,6 +10,8 @@
             {context.data.translation.msgNoteDate}
           <th>
             {context.data.translation.msgNoteText}
+          <th>
+            {context.data.translation.msgNotefileNotefiles}
           <th .uk-align-right>
             <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgNoteAddNote}" uk-tooltip onclick="{addNote}">
               <span uk-icon="icon: plus">
@@ -22,9 +24,20 @@
             <a onclick="{(e)=>editNote(e,note)}" .uk-link-reset>
               <span .textarea-wrap>
                 {note.entity.text}
+          <td .uk-table-link .uk-text-nowrap>
+            <span each="{file in note.notefiles}">
+              <a href="{file.downloadUrl}">
+                {file.entity.filename}
+              <button .uk-button .uk-button-link title="{context.data.translation.msgNotefileEditNotefile}" uk-tooltip onclick="{(e)=>editNotefile(e,file)}">
+                <span uk-icon="icon: pencil">
+              <button .uk-button .uk-button-link title="{context.data.translation.msgNotefileDeleteNotefile}" uk-tooltip onclick="{(e)=>deleteNotefile(e,file)}">
+                <span uk-icon="icon: trash">
+              <br>
           <td .uk-width-small>
             <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgNoteDeleteNote}" uk-tooltip onclick="{(e)=>deleteNote(e,note)}">
               <span uk-icon="icon: trash">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgNotefileAddNotefile}" uk-tooltip onclick="{(e)=>addNotefile(e,note)}">
+                  <span uk-icon="icon: upload">
             <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgNoteEditNote}" uk-tooltip onclick="{(e)=>editNote(e,note)}">
               <span uk-icon="icon: pencil">
     <pagination-tag context="{context}" items="{context.data.pages.noteList.paginationItems}">
@@ -50,21 +63,19 @@
     \     this.context.showModalForm(item.deleteFormUrl)
     \     event.currentTarget.blur()
     \   },
-    \   toggleSortNoteMyattr(event) {
-    \     this.context.postRequest(this.context.data.pages.noteList.myattrToggleSortUrl)
+    \   addNotefile(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.notefileAddFormUrl)
+    \     event.currentTarget.blur()
     \   },
-    \   toggleSortNoteOtherattr(event) {
-    \     this.context.postRequest(this.context.data.pages.noteList.otherattrToggleSortUrl)
+    \   editNotefile(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.editFormUrl)
+    \     event.currentTarget.blur()
     \   },
-    \   toggleSortNoteDummytext(event) {
-    \     this.context.postRequest(this.context.data.pages.noteList.dummytextToggleSortUrl)
-    \   },
-    \   sortIcon(columnName) {
-    \     if (this.context.data.pages.noteList.sortColumn == columnName) {
-    \       if (this.context.data.pages.noteList.sortValue == "asc")
-    \         return "icon: triangle-up"
-    \       if (this.context.data.pages.noteList.sortValue == "desc")
-    \         return "icon: triangle-down"
-    \     }
-    \   },
+    \   deleteNotefile(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.deleteFormUrl)
+    \     event.currentTarget.blur()
+    \   }
     \ }

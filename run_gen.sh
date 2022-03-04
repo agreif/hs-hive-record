@@ -209,6 +209,15 @@ if test -z "$1" -o "$1" = $m; then
     exec_ginger2 $m handler_delete_form.gtmpl $f '-- gen delete form'
 fi
 
+f=src/Handler/Notefile.hs
+m=notefile
+if test -z "$1" -o "$1" = $m; then
+    exec_ginger2 $m handler_data_add.gtmpl $f '-- gen data add'
+    exec_ginger2 $m handler_get_add_form.gtmpl $f '-- gen get add form'
+    exec_ginger2 $m handler_data_edit.gtmpl $f '-- gen data edit'
+    exec_ginger2 $m handler_get_delete_form.gtmpl $f '-- gen get delete form'
+    exec_ginger2 $m handler_delete_form.gtmpl $f '-- gen delete form'
+fi
 
 
 

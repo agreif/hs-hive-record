@@ -110,3 +110,11 @@
   editNote/#NoteId EditNoteR POST
   deleteNoteForm/#NoteId DeleteNoteFormR GET
   deleteNote/#NoteId DeleteNoteR POST
+
+  addNotefileForm/#NoteId AddNotefileFormR GET
+  addNotefile/#NoteId AddNotefileR POST
+  editNotefileForm/#NotefileId EditNotefileFormR GET
+  editNotefile/#NotefileId EditNotefileR POST
+  deleteNotefileForm/#NotefileId DeleteNotefileFormR GET
+  deleteNotefile/#NotefileId DeleteNotefileR POST
+  downloadNotefile/#NotefileId DownloadNotefileR GET

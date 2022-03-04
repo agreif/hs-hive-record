@@ -1677,6 +1677,160 @@ context =
                       BTranslation {bTranslationKey = "editNote", bTranslationDe = "Notiz bearbeiten", bTranslationEn = "Edit note"},
                       BTranslation {bTranslationKey = "deleteNote", bTranslationDe = "Notiz löschen", bTranslationEn = "Delete note"}
                     ]
+              },
+            BCrudModel
+              { bCrudModelName = "notefile",
+                bCrudModelIsJson = True,
+                bCrudModelDbUniquenesses = [],
+                bCrudModelDbHasHistoryTable = True,
+                bCrudModelHsDerivings = [],
+                bCrudModelAddFormArgs = Nothing,
+                bCrudModelEditFormArgs = Nothing,
+                bCrudModelAddHandlerArgs = Nothing,
+                bCrudModelEditHandlerArgs = Nothing,
+                bCrudModelAddFormEntityLoader = Nothing,
+                bCrudModelEditFormEntityLoader = Nothing,
+                bCrudModelDeleteFormEntityLoader = Nothing,
+                bCrudModelAddFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataR $ noteHiveId note",
+                bCrudModelEditFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataR $ noteHiveId note",
+                bCrudModelDeleteFormDataJsonUrl = Just "HiverecR $ HiveDetailPageDataR $ noteHiveId note",
+                bCrudModelAddFormHasDefaultModel = False,
+                bCrudModelEditPostLoadsModel = False,
+                bCrudModelDeletePostLoadsModel = False,
+                bCrudModelAddPostExtraStoreFunc = Nothing,
+                bCrudModelEditPostExtraStoreFunc = Nothing,
+                bCrudModelAddPostNeedsCurRoute = False,
+                bCrudModelEditPostNeedsCurRoute = False,
+                bCrudModelAddFormTitleMsg = Just "MsgNotefileAddNotefile",
+                bCrudModelEditFormTitleMsg = Just "MsgNotefileEditNotefile",
+                bCrudModelDeleteFormTitleMsg = Just "MsgNotefileDeleteNotefile",
+                bCrudModelParentHsType = Just "Note",
+                bCrudModelFormRouteHsType = "HiverecR",
+                bCrudModelFields =
+                  [ BCrudField
+                      { bCrudFieldName = "noteId",
+                        bCrudFieldLabelDe = Nothing,
+                        bCrudFieldLabelEn = Nothing,
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "NoteId",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = False
+                              },
+                        bCrudFieldFormFieldType = Nothing,
+                        bCrudFieldAddView = Nothing,
+                        bCrudFieldEditView = Nothing
+                      },
+                    BCrudField
+                      { bCrudFieldName = "rawdataId",
+                        bCrudFieldLabelDe = Nothing,
+                        bCrudFieldLabelEn = Nothing,
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "RawdataId",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = False
+                              },
+                        bCrudFieldFormFieldType = Nothing,
+                        bCrudFieldAddView = Nothing,
+                        bCrudFieldEditView = Nothing
+                      },
+                    BCrudField
+                      { bCrudFieldName = "filename",
+                        bCrudFieldLabelDe = Just "Dateiname",
+                        bCrudFieldLabelEn = Just "Filename",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "Text",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = False
+                              },
+                        bCrudFieldFormFieldType = Nothing,
+                        bCrudFieldAddView = Nothing,
+                        bCrudFieldEditView = Nothing
+                      },
+                    BCrudField
+                      { bCrudFieldName = "mimetype",
+                        bCrudFieldLabelDe = Just "MIME Type",
+                        bCrudFieldLabelEn = Just "MIME Type",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "Text",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = False
+                              },
+                        bCrudFieldFormFieldType = Nothing,
+                        bCrudFieldAddView = Nothing,
+                        bCrudFieldEditView = Nothing
+                      },
+                    BCrudField
+                      { bCrudFieldName = "size",
+                        bCrudFieldLabelDe = Just "Groesse",
+                        bCrudFieldLabelEn = Just "Size",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "Int",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = False
+                              },
+                        bCrudFieldFormFieldType = Nothing,
+                        bCrudFieldAddView = Nothing,
+                        bCrudFieldEditView = Nothing
+                      },
+                    BCrudField
+                      { bCrudFieldName = "file",
+                        bCrudFieldLabelDe = Just "Datei",
+                        bCrudFieldLabelEn = Just "File",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "FileInfo",
+                        bCrudFieldDb = Nothing,
+                        bCrudFieldFormFieldType = Just "fileField",
+                        bCrudFieldAddView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs = [],
+                                bFieldViewDefault = Nothing
+                              },
+                        bCrudFieldEditView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs = [],
+                                bFieldViewDefault = Nothing
+                              }
+                      }
+                  ],
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "notefiles", bTranslationDe = "Dateien", bTranslationEn = "Files"},
+                      BTranslation {bTranslationKey = "addNotefile", bTranslationDe = "Notiz-Datei hinzufügen", bTranslationEn = "Add note-file"},
+                      BTranslation {bTranslationKey = "deleteNotefile", bTranslationDe = "Notiz-Datei löschen", bTranslationEn = "Delete note-file"},
+                      BTranslation {bTranslationKey = "editNotefile", bTranslationDe = "Notiz-Datei bearbeiten", bTranslationEn = "Edit note-file"}
+                    ]
               }
           ],
         bContextActionModels =

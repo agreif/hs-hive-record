@@ -106,24 +106,45 @@ noteListJDatas pageNum = do
   noteEnts <- runDB loadNoteTuples
   let noteJDatas =
         map
-          ( \noteEnt@(Entity noteId _) ->
+          ( \(noteEnt@(Entity noteId _), notefileEnts) ->
               JDataNote
                 { jDataNoteEnt = noteEnt,
                   jDataNoteEditFormUrl = urlRenderer $ HiverecR $ EditNoteFormR noteId,
-                  jDataNoteDeleteFormUrl = urlRenderer $ HiverecR $ DeleteNoteFormR noteId
+                  jDataNoteDeleteFormUrl = urlRenderer $ HiverecR $ DeleteNoteFormR noteId,
+                  jDataNoteNotefileAddFormUrl = urlRenderer $ HiverecR $ AddNotefileFormR noteId,
+                  jDataNoteNotefiles = getNotefileJDatas notefileEnts urlRenderer
                 }
           )
           noteEnts
   return (noteJDatas, paginationJDatas)
   where
-    loadNoteTuples :: YesodDB App [(Entity Note)]
+    loadNoteTuples :: YesodDB App [(Entity Note, [Entity Notefile])]
     loadNoteTuples = do
       let pageSize = fromIntegral noteListPageSize
-      E.select $ E.from $ \n -> do
+      tuples <- E.select $ E.from $ \n -> do
         E.offset ((fromIntegral pageNum - 1) * pageSize)
-        E.orderBy [E.asc (n E.^. NoteDate)]
         E.limit pageSize
+        E.orderBy [E.desc (n E.^. NoteDate), E.asc (n E.^. NoteId)]
         return n
+      forM
+        tuples
+        ( \noteEnt@(Entity noteId _) -> do
+            notefileEnts <- selectList [NotefileNoteId ==. noteId] []
+            return (noteEnt, notefileEnts)
+        )
+
+getNotefileJDatas :: [Entity Notefile] -> (Route App -> Text) -> [JDataNotefile]
+getNotefileJDatas notefileEnts urlRenderer =
+  map
+    ( \notefileEnt@(Entity notefileId _) ->
+        JDataNotefile
+          { jDataNotefileEnt = notefileEnt,
+            jDataNotefileEditFormUrl = urlRenderer $ HiverecR $ EditNotefileFormR notefileId,
+            jDataNotefileDeleteFormUrl = urlRenderer $ HiverecR $ DeleteNotefileFormR notefileId,
+            jDataNotefileDownloadUrl = urlRenderer $ HiverecR $ DownloadNotefileR notefileId
+          }
+    )
+    notefileEnts
 
 noteListPageSize :: Int
 noteListPageSize = 50

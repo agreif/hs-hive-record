@@ -235,4 +235,33 @@ $function$;
 
 create trigger audit_note after insert or update or delete on public.note for each row execute procedure public.process_audit_note();
 
+
+
+drop function public.process_audit_notefile() cascade;
+create or replace function public.process_audit_notefile()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('notefile_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into notefile_history
+                       (id, note_id, rawdata_id, filename, mimetype, size, version, created_at, created_by, updated_at, updated_by, db_action)
+                       values
+                       (new.id, new.note_id, new.rawdata_id, new.filename, new.mimetype, new.size, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by, TG_OP);
+                return new;
+           elsif (TG_OP = 'DELETE') then
+                insert into notefile_history
+                       (id, note_id, rawdata_id, filename, mimetype, size, version, created_at, created_by, updated_at, updated_by, db_action)
+                       values
+                       (old.id, old.note_id, old.rawdata_id, old.filename, old.mimetype, old.size, old.version, old.created_at, old.created_by, old.updated_at, old.updated_by, TG_OP);
+               return old;
+           end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_notefile after insert or update or delete on public.notefile for each row execute procedure public.process_audit_notefile();
+
 -- gen triggers - end

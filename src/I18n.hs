@@ -58,6 +58,12 @@ data AppMessage
   | MsgSwarmingTypeSortIndex
   | MsgNoteDate
   | MsgNoteText
+  | MsgNotefileNoteId
+  | MsgNotefileRawdataId
+  | MsgNotefileFilename
+  | MsgNotefileMimetype
+  | MsgNotefileSize
+  | MsgNotefileFile
   | MsgUserIdentInputInfo
   | MsgUserPasswordInputInfo
   | MsgUserEmailInputInfo
@@ -95,6 +101,12 @@ data AppMessage
   | MsgSwarmingTypeSortIndexInputInfo
   | MsgNoteDateInputInfo
   | MsgNoteTextInputInfo
+  | MsgNotefileNoteIdInputInfo
+  | MsgNotefileRawdataIdInputInfo
+  | MsgNotefileFilenameInputInfo
+  | MsgNotefileMimetypeInputInfo
+  | MsgNotefileSizeInputInfo
+  | MsgNotefileFileInputInfo
   | MsgUserUsers
   | MsgUserAddUser
   | MsgUserEditUser
@@ -133,6 +145,10 @@ data AppMessage
   | MsgNoteAddNote
   | MsgNoteEditNote
   | MsgNoteDeleteNote
+  | MsgNotefileNotefiles
+  | MsgNotefileAddNotefile
+  | MsgNotefileDeleteNotefile
+  | MsgNotefileEditNotefile
   | MsgTestmailEmail
   | MsgTestmailEmailInputInfo
   | MsgTestmailTestMail
@@ -190,6 +206,12 @@ renderMessageGerman MsgSwarmingTypeName = "Name"
 renderMessageGerman MsgSwarmingTypeSortIndex = "Sortierungs-Index"
 renderMessageGerman MsgNoteDate = "Datum"
 renderMessageGerman MsgNoteText = "Text"
+renderMessageGerman MsgNotefileNoteId = ""
+renderMessageGerman MsgNotefileRawdataId = ""
+renderMessageGerman MsgNotefileFilename = "Dateiname"
+renderMessageGerman MsgNotefileMimetype = "MIME Type"
+renderMessageGerman MsgNotefileSize = "Groesse"
+renderMessageGerman MsgNotefileFile = "Datei"
 renderMessageGerman MsgUserIdentInputInfo = ""
 renderMessageGerman MsgUserPasswordInputInfo = ""
 renderMessageGerman MsgUserEmailInputInfo = ""
@@ -227,6 +249,12 @@ renderMessageGerman MsgSwarmingTypeNameInputInfo = ""
 renderMessageGerman MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageGerman MsgNoteDateInputInfo = ""
 renderMessageGerman MsgNoteTextInputInfo = ""
+renderMessageGerman MsgNotefileNoteIdInputInfo = ""
+renderMessageGerman MsgNotefileRawdataIdInputInfo = ""
+renderMessageGerman MsgNotefileFilenameInputInfo = ""
+renderMessageGerman MsgNotefileMimetypeInputInfo = ""
+renderMessageGerman MsgNotefileSizeInputInfo = ""
+renderMessageGerman MsgNotefileFileInputInfo = ""
 renderMessageGerman MsgUserUsers = "Nutzer"
 renderMessageGerman MsgUserAddUser = "Nutzer hinzufügen"
 renderMessageGerman MsgUserEditUser = "Nutzer bearbeiten"
@@ -265,6 +293,10 @@ renderMessageGerman MsgNoteNotes = "Notizen"
 renderMessageGerman MsgNoteAddNote = "Notiz hinzufügen"
 renderMessageGerman MsgNoteEditNote = "Notiz bearbeiten"
 renderMessageGerman MsgNoteDeleteNote = "Notiz löschen"
+renderMessageGerman MsgNotefileNotefiles = "Dateien"
+renderMessageGerman MsgNotefileAddNotefile = "Notiz-Datei hinzufügen"
+renderMessageGerman MsgNotefileDeleteNotefile = "Notiz-Datei löschen"
+renderMessageGerman MsgNotefileEditNotefile = "Notiz-Datei bearbeiten"
 renderMessageGerman MsgTestmailEmail = "Email"
 renderMessageGerman MsgTestmailEmailInputInfo = ""
 renderMessageGerman MsgTestmailTestMail = "Test-Mail"
@@ -322,6 +354,12 @@ renderMessageEnglish MsgSwarmingTypeName = "Name"
 renderMessageEnglish MsgSwarmingTypeSortIndex = "Sort Index"
 renderMessageEnglish MsgNoteDate = "Date"
 renderMessageEnglish MsgNoteText = "Text"
+renderMessageEnglish MsgNotefileNoteId = ""
+renderMessageEnglish MsgNotefileRawdataId = ""
+renderMessageEnglish MsgNotefileFilename = "Filename"
+renderMessageEnglish MsgNotefileMimetype = "MIME Type"
+renderMessageEnglish MsgNotefileSize = "Size"
+renderMessageEnglish MsgNotefileFile = "File"
 renderMessageEnglish MsgUserIdentInputInfo = ""
 renderMessageEnglish MsgUserPasswordInputInfo = ""
 renderMessageEnglish MsgUserEmailInputInfo = ""
@@ -359,6 +397,12 @@ renderMessageEnglish MsgSwarmingTypeNameInputInfo = ""
 renderMessageEnglish MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageEnglish MsgNoteDateInputInfo = ""
 renderMessageEnglish MsgNoteTextInputInfo = ""
+renderMessageEnglish MsgNotefileNoteIdInputInfo = ""
+renderMessageEnglish MsgNotefileRawdataIdInputInfo = ""
+renderMessageEnglish MsgNotefileFilenameInputInfo = ""
+renderMessageEnglish MsgNotefileMimetypeInputInfo = ""
+renderMessageEnglish MsgNotefileSizeInputInfo = ""
+renderMessageEnglish MsgNotefileFileInputInfo = ""
 renderMessageEnglish MsgUserUsers = "Users"
 renderMessageEnglish MsgUserAddUser = "Add user"
 renderMessageEnglish MsgUserEditUser = "Edit user"
@@ -397,6 +441,10 @@ renderMessageEnglish MsgNoteNotes = "Notes"
 renderMessageEnglish MsgNoteAddNote = "Add note"
 renderMessageEnglish MsgNoteEditNote = "Edit note"
 renderMessageEnglish MsgNoteDeleteNote = "Delete note"
+renderMessageEnglish MsgNotefileNotefiles = "Files"
+renderMessageEnglish MsgNotefileAddNotefile = "Add note-file"
+renderMessageEnglish MsgNotefileDeleteNotefile = "Delete note-file"
+renderMessageEnglish MsgNotefileEditNotefile = "Edit note-file"
 renderMessageEnglish MsgTestmailEmail = "Email"
 renderMessageEnglish MsgTestmailEmailInputInfo = ""
 renderMessageEnglish MsgTestmailTestMail = "Test-Mail"
@@ -454,6 +502,12 @@ data Translation = Translation
     msgSwarmingTypeSortIndex :: Text,
     msgNoteDate :: Text,
     msgNoteText :: Text,
+    msgNotefileNoteId :: Text,
+    msgNotefileRawdataId :: Text,
+    msgNotefileFilename :: Text,
+    msgNotefileMimetype :: Text,
+    msgNotefileSize :: Text,
+    msgNotefileFile :: Text,
     msgUserIdentInputInfo :: Text,
     msgUserPasswordInputInfo :: Text,
     msgUserEmailInputInfo :: Text,
@@ -491,6 +545,12 @@ data Translation = Translation
     msgSwarmingTypeSortIndexInputInfo :: Text,
     msgNoteDateInputInfo :: Text,
     msgNoteTextInputInfo :: Text,
+    msgNotefileNoteIdInputInfo :: Text,
+    msgNotefileRawdataIdInputInfo :: Text,
+    msgNotefileFilenameInputInfo :: Text,
+    msgNotefileMimetypeInputInfo :: Text,
+    msgNotefileSizeInputInfo :: Text,
+    msgNotefileFileInputInfo :: Text,
     msgUserUsers :: Text,
     msgUserAddUser :: Text,
     msgUserEditUser :: Text,
@@ -529,6 +589,10 @@ data Translation = Translation
     msgNoteAddNote :: Text,
     msgNoteEditNote :: Text,
     msgNoteDeleteNote :: Text,
+    msgNotefileNotefiles :: Text,
+    msgNotefileAddNotefile :: Text,
+    msgNotefileDeleteNotefile :: Text,
+    msgNotefileEditNotefile :: Text,
     msgTestmailEmail :: Text,
     msgTestmailEmailInputInfo :: Text,
     msgTestmailTestMail :: Text,
@@ -592,6 +656,12 @@ translationDe =
       msgSwarmingTypeSortIndex = "Sortierungs-Index",
       msgNoteDate = "Datum",
       msgNoteText = "Text",
+      msgNotefileNoteId = "",
+      msgNotefileRawdataId = "",
+      msgNotefileFilename = "Dateiname",
+      msgNotefileMimetype = "MIME Type",
+      msgNotefileSize = "Groesse",
+      msgNotefileFile = "Datei",
       msgUserIdentInputInfo = "",
       msgUserPasswordInputInfo = "",
       msgUserEmailInputInfo = "",
@@ -629,6 +699,12 @@ translationDe =
       msgSwarmingTypeSortIndexInputInfo = "",
       msgNoteDateInputInfo = "",
       msgNoteTextInputInfo = "",
+      msgNotefileNoteIdInputInfo = "",
+      msgNotefileRawdataIdInputInfo = "",
+      msgNotefileFilenameInputInfo = "",
+      msgNotefileMimetypeInputInfo = "",
+      msgNotefileSizeInputInfo = "",
+      msgNotefileFileInputInfo = "",
       msgUserUsers = "Nutzer",
       msgUserAddUser = "Nutzer hinzufügen",
       msgUserEditUser = "Nutzer bearbeiten",
@@ -667,6 +743,10 @@ translationDe =
       msgNoteAddNote = "Notiz hinzufügen",
       msgNoteEditNote = "Notiz bearbeiten",
       msgNoteDeleteNote = "Notiz löschen",
+      msgNotefileNotefiles = "Dateien",
+      msgNotefileAddNotefile = "Notiz-Datei hinzufügen",
+      msgNotefileDeleteNotefile = "Notiz-Datei löschen",
+      msgNotefileEditNotefile = "Notiz-Datei bearbeiten",
       msgTestmailEmail = "Email",
       msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",
@@ -727,6 +807,12 @@ translationEn =
       msgSwarmingTypeSortIndex = "Sort Index",
       msgNoteDate = "Date",
       msgNoteText = "Text",
+      msgNotefileNoteId = "",
+      msgNotefileRawdataId = "",
+      msgNotefileFilename = "Filename",
+      msgNotefileMimetype = "MIME Type",
+      msgNotefileSize = "Size",
+      msgNotefileFile = "File",
       msgUserIdentInputInfo = "",
       msgUserPasswordInputInfo = "",
       msgUserEmailInputInfo = "",
@@ -764,6 +850,12 @@ translationEn =
       msgSwarmingTypeSortIndexInputInfo = "",
       msgNoteDateInputInfo = "",
       msgNoteTextInputInfo = "",
+      msgNotefileNoteIdInputInfo = "",
+      msgNotefileRawdataIdInputInfo = "",
+      msgNotefileFilenameInputInfo = "",
+      msgNotefileMimetypeInputInfo = "",
+      msgNotefileSizeInputInfo = "",
+      msgNotefileFileInputInfo = "",
       msgUserUsers = "Users",
       msgUserAddUser = "Add user",
       msgUserEditUser = "Edit user",
@@ -802,6 +894,10 @@ translationEn =
       msgNoteAddNote = "Add note",
       msgNoteEditNote = "Edit note",
       msgNoteDeleteNote = "Delete note",
+      msgNotefileNotefiles = "Files",
+      msgNotefileAddNotefile = "Add note-file",
+      msgNotefileDeleteNotefile = "Delete note-file",
+      msgNotefileEditNotefile = "Edit note-file",
       msgTestmailEmail = "Email",
       msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",

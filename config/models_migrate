@@ -227,4 +227,32 @@ NoteHistory
     updatedBy Text
     dbAction Text default='UPDATE' MigrationOnly
 
+Notefile json
+    noteId NoteId
+    rawdataId RawdataId
+    filename Text
+    mimetype Text
+    size Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+NotefileHistory
+    Id sql=vid
+    id Int MigrationOnly
+    noteId Int
+    rawdataId Int
+    filename Text
+    mimetype Text
+    size Int
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
+
 -- gen models - end

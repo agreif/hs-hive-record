@@ -105,7 +105,7 @@
               <td .uk-table-link>
                 <a onclick="{(e)=>editInspection(e,inspection)}" .uk-link-reset>
                   {inspection.inspectionEnt.feeding}
-              <td .uk-table-link>
+              <td .uk-table-link .uk-text-nowrap>
                 <span each="{file in inspection.inspectionfiles}">
                   <a href="{file.downloadUrl}">
                     {file.entity.filename}

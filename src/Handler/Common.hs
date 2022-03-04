@@ -473,7 +473,9 @@ instance ToJSON JDataPageNoteList where
 data JDataNote = JDataNote
   { jDataNoteEnt :: Entity Note,
     jDataNoteEditFormUrl :: Text,
-    jDataNoteDeleteFormUrl :: Text
+    jDataNoteDeleteFormUrl :: Text,
+    jDataNoteNotefileAddFormUrl :: Text,
+    jDataNoteNotefiles :: [JDataNotefile]
   }
 
 instance ToJSON JDataNote where
@@ -481,7 +483,25 @@ instance ToJSON JDataNote where
     object
       [ "entity" .= entityIdToJSON (jDataNoteEnt o),
         "editFormUrl" .= jDataNoteEditFormUrl o,
-        "deleteFormUrl" .= jDataNoteDeleteFormUrl o
+        "deleteFormUrl" .= jDataNoteDeleteFormUrl o,
+        "notefileAddFormUrl" .= jDataNoteNotefileAddFormUrl o,
+        "notefiles" .= jDataNoteNotefiles o
+      ]
+
+data JDataNotefile = JDataNotefile
+  { jDataNotefileEnt :: Entity Notefile,
+    jDataNotefileEditFormUrl :: Text,
+    jDataNotefileDeleteFormUrl :: Text,
+    jDataNotefileDownloadUrl :: Text
+  }
+
+instance ToJSON JDataNotefile where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataNotefileEnt o),
+        "editFormUrl" .= jDataNotefileEditFormUrl o,
+        "deleteFormUrl" .= jDataNotefileDeleteFormUrl o,
+        "downloadUrl" .= jDataNotefileDownloadUrl o
       ]
 
 --------------------------------------------------------------------------------
