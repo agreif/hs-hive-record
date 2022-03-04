@@ -450,7 +450,7 @@ context =
                 bCrudModelTranslations = Nothing
               },
             BCrudModel
-              { bCrudModelName = "Rawdata",
+              { bCrudModelName = "rawdata",
                 bCrudModelIsJson = False,
                 bCrudModelDbUniquenesses = [],
                 bCrudModelDbHasHistoryTable = False,
