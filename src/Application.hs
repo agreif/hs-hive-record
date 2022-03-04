@@ -213,6 +213,7 @@ genRiotFilesMain = do
   writeRiotFile dir getRiotAdminPageTagR "admin_page_tag.riot"
   writeRiotFile dir getRiotLocationListPageTagR "location_list_page_tag.riot"
   writeRiotFile dir getRiotLocationDetailPageTagR "location_detail_page_tag.riot"
+  writeRiotFile dir getRiotNoteListPageTagR "note_list_page_tag.riot"
   writeRiotFile dir getRiotHiveOverviewPageTagR "hive_overview_page_tag.riot"
   writeRiotFile dir getRiotHiveDetailPageTagR "hive_detail_page_tag.riot"
   where
