@@ -26,6 +26,8 @@
       \ riot.register('location-list-page-tag', LocationListPageTag)
       \ import LocationDetailPageTag from '@{StaticR js_riot_location_detail_page_tag_js}'
       \ riot.register('location-detail-page-tag', LocationDetailPageTag)
+      \ import NoteListPageTag from '@{StaticR js_riot_note_list_page_tag_js}'
+      \ riot.register('note-list-page-tag', NoteListPageTag)
       \ import HiveOverviewPageTag from '@{StaticR js_riot_hive_overview_page_tag_js}'
       \ riot.register('hive-overview-page-tag', HiveOverviewPageTag)
       \ import HiveDetailPageTag from '@{StaticR js_riot_hive_detail_page_tag_js}'

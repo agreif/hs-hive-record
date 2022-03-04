@@ -5,6 +5,7 @@
     <admin-page-tag context="{this}">
     <location-list-page-tag context="{this}">
     <location-detail-page-tag context="{this}">
+    <note-list-page-tag context="{this}">
     <hive-overview-page-tag context="{this}">
     <hive-detail-page-tag context="{this}">
 

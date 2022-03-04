@@ -1509,6 +1509,129 @@ context =
                       }
                   ],
                 bCrudModelTranslations = Nothing
+              },
+            BCrudModel
+              { bCrudModelName = "note",
+                bCrudModelIsJson = True,
+                bCrudModelDbUniquenesses = [],
+                bCrudModelDbHasHistoryTable = True,
+                bCrudModelHsDerivings = [],
+                bCrudModelAddFormArgs = Nothing,
+                bCrudModelEditFormArgs = Nothing,
+                bCrudModelAddHandlerArgs = Nothing,
+                bCrudModelEditHandlerArgs = Nothing,
+                bCrudModelAddFormEntityLoader = Nothing,
+                bCrudModelEditFormEntityLoader = Nothing,
+                bCrudModelDeleteFormEntityLoader = Nothing,
+                bCrudModelAddFormDataJsonUrl = Just "HiverecR NoteListDataR",
+                bCrudModelEditFormDataJsonUrl = Just "HiverecR NoteListDataR",
+                bCrudModelDeleteFormDataJsonUrl = Just "HiverecR NoteListDataR",
+                bCrudModelAddFormHasDefaultModel = True,
+                bCrudModelEditPostLoadsModel = False,
+                bCrudModelDeletePostLoadsModel = False,
+                bCrudModelAddPostExtraStoreFunc = Nothing,
+                bCrudModelEditPostExtraStoreFunc = Nothing,
+                bCrudModelAddPostNeedsCurRoute = False,
+                bCrudModelEditPostNeedsCurRoute = False,
+                bCrudModelAddFormTitleMsg = Just "MsgNoteAddNote",
+                bCrudModelEditFormTitleMsg = Just "MsgNoteEditNote",
+                bCrudModelDeleteFormTitleMsg = Just "MsgNoteDeleteNote",
+                bCrudModelParentHsType = Nothing,
+                bCrudModelFormRouteHsType = "HiverecR",
+                bCrudModelFields =
+                  [ BCrudField
+                      { bCrudFieldName = "date",
+                        bCrudFieldLabelDe = Just "Datum",
+                        bCrudFieldLabelEn = Just "Date",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "Day",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = True
+                              },
+                        bCrudFieldFormFieldType = Just "dayField",
+                        bCrudFieldAddView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs = [],
+                                bFieldViewDefault = Nothing
+                              },
+                        bCrudFieldEditView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs = [],
+                                bFieldViewDefault = Nothing
+                              }
+                      },
+                    BCrudField
+                      { bCrudFieldName = "text",
+                        bCrudFieldLabelDe = Just "Text",
+                        bCrudFieldLabelEn = Just "Text",
+                        bCrudFieldInfoDe = Nothing,
+                        bCrudFieldInfoEn = Nothing,
+                        bCrudFieldHsType = "Textarea",
+                        bCrudFieldDb =
+                          Just $
+                            BCrudFieldDb
+                              { bCrudFieldDbIsNullable = False,
+                                bCrudFieldDbDefault = Nothing,
+                                bCrudFieldDbCanUpdate = True
+                              },
+                        bCrudFieldFormFieldType = Just "textareaField",
+                        bCrudFieldAddView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs =
+                                  [ BFieldAttr
+                                      { bFieldAttrKey = "class",
+                                        bFieldAttrValue =
+                                          "uk-textarea uk-form-small uk-width-5-6"
+                                      },
+                                    BFieldAttr
+                                      { bFieldAttrKey = "rows",
+                                        bFieldAttrValue = "10"
+                                      }
+                                  ],
+                                bFieldViewDefault = Nothing
+                              },
+                        bCrudFieldEditView =
+                          Just $
+                            BFieldView
+                              { bFieldViewIsRequired = True,
+                                bFieldViewIsDisabled = False,
+                                bFieldViewAttrs =
+                                  [ BFieldAttr
+                                      { bFieldAttrKey = "class",
+                                        bFieldAttrValue =
+                                          "uk-textarea uk-form-small uk-width-5-6"
+                                      },
+                                    BFieldAttr
+                                      { bFieldAttrKey = "rows",
+                                        bFieldAttrValue = "10"
+                                      }
+                                  ],
+                                bFieldViewDefault = Nothing
+                              }
+                      }
+                  ],
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "note", bTranslationDe = "Notiz", bTranslationEn = "Note"},
+                      BTranslation {bTranslationKey = "notes", bTranslationDe = "Notizen", bTranslationEn = "Notes"},
+                      BTranslation {bTranslationKey = "addNote", bTranslationDe = "Notiz hinzufügen", bTranslationEn = "Add note"},
+                      BTranslation {bTranslationKey = "editNote", bTranslationDe = "Notiz bearbeiten", bTranslationEn = "Edit note"},
+                      BTranslation {bTranslationKey = "deleteNote", bTranslationDe = "Notiz löschen", bTranslationEn = "Delete note"}
+                    ]
               }
           ],
         bContextActionModels =

@@ -89,6 +89,8 @@ data AppMessage
   | MsgInspectionfileFile
   | MsgSwarmingTypeName
   | MsgSwarmingTypeSortIndex
+  | MsgNoteDate
+  | MsgNoteText
   | MsgUserIdentInputInfo
   | MsgUserPasswordInputInfo
   | MsgUserEmailInputInfo
@@ -124,6 +126,13 @@ data AppMessage
   | MsgInspectionfileFileInputInfo
   | MsgSwarmingTypeNameInputInfo
   | MsgSwarmingTypeSortIndexInputInfo
+  | MsgNoteDateInputInfo
+  | MsgNoteTextInputInfo
+  | MsgNoteNote
+  | MsgNoteNotes
+  | MsgNoteAddNote
+  | MsgNoteEditNote
+  | MsgNoteDeleteNote
   | MsgTestmailEmail
   | MsgTestmailEmailInputInfo
   | MsgTestmailTestMail
@@ -212,6 +221,8 @@ renderMessageGerman MsgInspectionfileSize = "Groesse"
 renderMessageGerman MsgInspectionfileFile = "Datei"
 renderMessageGerman MsgSwarmingTypeName = "Name"
 renderMessageGerman MsgSwarmingTypeSortIndex = "Sortierungs-Index"
+renderMessageGerman MsgNoteDate = "Datum"
+renderMessageGerman MsgNoteText = "Text"
 renderMessageGerman MsgUserIdentInputInfo = ""
 renderMessageGerman MsgUserPasswordInputInfo = ""
 renderMessageGerman MsgUserEmailInputInfo = ""
@@ -247,6 +258,13 @@ renderMessageGerman MsgInspectionfileSizeInputInfo = ""
 renderMessageGerman MsgInspectionfileFileInputInfo = ""
 renderMessageGerman MsgSwarmingTypeNameInputInfo = ""
 renderMessageGerman MsgSwarmingTypeSortIndexInputInfo = ""
+renderMessageGerman MsgNoteDateInputInfo = ""
+renderMessageGerman MsgNoteTextInputInfo = ""
+renderMessageGerman MsgNoteNote = "Notiz"
+renderMessageGerman MsgNoteNotes = "Notizen"
+renderMessageGerman MsgNoteAddNote = "Notiz hinzufügen"
+renderMessageGerman MsgNoteEditNote = "Notiz bearbeiten"
+renderMessageGerman MsgNoteDeleteNote = "Notiz löschen"
 renderMessageGerman MsgTestmailEmail = "Email"
 renderMessageGerman MsgTestmailEmailInputInfo = ""
 renderMessageGerman MsgTestmailTestMail = "Test-Mail"
@@ -335,6 +353,8 @@ renderMessageEnglish MsgInspectionfileSize = "Size"
 renderMessageEnglish MsgInspectionfileFile = "File"
 renderMessageEnglish MsgSwarmingTypeName = "Name"
 renderMessageEnglish MsgSwarmingTypeSortIndex = "Sort Index"
+renderMessageEnglish MsgNoteDate = "Date"
+renderMessageEnglish MsgNoteText = "Text"
 renderMessageEnglish MsgUserIdentInputInfo = ""
 renderMessageEnglish MsgUserPasswordInputInfo = ""
 renderMessageEnglish MsgUserEmailInputInfo = ""
@@ -370,6 +390,13 @@ renderMessageEnglish MsgInspectionfileSizeInputInfo = ""
 renderMessageEnglish MsgInspectionfileFileInputInfo = ""
 renderMessageEnglish MsgSwarmingTypeNameInputInfo = ""
 renderMessageEnglish MsgSwarmingTypeSortIndexInputInfo = ""
+renderMessageEnglish MsgNoteDateInputInfo = ""
+renderMessageEnglish MsgNoteTextInputInfo = ""
+renderMessageEnglish MsgNoteNote = "Note"
+renderMessageEnglish MsgNoteNotes = "Notes"
+renderMessageEnglish MsgNoteAddNote = "Add note"
+renderMessageEnglish MsgNoteEditNote = "Edit note"
+renderMessageEnglish MsgNoteDeleteNote = "Delete note"
 renderMessageEnglish MsgTestmailEmail = "Email"
 renderMessageEnglish MsgTestmailEmailInputInfo = ""
 renderMessageEnglish MsgTestmailTestMail = "Test-Mail"
@@ -458,6 +485,8 @@ data Translation = Translation
     msgInspectionfileFile :: Text,
     msgSwarmingTypeName :: Text,
     msgSwarmingTypeSortIndex :: Text,
+    msgNoteDate :: Text,
+    msgNoteText :: Text,
     msgUserIdentInputInfo :: Text,
     msgUserPasswordInputInfo :: Text,
     msgUserEmailInputInfo :: Text,
@@ -493,6 +522,13 @@ data Translation = Translation
     msgInspectionfileFileInputInfo :: Text,
     msgSwarmingTypeNameInputInfo :: Text,
     msgSwarmingTypeSortIndexInputInfo :: Text,
+    msgNoteDateInputInfo :: Text,
+    msgNoteTextInputInfo :: Text,
+    msgNoteNote :: Text,
+    msgNoteNotes :: Text,
+    msgNoteAddNote :: Text,
+    msgNoteEditNote :: Text,
+    msgNoteDeleteNote :: Text,
     msgTestmailEmail :: Text,
     msgTestmailEmailInputInfo :: Text,
     msgTestmailTestMail :: Text,
@@ -587,6 +623,8 @@ translationDe =
       msgInspectionfileFile = "Datei",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sortierungs-Index",
+      msgNoteDate = "Datum",
+      msgNoteText = "Text",
       msgUserIdentInputInfo = "",
       msgUserPasswordInputInfo = "",
       msgUserEmailInputInfo = "",
@@ -622,6 +660,13 @@ translationDe =
       msgInspectionfileFileInputInfo = "",
       msgSwarmingTypeNameInputInfo = "",
       msgSwarmingTypeSortIndexInputInfo = "",
+      msgNoteDateInputInfo = "",
+      msgNoteTextInputInfo = "",
+      msgNoteNote = "Notiz",
+      msgNoteNotes = "Notizen",
+      msgNoteAddNote = "Notiz hinzufügen",
+      msgNoteEditNote = "Notiz bearbeiten",
+      msgNoteDeleteNote = "Notiz löschen",
       msgTestmailEmail = "Email",
       msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",
@@ -713,6 +758,8 @@ translationEn =
       msgInspectionfileFile = "File",
       msgSwarmingTypeName = "Name",
       msgSwarmingTypeSortIndex = "Sort Index",
+      msgNoteDate = "Date",
+      msgNoteText = "Text",
       msgUserIdentInputInfo = "",
       msgUserPasswordInputInfo = "",
       msgUserEmailInputInfo = "",
@@ -748,6 +795,13 @@ translationEn =
       msgInspectionfileFileInputInfo = "",
       msgSwarmingTypeNameInputInfo = "",
       msgSwarmingTypeSortIndexInputInfo = "",
+      msgNoteDateInputInfo = "",
+      msgNoteTextInputInfo = "",
+      msgNoteNote = "Note",
+      msgNoteNotes = "Notes",
+      msgNoteAddNote = "Add note",
+      msgNoteEditNote = "Edit note",
+      msgNoteDeleteNote = "Delete note",
       msgTestmailEmail = "Email",
       msgTestmailEmailInputInfo = "",
       msgTestmailTestMail = "Test-Mail",

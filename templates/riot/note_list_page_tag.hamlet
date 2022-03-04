@@ -1,0 +1,70 @@
+<note-list-page-tag>
+  <div if="{context.data.pages.noteList}">
+    <h1>
+      {context.data.translation.msgNoteNotes}
+    <pagination-tag context="{context}" items="{context.data.pages.noteList.paginationItems}">
+    <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
+      <thead>
+        <tr>
+          <th .uk-table-shrink>
+            {context.data.translation.msgNoteDate}
+          <th>
+            {context.data.translation.msgNoteText}
+          <th .uk-align-right>
+            <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgNoteAddNote}" uk-tooltip onclick="{addNote}">
+              <span uk-icon="icon: plus">
+      <tbody>
+        <tr each="{note in context.data.pages.noteList.notes}">
+          <td .uk-table-link .uk-text-nowrap>
+            <a onclick="{(e)=>editNote(e,note)}" .uk-link-reset>
+              {context.formatDateStrWithWeekday(note.entity.date)}
+          <td .uk-table-link>
+            <a onclick="{(e)=>editNote(e,note)}" .uk-link-reset>
+              <span .textarea-wrap>
+                {note.entity.text}
+          <td .uk-width-small>
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgNoteDeleteNote}" uk-tooltip onclick="{(e)=>deleteNote(e,note)}">
+              <span uk-icon="icon: trash">
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgNoteEditNote}" uk-tooltip onclick="{(e)=>editNote(e,note)}">
+              <span uk-icon="icon: pencil">
+    <pagination-tag context="{context}" items="{context.data.pages.noteList.paginationItems}">
+    <button .uk-button .scrollToTop uk-totop onclick="{context.scrollToTop}">
+
+  <script>
+    \ export default {
+    \   onBeforeMount(props, state) {
+    \     this.context = props.context
+    \   },
+    \   addNote(event) {
+    \     event.preventDefault()
+    \     this.context.showModalForm("@{HiverecR AddNoteFormR}")
+    \     event.currentTarget.blur()
+    \   },
+    \   editNote(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.editFormUrl)
+    \     event.currentTarget.blur()
+    \   },
+    \   deleteNote(event, item) {
+    \     event.preventDefault()
+    \     this.context.showModalForm(item.deleteFormUrl)
+    \     event.currentTarget.blur()
+    \   },
+    \   toggleSortNoteMyattr(event) {
+    \     this.context.postRequest(this.context.data.pages.noteList.myattrToggleSortUrl)
+    \   },
+    \   toggleSortNoteOtherattr(event) {
+    \     this.context.postRequest(this.context.data.pages.noteList.otherattrToggleSortUrl)
+    \   },
+    \   toggleSortNoteDummytext(event) {
+    \     this.context.postRequest(this.context.data.pages.noteList.dummytextToggleSortUrl)
+    \   },
+    \   sortIcon(columnName) {
+    \     if (this.context.data.pages.noteList.sortColumn == columnName) {
+    \       if (this.context.data.pages.noteList.sortValue == "asc")
+    \         return "icon: triangle-up"
+    \       if (this.context.data.pages.noteList.sortValue == "desc")
+    \         return "icon: triangle-down"
+    \     }
+    \   },
+    \ }

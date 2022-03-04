@@ -205,4 +205,26 @@ SwarmingTypeHistory
     updatedBy Text
     dbAction Text default='UPDATE' MigrationOnly
 
+Note json
+    date Day
+    text Textarea
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+
+
+NoteHistory
+    Id sql=vid
+    id Int MigrationOnly
+    date Day
+    text Textarea
+    version Int
+    createdAt UTCTime
+    createdBy Text
+    updatedAt UTCTime
+    updatedBy Text
+    dbAction Text default='UPDATE' MigrationOnly
+
 -- gen models - end

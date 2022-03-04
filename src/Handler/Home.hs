@@ -97,6 +97,9 @@ getRiotHiveOverviewPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_
 getRiotHiveDetailPageTagR :: Handler Html
 getRiotHiveDetailPageTagR = withUrlRenderer $(hamletFile "templates/riot/hive_detail_page_tag.hamlet")
 
+getRiotNoteListPageTagR :: Handler Html
+getRiotNoteListPageTagR = withUrlRenderer $(hamletFile "templates/riot/note_list_page_tag.hamlet")
+
 postLanguageDeR :: Text -> Handler Value
 postLanguageDeR dataUrlStr = do
   setLanguage "de"

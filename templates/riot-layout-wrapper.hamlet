@@ -21,10 +21,11 @@
       <script data-src="@{HiverecR RiotQueenDotTagR}" type="riot">
       <script data-src="@{HiverecR RiotHomePageTagR}" type="riot">
       <script data-src="@{HiverecR RiotAdminPageTagR}" type="riot">
+      <script data-src="@{HiverecR RiotLocationListPageTagR}" type="riot">
+      <script data-src="@{HiverecR RiotLocationDetailPageTagR}" type="riot">
+      <script data-src="@{HiverecR RiotNoteListPageTagR}" type="riot">
       <script data-src="@{HiverecR RiotHiveDetailPageTagR}" type="riot">
       <script data-src="@{HiverecR RiotHiveOverviewPageTagR}" type="riot">
-      <script data-src="@{HiverecR RiotLocationDetailPageTagR}" type="riot">
-      <script data-src="@{HiverecR RiotLocationListPageTagR}" type="riot">
     $else
       <script src="@{StaticR js_riot_min_js}" type="text/javascript">
 

@@ -44,6 +44,7 @@
   riotHiveOverviewPageTag RiotHiveOverviewPageTagR GET
   riotLocationDetailPageTag RiotLocationDetailPageTagR GET
   riotLocationListPageTag RiotLocationListPageTagR GET
+  riot/noteListPageTag RiotNoteListPageTagR GET
 
   homePageDataJson HomePageDataR GET
 
@@ -99,3 +100,13 @@
   deleteInspectionfileForm/#InspectionfileId DeleteInspectionfileFormR GET
   deleteInspectionfile/#InspectionfileId DeleteInspectionfileR POST
   downloadInspectionfile/#InspectionfileId DownloadInspectionfileR GET
+
+  noteList NoteListR GET
+  noteListData NoteListDataR GET
+  noteListData/#Int NoteListPageNumDataR GET POST
+  addNoteForm AddNoteFormR GET
+  addNote AddNoteR POST
+  editNoteForm/#NoteId EditNoteFormR GET
+  editNote/#NoteId EditNoteR POST
+  deleteNoteForm/#NoteId DeleteNoteFormR GET
+  deleteNote/#NoteId DeleteNoteR POST

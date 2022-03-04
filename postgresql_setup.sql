@@ -206,4 +206,33 @@ $function$;
 
 create trigger audit_swarming_type after insert or update or delete on public.swarming_type for each row execute procedure public.process_audit_swarming_type();
 
+
+
+drop function public.process_audit_note() cascade;
+create or replace function public.process_audit_note()
+ returns trigger
+ language plpgsql
+as $function$
+   begin
+       if to_regclass('note_history') is not null then
+           if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+                insert into note_history
+                       (id, date, text, version, created_at, created_by, updated_at, updated_by, db_action)
+                       values
+                       (new.id, new.date, new.text, new.version, new.created_at, new.created_by, new.updated_at, new.updated_by, TG_OP);
+                return new;
+           elsif (TG_OP = 'DELETE') then
+                insert into note_history
+                       (id, date, text, version, created_at, created_by, updated_at, updated_by, db_action)
+                       values
+                       (old.id, old.date, old.text, old.version, old.created_at, old.created_by, old.updated_at, old.updated_by, TG_OP);
+               return old;
+           end if;
+       end if;
+       return null; -- result is ignored since this is an after trigger
+    end;
+$function$;
+
+create trigger audit_note after insert or update or delete on public.note for each row execute procedure public.process_audit_note();
+
 -- gen triggers - end

@@ -194,7 +194,8 @@ data JDataPages = JDataPages
     jDataPageLocationList :: Maybe JDataPageLocationList,
     jDataPageLocationDetail :: Maybe JDataPageLocationDetail,
     jDataPageHiveOverview :: Maybe JDataPageHiveOverview,
-    jDataPageHiveDetail :: Maybe JDataPageHiveDetail
+    jDataPageHiveDetail :: Maybe JDataPageHiveDetail,
+    jDataPageNoteList :: Maybe JDataPageNoteList
   }
 
 instance ToJSON JDataPages where
@@ -205,7 +206,8 @@ instance ToJSON JDataPages where
         "locationList" .= jDataPageLocationList o,
         "locationDetail" .= jDataPageLocationDetail o,
         "hiveOverview" .= jDataPageHiveOverview o,
-        "hiveDetail" .= jDataPageHiveDetail o
+        "hiveDetail" .= jDataPageHiveDetail o,
+        "noteList" .= jDataPageNoteList o
       ]
 
 defaultDataPages :: JDataPages
@@ -216,7 +218,8 @@ defaultDataPages =
       jDataPageLocationList = Nothing,
       jDataPageLocationDetail = Nothing,
       jDataPageHiveOverview = Nothing,
-      jDataPageHiveDetail = Nothing
+      jDataPageHiveDetail = Nothing,
+      jDataPageNoteList = Nothing
     }
 
 data JDataPageHome = JDataPageHome
@@ -453,6 +456,34 @@ instance ToJSON JDataSwarmingType where
         "deleteFormUrl" .= jDataSwarmingTypeDeleteFormUrl o
       ]
 
+data JDataPageNoteList = JDataPageNoteList
+  { jDataPageNoteListNotes :: [JDataNote],
+    jDataPageNoteListAddFormUrl :: Text,
+    jDataPageNoteListPaginationItems :: Maybe [JDataPaginationItem]
+  }
+
+instance ToJSON JDataPageNoteList where
+  toJSON o =
+    object
+      [ "notes" .= jDataPageNoteListNotes o,
+        "addFormUrl" .= jDataPageNoteListAddFormUrl o,
+        "paginationItems" .= jDataPageNoteListPaginationItems o
+      ]
+
+data JDataNote = JDataNote
+  { jDataNoteEnt :: Entity Note,
+    jDataNoteEditFormUrl :: Text,
+    jDataNoteDeleteFormUrl :: Text
+  }
+
+instance ToJSON JDataNote where
+  toJSON o =
+    object
+      [ "entity" .= entityIdToJSON (jDataNoteEnt o),
+        "editFormUrl" .= jDataNoteEditFormUrl o,
+        "deleteFormUrl" .= jDataNoteDeleteFormUrl o
+      ]
+
 --------------------------------------------------------------------------------
 -- navigation helpers
 --------------------------------------------------------------------------------
@@ -461,6 +492,7 @@ data MainNav
   = MainNavHome
   | MainNavAdmin
   | MainNavLocations
+  | MainNavNotes
   | MainNavHives
   deriving (Eq)
 
@@ -470,6 +502,7 @@ mainNavData user mainNav = do
   msgHome <- localizedMsg MsgGlobalHome
   msgAdmin <- localizedMsg MsgGlobalAdmin
   msgLocations <- localizedMsg MsgGlobalLocations
+  msgNotes <- localizedMsg MsgNoteNotes
   msgHives <- localizedMsg MsgGlobalHives
   hiveNavItems <- getHiveNavItems
   hivesItemIdent <- newIdent
@@ -501,6 +534,16 @@ mainNavData user mainNav = do
                jDataNavItemIsActive = mainNav == MainNavLocations,
                jDataNavItemUrl = Just $ urlRenderer $ HiverecR LocationListR,
                jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR LocationListPageDataR,
+               jDataNavItemBadge = Nothing,
+               jDataNavItemDropdownItems = Nothing
+             }
+         ]
+      ++ [ JDataNavItem
+             { jDataNavItemId = Nothing,
+               jDataNavItemLabel = msgNotes,
+               jDataNavItemIsActive = mainNav == MainNavNotes,
+               jDataNavItemUrl = Just $ urlRenderer $ HiverecR NoteListR,
+               jDataNavItemDataUrl = Just $ urlRenderer $ HiverecR NoteListDataR,
                jDataNavItemBadge = Nothing,
                jDataNavItemDropdownItems = Nothing
              }
