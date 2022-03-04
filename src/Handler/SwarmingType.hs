@@ -30,7 +30,7 @@ getAddSwarmingTypeFormR = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddSwarmingType}
+      <h1>_{MsgSwarmingTypeAddSwarmingType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddSwarmingTypeR}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -153,7 +153,7 @@ getEditSwarmingTypeFormR swarmingTypeId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditSwarmingType}
+      <h1>_{MsgSwarmingTypeEditSwarmingType}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditSwarmingTypeR swarmingTypeId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -285,7 +285,7 @@ getDeleteSwarmingTypeFormR swarmingTypeId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteSwarmingType}
+      <h1>_{MsgSwarmingTypeDeleteSwarmingType}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteSwarmingTypeR swarmingTypeId}>
         <div #modal-form-widget>
           ^{formWidget}

@@ -109,7 +109,7 @@ getAddInspectionFormR hiveId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddInspection}
+      <h1>_{MsgInspectionAddInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -124,7 +124,7 @@ getHiveOverviewAddInspectionFormR hiveId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddInspection}
+      <h1>_{MsgInspectionAddInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ HiveOverviewAddInspectionR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -457,7 +457,7 @@ getEditInspectionFormR inspectionId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditInspection}
+      <h1>_{MsgInspectionEditInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditInspectionR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -472,7 +472,7 @@ getHiveOverviewEditInspectionFormR inspectionId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditInspection}
+      <h1>_{MsgInspectionEditInspection}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ HiveOverviewEditInspectionR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -788,7 +788,7 @@ getDeleteInspectionFormR inspectionId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteInspection}
+      <h1>_{MsgInspectionDeleteInspection}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}

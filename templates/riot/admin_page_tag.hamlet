@@ -5,13 +5,13 @@
     <ul uk-tab>
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalUsers}
+          {context.data.translation.msgUserUsers}
       <li>
         <a href="#">
           {context.data.translation.msgGlobalConfigurations}
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalSwarmingTypes}
+          {context.data.translation.msgSwarmingTypeSwarmingTypes}
       <li>
         <a href="#">
           {context.data.translation.msgTestmailTestMail}
@@ -31,7 +31,7 @@
               <th>
                 {context.data.translation.msgUserIsAdmin}
               <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddUser}" uk-tooltip onclick="{addUser}">
+                <button .uk-background-primary .uk-light .uk-padding-small .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgUserAddUser}" uk-tooltip onclick="{addUser}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{user in context.data.pages.admin.users}">
@@ -45,9 +45,9 @@
                 <a onclick="{(e)=>editUser(e,user)}" .uk-link-reset>
                   <span uk-icon="icon: check" if="{user.entity.isAdmin}">
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteUser}" uk-tooltip onclick="{(e)=>deleteUser(e,user)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgUserDeleteUser}" uk-tooltip onclick="{(e)=>deleteUser(e,user)}">
                   <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditUser}" uk-tooltip onclick="{(e)=>editUser(e,user)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgUserEditUser}" uk-tooltip onclick="{(e)=>editUser(e,user)}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- config list -->
@@ -94,7 +94,7 @@
               <th>
                 {context.data.translation.msgSwarmingTypeSortIndex}
               <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddSwarmingType}" uk-tooltip onclick="{addSwarmingType}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgSwarmingTypeAddSwarmingType}" uk-tooltip onclick="{addSwarmingType}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{type in context.data.pages.admin.swarmingTypes}">
@@ -105,9 +105,9 @@
                 <a onclick="{(e)=>editSwarmingType(e,type)}" .uk-link-reset>
                   {type.entity.sortIndex}
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteSwarmingType}" uk-tooltip onclick="{(e)=>deleteSwarmingType(e,type)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgSwarmingTypeDeleteSwarmingType}" uk-tooltip onclick="{(e)=>deleteSwarmingType(e,type)}">
                   <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditSwarmingType}" uk-tooltip onclick="{(e)=>editSwarmingType(e,type)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgSwarmingTypeEditSwarmingType}" uk-tooltip onclick="{(e)=>editSwarmingType(e,type)}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- test mail -->

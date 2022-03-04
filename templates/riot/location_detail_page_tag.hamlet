@@ -1,14 +1,14 @@
 <location-detail-page-tag>
   <div if="{context.data.pages.locationDetail}">
     <h1>
-      {context.data.translation.msgGlobalLocation}: {context.data.pages.locationDetail.locationEnt.name}
+      {context.data.translation.msgLocationLocation}: {context.data.pages.locationDetail.locationEnt.name}
     <ul uk-tab>
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalLocationMasterData}
+          {context.data.translation.msgLocationLocationMasterData}
       <li .uk-active>
         <a href="#">
-          {context.data.translation.msgGlobalHives}
+          {context.data.translation.msgHiveHives}
     <ul .uk-switcher .uk-margin>
       <li>
         <!-- master data -->
@@ -24,7 +24,7 @@
                 <a onclick="{editLocation}" .uk-link-reset>
                   {context.data.pages.locationDetail.locationEnt.name}
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditLocation}" uk-tooltip onclick="{editLocation}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgLocationEditLocation}" uk-tooltip onclick="{editLocation}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- hive list -->
@@ -40,9 +40,9 @@
               <th>
                 {context.data.translation.msgHiveQueenYear}
               <th>
-                {context.data.translation.msgGlobalLastInspection}
+                {context.data.translation.msgInspectionLastInspection}
               <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddHive}" uk-tooltip onclick="{addHive}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgHiveAddHive}" uk-tooltip onclick="{addHive}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{hive in context.data.pages.locationDetail.hives}">
@@ -66,9 +66,9 @@
                   <span .textarea-wrap if="{hive.lastInspectionEnt}">
                     {context.formatDateStr(hive.lastInspectionEnt.date)}
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteHive}" uk-tooltip onclick="{(e)=>deleteHive(e,hive)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgHiveDeleteHive}" uk-tooltip onclick="{(e)=>deleteHive(e,hive)}">
                   <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDetailHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgHiveDetailHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
                   <span uk-icon="icon: file-edit">
 
   <script>

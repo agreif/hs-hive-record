@@ -52,7 +52,7 @@ getHiveOverviewPageDataR = do
                   }
           }
   msgHome <- localizedMsg MsgGlobalHome
-  msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
+  msgHiveOverview <- localizedMsg MsgHiveHiveOverview
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR HiveOverviewPageDataR
@@ -155,8 +155,8 @@ getHiveDetailPageDataR hiveId = do
                   }
           }
   msgHome <- localizedMsg MsgGlobalHome
-  msgLocations <- localizedMsg MsgGlobalLocations
-  msgHive <- localizedMsg MsgGlobalHive
+  msgLocations <- localizedMsg MsgLocationLocations
+  msgHive <- localizedMsg MsgHiveHive
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR $ HiveDetailPageDataR hiveId
@@ -322,7 +322,7 @@ getAddHiveFormR locationId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddHive}
+      <h1>_{MsgHiveAddHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddHiveR locationId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -499,7 +499,7 @@ getEditHiveFormR hiveId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditHive}
+      <h1>_{MsgHiveEditHive}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditHiveR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -706,7 +706,7 @@ getDeleteHiveFormR hiveId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteHive}
+      <h1>_{MsgHiveDeleteHive}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteHiveR hiveId}>
         <div #modal-form-widget>
           ^{formWidget}

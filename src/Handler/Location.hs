@@ -41,7 +41,7 @@ getLocationListPageDataR = do
               Just $ JDataPageLocationList {jDataPageLocationListLocations = jDataLocations}
           }
   msgHome <- localizedMsg MsgGlobalHome
-  msgLocations <- localizedMsg MsgGlobalLocations
+  msgLocations <- localizedMsg MsgLocationLocations
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR LocationListPageDataR
@@ -130,8 +130,8 @@ getLocationDetailPageDataR locationId = do
                   }
           }
   msgHome <- localizedMsg MsgGlobalHome
-  msgLocations <- localizedMsg MsgGlobalLocations
-  msgLocation <- localizedMsg MsgGlobalLocation
+  msgLocations <- localizedMsg MsgLocationLocations
+  msgLocation <- localizedMsg MsgLocationLocation
   currentLanguage <- getLanguage
   translation <- getTranslation
   let currentPageDataJsonUrl = urlRenderer $ HiverecR $ LocationDetailPageDataR locationId
@@ -210,7 +210,7 @@ getAddLocationFormR = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddLocation}
+      <h1>_{MsgLocationAddLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddLocationR}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -307,7 +307,7 @@ getEditLocationFormR locationId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditLocation}
+      <h1>_{MsgLocationEditLocation}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ EditLocationR locationId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -414,7 +414,7 @@ getDeleteLocationFormR locationId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteLocation}
+      <h1>_{MsgLocationDeleteLocation}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteLocationR locationId}>
         <div #modal-form-widget>
           ^{formWidget}

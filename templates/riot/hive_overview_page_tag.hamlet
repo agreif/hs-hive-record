@@ -1,13 +1,13 @@
 <hive-overview-page-tag>
   <div if="{context.data.pages.hiveOverview}">
     <h1>
-      {context.data.translation.msgGlobalHiveOverview}
+      {context.data.translation.msgHiveHiveOverview}
     <ul uk-accordion="multiple: true">
       <li class="uk-open" each="{hive in context.data.pages.hiveOverview.hives}">
         <a class="uk-accordion-title" href="#">
           <queen-dot-tag .uk-margin-small-right color="{hive.queenColor}">
           {hive.hiveEnt.name}
-          <button .uk-button .uk-button-link title="{context.data.translation.msgGlobalHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
+          <button .uk-button .uk-button-link title="{context.data.translation.msgHiveHive}" uk-tooltip onclick="{(e)=>detailHive(e,hive)}">
             <span uk-icon="icon: link">
         <div class="uk-accordion-content">
           <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
@@ -16,7 +16,7 @@
                 <th>
                   {context.data.translation.msgInspectionDate}
                 <th>
-                  {context.data.translation.msgGlobalSwarming}
+                  {context.data.translation.msgSwarmingTypeSwarming}
                 <th>
                   {context.data.translation.msgInspectionQueenSeen}
                 <th>
@@ -32,7 +32,7 @@
                 <th>
                   {context.data.translation.msgInspectionNotes}
                 <th .uk-align-right>
-                  <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{(e)=>addInspection(e,hive)}">
+                  <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgInspectionAddInspection}" uk-tooltip onclick="{(e)=>addInspection(e,hive)}">
                     <span uk-icon="icon: plus">
             <tbody>
               <tr each="{insp in hive.inspections.slice(-2)}">

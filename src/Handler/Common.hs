@@ -501,9 +501,9 @@ mainNavData user mainNav = do
   urlRenderer <- getUrlRender
   msgHome <- localizedMsg MsgGlobalHome
   msgAdmin <- localizedMsg MsgGlobalAdmin
-  msgLocations <- localizedMsg MsgGlobalLocations
+  msgLocations <- localizedMsg MsgLocationLocations
   msgNotes <- localizedMsg MsgNoteNotes
-  msgHives <- localizedMsg MsgGlobalHives
+  msgHives <- localizedMsg MsgHiveHives
   hiveNavItems <- getHiveNavItems
   hivesItemIdent <- newIdent
   return $
@@ -719,7 +719,7 @@ getLastInspectionEnt hiveId = do
 
 getHiveNavItems :: Handler [JDataNavItem]
 getHiveNavItems = do
-  msgHiveOverview <- localizedMsg MsgGlobalHiveOverview
+  msgHiveOverview <- localizedMsg MsgHiveHiveOverview
   tuples <- runDB
     $ E.select
     $ E.from

@@ -17,43 +17,10 @@ data AppMessage
   | MsgGlobalShowMore
   | MsgGlobalShowLess
   | MsgGlobalShowAll
-  | MsgGlobalUsers
-  | MsgGlobalAddUser
-  | MsgGlobalEditUser
-  | MsgGlobalDeleteUser
   | MsgGlobalConfigurations
   | MsgGlobalEditConfig
   | MsgGlobalCancel
   | MsgGlobalInfo
-  | MsgGlobalLocation
-  | MsgGlobalLocations
-  | MsgGlobalAddLocation
-  | MsgGlobalEditLocation
-  | MsgGlobalDeleteLocation
-  | MsgGlobalLocationMasterData
-  | MsgGlobalHiveOverview
-  | MsgGlobalHive
-  | MsgGlobalHives
-  | MsgGlobalAddHive
-  | MsgGlobalDeleteHive
-  | MsgGlobalDetailHive
-  | MsgGlobalEditHive
-  | MsgGlobalHiveMasterData
-  | MsgGlobalInspection
-  | MsgGlobalInspections
-  | MsgGlobalAddInspection
-  | MsgGlobalDeleteInspection
-  | MsgGlobalEditInspection
-  | MsgGlobalLastInspection
-  | MsgGlobalInspectionfiles
-  | MsgGlobalAddInspectionfile
-  | MsgGlobalDeleteInspectionfile
-  | MsgGlobalEditInspectionfile
-  | MsgGlobalSwarming
-  | MsgGlobalSwarmingTypes
-  | MsgGlobalAddSwarmingType
-  | MsgGlobalDeleteSwarmingType
-  | MsgGlobalEditSwarmingType
   | MsgUserIdent
   | MsgUserPassword
   | MsgUserEmail
@@ -128,6 +95,39 @@ data AppMessage
   | MsgSwarmingTypeSortIndexInputInfo
   | MsgNoteDateInputInfo
   | MsgNoteTextInputInfo
+  | MsgUserUsers
+  | MsgUserAddUser
+  | MsgUserEditUser
+  | MsgUserDeleteUser
+  | MsgLocationLocation
+  | MsgLocationLocations
+  | MsgLocationAddLocation
+  | MsgLocationEditLocation
+  | MsgLocationDeleteLocation
+  | MsgLocationLocationMasterData
+  | MsgHiveHiveOverview
+  | MsgHiveHive
+  | MsgHiveHives
+  | MsgHiveAddHive
+  | MsgHiveDeleteHive
+  | MsgHiveDetailHive
+  | MsgHiveEditHive
+  | MsgHiveHiveMasterData
+  | MsgInspectionInspection
+  | MsgInspectionInspections
+  | MsgInspectionAddInspection
+  | MsgInspectionDeleteInspection
+  | MsgInspectionEditInspection
+  | MsgInspectionLastInspection
+  | MsgInspectionfileInspectionfiles
+  | MsgInspectionfileAddInspectionfile
+  | MsgInspectionfileDeleteInspectionfile
+  | MsgInspectionfileEditInspectionfile
+  | MsgSwarmingTypeSwarming
+  | MsgSwarmingTypeSwarmingTypes
+  | MsgSwarmingTypeAddSwarmingType
+  | MsgSwarmingTypeDeleteSwarmingType
+  | MsgSwarmingTypeEditSwarmingType
   | MsgNoteNote
   | MsgNoteNotes
   | MsgNoteAddNote
@@ -149,43 +149,10 @@ renderMessageGerman MsgGlobalReallyDelete = "Möchten sie wirklich löschen?"
 renderMessageGerman MsgGlobalShowMore = "Mehr anzeigen"
 renderMessageGerman MsgGlobalShowLess = "Weniger anzeigen"
 renderMessageGerman MsgGlobalShowAll = "Alle anzeigen"
-renderMessageGerman MsgGlobalUsers = "Nutzer"
-renderMessageGerman MsgGlobalAddUser = "Nutzer hinzufügen"
-renderMessageGerman MsgGlobalEditUser = "Nutzer bearbeiten"
-renderMessageGerman MsgGlobalDeleteUser = "Nutzer löschen"
 renderMessageGerman MsgGlobalConfigurations = "Konfigurationen"
 renderMessageGerman MsgGlobalEditConfig = "Konfiguration bearbeiten"
 renderMessageGerman MsgGlobalCancel = "Abbrechen"
 renderMessageGerman MsgGlobalInfo = "Info"
-renderMessageGerman MsgGlobalLocation = "Standort"
-renderMessageGerman MsgGlobalLocations = "Standorte"
-renderMessageGerman MsgGlobalAddLocation = "Standort hinzufügen"
-renderMessageGerman MsgGlobalEditLocation = "Standort bearbeiten"
-renderMessageGerman MsgGlobalDeleteLocation = "Standort löschen"
-renderMessageGerman MsgGlobalLocationMasterData = "Standort-Daten"
-renderMessageGerman MsgGlobalHiveOverview = "Bienenstock Übersicht"
-renderMessageGerman MsgGlobalHive = "Bienenstock"
-renderMessageGerman MsgGlobalHives = "Bienenstöcke"
-renderMessageGerman MsgGlobalAddHive = "Bienenstock hinzufügen"
-renderMessageGerman MsgGlobalDeleteHive = "Bienenstock löschen"
-renderMessageGerman MsgGlobalDetailHive = "Bienenstock Details"
-renderMessageGerman MsgGlobalEditHive = "Bienenstock bearbeiten"
-renderMessageGerman MsgGlobalHiveMasterData = "Stock-Daten"
-renderMessageGerman MsgGlobalInspection = "Durchsicht"
-renderMessageGerman MsgGlobalInspections = "Durchsichten"
-renderMessageGerman MsgGlobalAddInspection = "Durchsicht hinzufügen"
-renderMessageGerman MsgGlobalDeleteInspection = "Durchsicht löschen"
-renderMessageGerman MsgGlobalEditInspection = "Durchsicht bearbeiten"
-renderMessageGerman MsgGlobalLastInspection = "Letzte Durchsicht"
-renderMessageGerman MsgGlobalInspectionfiles = "Dateien"
-renderMessageGerman MsgGlobalAddInspectionfile = "Durchsicht-Datei hinzufügen"
-renderMessageGerman MsgGlobalDeleteInspectionfile = "Durchsicht-Datei löschen"
-renderMessageGerman MsgGlobalEditInspectionfile = "Durchsicht-Datei bearbeiten"
-renderMessageGerman MsgGlobalSwarming = "Schwarmtrieb"
-renderMessageGerman MsgGlobalSwarmingTypes = "Schwarmtrieb Typen"
-renderMessageGerman MsgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen"
-renderMessageGerman MsgGlobalDeleteSwarmingType = "Schwarmtrieb Typ löschen"
-renderMessageGerman MsgGlobalEditSwarmingType = "Schwarmtrieb Typ bearbeiten"
 renderMessageGerman MsgUserIdent = "Login"
 renderMessageGerman MsgUserPassword = "Passwort"
 renderMessageGerman MsgUserEmail = "Email"
@@ -260,6 +227,39 @@ renderMessageGerman MsgSwarmingTypeNameInputInfo = ""
 renderMessageGerman MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageGerman MsgNoteDateInputInfo = ""
 renderMessageGerman MsgNoteTextInputInfo = ""
+renderMessageGerman MsgUserUsers = "Nutzer"
+renderMessageGerman MsgUserAddUser = "Nutzer hinzufügen"
+renderMessageGerman MsgUserEditUser = "Nutzer bearbeiten"
+renderMessageGerman MsgUserDeleteUser = "Nutzer löschen"
+renderMessageGerman MsgLocationLocation = "Standort"
+renderMessageGerman MsgLocationLocations = "Standorte"
+renderMessageGerman MsgLocationAddLocation = "Standort hinzufügen"
+renderMessageGerman MsgLocationEditLocation = "Standort bearbeiten"
+renderMessageGerman MsgLocationDeleteLocation = "Standort löschen"
+renderMessageGerman MsgLocationLocationMasterData = "Standort-Daten"
+renderMessageGerman MsgHiveHiveOverview = "Bienenstock Übersicht"
+renderMessageGerman MsgHiveHive = "Bienenstock"
+renderMessageGerman MsgHiveHives = "Bienenstöcke"
+renderMessageGerman MsgHiveAddHive = "Bienenstock hinzufügen"
+renderMessageGerman MsgHiveDeleteHive = "Bienenstock löschen"
+renderMessageGerman MsgHiveDetailHive = "Bienenstock Details"
+renderMessageGerman MsgHiveEditHive = "Bienenstock bearbeiten"
+renderMessageGerman MsgHiveHiveMasterData = "Stock-Daten"
+renderMessageGerman MsgInspectionInspection = "Durchsicht"
+renderMessageGerman MsgInspectionInspections = "Durchsichten"
+renderMessageGerman MsgInspectionAddInspection = "Durchsicht hinzufügen"
+renderMessageGerman MsgInspectionDeleteInspection = "Durchsicht löschen"
+renderMessageGerman MsgInspectionEditInspection = "Durchsicht bearbeiten"
+renderMessageGerman MsgInspectionLastInspection = "Letzte Durchsicht"
+renderMessageGerman MsgInspectionfileInspectionfiles = "Dateien"
+renderMessageGerman MsgInspectionfileAddInspectionfile = "Durchsicht-Datei hinzufügen"
+renderMessageGerman MsgInspectionfileDeleteInspectionfile = "Durchsicht-Datei löschen"
+renderMessageGerman MsgInspectionfileEditInspectionfile = "Durchsicht-Datei bearbeiten"
+renderMessageGerman MsgSwarmingTypeSwarming = "Schwarmtrieb"
+renderMessageGerman MsgSwarmingTypeSwarmingTypes = "Schwarmtrieb Typen"
+renderMessageGerman MsgSwarmingTypeAddSwarmingType = "Schwarmtrieb Typ hinzufügen"
+renderMessageGerman MsgSwarmingTypeDeleteSwarmingType = "Schwarmtrieb Typ löschen"
+renderMessageGerman MsgSwarmingTypeEditSwarmingType = "Schwarmtrieb Typ bearbeiten"
 renderMessageGerman MsgNoteNote = "Notiz"
 renderMessageGerman MsgNoteNotes = "Notizen"
 renderMessageGerman MsgNoteAddNote = "Notiz hinzufügen"
@@ -281,43 +281,10 @@ renderMessageEnglish MsgGlobalReallyDelete = "Are you sure to delete?"
 renderMessageEnglish MsgGlobalShowMore = "Show More"
 renderMessageEnglish MsgGlobalShowLess = "Show Less"
 renderMessageEnglish MsgGlobalShowAll = "Show All"
-renderMessageEnglish MsgGlobalUsers = "Users"
-renderMessageEnglish MsgGlobalAddUser = "Add user"
-renderMessageEnglish MsgGlobalEditUser = "Edit user"
-renderMessageEnglish MsgGlobalDeleteUser = "Delete user"
 renderMessageEnglish MsgGlobalConfigurations = "Configurations"
 renderMessageEnglish MsgGlobalEditConfig = "Edit config"
 renderMessageEnglish MsgGlobalCancel = "Cancel"
 renderMessageEnglish MsgGlobalInfo = "Info"
-renderMessageEnglish MsgGlobalLocation = "Location"
-renderMessageEnglish MsgGlobalLocations = "Locations"
-renderMessageEnglish MsgGlobalAddLocation = "Add location"
-renderMessageEnglish MsgGlobalEditLocation = "Edit location"
-renderMessageEnglish MsgGlobalDeleteLocation = "Delete location"
-renderMessageEnglish MsgGlobalLocationMasterData = "Location data"
-renderMessageEnglish MsgGlobalHiveOverview = "Hive Overview"
-renderMessageEnglish MsgGlobalHive = "Hive"
-renderMessageEnglish MsgGlobalHives = "Hives"
-renderMessageEnglish MsgGlobalAddHive = "Add hive"
-renderMessageEnglish MsgGlobalDeleteHive = "Delete hive"
-renderMessageEnglish MsgGlobalDetailHive = "Hive details"
-renderMessageEnglish MsgGlobalEditHive = "Edit hive"
-renderMessageEnglish MsgGlobalHiveMasterData = "Hive data"
-renderMessageEnglish MsgGlobalInspection = "Inspection"
-renderMessageEnglish MsgGlobalInspections = "Inspections"
-renderMessageEnglish MsgGlobalAddInspection = "Add inspection"
-renderMessageEnglish MsgGlobalDeleteInspection = "Delete inspection"
-renderMessageEnglish MsgGlobalEditInspection = "Edit inspection"
-renderMessageEnglish MsgGlobalLastInspection = "Last inspection"
-renderMessageEnglish MsgGlobalInspectionfiles = "Files"
-renderMessageEnglish MsgGlobalAddInspectionfile = "Add inspection-file"
-renderMessageEnglish MsgGlobalDeleteInspectionfile = "Delete inspection-file"
-renderMessageEnglish MsgGlobalEditInspectionfile = "Edit inspection-file"
-renderMessageEnglish MsgGlobalSwarming = "Swarming mood"
-renderMessageEnglish MsgGlobalSwarmingTypes = "Swarming types"
-renderMessageEnglish MsgGlobalAddSwarmingType = "Add swarming type"
-renderMessageEnglish MsgGlobalDeleteSwarmingType = "Delete swarming type"
-renderMessageEnglish MsgGlobalEditSwarmingType = "Edit swarming type"
 renderMessageEnglish MsgUserIdent = "Login"
 renderMessageEnglish MsgUserPassword = "Password"
 renderMessageEnglish MsgUserEmail = "Email"
@@ -392,6 +359,39 @@ renderMessageEnglish MsgSwarmingTypeNameInputInfo = ""
 renderMessageEnglish MsgSwarmingTypeSortIndexInputInfo = ""
 renderMessageEnglish MsgNoteDateInputInfo = ""
 renderMessageEnglish MsgNoteTextInputInfo = ""
+renderMessageEnglish MsgUserUsers = "Users"
+renderMessageEnglish MsgUserAddUser = "Add user"
+renderMessageEnglish MsgUserEditUser = "Edit user"
+renderMessageEnglish MsgUserDeleteUser = "Delete user"
+renderMessageEnglish MsgLocationLocation = "Location"
+renderMessageEnglish MsgLocationLocations = "Locations"
+renderMessageEnglish MsgLocationAddLocation = "Add location"
+renderMessageEnglish MsgLocationEditLocation = "Edit location"
+renderMessageEnglish MsgLocationDeleteLocation = "Delete location"
+renderMessageEnglish MsgLocationLocationMasterData = "Location data"
+renderMessageEnglish MsgHiveHiveOverview = "Hive Overview"
+renderMessageEnglish MsgHiveHive = "Hive"
+renderMessageEnglish MsgHiveHives = "Hives"
+renderMessageEnglish MsgHiveAddHive = "Add hive"
+renderMessageEnglish MsgHiveDeleteHive = "Delete hive"
+renderMessageEnglish MsgHiveDetailHive = "Hive details"
+renderMessageEnglish MsgHiveEditHive = "Edit hive"
+renderMessageEnglish MsgHiveHiveMasterData = "Hive data"
+renderMessageEnglish MsgInspectionInspection = "Inspection"
+renderMessageEnglish MsgInspectionInspections = "Inspections"
+renderMessageEnglish MsgInspectionAddInspection = "Add inspection"
+renderMessageEnglish MsgInspectionDeleteInspection = "Delete inspection"
+renderMessageEnglish MsgInspectionEditInspection = "Edit inspection"
+renderMessageEnglish MsgInspectionLastInspection = "Last inspection"
+renderMessageEnglish MsgInspectionfileInspectionfiles = "Files"
+renderMessageEnglish MsgInspectionfileAddInspectionfile = "Add inspection-file"
+renderMessageEnglish MsgInspectionfileDeleteInspectionfile = "Delete inspection-file"
+renderMessageEnglish MsgInspectionfileEditInspectionfile = "Edit inspection-file"
+renderMessageEnglish MsgSwarmingTypeSwarming = "Swarming mood"
+renderMessageEnglish MsgSwarmingTypeSwarmingTypes = "Swarming types"
+renderMessageEnglish MsgSwarmingTypeAddSwarmingType = "Add swarming type"
+renderMessageEnglish MsgSwarmingTypeDeleteSwarmingType = "Delete swarming type"
+renderMessageEnglish MsgSwarmingTypeEditSwarmingType = "Edit swarming type"
 renderMessageEnglish MsgNoteNote = "Note"
 renderMessageEnglish MsgNoteNotes = "Notes"
 renderMessageEnglish MsgNoteAddNote = "Add note"
@@ -413,43 +413,10 @@ data Translation = Translation
     msgGlobalShowMore :: Text,
     msgGlobalShowLess :: Text,
     msgGlobalShowAll :: Text,
-    msgGlobalUsers :: Text,
-    msgGlobalAddUser :: Text,
-    msgGlobalEditUser :: Text,
-    msgGlobalDeleteUser :: Text,
     msgGlobalConfigurations :: Text,
     msgGlobalEditConfig :: Text,
     msgGlobalCancel :: Text,
     msgGlobalInfo :: Text,
-    msgGlobalLocation :: Text,
-    msgGlobalLocations :: Text,
-    msgGlobalAddLocation :: Text,
-    msgGlobalEditLocation :: Text,
-    msgGlobalDeleteLocation :: Text,
-    msgGlobalLocationMasterData :: Text,
-    msgGlobalHiveOverview :: Text,
-    msgGlobalHive :: Text,
-    msgGlobalHives :: Text,
-    msgGlobalAddHive :: Text,
-    msgGlobalDeleteHive :: Text,
-    msgGlobalDetailHive :: Text,
-    msgGlobalEditHive :: Text,
-    msgGlobalHiveMasterData :: Text,
-    msgGlobalInspection :: Text,
-    msgGlobalInspections :: Text,
-    msgGlobalAddInspection :: Text,
-    msgGlobalDeleteInspection :: Text,
-    msgGlobalEditInspection :: Text,
-    msgGlobalLastInspection :: Text,
-    msgGlobalInspectionfiles :: Text,
-    msgGlobalAddInspectionfile :: Text,
-    msgGlobalDeleteInspectionfile :: Text,
-    msgGlobalEditInspectionfile :: Text,
-    msgGlobalSwarming :: Text,
-    msgGlobalSwarmingTypes :: Text,
-    msgGlobalAddSwarmingType :: Text,
-    msgGlobalDeleteSwarmingType :: Text,
-    msgGlobalEditSwarmingType :: Text,
     msgUserIdent :: Text,
     msgUserPassword :: Text,
     msgUserEmail :: Text,
@@ -524,6 +491,39 @@ data Translation = Translation
     msgSwarmingTypeSortIndexInputInfo :: Text,
     msgNoteDateInputInfo :: Text,
     msgNoteTextInputInfo :: Text,
+    msgUserUsers :: Text,
+    msgUserAddUser :: Text,
+    msgUserEditUser :: Text,
+    msgUserDeleteUser :: Text,
+    msgLocationLocation :: Text,
+    msgLocationLocations :: Text,
+    msgLocationAddLocation :: Text,
+    msgLocationEditLocation :: Text,
+    msgLocationDeleteLocation :: Text,
+    msgLocationLocationMasterData :: Text,
+    msgHiveHiveOverview :: Text,
+    msgHiveHive :: Text,
+    msgHiveHives :: Text,
+    msgHiveAddHive :: Text,
+    msgHiveDeleteHive :: Text,
+    msgHiveDetailHive :: Text,
+    msgHiveEditHive :: Text,
+    msgHiveHiveMasterData :: Text,
+    msgInspectionInspection :: Text,
+    msgInspectionInspections :: Text,
+    msgInspectionAddInspection :: Text,
+    msgInspectionDeleteInspection :: Text,
+    msgInspectionEditInspection :: Text,
+    msgInspectionLastInspection :: Text,
+    msgInspectionfileInspectionfiles :: Text,
+    msgInspectionfileAddInspectionfile :: Text,
+    msgInspectionfileDeleteInspectionfile :: Text,
+    msgInspectionfileEditInspectionfile :: Text,
+    msgSwarmingTypeSwarming :: Text,
+    msgSwarmingTypeSwarmingTypes :: Text,
+    msgSwarmingTypeAddSwarmingType :: Text,
+    msgSwarmingTypeDeleteSwarmingType :: Text,
+    msgSwarmingTypeEditSwarmingType :: Text,
     msgNoteNote :: Text,
     msgNoteNotes :: Text,
     msgNoteAddNote :: Text,
@@ -551,43 +551,10 @@ translationDe =
       msgGlobalShowMore = "Mehr anzeigen",
       msgGlobalShowLess = "Weniger anzeigen",
       msgGlobalShowAll = "Alle anzeigen",
-      msgGlobalUsers = "Nutzer",
-      msgGlobalAddUser = "Nutzer hinzufügen",
-      msgGlobalEditUser = "Nutzer bearbeiten",
-      msgGlobalDeleteUser = "Nutzer löschen",
       msgGlobalConfigurations = "Konfigurationen",
       msgGlobalEditConfig = "Konfiguration bearbeiten",
       msgGlobalCancel = "Abbrechen",
       msgGlobalInfo = "Info",
-      msgGlobalLocation = "Standort",
-      msgGlobalLocations = "Standorte",
-      msgGlobalAddLocation = "Standort hinzufügen",
-      msgGlobalEditLocation = "Standort bearbeiten",
-      msgGlobalDeleteLocation = "Standort löschen",
-      msgGlobalLocationMasterData = "Standort-Daten",
-      msgGlobalHiveOverview = "Bienenstock Übersicht",
-      msgGlobalHive = "Bienenstock",
-      msgGlobalHives = "Bienenstöcke",
-      msgGlobalAddHive = "Bienenstock hinzufügen",
-      msgGlobalDeleteHive = "Bienenstock löschen",
-      msgGlobalDetailHive = "Bienenstock Details",
-      msgGlobalEditHive = "Bienenstock bearbeiten",
-      msgGlobalHiveMasterData = "Stock-Daten",
-      msgGlobalInspection = "Durchsicht",
-      msgGlobalInspections = "Durchsichten",
-      msgGlobalAddInspection = "Durchsicht hinzufügen",
-      msgGlobalDeleteInspection = "Durchsicht löschen",
-      msgGlobalEditInspection = "Durchsicht bearbeiten",
-      msgGlobalLastInspection = "Letzte Durchsicht",
-      msgGlobalInspectionfiles = "Dateien",
-      msgGlobalAddInspectionfile = "Durchsicht-Datei hinzufügen",
-      msgGlobalDeleteInspectionfile = "Durchsicht-Datei löschen",
-      msgGlobalEditInspectionfile = "Durchsicht-Datei bearbeiten",
-      msgGlobalSwarming = "Schwarmtrieb",
-      msgGlobalSwarmingTypes = "Schwarmtrieb Typen",
-      msgGlobalAddSwarmingType = "Schwarmtrieb Typ hinzufügen",
-      msgGlobalDeleteSwarmingType = "Schwarmtrieb Typ löschen",
-      msgGlobalEditSwarmingType = "Schwarmtrieb Typ bearbeiten",
       msgUserIdent = "Login",
       msgUserPassword = "Passwort",
       msgUserEmail = "Email",
@@ -662,6 +629,39 @@ translationDe =
       msgSwarmingTypeSortIndexInputInfo = "",
       msgNoteDateInputInfo = "",
       msgNoteTextInputInfo = "",
+      msgUserUsers = "Nutzer",
+      msgUserAddUser = "Nutzer hinzufügen",
+      msgUserEditUser = "Nutzer bearbeiten",
+      msgUserDeleteUser = "Nutzer löschen",
+      msgLocationLocation = "Standort",
+      msgLocationLocations = "Standorte",
+      msgLocationAddLocation = "Standort hinzufügen",
+      msgLocationEditLocation = "Standort bearbeiten",
+      msgLocationDeleteLocation = "Standort löschen",
+      msgLocationLocationMasterData = "Standort-Daten",
+      msgHiveHiveOverview = "Bienenstock Übersicht",
+      msgHiveHive = "Bienenstock",
+      msgHiveHives = "Bienenstöcke",
+      msgHiveAddHive = "Bienenstock hinzufügen",
+      msgHiveDeleteHive = "Bienenstock löschen",
+      msgHiveDetailHive = "Bienenstock Details",
+      msgHiveEditHive = "Bienenstock bearbeiten",
+      msgHiveHiveMasterData = "Stock-Daten",
+      msgInspectionInspection = "Durchsicht",
+      msgInspectionInspections = "Durchsichten",
+      msgInspectionAddInspection = "Durchsicht hinzufügen",
+      msgInspectionDeleteInspection = "Durchsicht löschen",
+      msgInspectionEditInspection = "Durchsicht bearbeiten",
+      msgInspectionLastInspection = "Letzte Durchsicht",
+      msgInspectionfileInspectionfiles = "Dateien",
+      msgInspectionfileAddInspectionfile = "Durchsicht-Datei hinzufügen",
+      msgInspectionfileDeleteInspectionfile = "Durchsicht-Datei löschen",
+      msgInspectionfileEditInspectionfile = "Durchsicht-Datei bearbeiten",
+      msgSwarmingTypeSwarming = "Schwarmtrieb",
+      msgSwarmingTypeSwarmingTypes = "Schwarmtrieb Typen",
+      msgSwarmingTypeAddSwarmingType = "Schwarmtrieb Typ hinzufügen",
+      msgSwarmingTypeDeleteSwarmingType = "Schwarmtrieb Typ löschen",
+      msgSwarmingTypeEditSwarmingType = "Schwarmtrieb Typ bearbeiten",
       msgNoteNote = "Notiz",
       msgNoteNotes = "Notizen",
       msgNoteAddNote = "Notiz hinzufügen",
@@ -686,43 +686,10 @@ translationEn =
       msgGlobalShowMore = "Show More",
       msgGlobalShowLess = "Show Less",
       msgGlobalShowAll = "Show All",
-      msgGlobalUsers = "Users",
-      msgGlobalAddUser = "Add user",
-      msgGlobalEditUser = "Edit user",
-      msgGlobalDeleteUser = "Delete user",
       msgGlobalConfigurations = "Configurations",
       msgGlobalEditConfig = "Edit config",
       msgGlobalCancel = "Cancel",
       msgGlobalInfo = "Info",
-      msgGlobalLocation = "Location",
-      msgGlobalLocations = "Locations",
-      msgGlobalAddLocation = "Add location",
-      msgGlobalEditLocation = "Edit location",
-      msgGlobalDeleteLocation = "Delete location",
-      msgGlobalLocationMasterData = "Location data",
-      msgGlobalHiveOverview = "Hive Overview",
-      msgGlobalHive = "Hive",
-      msgGlobalHives = "Hives",
-      msgGlobalAddHive = "Add hive",
-      msgGlobalDeleteHive = "Delete hive",
-      msgGlobalDetailHive = "Hive details",
-      msgGlobalEditHive = "Edit hive",
-      msgGlobalHiveMasterData = "Hive data",
-      msgGlobalInspection = "Inspection",
-      msgGlobalInspections = "Inspections",
-      msgGlobalAddInspection = "Add inspection",
-      msgGlobalDeleteInspection = "Delete inspection",
-      msgGlobalEditInspection = "Edit inspection",
-      msgGlobalLastInspection = "Last inspection",
-      msgGlobalInspectionfiles = "Files",
-      msgGlobalAddInspectionfile = "Add inspection-file",
-      msgGlobalDeleteInspectionfile = "Delete inspection-file",
-      msgGlobalEditInspectionfile = "Edit inspection-file",
-      msgGlobalSwarming = "Swarming mood",
-      msgGlobalSwarmingTypes = "Swarming types",
-      msgGlobalAddSwarmingType = "Add swarming type",
-      msgGlobalDeleteSwarmingType = "Delete swarming type",
-      msgGlobalEditSwarmingType = "Edit swarming type",
       msgUserIdent = "Login",
       msgUserPassword = "Password",
       msgUserEmail = "Email",
@@ -797,6 +764,39 @@ translationEn =
       msgSwarmingTypeSortIndexInputInfo = "",
       msgNoteDateInputInfo = "",
       msgNoteTextInputInfo = "",
+      msgUserUsers = "Users",
+      msgUserAddUser = "Add user",
+      msgUserEditUser = "Edit user",
+      msgUserDeleteUser = "Delete user",
+      msgLocationLocation = "Location",
+      msgLocationLocations = "Locations",
+      msgLocationAddLocation = "Add location",
+      msgLocationEditLocation = "Edit location",
+      msgLocationDeleteLocation = "Delete location",
+      msgLocationLocationMasterData = "Location data",
+      msgHiveHiveOverview = "Hive Overview",
+      msgHiveHive = "Hive",
+      msgHiveHives = "Hives",
+      msgHiveAddHive = "Add hive",
+      msgHiveDeleteHive = "Delete hive",
+      msgHiveDetailHive = "Hive details",
+      msgHiveEditHive = "Edit hive",
+      msgHiveHiveMasterData = "Hive data",
+      msgInspectionInspection = "Inspection",
+      msgInspectionInspections = "Inspections",
+      msgInspectionAddInspection = "Add inspection",
+      msgInspectionDeleteInspection = "Delete inspection",
+      msgInspectionEditInspection = "Edit inspection",
+      msgInspectionLastInspection = "Last inspection",
+      msgInspectionfileInspectionfiles = "Files",
+      msgInspectionfileAddInspectionfile = "Add inspection-file",
+      msgInspectionfileDeleteInspectionfile = "Delete inspection-file",
+      msgInspectionfileEditInspectionfile = "Edit inspection-file",
+      msgSwarmingTypeSwarming = "Swarming mood",
+      msgSwarmingTypeSwarmingTypes = "Swarming types",
+      msgSwarmingTypeAddSwarmingType = "Add swarming type",
+      msgSwarmingTypeDeleteSwarmingType = "Delete swarming type",
+      msgSwarmingTypeEditSwarmingType = "Edit swarming type",
       msgNoteNote = "Note",
       msgNoteNotes = "Notes",
       msgNoteAddNote = "Add note",

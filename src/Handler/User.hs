@@ -32,7 +32,7 @@ getAddUserFormR = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddUser}
+      <h1>_{MsgUserAddUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ AddUserR}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -180,7 +180,7 @@ getEditUserFormR userId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalEditUser}
+      <h1>_{MsgUserEditUser}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{AdminR $ EditUserR userId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -375,7 +375,7 @@ getDeleteUserFormR userId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteUser}
+      <h1>_{MsgUserDeleteUser}
       <form #modal-form .uk-form-horizontal method=post action=@{AdminR $ DeleteUserR userId}>
         <div #modal-form-widget>
           ^{formWidget}

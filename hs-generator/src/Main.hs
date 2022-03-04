@@ -36,9 +36,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = False,
                 bCrudModelEditPostNeedsCurRoute = False,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddUser",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditUser",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteUser",
+                bCrudModelAddFormTitleMsg = Just "MsgUserAddUser",
+                bCrudModelEditFormTitleMsg = Just "MsgUserEditUser",
+                bCrudModelDeleteFormTitleMsg = Just "MsgUserDeleteUser",
                 bCrudModelParentHsType = Nothing,
                 bCrudModelFormRouteHsType = "AdminR",
                 bCrudModelFields =
@@ -215,7 +215,13 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "users", bTranslationDe = "Nutzer", bTranslationEn = "Users"},
+                      BTranslation {bTranslationKey = "addUser", bTranslationDe = "Nutzer hinzufügen", bTranslationEn = "Add user"},
+                      BTranslation {bTranslationKey = "editUser", bTranslationDe = "Nutzer bearbeiten", bTranslationEn = "Edit user"},
+                      BTranslation {bTranslationKey = "deleteUser", bTranslationDe = "Nutzer löschen", bTranslationEn = "Delete user"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "config",
@@ -522,9 +528,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = False,
                 bCrudModelEditPostNeedsCurRoute = False,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddLocation",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditLocation",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteLocation",
+                bCrudModelAddFormTitleMsg = Just "MsgLocationAddLocation",
+                bCrudModelEditFormTitleMsg = Just "MsgLocationEditLocation",
+                bCrudModelDeleteFormTitleMsg = Just "MsgLocationDeleteLocation",
                 bCrudModelParentHsType = Nothing,
                 bCrudModelFormRouteHsType = "HiverecR",
                 bCrudModelFields =
@@ -573,7 +579,15 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "location", bTranslationDe = "Standort", bTranslationEn = "Location"},
+                      BTranslation {bTranslationKey = "locations", bTranslationDe = "Standorte", bTranslationEn = "Locations"},
+                      BTranslation {bTranslationKey = "addLocation", bTranslationDe = "Standort hinzufügen", bTranslationEn = "Add location"},
+                      BTranslation {bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location"},
+                      BTranslation {bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location"},
+                      BTranslation {bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Daten", bTranslationEn = "Location data"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "hive",
@@ -598,9 +612,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = False,
                 bCrudModelEditPostNeedsCurRoute = False,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddHive",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditHive",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteHive",
+                bCrudModelAddFormTitleMsg = Just "MsgHiveAddHive",
+                bCrudModelEditFormTitleMsg = Just "MsgHiveEditHive",
+                bCrudModelDeleteFormTitleMsg = Just "MsgHiveDeleteHive",
                 bCrudModelParentHsType = Just "Location",
                 bCrudModelFormRouteHsType = "HiverecR",
                 bCrudModelFields =
@@ -812,7 +826,17 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "hiveOverview", bTranslationDe = "Bienenstock Übersicht", bTranslationEn = "Hive Overview"},
+                      BTranslation {bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive"},
+                      BTranslation {bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives"},
+                      BTranslation {bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive"},
+                      BTranslation {bTranslationKey = "deleteHive", bTranslationDe = "Bienenstock löschen", bTranslationEn = "Delete hive"},
+                      BTranslation {bTranslationKey = "detailHive", bTranslationDe = "Bienenstock Details", bTranslationEn = "Hive details"},
+                      BTranslation {bTranslationKey = "editHive", bTranslationDe = "Bienenstock bearbeiten", bTranslationEn = "Edit hive"},
+                      BTranslation {bTranslationKey = "hiveMasterData", bTranslationDe = "Stock-Daten", bTranslationEn = "Hive data"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "inspection",
@@ -837,9 +861,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = True,
                 bCrudModelEditPostNeedsCurRoute = True,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddInspection",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditInspection",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteInspection",
+                bCrudModelAddFormTitleMsg = Just "MsgInspectionAddInspection",
+                bCrudModelEditFormTitleMsg = Just "MsgInspectionEditInspection",
+                bCrudModelDeleteFormTitleMsg = Just "MsgInspectionDeleteInspection",
                 bCrudModelParentHsType = Just "Hive",
                 bCrudModelFormRouteHsType = "HiverecR",
                 bCrudModelFields =
@@ -1240,7 +1264,15 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "inspection", bTranslationDe = "Durchsicht", bTranslationEn = "Inspection"},
+                      BTranslation {bTranslationKey = "inspections", bTranslationDe = "Durchsichten", bTranslationEn = "Inspections"},
+                      BTranslation {bTranslationKey = "addInspection", bTranslationDe = "Durchsicht hinzufügen", bTranslationEn = "Add inspection"},
+                      BTranslation {bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection"},
+                      BTranslation {bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection"},
+                      BTranslation {bTranslationKey = "lastInspection", bTranslationDe = "Letzte Durchsicht", bTranslationEn = "Last inspection"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "inspectionfile",
@@ -1265,9 +1297,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = False,
                 bCrudModelEditPostNeedsCurRoute = False,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddInspectionfile",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditInspectionfile",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteInspectionfile",
+                bCrudModelAddFormTitleMsg = Just "MsgInspectionfileAddInspectionfile",
+                bCrudModelEditFormTitleMsg = Just "MsgInspectionfileEditInspectionfile",
+                bCrudModelDeleteFormTitleMsg = Just "MsgInspectionfileDeleteInspectionfile",
                 bCrudModelParentHsType = Just "Inspection",
                 bCrudModelFormRouteHsType = "HiverecR",
                 bCrudModelFields =
@@ -1388,7 +1420,13 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "inspectionfiles", bTranslationDe = "Dateien", bTranslationEn = "Files"},
+                      BTranslation {bTranslationKey = "addInspectionfile", bTranslationDe = "Durchsicht-Datei hinzufügen", bTranslationEn = "Add inspection-file"},
+                      BTranslation {bTranslationKey = "deleteInspectionfile", bTranslationDe = "Durchsicht-Datei löschen", bTranslationEn = "Delete inspection-file"},
+                      BTranslation {bTranslationKey = "editInspectionfile", bTranslationDe = "Durchsicht-Datei bearbeiten", bTranslationEn = "Edit inspection-file"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "swarmingType",
@@ -1413,9 +1451,9 @@ context =
                 bCrudModelEditPostExtraStoreFunc = Nothing,
                 bCrudModelAddPostNeedsCurRoute = False,
                 bCrudModelEditPostNeedsCurRoute = False,
-                bCrudModelAddFormTitleMsg = Just "MsgGlobalAddSwarmingType",
-                bCrudModelEditFormTitleMsg = Just "MsgGlobalEditSwarmingType",
-                bCrudModelDeleteFormTitleMsg = Just "MsgGlobalDeleteSwarmingType",
+                bCrudModelAddFormTitleMsg = Just "MsgSwarmingTypeAddSwarmingType",
+                bCrudModelEditFormTitleMsg = Just "MsgSwarmingTypeEditSwarmingType",
+                bCrudModelDeleteFormTitleMsg = Just "MsgSwarmingTypeDeleteSwarmingType",
                 bCrudModelParentHsType = Nothing,
                 bCrudModelFormRouteHsType = "AdminR",
                 bCrudModelFields =
@@ -1508,7 +1546,14 @@ context =
                               }
                       }
                   ],
-                bCrudModelTranslations = Nothing
+                bCrudModelTranslations =
+                  Just
+                    [ BTranslation {bTranslationKey = "swarming", bTranslationDe = "Schwarmtrieb", bTranslationEn = "Swarming mood"},
+                      BTranslation {bTranslationKey = "swarmingTypes", bTranslationDe = "Schwarmtrieb Typen", bTranslationEn = "Swarming types"},
+                      BTranslation {bTranslationKey = "addSwarmingType", bTranslationDe = "Schwarmtrieb Typ hinzufügen", bTranslationEn = "Add swarming type"},
+                      BTranslation {bTranslationKey = "deleteSwarmingType", bTranslationDe = "Schwarmtrieb Typ löschen", bTranslationEn = "Delete swarming type"},
+                      BTranslation {bTranslationKey = "editSwarmingType", bTranslationDe = "Schwarmtrieb Typ bearbeiten", bTranslationEn = "Edit swarming type"}
+                    ]
               },
             BCrudModel
               { bCrudModelName = "note",
@@ -1689,42 +1734,9 @@ context =
             BTranslation {bTranslationKey = "showMore", bTranslationDe = "Mehr anzeigen", bTranslationEn = "Show More"},
             BTranslation {bTranslationKey = "showLess", bTranslationDe = "Weniger anzeigen", bTranslationEn = "Show Less"},
             BTranslation {bTranslationKey = "showAll", bTranslationDe = "Alle anzeigen", bTranslationEn = "Show All"},
-            BTranslation {bTranslationKey = "users", bTranslationDe = "Nutzer", bTranslationEn = "Users"},
-            BTranslation {bTranslationKey = "addUser", bTranslationDe = "Nutzer hinzufügen", bTranslationEn = "Add user"},
-            BTranslation {bTranslationKey = "editUser", bTranslationDe = "Nutzer bearbeiten", bTranslationEn = "Edit user"},
-            BTranslation {bTranslationKey = "deleteUser", bTranslationDe = "Nutzer löschen", bTranslationEn = "Delete user"},
             BTranslation {bTranslationKey = "configurations", bTranslationDe = "Konfigurationen", bTranslationEn = "Configurations"},
             BTranslation {bTranslationKey = "editConfig", bTranslationDe = "Konfiguration bearbeiten", bTranslationEn = "Edit config"},
             BTranslation {bTranslationKey = "cancel", bTranslationDe = "Abbrechen", bTranslationEn = "Cancel"},
-            BTranslation {bTranslationKey = "info", bTranslationDe = "Info", bTranslationEn = "Info"},
-            BTranslation {bTranslationKey = "location", bTranslationDe = "Standort", bTranslationEn = "Location"},
-            BTranslation {bTranslationKey = "locations", bTranslationDe = "Standorte", bTranslationEn = "Locations"},
-            BTranslation {bTranslationKey = "addLocation", bTranslationDe = "Standort hinzufügen", bTranslationEn = "Add location"},
-            BTranslation {bTranslationKey = "editLocation", bTranslationDe = "Standort bearbeiten", bTranslationEn = "Edit location"},
-            BTranslation {bTranslationKey = "deleteLocation", bTranslationDe = "Standort löschen", bTranslationEn = "Delete location"},
-            BTranslation {bTranslationKey = "locationMasterData", bTranslationDe = "Standort-Daten", bTranslationEn = "Location data"},
-            BTranslation {bTranslationKey = "hiveOverview", bTranslationDe = "Bienenstock Übersicht", bTranslationEn = "Hive Overview"},
-            BTranslation {bTranslationKey = "hive", bTranslationDe = "Bienenstock", bTranslationEn = "Hive"},
-            BTranslation {bTranslationKey = "hives", bTranslationDe = "Bienenstöcke", bTranslationEn = "Hives"},
-            BTranslation {bTranslationKey = "addHive", bTranslationDe = "Bienenstock hinzufügen", bTranslationEn = "Add hive"},
-            BTranslation {bTranslationKey = "deleteHive", bTranslationDe = "Bienenstock löschen", bTranslationEn = "Delete hive"},
-            BTranslation {bTranslationKey = "detailHive", bTranslationDe = "Bienenstock Details", bTranslationEn = "Hive details"},
-            BTranslation {bTranslationKey = "editHive", bTranslationDe = "Bienenstock bearbeiten", bTranslationEn = "Edit hive"},
-            BTranslation {bTranslationKey = "hiveMasterData", bTranslationDe = "Stock-Daten", bTranslationEn = "Hive data"},
-            BTranslation {bTranslationKey = "inspection", bTranslationDe = "Durchsicht", bTranslationEn = "Inspection"},
-            BTranslation {bTranslationKey = "inspections", bTranslationDe = "Durchsichten", bTranslationEn = "Inspections"},
-            BTranslation {bTranslationKey = "addInspection", bTranslationDe = "Durchsicht hinzufügen", bTranslationEn = "Add inspection"},
-            BTranslation {bTranslationKey = "deleteInspection", bTranslationDe = "Durchsicht löschen", bTranslationEn = "Delete inspection"},
-            BTranslation {bTranslationKey = "editInspection", bTranslationDe = "Durchsicht bearbeiten", bTranslationEn = "Edit inspection"},
-            BTranslation {bTranslationKey = "lastInspection", bTranslationDe = "Letzte Durchsicht", bTranslationEn = "Last inspection"},
-            BTranslation {bTranslationKey = "inspectionfiles", bTranslationDe = "Dateien", bTranslationEn = "Files"},
-            BTranslation {bTranslationKey = "addInspectionfile", bTranslationDe = "Durchsicht-Datei hinzufügen", bTranslationEn = "Add inspection-file"},
-            BTranslation {bTranslationKey = "deleteInspectionfile", bTranslationDe = "Durchsicht-Datei löschen", bTranslationEn = "Delete inspection-file"},
-            BTranslation {bTranslationKey = "editInspectionfile", bTranslationDe = "Durchsicht-Datei bearbeiten", bTranslationEn = "Edit inspection-file"},
-            BTranslation {bTranslationKey = "swarming", bTranslationDe = "Schwarmtrieb", bTranslationEn = "Swarming mood"},
-            BTranslation {bTranslationKey = "swarmingTypes", bTranslationDe = "Schwarmtrieb Typen", bTranslationEn = "Swarming types"},
-            BTranslation {bTranslationKey = "addSwarmingType", bTranslationDe = "Schwarmtrieb Typ hinzufügen", bTranslationEn = "Add swarming type"},
-            BTranslation {bTranslationKey = "deleteSwarmingType", bTranslationDe = "Schwarmtrieb Typ löschen", bTranslationEn = "Delete swarming type"},
-            BTranslation {bTranslationKey = "editSwarmingType", bTranslationDe = "Schwarmtrieb Typ bearbeiten", bTranslationEn = "Edit swarming type"}
+            BTranslation {bTranslationKey = "info", bTranslationDe = "Info", bTranslationEn = "Info"}
           ]
       }

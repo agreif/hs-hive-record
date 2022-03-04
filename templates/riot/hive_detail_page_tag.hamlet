@@ -2,14 +2,14 @@
   <div if="{context.data.pages.hiveDetail}">
     <h1>
       <queen-dot-tag .uk-margin-small-right color="{context.data.pages.hiveDetail.queenColor}">
-      {context.data.translation.msgGlobalHive}: {context.data.pages.hiveDetail.hiveEnt.name}
+      {context.data.translation.msgHiveHive}: {context.data.pages.hiveDetail.hiveEnt.name}
     <ul uk-tab>
       <li>
         <a href="#">
-          {context.data.translation.msgGlobalHiveMasterData}
+          {context.data.translation.msgHiveHiveMasterData}
       <li .uk-active>
         <a href="#">
-          {context.data.translation.msgGlobalInspections}
+          {context.data.translation.msgInspectionInspections}
     <ul .uk-switcher .uk-margin>
       <li>
         <!-- master data -->
@@ -42,7 +42,7 @@
                 <a onclick="{editHive}" .uk-link-reset>
                   <span uk-icon="icon: check" if="{context.data.pages.hiveDetail.hiveEnt.isDissolved}">
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditHive}" uk-tooltip onclick="{editHive}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgHiveEditHive}" uk-tooltip onclick="{editHive}">
                   <span uk-icon="icon: pencil">
       <li>
         <!-- inspection list -->
@@ -59,7 +59,7 @@
               <th>
                 {context.data.translation.msgInspectionDate}
               <th>
-                {context.data.translation.msgGlobalSwarming}
+                {context.data.translation.msgSwarmingTypeSwarming}
               <th>
                 {context.data.translation.msgInspectionQueenSeen}
               <th>
@@ -73,11 +73,11 @@
               <th>
                 {context.data.translation.msgInspectionFeeding}
               <th>
-                {context.data.translation.msgGlobalInspectionfiles}
+                {context.data.translation.msgInspectionfileInspectionfiles}
               <th>
                 {context.data.translation.msgInspectionNotes}
               <th .uk-align-right>
-                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddInspection}" uk-tooltip onclick="{addInspection}">
+                <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgInspectionAddInspection}" uk-tooltip onclick="{addInspection}">
                   <span uk-icon="icon: plus">
           <tbody>
             <tr each="{inspection in context.data.pages.hiveDetail.inspections}">
@@ -109,9 +109,9 @@
                 <span each="{file in inspection.inspectionfiles}">
                   <a href="{file.downloadUrl}">
                     {file.entity.filename}
-                  <button .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditInspectionfile}" uk-tooltip onclick="{(e)=>editInspectionfile(e,file)}">
+                  <button .uk-button .uk-button-link title="{context.data.translation.msgInspectionfileEditInspectionfile}" uk-tooltip onclick="{(e)=>editInspectionfile(e,file)}">
                     <span uk-icon="icon: pencil">
-                  <button .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteInspectionfile}" uk-tooltip onclick="{(e)=>deleteInspectionfile(e,file)}">
+                  <button .uk-button .uk-button-link title="{context.data.translation.msgInspectionfileDeleteInspectionfile}" uk-tooltip onclick="{(e)=>deleteInspectionfile(e,file)}">
                     <span uk-icon="icon: trash">
                   <br>
               <td .uk-table-link>
@@ -119,11 +119,11 @@
                   <span .textarea-wrap>
                     {inspection.inspectionEnt.notes}
               <td .uk-width-small>
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteInspection}" uk-tooltip onclick="{(e)=>deleteInspection(e,inspection)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgInspectionDeleteInspection}" uk-tooltip onclick="{(e)=>deleteInspection(e,inspection)}">
                   <span uk-icon="icon: trash">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddInspectionfile}" uk-tooltip onclick="{(e)=>addInspectionfile(e,inspection)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgInspectionfileAddInspectionfile}" uk-tooltip onclick="{(e)=>addInspectionfile(e,inspection)}">
                   <span uk-icon="icon: upload">
-                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalEditInspection}" uk-tooltip onclick="{(e)=>editInspection(e,inspection)}">
+                <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgInspectionEditInspection}" uk-tooltip onclick="{(e)=>editInspection(e,inspection)}">
                   <span uk-icon="icon: pencil">
 
   <script>

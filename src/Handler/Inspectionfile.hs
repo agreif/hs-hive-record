@@ -32,7 +32,7 @@ getAddInspectionfileFormR inspectionId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalAddInspectionfile}
+      <h1>_{MsgInspectionfileAddInspectionfile}
       <form #modal-form .uk-form-horizontal method=post onsubmit="return false;" action=@{HiverecR $ AddInspectionfileR inspectionId}>
         <div #modal-form-widget>
           ^{formWidget}
@@ -273,7 +273,7 @@ getDeleteInspectionfileFormR inspectionfileId = do
   formLayout $
     toWidget
       [whamlet|
-      <h1>_{MsgGlobalDeleteInspectionfile}
+      <h1>_{MsgInspectionfileDeleteInspectionfile}
       <form #modal-form .uk-form-horizontal method=post action=@{HiverecR $ DeleteInspectionfileR inspectionfileId}>
         <div #modal-form-widget>
           ^{formWidget}

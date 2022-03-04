@@ -1,14 +1,14 @@
 <location-list-page-tag>
   <div if="{context.data.pages.locationList}">
     <h1>
-      {context.data.translation.msgGlobalLocations}
+      {context.data.translation.msgLocationLocations}
     <table .uk-table .uk-table-small .uk-table-divider .uk-table-hover .uk-background-muted>
       <thead>
         <tr>
           <th>
             {context.data.translation.msgLocationName}
           <th .uk-align-right>
-            <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgGlobalAddLocation}" uk-tooltip onclick="{addLocation}">
+            <button .uk-background-primary .uk-light .uk-padding-small .modal-form-link .uk-button .uk-button-link title="{context.data.translation.msgLocationAddLocation}" uk-tooltip onclick="{addLocation}">
               <span uk-icon="icon: plus">
       <tbody>
         <tr each="{loc in context.data.pages.locationList.locations}">
@@ -16,9 +16,9 @@
             <a href="{loc.detailurl}" onclick="{(e)=>detailLocation(e,loc)}" .uk-link-reset>
               {loc.entity.name}
           <td .uk-width-small>
-            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDeleteLocation}" uk-tooltip onclick="{(e)=>deleteLocation(e,loc)}">
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgLocationDeleteLocation}" uk-tooltip onclick="{(e)=>deleteLocation(e,loc)}">
               <span uk-icon="icon: trash">
-            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgGlobalDetailLocation}" uk-tooltip onclick="{(e)=>detailLocation(e,loc)}">
+            <button .uk-float-right .uk-button .uk-button-link title="{context.data.translation.msgLocationDetailLocation}" uk-tooltip onclick="{(e)=>detailLocation(e,loc)}">
               <span uk-icon="icon: file-edit">
 
   <script>
