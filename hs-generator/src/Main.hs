@@ -1558,7 +1558,7 @@ context =
             BCrudModel
               { bCrudModelName = "note",
                 bCrudModelIsJson = True,
-                bCrudModelDbUniquenesses = [],
+                bCrudModelDbUniquenesses = ["UniqueNoteDate date"],
                 bCrudModelDbHasHistoryTable = True,
                 bCrudModelHsDerivings = [],
                 bCrudModelAddFormArgs = Nothing,

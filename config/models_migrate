@@ -213,6 +213,7 @@ Note json
     createdBy Text
     updatedAt UTCTime
     updatedBy Text
+    UniqueNoteDate date
 
 
 NoteHistory
