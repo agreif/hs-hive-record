@@ -40,7 +40,7 @@ getHiveOverviewPageDataR = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
-  mainNavItems <- mainNavData user MainNavLocations
+  mainNavItems <- mainNavData user MainNavHives
   urlRenderer <- getUrlRender
   hiveOverviewJDatas <- getHiveOverviewJDatas
   let pages =
@@ -128,7 +128,7 @@ getHiveDetailPageDataR hiveId = do
   Entity _ user <- requireAuth
   req <- getRequest
   appName <- runDB configAppName
-  mainNavItems <- mainNavData user MainNavLocations
+  mainNavItems <- mainNavData user MainNavHives
   hive <- runDB $ get404 hiveId
   let locationId = hiveLocationId hive
   location <- runDB $ get404 locationId
