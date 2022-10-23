@@ -22,6 +22,7 @@ Almost all models are defined in 'hs-generator/src/Main.hs'.
 With the 'ginger' template engine the following components are generated:
 - handler actions (CRUD)
 - models for Yesod entities
+- postgres function to feed the history tables on all DB changes
 
 All model definitions and the ginger templates are in the hs-generator subproject.
 If model definitions changed you can regenerate the haskell code with
